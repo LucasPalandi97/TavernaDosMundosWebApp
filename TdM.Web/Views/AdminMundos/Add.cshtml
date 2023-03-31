@@ -1,0 +1,30 @@
+﻿@model TdM.Web.Models.ViewModels.AddMundoRequest
+@using TdM.Web.Models.Domain.Enums
+@{
+}
+
+<div class="bg-secondary bg-opacity-10 py-2">
+    <div class="containter">
+        <h1>Add new World - Admin Funcionality</h1>
+    </div>
+</div>
+
+<div class="container py-5">
+    <form method="post">
+        <div class="mb-3">
+            <label class="form-label">World</label>
+            <input type="text" class="form-control" id="nome" asp-for="Nome"/>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Description</label>
+            <input type="text" class="form-control" id="descricao" asp-for="Descricao" />
+        </div>
+        <div class="mb-3">
+           
+            @Html.DropDownList("autor", Html.GetEnumSelectList<Autor>(), new {@class = "form-control"})
+        </div>
+        <div class="mb-3">
+            <button type="submit" class="btn btn-dark">Submit</button>
+        </div>
+    </form>
+</div>

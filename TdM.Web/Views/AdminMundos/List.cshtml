@@ -1,0 +1,47 @@
+﻿@model List<TdM.Web.Models.Domain.Mundo>
+@using TdM.Web.Models.Domain.Enums;
+@{
+
+}
+
+
+<div class="bg-secondary bg-opacity-10 py-2">
+    <div class="containter">
+        <h1>Show all Worlds - Admin Funcionality</h1>
+    </div>
+</div>
+
+<div class="container py-5">
+    @if (Model != null && Model.Any())
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>World</th>
+                    <th>Description</th>
+                    <th>Author</th>
+                    <th> </th>
+                </tr>
+            </thead>  
+            <tbody>
+                @foreach (var mundo in Model)
+                {
+                    <tr>
+                        <td>@mundo.MundoId</td>
+                        <td>@mundo.Nome</td>
+                        <td>@mundo.Descricao</td>
+                        <td>@mundo.Autor<td>
+                        <td>
+                            <a asp-area="" asp-controller="AdminMundos" asp-action="Edit" asp-route-id="@mundo.MundoId">Edit</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p>No Worlds found!</p>
+    }
+</div>
