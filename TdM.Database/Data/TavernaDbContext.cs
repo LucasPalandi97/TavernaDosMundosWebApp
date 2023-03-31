@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using TdM.Web.Models.Domain;
-namespace TdM.Web.Data;
+using TdM.Database.Models.Domain;
+namespace TdM.Database.Data;
 
 
 public class TavernaDbContext : DbContext

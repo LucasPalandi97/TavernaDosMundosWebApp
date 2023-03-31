@@ -15,4 +15,8 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\TdM.Database\TdM.Database.csproj" />
+  </ItemGroup>
+
 </Project>

@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using TdM.Web.Models.Domain.Enums;
+using TdM.Database.Models.Domain.Enums;
 
 namespace TdM.Web.Models.ViewModels
 {

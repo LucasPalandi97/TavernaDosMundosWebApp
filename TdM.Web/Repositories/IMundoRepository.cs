@@ -1,6 +1,6 @@
-﻿using TdM.Web.Models.Domain;
+﻿using TdM.Database.Models.Domain;
 
-namespace TdM.Web.Repositores;
+namespace TdM.Web.Repositories;
 
 public interface IMundoRepository
 {

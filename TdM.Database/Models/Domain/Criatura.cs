@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using TdM.Web.Models.Domain.Enums;
+using TdM.Database.Models.Domain.Enums;
 
-namespace TdM.Web.Models.Domain;
+namespace TdM.Database.Models.Domain;
 
 public class Criatura
 {

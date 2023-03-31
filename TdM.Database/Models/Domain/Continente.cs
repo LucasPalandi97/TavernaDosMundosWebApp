@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 
 
-namespace TdM.Web.Models.Domain;
+namespace TdM.Database.Models.Domain;
 
 public class Continente
 {

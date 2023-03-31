@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection.Metadata;
-using TdM.Web.Data;
-using TdM.Web.Models.Domain;
-using TdM.Web.Models.Domain.Enums;
+using TdM.Database.Data;
+using TdM.Database.Models.Domain;
+using TdM.Database.Models.Domain.Enums;
 using TdM.Web.Models.ViewModels;
-using TdM.Web.Repositores;
+using TdM.Web.Repositories;
 
 namespace TdM.Web.Controllers;
 

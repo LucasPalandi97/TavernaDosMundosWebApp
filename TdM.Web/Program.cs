@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
-using TdM.Web.Data;
-using TdM.Web.Repositores;
+using TdM.Database.Data;
+using TdM.Web.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 

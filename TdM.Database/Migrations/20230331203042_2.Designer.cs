@@ -5,15 +5,15 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using TdM.Web.Data;
+using TdM.Database.Data;
 
 #nullable disable
 
 namespace TdM.Web.Migrations
 {
     [DbContext(typeof(TavernaDbContext))]
-    [Migration("20230330194811_inicial")]
-    partial class inicial
+    [Migration("20230331203042_2")]
+    partial class _2
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -85,7 +85,7 @@ namespace TdM.Web.Migrations
                     b.ToTable("PovoRegiao");
                 });
 
-            modelBuilder.Entity("TdM.Web.Models.Domain.Continente", b =>
+            modelBuilder.Entity("TdM.Database.Models.Domain.Continente", b =>
                 {
                     b.Property<Guid>("ContinenteId")
                         .ValueGeneratedOnAdd()
@@ -110,7 +110,7 @@ namespace TdM.Web.Migrations
                     b.ToTable("Continentes");
                 });
 
-            modelBuilder.Entity("TdM.Web.Models.Domain.Conto", b =>
+            modelBuilder.Entity("TdM.Database.Models.Domain.Conto", b =>
                 {
                     b.Property<Guid>("ContoId")
                         .ValueGeneratedOnAdd()
@@ -169,7 +169,7 @@ namespace TdM.Web.Migrations
                     b.ToTable("Contos");
                 });
 
-            modelBuilder.Entity("TdM.Web.Models.Domain.Criatura", b =>
+            modelBuilder.Entity("TdM.Database.Models.Domain.Criatura", b =>
                 {
                     b.Property<Guid>("CriaturaId")
                         .ValueGeneratedOnAdd()
@@ -197,7 +197,7 @@ namespace TdM.Web.Migrations
                     b.ToTable("Criaturas");
                 });
 
-            modelBuilder.Entity("TdM.Web.Models.Domain.Mundo", b =>
+            modelBuilder.Entity("TdM.Database.Models.Domain.Mundo", b =>
                 {
                     b.Property<Guid>("MundoId")
                         .ValueGeneratedOnAdd()
@@ -215,15 +215,12 @@ namespace TdM.Web.Migrations
                         .HasMaxLength(32)
                         .HasColumnType("nvarchar(32)");
 
-                    b.Property<bool>("Visible")
-                        .HasColumnType("bit");
-
                     b.HasKey("MundoId");
 
                     b.ToTable("Mundos");
                 });
 
-            modelBuilder.Entity("TdM.Web.Models.Domain.Personagem", b =>
+            modelBuilder.Entity("TdM.Database.Models.Domain.Personagem", b =>
                 {
                     b.Property<Guid>("PersonagemId")
                         .ValueGeneratedOnAdd()
@@ -274,7 +271,7 @@ namespace TdM.Web.Migrations
                     b.ToTable("Personagens");
                 });
 
-            modelBuilder.Entity("TdM.Web.Models.Domain.Povo", b =>
+            modelBuilder.Entity("TdM.Database.Models.Domain.Povo", b =>
                 {
                     b.Property<Guid>("PovoId")
                         .ValueGeneratedOnAdd()
@@ -302,7 +299,7 @@ namespace TdM.Web.Migrations
                     b.ToTable("Povos");
                 });
 
-            modelBuilder.Entity("TdM.Web.Models.Domain.Regiao", b =>
+            modelBuilder.Entity("TdM.Database.Models.Domain.Regiao", b =>
                 {
                     b.Property<Guid>("RegiaoId")
                         .ValueGeneratedOnAdd()
@@ -339,13 +336,13 @@ namespace TdM.Web.Migrations
 
             modelBuilder.Entity("ContinenteCriatura", b =>
                 {
-                    b.HasOne("TdM.Web.Models.Domain.Continente", null)
+                    b.HasOne("TdM.Database.Models.Domain.Continente", null)
                         .WithMany()
                         .HasForeignKey("ContinentesContinenteId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("TdM.Web.Models.Domain.Criatura", null)
+                    b.HasOne("TdM.Database.Models.Domain.Criatura", null)
                         .WithMany()
                         .HasForeignKey("CriaturasCriaturaId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -354,13 +351,13 @@ namespace TdM.Web.Migrations
 
             modelBuilder.Entity("ContinentePovo", b =>
                 {
-                    b.HasOne("TdM.Web.Models.Domain.Continente", null)
+                    b.HasOne("TdM.Database.Models.Domain.Continente", null)
                         .WithMany()
                         .HasForeignKey("ContinentesContinenteId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("TdM.Web.Models.Domain.Povo", null)
+                    b.HasOne("TdM.Database.Models.Domain.Povo", null)
                         .WithMany()
                         .HasForeignKey("PovosPovoId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -369,13 +366,13 @@ namespace TdM.Web.Migrations
 
             modelBuilder.Entity("CriaturaRegiao", b =>
                 {
-                    b.HasOne("TdM.Web.Models.Domain.Criatura", null)
+                    b.HasOne("TdM.Database.Models.Domain.Criatura", null)
                         .WithMany()
                         .HasForeignKey("CriaturasCriaturaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("TdM.Web.Models.Domain.Regiao", null)
+                    b.HasOne("TdM.Database.Models.Domain.Regiao", null)
                         .WithMany()
                         .HasForeignKey("RegioesRegiaoId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -384,51 +381,51 @@ namespace TdM.Web.Migrations
 
             modelBuilder.Entity("PovoRegiao", b =>
                 {
-                    b.HasOne("TdM.Web.Models.Domain.Povo", null)
+                    b.HasOne("TdM.Database.Models.Domain.Povo", null)
                         .WithMany()
                         .HasForeignKey("PovosPovoId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("TdM.Web.Models.Domain.Regiao", null)
+                    b.HasOne("TdM.Database.Models.Domain.Regiao", null)
                         .WithMany()
                         .HasForeignKey("RegioesRegiaoId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("TdM.Web.Models.Domain.Continente", b =>
+            modelBuilder.Entity("TdM.Database.Models.Domain.Continente", b =>
                 {
-                    b.HasOne("TdM.Web.Models.Domain.Mundo", "Mundo")
+                    b.HasOne("TdM.Database.Models.Domain.Mundo", "Mundo")
                         .WithMany("Continentes")
                         .HasForeignKey("MundoId");
 
                     b.Navigation("Mundo");
                 });
 
-            modelBuilder.Entity("TdM.Web.Models.Domain.Conto", b =>
+            modelBuilder.Entity("TdM.Database.Models.Domain.Conto", b =>
                 {
-                    b.HasOne("TdM.Web.Models.Domain.Continente", "Continente")
+                    b.HasOne("TdM.Database.Models.Domain.Continente", "Continente")
                         .WithMany("Contos")
                         .HasForeignKey("ContinenteId");
 
-                    b.HasOne("TdM.Web.Models.Domain.Criatura", "Criatura")
+                    b.HasOne("TdM.Database.Models.Domain.Criatura", "Criatura")
                         .WithMany("Contos")
                         .HasForeignKey("CriaturaId");
 
-                    b.HasOne("TdM.Web.Models.Domain.Mundo", "Mundo")
+                    b.HasOne("TdM.Database.Models.Domain.Mundo", "Mundo")
                         .WithMany("Contos")
                         .HasForeignKey("MundoId");
 
-                    b.HasOne("TdM.Web.Models.Domain.Personagem", "Personagem")
+                    b.HasOne("TdM.Database.Models.Domain.Personagem", "Personagem")
                         .WithMany("Contos")
                         .HasForeignKey("PersonagemId");
 
-                    b.HasOne("TdM.Web.Models.Domain.Povo", "Povo")
+                    b.HasOne("TdM.Database.Models.Domain.Povo", "Povo")
                         .WithMany("Contos")
                         .HasForeignKey("PovoId");
 
-                    b.HasOne("TdM.Web.Models.Domain.Regiao", "Regiao")
+                    b.HasOne("TdM.Database.Models.Domain.Regiao", "Regiao")
                         .WithMany("Contos")
                         .HasForeignKey("RegiaoId");
 
@@ -445,30 +442,30 @@ namespace TdM.Web.Migrations
                     b.Navigation("Regiao");
                 });
 
-            modelBuilder.Entity("TdM.Web.Models.Domain.Criatura", b =>
+            modelBuilder.Entity("TdM.Database.Models.Domain.Criatura", b =>
                 {
-                    b.HasOne("TdM.Web.Models.Domain.Mundo", "Mundo")
+                    b.HasOne("TdM.Database.Models.Domain.Mundo", "Mundo")
                         .WithMany("Criaturas")
                         .HasForeignKey("MundoId");
 
                     b.Navigation("Mundo");
                 });
 
-            modelBuilder.Entity("TdM.Web.Models.Domain.Personagem", b =>
+            modelBuilder.Entity("TdM.Database.Models.Domain.Personagem", b =>
                 {
-                    b.HasOne("TdM.Web.Models.Domain.Continente", null)
+                    b.HasOne("TdM.Database.Models.Domain.Continente", null)
                         .WithMany("Personagens")
                         .HasForeignKey("ContinenteId");
 
-                    b.HasOne("TdM.Web.Models.Domain.Mundo", "Mundo")
+                    b.HasOne("TdM.Database.Models.Domain.Mundo", "Mundo")
                         .WithMany("Personagens")
                         .HasForeignKey("MundoId");
 
-                    b.HasOne("TdM.Web.Models.Domain.Povo", "Povo")
+                    b.HasOne("TdM.Database.Models.Domain.Povo", "Povo")
                         .WithMany("Personagens")
                         .HasForeignKey("PovoId");
 
-                    b.HasOne("TdM.Web.Models.Domain.Regiao", "Regiao")
+                    b.HasOne("TdM.Database.Models.Domain.Regiao", "Regiao")
                         .WithMany("Personagens")
                         .HasForeignKey("RegiaoId");
 
@@ -479,22 +476,22 @@ namespace TdM.Web.Migrations
                     b.Navigation("Regiao");
                 });
 
-            modelBuilder.Entity("TdM.Web.Models.Domain.Povo", b =>
+            modelBuilder.Entity("TdM.Database.Models.Domain.Povo", b =>
                 {
-                    b.HasOne("TdM.Web.Models.Domain.Mundo", "Mundo")
+                    b.HasOne("TdM.Database.Models.Domain.Mundo", "Mundo")
                         .WithMany("Povos")
                         .HasForeignKey("MundoId");
 
                     b.Navigation("Mundo");
                 });
 
-            modelBuilder.Entity("TdM.Web.Models.Domain.Regiao", b =>
+            modelBuilder.Entity("TdM.Database.Models.Domain.Regiao", b =>
                 {
-                    b.HasOne("TdM.Web.Models.Domain.Continente", "Continente")
+                    b.HasOne("TdM.Database.Models.Domain.Continente", "Continente")
                         .WithMany("Regioes")
                         .HasForeignKey("ContinenteId");
 
-                    b.HasOne("TdM.Web.Models.Domain.Mundo", "Mundo")
+                    b.HasOne("TdM.Database.Models.Domain.Mundo", "Mundo")
                         .WithMany("Regioes")
                         .HasForeignKey("MundoId");
 
@@ -503,7 +500,7 @@ namespace TdM.Web.Migrations
                     b.Navigation("Mundo");
                 });
 
-            modelBuilder.Entity("TdM.Web.Models.Domain.Continente", b =>
+            modelBuilder.Entity("TdM.Database.Models.Domain.Continente", b =>
                 {
                     b.Navigation("Contos");
 
@@ -512,12 +509,12 @@ namespace TdM.Web.Migrations
                     b.Navigation("Regioes");
                 });
 
-            modelBuilder.Entity("TdM.Web.Models.Domain.Criatura", b =>
+            modelBuilder.Entity("TdM.Database.Models.Domain.Criatura", b =>
                 {
                     b.Navigation("Contos");
                 });
 
-            modelBuilder.Entity("TdM.Web.Models.Domain.Mundo", b =>
+            modelBuilder.Entity("TdM.Database.Models.Domain.Mundo", b =>
                 {
                     b.Navigation("Continentes");
 
@@ -532,19 +529,19 @@ namespace TdM.Web.Migrations
                     b.Navigation("Regioes");
                 });
 
-            modelBuilder.Entity("TdM.Web.Models.Domain.Personagem", b =>
+            modelBuilder.Entity("TdM.Database.Models.Domain.Personagem", b =>
                 {
                     b.Navigation("Contos");
                 });
 
-            modelBuilder.Entity("TdM.Web.Models.Domain.Povo", b =>
+            modelBuilder.Entity("TdM.Database.Models.Domain.Povo", b =>
                 {
                     b.Navigation("Contos");
 
                     b.Navigation("Personagens");
                 });
 
-            modelBuilder.Entity("TdM.Web.Models.Domain.Regiao", b =>
+            modelBuilder.Entity("TdM.Database.Models.Domain.Regiao", b =>
                 {
                     b.Navigation("Contos");
 
