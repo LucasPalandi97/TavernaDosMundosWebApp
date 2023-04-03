@@ -12,26 +12,99 @@
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark border-bottom box-shadow">
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">TdM.Web</a>
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Taverna dos Mundos</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Index">Worlds</a>
-                        </li>    
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                               *Administrator
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" asp-area="" asp-controller="AdminMundos" asp-action="Add">Add World</a></li>
-                                <li><a class="dropdown-item" asp-area="" asp-controller="AdminMundos" asp-action="List">Show All Worlds</a></li>
- 
-                            </ul>
+                        <li class="nav-item m-auto">
+                            <div class="btn-group">
+                                <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Index">Worlds </a>
+                                @*  Admin Action*@
+                                <div class="nav-link" role="group">
+                                    <a class="p-0 nav-link dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false"></a>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" asp-area="" asp-controller="AdminMundos" asp-action="Add">Add World</a></li>
+                                        <li><a class="dropdown-item" asp-area="" asp-controller="AdminMundos" asp-action="List">Show All Worlds</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            @*End of Admin Action*@
                         </li>
+
+                        <li class="nav-item m-auto">
+                            <div class="btn-group">
+                                <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Index">Characters </a>
+                                @*  Admin Action*@
+                                <div class="nav-link" role="group">
+                                    <a class="p-0 nav-link dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false"></a>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" asp-area="" asp-controller="AdminPersonagens" asp-action="Add">Add Character</a></li>
+                                        <li><a class="dropdown-item" asp-area="" asp-controller="AdminPersonagens" asp-action="List">Show Characters</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            @*End of Admin Action*@
+                        </li>
+                        <li class="nav-item m-auto">
+                            <div class="btn-group">
+                                <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Index">Regions </a>
+                                @*  Admin Action*@
+                                <div class="nav-link" role="group">
+                                    <a class="p-0 nav-link dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false"></a>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" asp-area="" asp-controller="AdminRegioes" asp-action="Add">Add Region</a></li>
+                                        <li><a class="dropdown-item" asp-area="" asp-controller="AdminRegioes" asp-action="List">Show Regions</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            @*End of Admin Action*@
+                        </li>
+                        <li class="nav-item m-auto">
+                            <div class="btn-group">
+                                <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Index">Stories </a>
+                                @*  Admin Action*@
+                                <div class="nav-link" role="group">
+                                    <a class="p-0 nav-link dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false"></a>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" asp-area="" asp-controller="AdminContos" asp-action="Add">Add Story</a></li>
+                                        <li><a class="dropdown-item" asp-area="" asp-controller="AdminContos" asp-action="List">Show Stories</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            @*End of Admin Action*@
+                        </li>
+                        <li class="nav-item m-auto">
+                            <div class="btn-group">
+                                <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Index">People </a>
+                                @*  Admin Action*@
+                                <div class="nav-link" role="group">
+                                    <a class="p-0 nav-link dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false"></a>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" asp-area="" asp-controller="AdminContos" asp-action="Add">Add People</a></li>
+                                        <li><a class="dropdown-item" asp-area="" asp-controller="AdminContos" asp-action="List">Show People</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            @*End of Admin Action*@
+                        </li>
+                        <li class="nav-item m-auto">
+                            <div class="btn-group">
+                                <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Index">Creatures </a>
+                                @*  Admin Action*@
+                                <div class="nav-link" role="group">
+                                    <a class="p-0 nav-link dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false"></a>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" asp-area="" asp-controller="AdminCriaturas" asp-action="Add">Add Creature</a></li>
+                                        <li><a class="dropdown-item" asp-area="" asp-controller="AdminCriaturas" asp-action="List">Show Creatures</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            @*End of Admin Action*@
+                        </li>
+
                     </ul>
                 </div>
             </div>
@@ -45,7 +118,7 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2023 - TdM.Web - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            &copy; 2023 - Taverna dos Mundos - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>

@@ -29,47 +29,48 @@
             <div class="mb-3">
                 @Html.DropDownList("autor", Html.GetEnumSelectList<Autor>(), new {@class ="form-control"})
             </div>
-            <div class="toast" role="alert" aria-live="assertive" aria-atomic="true" id="confirmdelete">
-                <div class="toast-header">
-                    <img src="..." class="rounded mr-2" alt="...">
-                    <strong class="mr-auto">Bootstrap</strong>
-                    <small>11 mins ago</small>
-                    <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
 
-                    </button>
-                </div>
-                <div class="toast-body">
-                    <button class="btn btn-danger ms-2" type="submit" asp-area="" asp-controller="AdminMundos" asp-action="Delete">Delete</button>
-                </div>
-            </div>
+
             <div class="mb-3">
                 <div class="d-flex">
 
                     <button type="submit" class="btn btn-dark">Update</button>
-                    <button class="btn btn-danger ms-2" type="button" id="btnDelete">Delete</button>
-
-                  
+                    <button type="button" class="btn btn-danger ms-2" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                        Delete
+                    </button>
+                   
                 </div>
 
             </div>
+
+
+  
+            <!-- Modal -->
+            <div class="modal fade " id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">                      
+                        <div class="modal-body">
+                            <p>Are you sure you want to delete this world?</p>  
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                            <button class="btn btn-danger ms-2" type="submit" asp-area="" asp-controller="AdminMundos" asp-action="Delete">Delete</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+           
         </form>
     }
     else
     {
-         <p>World not found!</p>
+        <p>World not found!</p>
     }
 </div>
-@section Scripts 
-{
+@section Scripts
+    {
     <script>
-                          $(document).ready(function () {
-                              $('.toast').toast();
-                              $('#btnDelete').on('click', function () {
-                                  $('#confirmdelete').toast('show')
-                              })
-                              alert("document is ready");
-                          });
+   
     </script>
 }
 
