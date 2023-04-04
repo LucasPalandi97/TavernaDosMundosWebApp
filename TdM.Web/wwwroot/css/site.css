@@ -70,3 +70,12 @@ body {
         -moz-transform: skew(20deg);
         transform: skew(20deg);
     }
+
+.preview {
+    display: inline-block;
+    max-width: 50px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+

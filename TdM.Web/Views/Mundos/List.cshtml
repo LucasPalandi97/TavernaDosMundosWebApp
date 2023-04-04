@@ -14,6 +14,7 @@
 <div class="container py-5">
     @if (Model != null && Model.Any())
     {
+       
         <table class="table">
             <thead>
                 <tr>
@@ -21,19 +22,19 @@
                     <th>World</th>
                     <th>Description</th>
                     <th>Author</th>
-                    <th> </th>
+                    <th></th>
                 </tr>
             </thead>  
             <tbody>
                 @foreach (var mundo in Model)
                 {
                     <tr>
-                        <td>@mundo.MundoId</td>
+                        <td>@mundo.Id</td>
                         <td>@mundo.Nome</td>
                         <td>@mundo.Descricao</td>
                         <td>@mundo.Autor<td>
                         <td>
-                            <a asp-area="" asp-controller="AdminMundos" asp-action="Edit" asp-route-id="@mundo.MundoId">Edit</a>
+                            <a asp-area="" asp-controller="Mundos" asp-action="Edit" asp-route-id="@mundo.Id">Edit</a>
                         </td>
                     </tr>
                 }

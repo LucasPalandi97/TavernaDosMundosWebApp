@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection.Metadata;
 using TdM.Database.Data;
@@ -9,19 +10,36 @@ using TdM.Web.Repositories;
 
 namespace TdM.Web.Controllers;
 
-public class AdminMundosController : Controller
+public class MundosController : Controller
 {
     private readonly IMundoRepository mundoRepository;
+    private readonly IContinenteRepository continenteRepository;
 
-    public AdminMundosController(IMundoRepository mundoRepository)
+    public MundosController(IMundoRepository mundoRepository, IContinenteRepository continenteRepository)
     {
         this.mundoRepository = mundoRepository;
+        this.continenteRepository = continenteRepository;
+    }
+    [HttpGet]
+    [ActionName("Index")]
+    public async Task<IActionResult> Index()
+    {
+        // Use dbContext to read the mundos
+        var mundos = await mundoRepository.GetAllAsync();
+        return View(mundos);
     }
 
     [HttpGet]
-    public IActionResult Add()
+    public async Task<IActionResult> Add()
     {
-        return View();
+        //get continente from repository
+        var continente = await continenteRepository.GetAllAsync();
+
+        var model = new AddMundoRequest
+        {
+            Continentes = continente.Select(x => new SelectListItem { Text = x.Nome, Value = x.Id.ToString() })
+        };
+        return View(model);
     }
     [HttpPost]
     [ActionName("Add")]
@@ -32,8 +50,29 @@ public class AdminMundosController : Controller
         {
             Nome = addMundoRequest.Nome,
             Descricao = addMundoRequest.Descricao,
-            Autor = (Autor)addMundoRequest.Autor
+            Autor = (Autor)addMundoRequest.Autor,
+            ImgSrc = addMundoRequest.ImgSrc,
+            Visible = addMundoRequest.Visible,
+           
         };
+
+
+        //Maps Continents from Selected continent
+
+        var selectedContinents = new List<Continente>();
+        foreach (var selectedContinentId in addMundoRequest.SelectedContinentes)
+        {
+            var selectedContinentIdAsGuid = Guid.Parse(selectedContinentId);
+            var existingContinent = await continenteRepository.GetAsync(selectedContinentIdAsGuid);
+
+            if (existingContinent != null)
+            {
+                selectedContinents.Add(existingContinent);
+            }
+        }
+        //Maping Continentes back to domain modal
+        mundo.Continentes = selectedContinents;
+
         await mundoRepository.AddAsync(mundo);
 
         return RedirectToAction("List");
@@ -57,10 +96,13 @@ public class AdminMundosController : Controller
         {
             var editMundoRequest = new EditMundoRequest
             {
-                MundoId = mundo.MundoId,
+                Id = mundo.Id,
                 Nome = mundo.Nome,
                 Descricao = mundo.Descricao,
-                Autor = mundo.Autor
+                Autor = mundo.Autor,
+                ImgSrc = mundo.ImgSrc,
+                Visible = mundo.Visible
+                
             };
             return View(editMundoRequest);
         }
@@ -71,10 +113,13 @@ public class AdminMundosController : Controller
     {
         var mundo = new Mundo
         {
-            MundoId = editMundoRequest.MundoId,
+            Id = editMundoRequest.Id,
             Nome = editMundoRequest.Nome,
             Descricao = editMundoRequest.Descricao,
-            Autor = editMundoRequest.Autor
+            Autor = editMundoRequest.Autor,
+            ImgSrc = editMundoRequest.ImgSrc,
+            Visible = editMundoRequest.Visible
+           
         };
 
         var updatedMundo = await mundoRepository.UpdateAsync(mundo);
@@ -89,11 +134,11 @@ public class AdminMundosController : Controller
             //Show error notification          
         }
 
-        return RedirectToAction("Edit", new { id = editMundoRequest.MundoId });
+        return RedirectToAction("Edit", new { id = editMundoRequest.Id });
     }
     public async Task<IActionResult> Delete(EditMundoRequest editMundoRequest)
     {
-        var deletedMundo = await mundoRepository.DeleteAsync(editMundoRequest.MundoId);
+        var deletedMundo = await mundoRepository.DeleteAsync(editMundoRequest.Id);
 
         if (deletedMundo != null)
         {
@@ -101,6 +146,8 @@ public class AdminMundosController : Controller
             return RedirectToAction("List");
         }
         //Show an error notification
-        return RedirectToAction("Edit", new { Id = editMundoRequest.MundoId });
+        return RedirectToAction("Edit", new { Id = editMundoRequest.Id });
     }
+
+
 }

@@ -1,0 +1,118 @@
+﻿@using TdM.Database.Models.Domain.Enums;
+@model TdM.Web.Models.ViewModels.EditContinenteRequest;
+@{
+}
+
+<div class="bg-secondary bg-opacity-10 py-2">
+    <div class="containter">
+        <h1>Edit Continent - Admin Funcionality</h1>
+    </div>
+</div>
+
+<div class="container py-5">
+    @if (Model != null)
+    {
+        <form method="post">
+            <div class="container py-5 col-4 ">
+                <div class="mb-3 ">
+                    <label class="form-label">Id</label>
+                    <input type="text" id="id" class="form-control" asp-for="Id" readonly />
+                </div>
+                <div class="mb-3 col-8">
+                    <label for="nome" class="form-label">World</label>
+                    <input type="text" class="form-control" id="nome" asp-for="Nome" />
+                </div>
+                <div class="mb-3">
+                    <label for="descricao" class="form-label">Description</label>
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" placeholder="Continent's Description" aria-label="Continent's Description" aria-describedby="button-addon2" id="descricao" name="descricao" asp-for="Descricao">
+                        <button class="btn btn-outline-secondary" type="button" id="button-addon2" data-bs-toggle="modal" data-bs-target="#descriptionModal">...</button>
+                    </div>
+                </div>
+
+                    <div class="mb-3">
+                        <label for="ImgSrc" class="form-label">Continent Image</label>
+                        <input type="text" class="form-control" id="ImgSrc" placeholder="Image's adress" asp-for="ImgSrc">
+                    </div>
+
+                <div class="mb-3 col-8">
+                    <label class="form-label">Mundo</label>
+                    <select class="form-select" asp-items="@Model.Mundos" asp-for="SelectedMundo">
+                    </select>
+                </div>
+               
+                <div class="form-check form-switch mb-3">
+                    <label class="form-check-label" for="visible">Visible?</label>
+                    <input class="form-check-input" type="checkbox" id="visible" asp-for="Visible" checked>
+                </div>
+
+                <div class="mb-3">
+                    <div class="d-flex">
+
+                        <button type="submit" class="btn btn-dark">Update</button>
+                        <button type="button" class="btn btn-danger ms-2" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                            Delete
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- Modal Delete -->
+            <div class="modal fade " id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <p>Are you sure you want to delete this continent?</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                            <button class="btn btn-danger ms-2" type="submit" asp-area="" asp-controller="Continentes" asp-action="Delete">Delete</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <!-- Modal Description -->
+        <form method="post" action="change-goal">
+            <div class="modal fade " id="descriptionModal" tabindex="-1" aria-labelledby="descriptionModal" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-outline">
+                                <label class="form-label" for="DetailDesc">Description: </label>
+                                <textarea class="form-control" name="DetailDesc" id="DetailDesc" rows="6"></textarea>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button id="save" type="button" class="btn btn-primary" data-dismiss="modal">Save</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    }
+    else
+    {
+        <p>Continent not found!</p>
+    }
+</div>
+@section Scripts
+    {
+    <script>
+        var text = $("#descricao").val();
+        $("#DetailDesc").val(text);
+        $('#save').on('click', function () {
+            var text = $("#DetailDesc").val();
+            $("#descricao").val(text);
+        });
+    </script>
+}
+

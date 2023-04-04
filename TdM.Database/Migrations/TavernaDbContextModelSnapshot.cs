@@ -8,7 +8,7 @@ using TdM.Database.Data;
 
 #nullable disable
 
-namespace TdM.Web.Migrations
+namespace TdM.Database.Migrations
 {
     [DbContext(typeof(TavernaDbContext))]
     partial class TavernaDbContextModelSnapshot : ModelSnapshot
@@ -22,74 +22,167 @@ namespace TdM.Web.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("ContinenteConto", b =>
+                {
+                    b.Property<Guid>("ContinentesId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ContosId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("ContinentesId", "ContosId");
+
+                    b.HasIndex("ContosId");
+
+                    b.ToTable("ContinenteConto");
+                });
+
             modelBuilder.Entity("ContinenteCriatura", b =>
                 {
-                    b.Property<Guid>("ContinentesContinenteId")
+                    b.Property<Guid>("ContinentesId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("CriaturasCriaturaId")
+                    b.Property<Guid>("CriaturasId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("ContinentesContinenteId", "CriaturasCriaturaId");
+                    b.HasKey("ContinentesId", "CriaturasId");
 
-                    b.HasIndex("CriaturasCriaturaId");
+                    b.HasIndex("CriaturasId");
 
                     b.ToTable("ContinenteCriatura");
                 });
 
             modelBuilder.Entity("ContinentePovo", b =>
                 {
-                    b.Property<Guid>("ContinentesContinenteId")
+                    b.Property<Guid>("ContinentesId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("PovosPovoId")
+                    b.Property<Guid>("PovosId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("ContinentesContinenteId", "PovosPovoId");
+                    b.HasKey("ContinentesId", "PovosId");
 
-                    b.HasIndex("PovosPovoId");
+                    b.HasIndex("PovosId");
 
                     b.ToTable("ContinentePovo");
                 });
 
+            modelBuilder.Entity("ContoCriatura", b =>
+                {
+                    b.Property<Guid>("ContosId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CriaturasId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("ContosId", "CriaturasId");
+
+                    b.HasIndex("CriaturasId");
+
+                    b.ToTable("ContoCriatura");
+                });
+
+            modelBuilder.Entity("ContoMundo", b =>
+                {
+                    b.Property<Guid>("ContosId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("MundoId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("ContosId", "MundoId");
+
+                    b.HasIndex("MundoId");
+
+                    b.ToTable("ContoMundo");
+                });
+
+            modelBuilder.Entity("ContoPersonagem", b =>
+                {
+                    b.Property<Guid>("ContosId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("PersonagensId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("ContosId", "PersonagensId");
+
+                    b.HasIndex("PersonagensId");
+
+                    b.ToTable("ContoPersonagem");
+                });
+
+            modelBuilder.Entity("ContoPovo", b =>
+                {
+                    b.Property<Guid>("ContosId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("PovosId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("ContosId", "PovosId");
+
+                    b.HasIndex("PovosId");
+
+                    b.ToTable("ContoPovo");
+                });
+
+            modelBuilder.Entity("ContoRegiao", b =>
+                {
+                    b.Property<Guid>("ContosId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("RegioesId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("ContosId", "RegioesId");
+
+                    b.HasIndex("RegioesId");
+
+                    b.ToTable("ContoRegiao");
+                });
+
             modelBuilder.Entity("CriaturaRegiao", b =>
                 {
-                    b.Property<Guid>("CriaturasCriaturaId")
+                    b.Property<Guid>("CriaturasId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("RegioesRegiaoId")
+                    b.Property<Guid>("RegioesId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("CriaturasCriaturaId", "RegioesRegiaoId");
+                    b.HasKey("CriaturasId", "RegioesId");
 
-                    b.HasIndex("RegioesRegiaoId");
+                    b.HasIndex("RegioesId");
 
                     b.ToTable("CriaturaRegiao");
                 });
 
             modelBuilder.Entity("PovoRegiao", b =>
                 {
-                    b.Property<Guid>("PovosPovoId")
+                    b.Property<Guid>("PovosId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("RegioesRegiaoId")
+                    b.Property<Guid>("RegioesId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("PovosPovoId", "RegioesRegiaoId");
+                    b.HasKey("PovosId", "RegioesId");
 
-                    b.HasIndex("RegioesRegiaoId");
+                    b.HasIndex("RegioesId");
 
                     b.ToTable("PovoRegiao");
                 });
 
             modelBuilder.Entity("TdM.Database.Models.Domain.Continente", b =>
                 {
-                    b.Property<Guid>("ContinenteId")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Descricao")
                         .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ImgSrc")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid?>("MundoId")
@@ -100,7 +193,10 @@ namespace TdM.Web.Migrations
                         .HasMaxLength(32)
                         .HasColumnType("nvarchar(32)");
 
-                    b.HasKey("ContinenteId");
+                    b.Property<bool>("Visible")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
 
                     b.HasIndex("MundoId");
 
@@ -109,74 +205,50 @@ namespace TdM.Web.Migrations
 
             modelBuilder.Entity("TdM.Database.Models.Domain.Conto", b =>
                 {
-                    b.Property<Guid>("ContoId")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("AudioDrama")
-                        .HasColumnType("int");
+                    b.Property<bool>("AudioDrama")
+                        .HasColumnType("bit");
 
                     b.Property<int>("Autor")
                         .HasColumnType("int");
-
-                    b.Property<Guid?>("ContinenteId")
-                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Corpo")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid?>("CriaturaId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<DateTime>("Data")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid?>("MundoId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("PersonagemId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("PovoId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("RegiaoId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("ImgSrc")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Titulo")
                         .IsRequired()
                         .HasMaxLength(32)
                         .HasColumnType("nvarchar(32)");
 
-                    b.HasKey("ContoId");
+                    b.Property<bool>("Visible")
+                        .HasColumnType("bit");
 
-                    b.HasIndex("ContinenteId");
-
-                    b.HasIndex("CriaturaId");
-
-                    b.HasIndex("MundoId");
-
-                    b.HasIndex("PersonagemId");
-
-                    b.HasIndex("PovoId");
-
-                    b.HasIndex("RegiaoId");
+                    b.HasKey("Id");
 
                     b.ToTable("Contos");
                 });
 
             modelBuilder.Entity("TdM.Database.Models.Domain.Criatura", b =>
                 {
-                    b.Property<Guid>("CriaturaId")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int?>("ClassTipo")
-                        .HasColumnType("int");
-
                     b.Property<string>("Descricao")
                         .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ImgSrc")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid?>("MundoId")
@@ -187,7 +259,13 @@ namespace TdM.Web.Migrations
                         .HasMaxLength(32)
                         .HasColumnType("nvarchar(32)");
 
-                    b.HasKey("CriaturaId");
+                    b.Property<int?>("Tipo")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("Visible")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
 
                     b.HasIndex("MundoId");
 
@@ -196,7 +274,7 @@ namespace TdM.Web.Migrations
 
             modelBuilder.Entity("TdM.Database.Models.Domain.Mundo", b =>
                 {
-                    b.Property<Guid>("MundoId")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
@@ -207,19 +285,25 @@ namespace TdM.Web.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("ImgSrc")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Nome")
                         .IsRequired()
                         .HasMaxLength(32)
                         .HasColumnType("nvarchar(32)");
 
-                    b.HasKey("MundoId");
+                    b.Property<bool>("Visible")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
 
                     b.ToTable("Mundos");
                 });
 
             modelBuilder.Entity("TdM.Database.Models.Domain.Personagem", b =>
                 {
-                    b.Property<Guid>("PersonagemId")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
@@ -227,14 +311,14 @@ namespace TdM.Web.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("ClassClasse")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("ClassRaca")
+                    b.Property<int?>("Classe")
                         .HasColumnType("int");
 
                     b.Property<Guid?>("ContinenteId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("ImgSrc")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid?>("MundoId")
                         .HasColumnType("uniqueidentifier");
@@ -247,6 +331,9 @@ namespace TdM.Web.Migrations
                     b.Property<Guid?>("PovoId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<int?>("Raca")
+                        .HasColumnType("int");
+
                     b.Property<Guid?>("RegiaoId")
                         .HasColumnType("uniqueidentifier");
 
@@ -255,7 +342,10 @@ namespace TdM.Web.Migrations
                         .HasMaxLength(32)
                         .HasColumnType("nvarchar(32)");
 
-                    b.HasKey("PersonagemId");
+                    b.Property<bool>("Visible")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
 
                     b.HasIndex("ContinenteId");
 
@@ -270,7 +360,7 @@ namespace TdM.Web.Migrations
 
             modelBuilder.Entity("TdM.Database.Models.Domain.Povo", b =>
                 {
-                    b.Property<Guid>("PovoId")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
@@ -281,6 +371,9 @@ namespace TdM.Web.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("ImgSrc")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<Guid?>("MundoId")
                         .HasColumnType("uniqueidentifier");
 
@@ -289,7 +382,10 @@ namespace TdM.Web.Migrations
                         .HasMaxLength(32)
                         .HasColumnType("nvarchar(32)");
 
-                    b.HasKey("PovoId");
+                    b.Property<bool>("Visible")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
 
                     b.HasIndex("MundoId");
 
@@ -298,7 +394,7 @@ namespace TdM.Web.Migrations
 
             modelBuilder.Entity("TdM.Database.Models.Domain.Regiao", b =>
                 {
-                    b.Property<Guid>("RegiaoId")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
@@ -307,6 +403,9 @@ namespace TdM.Web.Migrations
 
                     b.Property<string>("Descricao")
                         .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ImgSrc")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid?>("MundoId")
@@ -322,7 +421,10 @@ namespace TdM.Web.Migrations
                         .HasMaxLength(3)
                         .HasColumnType("nvarchar(3)");
 
-                    b.HasKey("RegiaoId");
+                    b.Property<bool>("Visible")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
 
                     b.HasIndex("ContinenteId");
 
@@ -331,17 +433,32 @@ namespace TdM.Web.Migrations
                     b.ToTable("Regioes");
                 });
 
+            modelBuilder.Entity("ContinenteConto", b =>
+                {
+                    b.HasOne("TdM.Database.Models.Domain.Continente", null)
+                        .WithMany()
+                        .HasForeignKey("ContinentesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TdM.Database.Models.Domain.Conto", null)
+                        .WithMany()
+                        .HasForeignKey("ContosId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("ContinenteCriatura", b =>
                 {
                     b.HasOne("TdM.Database.Models.Domain.Continente", null)
                         .WithMany()
-                        .HasForeignKey("ContinentesContinenteId")
+                        .HasForeignKey("ContinentesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("TdM.Database.Models.Domain.Criatura", null)
                         .WithMany()
-                        .HasForeignKey("CriaturasCriaturaId")
+                        .HasForeignKey("CriaturasId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -350,13 +467,88 @@ namespace TdM.Web.Migrations
                 {
                     b.HasOne("TdM.Database.Models.Domain.Continente", null)
                         .WithMany()
-                        .HasForeignKey("ContinentesContinenteId")
+                        .HasForeignKey("ContinentesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("TdM.Database.Models.Domain.Povo", null)
                         .WithMany()
-                        .HasForeignKey("PovosPovoId")
+                        .HasForeignKey("PovosId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("ContoCriatura", b =>
+                {
+                    b.HasOne("TdM.Database.Models.Domain.Conto", null)
+                        .WithMany()
+                        .HasForeignKey("ContosId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TdM.Database.Models.Domain.Criatura", null)
+                        .WithMany()
+                        .HasForeignKey("CriaturasId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("ContoMundo", b =>
+                {
+                    b.HasOne("TdM.Database.Models.Domain.Mundo", null)
+                        .WithMany()
+                        .HasForeignKey("ContosId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TdM.Database.Models.Domain.Conto", null)
+                        .WithMany()
+                        .HasForeignKey("MundoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("ContoPersonagem", b =>
+                {
+                    b.HasOne("TdM.Database.Models.Domain.Conto", null)
+                        .WithMany()
+                        .HasForeignKey("ContosId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TdM.Database.Models.Domain.Personagem", null)
+                        .WithMany()
+                        .HasForeignKey("PersonagensId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("ContoPovo", b =>
+                {
+                    b.HasOne("TdM.Database.Models.Domain.Conto", null)
+                        .WithMany()
+                        .HasForeignKey("ContosId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TdM.Database.Models.Domain.Povo", null)
+                        .WithMany()
+                        .HasForeignKey("PovosId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("ContoRegiao", b =>
+                {
+                    b.HasOne("TdM.Database.Models.Domain.Conto", null)
+                        .WithMany()
+                        .HasForeignKey("ContosId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TdM.Database.Models.Domain.Regiao", null)
+                        .WithMany()
+                        .HasForeignKey("RegioesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -365,13 +557,13 @@ namespace TdM.Web.Migrations
                 {
                     b.HasOne("TdM.Database.Models.Domain.Criatura", null)
                         .WithMany()
-                        .HasForeignKey("CriaturasCriaturaId")
+                        .HasForeignKey("CriaturasId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("TdM.Database.Models.Domain.Regiao", null)
                         .WithMany()
-                        .HasForeignKey("RegioesRegiaoId")
+                        .HasForeignKey("RegioesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -380,13 +572,13 @@ namespace TdM.Web.Migrations
                 {
                     b.HasOne("TdM.Database.Models.Domain.Povo", null)
                         .WithMany()
-                        .HasForeignKey("PovosPovoId")
+                        .HasForeignKey("PovosId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("TdM.Database.Models.Domain.Regiao", null)
                         .WithMany()
-                        .HasForeignKey("RegioesRegiaoId")
+                        .HasForeignKey("RegioesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -398,45 +590,6 @@ namespace TdM.Web.Migrations
                         .HasForeignKey("MundoId");
 
                     b.Navigation("Mundo");
-                });
-
-            modelBuilder.Entity("TdM.Database.Models.Domain.Conto", b =>
-                {
-                    b.HasOne("TdM.Database.Models.Domain.Continente", "Continente")
-                        .WithMany("Contos")
-                        .HasForeignKey("ContinenteId");
-
-                    b.HasOne("TdM.Database.Models.Domain.Criatura", "Criatura")
-                        .WithMany("Contos")
-                        .HasForeignKey("CriaturaId");
-
-                    b.HasOne("TdM.Database.Models.Domain.Mundo", "Mundo")
-                        .WithMany("Contos")
-                        .HasForeignKey("MundoId");
-
-                    b.HasOne("TdM.Database.Models.Domain.Personagem", "Personagem")
-                        .WithMany("Contos")
-                        .HasForeignKey("PersonagemId");
-
-                    b.HasOne("TdM.Database.Models.Domain.Povo", "Povo")
-                        .WithMany("Contos")
-                        .HasForeignKey("PovoId");
-
-                    b.HasOne("TdM.Database.Models.Domain.Regiao", "Regiao")
-                        .WithMany("Contos")
-                        .HasForeignKey("RegiaoId");
-
-                    b.Navigation("Continente");
-
-                    b.Navigation("Criatura");
-
-                    b.Navigation("Mundo");
-
-                    b.Navigation("Personagem");
-
-                    b.Navigation("Povo");
-
-                    b.Navigation("Regiao");
                 });
 
             modelBuilder.Entity("TdM.Database.Models.Domain.Criatura", b =>
@@ -499,23 +652,14 @@ namespace TdM.Web.Migrations
 
             modelBuilder.Entity("TdM.Database.Models.Domain.Continente", b =>
                 {
-                    b.Navigation("Contos");
-
                     b.Navigation("Personagens");
 
                     b.Navigation("Regioes");
                 });
 
-            modelBuilder.Entity("TdM.Database.Models.Domain.Criatura", b =>
-                {
-                    b.Navigation("Contos");
-                });
-
             modelBuilder.Entity("TdM.Database.Models.Domain.Mundo", b =>
                 {
                     b.Navigation("Continentes");
-
-                    b.Navigation("Contos");
 
                     b.Navigation("Criaturas");
 
@@ -526,22 +670,13 @@ namespace TdM.Web.Migrations
                     b.Navigation("Regioes");
                 });
 
-            modelBuilder.Entity("TdM.Database.Models.Domain.Personagem", b =>
-                {
-                    b.Navigation("Contos");
-                });
-
             modelBuilder.Entity("TdM.Database.Models.Domain.Povo", b =>
                 {
-                    b.Navigation("Contos");
-
                     b.Navigation("Personagens");
                 });
 
             modelBuilder.Entity("TdM.Database.Models.Domain.Regiao", b =>
                 {
-                    b.Navigation("Contos");
-
                     b.Navigation("Personagens");
                 });
 #pragma warning restore 612, 618

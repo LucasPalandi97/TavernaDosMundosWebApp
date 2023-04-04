@@ -23,8 +23,8 @@
             </div>    
         </div>
         <div class="mb-3">
-            <label for="formFileDisabled" class="form-label">World Scenario</label>
-            <input class="form-control" type="file" id="formFileDisabled" disabled>
+            <label for="ImgSrc" class="form-label">World Image</label>
+            <input type="text" class="form-control" id="ImgSrc" placeholder="Image's adress" asp-for="ImgSrc">
         </div>
         
         <div class=" mb-3 form-group col-8">  
@@ -33,6 +33,16 @@
              <option value ="">Select Author ...</option>
             </select>
             <span asp-validation-for="Autor" class="text-danger"></span>
+        </div>
+        <div class="form-check form-switch mb-3">
+            <label class="form-check-label" for="visible">Visible?</label>
+            <input class="form-check-input" type="checkbox" id="visible" asp-for="Visible" checked>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Continents</label>
+            <select class="form-select" asp-items="@Model.Continentes" asp-for="SelectedContinentes">
+
+            </select>
         </div>
         <div class="mb-3">
             <button type="submit" class="btn btn-dark">Submit</button>
@@ -53,7 +63,7 @@
                 <div class="form-outline">
                         <label class="form-label" for="DetailDesc">Description: </label>
                         <textarea class="form-control" name="DetailDesc" id="DetailDesc" rows="6"></textarea>                    
-                </div>
+                </div>                   
             </div>
             <div class="modal-footer">
                     <button id="save" type="button" class="btn btn-primary" data-dismiss="modal">Save</button>
@@ -65,7 +75,8 @@
 @section Scripts
     {
     <script>
-      
+        var text = $("#descricao").val();
+        $("#DetailDesc").val(text);
         $('#save').on('click', function () {
             var text = $("#DetailDesc").val();
             $("#descricao").val(text);

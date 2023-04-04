@@ -6,18 +6,29 @@ namespace TdM.Database.Models.Domain;
 
 public class Povo
 {
-    public Guid PovoId { get; set; }
+    public Guid Id { get; set; }
+
     [MaxLength(32)]
     [Required]
     [Display(Name = "Povo")]
     public string Nome { get; set; }
+
     [Display(Name = "Raça")]
     public Raca? ClassRaca { get; set; }
+
     [Required]
     [Display(Name = "Descrição")]
     public string Descricao { get; set; }
+
+    public string? ImgSrc { get; set; }
+
+    [Required]
+    public bool Visible { get; set; }
+
     [ForeignKey("MundoId")]
     public Mundo? Mundo { get; set; }
+
+
     public ICollection<Conto>? Contos { get; set; }
     public ICollection<Regiao>? Regioes { get; set; }
     public ICollection<Continente>? Continentes { get; set; }

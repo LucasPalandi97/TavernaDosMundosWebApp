@@ -9,32 +9,41 @@ namespace TdM.Database.Models.Domain;
 public class Conto
 {
 
-    public Guid ContoId { get; set; }
+    public Guid Id { get; set; }
+
     [MaxLength(32)]
     [Required]
     [Display(Name = "Título")]
     public string Titulo { get; set; }
+
     [Required]
     public string Corpo { get; set; }
+
     [Display(Name = "Autor")]
     public Autor Autor { get; set; }
+
     [Required]
     [DataType(DataType.Date)]
     [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
     public DateTime Data { get; set; }
+
     [Required]
     [Display(Name = "Audio Drama")]
-    public AudioDrama AudioDrama { get; set; }
+    public bool AudioDrama { get; set; }
+
+    public string? ImgSrc { get; set; }
+    [Required]
+
+    public bool Visible { get; set; }
     [ForeignKey("MundoId")]
-    public virtual Mundo? Mundo { get; set; }
-    [ForeignKey("ContinenteId")]
-    public virtual Continente? Continente { get; set; }
-    [ForeignKey("RegiaoId")]
-    public virtual Regiao? Regiao { get; set; }
-    [ForeignKey("PovoId")]
-    public virtual Povo? Povo { get; set; }
-    [ForeignKey("CriaturaId")]
-    public virtual Criatura? Criatura { get; set; }
-    [ForeignKey("PersonagemId")]
-    public virtual Personagem? Personagem { get; set; }
+
+
+    public ICollection<Mundo>? Contos { get; set; }
+    public ICollection<Continente>? Continentes { get; set; }
+    public ICollection<Regiao>? Regioes { get; set; }
+    public ICollection<Personagem>? Personagens { get; set; }
+    public ICollection<Povo>? Povos { get; set; }
+    public ICollection<Criatura>? Criaturas { get; set; }
+   
+
 }

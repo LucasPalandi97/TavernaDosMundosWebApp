@@ -40,20 +40,21 @@ namespace TdM.Web.Repositories
 
         public Task<Mundo?> GetAsync(Guid id)
         {
-            return tavernaDbContext.Mundos.FirstOrDefaultAsync(x => x.MundoId == id);
+            return tavernaDbContext.Mundos.FirstOrDefaultAsync(x => x.Id == id);
 
         }
 
         public async Task<Mundo?> UpdateAsync(Mundo mundo)
         {
-            var existingMundo = await tavernaDbContext.Mundos.FindAsync(mundo.MundoId);
+            var existingMundo = await tavernaDbContext.Mundos.FindAsync(mundo.Id);
 
             if(existingMundo != null)
             {
                 existingMundo.Nome = mundo.Nome;
                 existingMundo.Descricao = mundo.Descricao;
                 existingMundo.Autor = mundo.Autor;
-
+                existingMundo.ImgSrc = mundo.ImgSrc;
+                existingMundo.Visible = mundo.Visible;
                 await tavernaDbContext.SaveChangesAsync();
 
                 return existingMundo;

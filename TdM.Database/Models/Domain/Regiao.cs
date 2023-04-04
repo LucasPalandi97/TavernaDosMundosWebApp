@@ -6,19 +6,29 @@ namespace TdM.Database.Models.Domain;
 public class Regiao
 {
 
-    public Guid RegiaoId { get; set; }
+    public Guid Id { get; set; }
+
     [Required]
     [MaxLength(32)]
     [Display(Name = "Região")]
     public string Nome { get; set; }
+
     [MaxLength(3)]
     [Display(Name = "Símbolo")]
     public char Simbolo { get; set; }
+
     [Required]
     [Display(Name = "Descrição")]
     public string Descricao { get; set; }
+
+    public string? ImgSrc { get; set; }
+
+    [Required]
+    public bool Visible { get; set; }
+
     [ForeignKey("ContinenteId")]
     public Continente? Continente { get; set; }
+
     [ForeignKey("MundoId")]
     public Mundo? Mundo { get; set; }
 

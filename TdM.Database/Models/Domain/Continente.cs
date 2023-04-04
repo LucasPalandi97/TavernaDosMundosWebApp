@@ -7,15 +7,26 @@ namespace TdM.Database.Models.Domain;
 public class Continente
 {
 
-    public Guid ContinenteId { get; set; }
+    public Guid Id { get; set; }
+
     [MaxLength(32)]
     [Required]
     [Display(Name = "Continente")]
     public string Nome { get; set; }
+
     [Display(Name = "Descrição")]
     public string Descricao { get; set; }
+
+    public string? ImgSrc { get; set; }
+
+    [Required]
+    public bool Visible { get; set; }
+
+
     [ForeignKey("MundoId")]
     public virtual Mundo? Mundo { get; set; }
+
+
     public ICollection<Personagem>? Personagens { get; set; }
     public ICollection<Regiao>? Regioes { get; set; }
     public ICollection<Criatura>? Criaturas { get; set; }

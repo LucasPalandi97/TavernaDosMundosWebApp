@@ -1,0 +1,46 @@
+﻿@model List<TdM.Database.Models.Domain.Continente>
+@using TdM.Database.Models.Domain.Enums;
+@{
+
+}
+
+
+<div class="bg-secondary bg-opacity-10 py-2">
+    <div class="containter">
+        <h1>Show all Continents - Admin Funcionality</h1>
+    </div>
+</div>
+
+<div class="container py-5">
+    @if (Model != null && Model.Any())
+    {
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Continent</th>
+                    <th>Description</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var continente in Model)
+                {
+                    <tr>
+                        <td>@continente.Id</td>
+                        <td>@continente.Nome</td>
+                        <td>@continente.Descricao</td>                                             
+                        <td>
+                            <a asp-area="" asp-controller="Continentes" asp-action="Edit" asp-route-id="@continente.Id">Edit</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p>No Continents found!</p>
+    }
+</div>

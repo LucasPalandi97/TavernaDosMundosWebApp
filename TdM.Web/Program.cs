@@ -10,7 +10,9 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<TavernaDbContext>(options =>
 options.UseSqlServer(builder.Configuration.GetConnectionString("TavernaConnection")));
 
+//Repositories
 builder.Services.AddScoped<IMundoRepository, MundoRepository>();
+builder.Services.AddScoped<IContinenteRepository, ContinenteRepository>();
 
 var app = builder.Build();
 

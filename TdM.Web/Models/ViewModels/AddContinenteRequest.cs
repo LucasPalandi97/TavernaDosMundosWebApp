@@ -1,0 +1,25 @@
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
+using TdM.Database.Models.Domain;
+using Microsoft.AspNetCore.Mvc.Rendering;
+
+namespace TdM.Web.Models.ViewModels
+{
+    public class AddContinenteRequest
+    {
+     
+        public string Nome { get; set; }     
+        public string Descricao { get; set; }      
+        public string? ImgSrc { get; set; }      
+        public bool Visible { get; set; }
+
+        // Display Mundos 
+        public IEnumerable<SelectListItem> Mundos { get; set; }
+
+        //Collect Continente     
+        public string SelectedMundo { get; set; }
+
+        //Collect Multiple itens
+        //public string[] SelectedContinentes { get; set; } = Array.Empty<string>();
+    }
+}

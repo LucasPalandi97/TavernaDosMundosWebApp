@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Reflection;
 
 namespace TdM.Database.Models.Domain.Enums;
 
@@ -14,4 +15,5 @@ public enum Autor
     Lucas,
     [Display(Name = "Rodrigo Bueno Guedes")]
     Rodrigo
+
 }
