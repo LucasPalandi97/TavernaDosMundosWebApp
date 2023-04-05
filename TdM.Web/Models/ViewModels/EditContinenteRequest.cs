@@ -11,7 +11,8 @@ public class EditContinenteRequest
 
     public string Descricao { get; set; }
 
-    public string ImgSrc { get; set; }
+    public string? ImgCard { get; set; }
+    public string? ImgBox { get; set; }
 
     public bool Visible { get; set; }
 

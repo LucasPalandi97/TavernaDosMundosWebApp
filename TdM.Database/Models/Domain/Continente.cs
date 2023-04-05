@@ -17,13 +17,13 @@ public class Continente
     [Display(Name = "Descrição")]
     public string Descricao { get; set; }
 
-    public string? ImgSrc { get; set; }
+    public string? ImgCard { get; set; }
 
+    public string? ImgBox { get; set; }
     [Required]
     public bool Visible { get; set; }
 
-
-    [ForeignKey("MundoId")]
+    [ForeignKey("MundoFK")]
     public virtual Mundo? Mundo { get; set; }
 
 

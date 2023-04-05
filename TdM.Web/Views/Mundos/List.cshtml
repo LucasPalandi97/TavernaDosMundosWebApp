@@ -22,6 +22,7 @@
                     <th>World</th>
                     <th>Description</th>
                     <th>Author</th>
+                    <th>World Building</th>
                     <th></th>
                 </tr>
             </thead>  
@@ -32,7 +33,32 @@
                         <td>@mundo.Id</td>
                         <td>@mundo.Nome</td>
                         <td>@mundo.Descricao</td>
-                        <td>@mundo.Autor<td>
+                        <td>@mundo.Autor</td>
+                        <td>
+                            <div class="dropdown d-flex  mb-1">
+                                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Continents
+                                </button>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                        @foreach(var continente in mundo.Continentes)
+                                        {
+                                        <li><a class="dropdown-item" asp-route-id="@continente.Id">@continente.Nome</a></li>
+                                        }
+                                </ul>
+                                    </div>
+                            <div class="dropdown d-flex mb-1">
+                                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Continents
+                                </button>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                            @foreach (var continente in mundo.Continentes)
+                                            {
+                                        <li><a class="dropdown-item" asp-route-id="@continente.Id">@continente.Nome</a></li>
+                                            }
+                                </ul>
+                            </div>
+                            @*new dropdown goes here*@
+                        </td>
                         <td>
                             <a asp-area="" asp-controller="Mundos" asp-action="Edit" asp-route-id="@mundo.Id">Edit</a>
                         </td>

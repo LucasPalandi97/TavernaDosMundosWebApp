@@ -31,14 +31,17 @@ public class Conto
     [Display(Name = "Audio Drama")]
     public bool AudioDrama { get; set; }
 
-    public string? ImgSrc { get; set; }
+    public string? ImgCard { get; set; }
+
+    public string? ImgBox { get; set; }
     [Required]
 
     public bool Visible { get; set; }
-    [ForeignKey("MundoId")]
+
+    [ForeignKey("MundoFK")]
+    public virtual Mundo? Mundo { get; set; }
 
 
-    public ICollection<Mundo>? Contos { get; set; }
     public ICollection<Continente>? Continentes { get; set; }
     public ICollection<Regiao>? Regioes { get; set; }
     public ICollection<Personagem>? Personagens { get; set; }

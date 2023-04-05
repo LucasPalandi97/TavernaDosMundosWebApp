@@ -13,6 +13,7 @@ options.UseSqlServer(builder.Configuration.GetConnectionString("TavernaConnectio
 //Repositories
 builder.Services.AddScoped<IMundoRepository, MundoRepository>();
 builder.Services.AddScoped<IContinenteRepository, ContinenteRepository>();
+builder.Services.AddScoped<IImageRepository, CloudnaryImageRepository>();
 
 var app = builder.Build();
 

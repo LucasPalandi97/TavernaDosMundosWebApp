@@ -23,10 +23,35 @@
                 <button class="btn btn-outline-secondary" type="button" id="button-addon2" data-bs-toggle="modal" data-bs-target="#descriptionModal">...</button>
             </div>
         </div>
+
+
         <div class="mb-3">
-            <label class="form-label" for="ImgSrc">Continent Image</label>
-            <input type="text" class="form-control" id="ImgSrc" asp-for="ImgSrc" />
+            <label class="form-label">Upload Image</label>
+            <input type="file" id="ImageCardUpload" class="form-control" />
+
+            <img src="" id="ImageCardUploadDisplay" style="display:none;width:300px; margin-top:1em;" />
         </div>
+        
+        <div class="mb-3">
+            <label class="form-label" for="ImgCardUrl">Display Image</label>
+            <input type="text" class="form-control" id="ImgCardUrl" placeholder="Image's URL" asp-for="ImgCard" />
+        </div>
+
+       
+
+
+        <div class="mb-3">
+            <label class="form-label">Upload Image</label>
+    <input type="file" id="ImageBoxUpload" class="form-control" />
+
+    <img src="" id="ImageBoxUploadDisplay" style="display:none;width:300px; margin-top:1em;" />
+        </div>
+        <div class="mb-3">
+            <label class="form-label" for="ImgBoxUrl">Content Image</label>
+            <input type="text" class="form-control" id="ImgBoxUrl" placeholder="Image's URL" asp-for="ImgBox" />
+        </div>
+
+
         <div class="form-check form-switch mb-3">
             <label class="form-check-label" for="visible">Visible?</label>
             <input class="form-check-input" type="checkbox" id="visible" asp-for="Visible" checked>            
@@ -78,4 +103,58 @@
 
 
     </script>
+    <script>
+        const ImageCardUploadElement = document.getElementById('ImageCardUpload');
+        const ImgCardUrlElement = document.getElementById('ImgCardUrl');
+        const ImageCardDisplayElement = document.getElementById('ImageCardUploadDisplay');
+        async function uploadCardImage(e) {
+            console.log(e.target.files[0]);
+
+            let data = new FormData();
+            data.append('file', e.target.files[0]);
+
+            await fetch('/api/images', {
+                method: 'POST',
+                headers: {
+                    'Accept': '*/*',
+                },
+                body: data
+            }).then(response => response.json())
+                .then(result => {
+                    ImgCardUrlElement.value = result.link;
+                    ImageCardDisplayElement.src = result.link;
+                    ImageCardDisplayElement.style.display = 'block';
+                });
+        }
+
+        ImageCardUploadElement.addEventListener('change', uploadCardImage);
+    </script>
+    <script>
+        const ImageBoxUploadElement = document.getElementById('ImageBoxUpload');
+        const ImgBoxUrlElement = document.getElementById('ImgBoxUrl');
+        const ImageBoxDisplayElement = document.getElementById('ImageBoxUploadDisplay');
+        async function uploadBoxImage(e) {
+            console.log(e.target.files[0]);
+
+            let data = new FormData();
+            data.append('file', e.target.files[0]);
+
+            await fetch('/api/images', {
+                method: 'POST',
+                headers: {
+                    'Accept': '*/*',
+                },
+                body: data
+            }).then(response => response.json())
+                .then(result => {
+                    ImgBoxUrlElement.value = result.link;
+                    ImageBoxDisplayElement.src = result.link;
+                    ImageBoxDisplayElement.style.display = 'block';
+                });
+        }
+
+        ImageBoxUploadElement.addEventListener('change', uploadBoxImage);
+    </script>
+    
+
 }

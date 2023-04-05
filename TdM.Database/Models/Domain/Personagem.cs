@@ -28,21 +28,20 @@ public class Personagem
     [Display(Name = "Biografia")]
     public string Biografia { get; set; }
 
-    public string? ImgSrc { get; set; }
+    public string? ImgCard { get; set; }
+
+    public string? ImgBox { get; set; }
 
     public bool Visible { get; set; }
 
-    [ForeignKey("MundoId")]
+    [ForeignKey("MundoFK")]
     public virtual Mundo? Mundo { get; set; }
 
-    [ForeignKey("RegiaoId")]
+    [ForeignKey("RegiaoFK")]
     public virtual Regiao? Regiao { get; set; }
 
-    [ForeignKey("PovoId")]
-    public virtual Povo? Povo { get; set; }
 
     public ICollection<Conto>? Contos { get; set; }
-
-
+    public ICollection<Povo>? Povos { get; set; }
 
 }

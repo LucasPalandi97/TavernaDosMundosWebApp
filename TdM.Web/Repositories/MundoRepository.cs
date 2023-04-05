@@ -35,28 +35,30 @@ namespace TdM.Web.Repositories
 
         public async Task<IEnumerable<Mundo>> GetAllAsync()
         {
-            return await tavernaDbContext.Mundos.ToListAsync();
+            //return list and include navigation Icollection from model database
+            return await tavernaDbContext.Mundos.Include(x => x.Continentes).ToListAsync();
         }
 
         public Task<Mundo?> GetAsync(Guid id)
         {
-            return tavernaDbContext.Mundos.FirstOrDefaultAsync(x => x.Id == id);
+            return tavernaDbContext.Mundos.Include(x => x.Continentes).FirstOrDefaultAsync(x => x.Id == id);
 
         }
 
         public async Task<Mundo?> UpdateAsync(Mundo mundo)
         {
-            var existingMundo = await tavernaDbContext.Mundos.FindAsync(mundo.Id);
+            var existingMundo = await tavernaDbContext.Mundos.Include(x => x.Continentes).FirstOrDefaultAsync(x => x.Id == mundo.Id);
 
             if(existingMundo != null)
             {
                 existingMundo.Nome = mundo.Nome;
                 existingMundo.Descricao = mundo.Descricao;
                 existingMundo.Autor = mundo.Autor;
-                existingMundo.ImgSrc = mundo.ImgSrc;
+                existingMundo.ImgBox = mundo.ImgBox;
                 existingMundo.Visible = mundo.Visible;
-                await tavernaDbContext.SaveChangesAsync();
+                existingMundo.Continentes = mundo.Continentes;
 
+                await tavernaDbContext.SaveChangesAsync();
                 return existingMundo;
             }
 

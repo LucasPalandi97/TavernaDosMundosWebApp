@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TdM.Database.Data;
 
@@ -11,9 +12,11 @@ using TdM.Database.Data;
 namespace TdM.Database.Migrations
 {
     [DbContext(typeof(TavernaDbContext))]
-    partial class TavernaDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230404192744_MundoFKchanges")]
+    partial class MundoFKchanges
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -182,10 +185,7 @@ namespace TdM.Database.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ImgBox")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ImgCard")
+                    b.Property<string>("ImgSrc")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid?>("MundoFK")
@@ -225,10 +225,7 @@ namespace TdM.Database.Migrations
                     b.Property<DateTime>("Data")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("ImgBox")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ImgCard")
+                    b.Property<string>("ImgSrc")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid?>("MundoFK")
@@ -259,10 +256,7 @@ namespace TdM.Database.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ImgBox")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ImgCard")
+                    b.Property<string>("ImgSrc")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid?>("MundoFK")
@@ -304,7 +298,7 @@ namespace TdM.Database.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ImgBox")
+                    b.Property<string>("ImgSrc")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Nome")
@@ -336,10 +330,7 @@ namespace TdM.Database.Migrations
                     b.Property<Guid?>("ContinenteId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("ImgBox")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ImgCard")
+                    b.Property<string>("ImgSrc")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid?>("MundoFK")
@@ -388,10 +379,7 @@ namespace TdM.Database.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ImgBox")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ImgCard")
+                    b.Property<string>("ImgSrc")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid?>("MundoFK")
@@ -425,10 +413,7 @@ namespace TdM.Database.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ImgBox")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ImgCard")
+                    b.Property<string>("ImgSrc")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid?>("MundoFK")
@@ -441,7 +426,8 @@ namespace TdM.Database.Migrations
 
                     b.Property<string>("Simbolo")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(3)
+                        .HasColumnType("nvarchar(3)");
 
                     b.Property<bool>("Visible")
                         .HasColumnType("bit");

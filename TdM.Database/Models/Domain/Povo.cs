@@ -20,17 +20,20 @@ public class Povo
     [Display(Name = "Descrição")]
     public string Descricao { get; set; }
 
-    public string? ImgSrc { get; set; }
+    public string? ImgCard { get; set; }
+
+    public string? ImgBox { get; set; }
 
     [Required]
     public bool Visible { get; set; }
 
-    [ForeignKey("MundoId")]
-    public Mundo? Mundo { get; set; }
+    [ForeignKey("MundoFK")]
+    public virtual Mundo? Mundo { get; set; }
 
 
     public ICollection<Conto>? Contos { get; set; }
     public ICollection<Regiao>? Regioes { get; set; }
     public ICollection<Continente>? Continentes { get; set; }
     public ICollection<Personagem>? Personagens { get; set; }
+    public ICollection<Criatura>? Criaturas { get; set; }
 }

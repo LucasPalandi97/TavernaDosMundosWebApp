@@ -13,24 +13,25 @@ public class Regiao
     [Display(Name = "Região")]
     public string Nome { get; set; }
 
-    [MaxLength(3)]
-    [Display(Name = "Símbolo")]
-    public char Simbolo { get; set; }
-
     [Required]
     [Display(Name = "Descrição")]
     public string Descricao { get; set; }
 
-    public string? ImgSrc { get; set; }
+    [Display(Name = "Símbolo")]
+    public string Simbolo { get; set; }
+
+    public string? ImgCard { get; set; }
+
+    public string? ImgBox { get; set; }
 
     [Required]
     public bool Visible { get; set; }
 
-    [ForeignKey("ContinenteId")]
-    public Continente? Continente { get; set; }
+    [ForeignKey("MundoFK")]
+    public virtual Mundo? Mundo { get; set; }
 
-    [ForeignKey("MundoId")]
-    public Mundo? Mundo { get; set; }
+    [ForeignKey("ContinenteFK")]
+    public Continente? Continente { get; set; }
 
 
     public ICollection<Conto>? Contos { get; set; }

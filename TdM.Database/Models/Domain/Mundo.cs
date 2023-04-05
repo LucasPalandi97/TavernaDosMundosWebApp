@@ -18,7 +18,7 @@ public class Mundo
     [Display(Name = "Autor")]
     public Autor Autor { get; set; }
 
-    public string? ImgSrc { get; set; }
+    public string? ImgBox { get; set; }
 
     public bool Visible { get; set; }
 

@@ -7,7 +7,7 @@ namespace TdM.Web.Models.ViewModels
         public string Nome { get; set; }
         public string Descricao { get; set; }
         public int Autor { get; set; }
-        public string ImgSrc { get; set; }
+        public string? ImgBox { get; set; }
         public bool Visible { get; set; }
 
 

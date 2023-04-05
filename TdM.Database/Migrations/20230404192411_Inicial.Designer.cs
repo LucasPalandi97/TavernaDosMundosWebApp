@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TdM.Database.Data;
 
@@ -11,9 +12,11 @@ using TdM.Database.Data;
 namespace TdM.Database.Migrations
 {
     [DbContext(typeof(TavernaDbContext))]
-    partial class TavernaDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230404192411_Inicial")]
+    partial class Inicial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -182,13 +185,10 @@ namespace TdM.Database.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ImgBox")
+                    b.Property<string>("ImgSrc")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ImgCard")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid?>("MundoFK")
+                    b.Property<Guid?>("MundoFk")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Nome")
@@ -201,7 +201,7 @@ namespace TdM.Database.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("MundoFK");
+                    b.HasIndex("MundoFk");
 
                     b.ToTable("Continentes");
                 });
@@ -225,13 +225,10 @@ namespace TdM.Database.Migrations
                     b.Property<DateTime>("Data")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("ImgBox")
+                    b.Property<string>("ImgSrc")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ImgCard")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid?>("MundoFK")
+                    b.Property<Guid?>("MundoFk")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Titulo")
@@ -244,7 +241,7 @@ namespace TdM.Database.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("MundoFK");
+                    b.HasIndex("MundoFk");
 
                     b.ToTable("Contos");
                 });
@@ -259,13 +256,10 @@ namespace TdM.Database.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ImgBox")
+                    b.Property<string>("ImgSrc")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ImgCard")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid?>("MundoFK")
+                    b.Property<Guid?>("MundoFk")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Nome")
@@ -284,7 +278,7 @@ namespace TdM.Database.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("MundoFK");
+                    b.HasIndex("MundoFk");
 
                     b.HasIndex("PovoId");
 
@@ -304,7 +298,7 @@ namespace TdM.Database.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ImgBox")
+                    b.Property<string>("ImgSrc")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Nome")
@@ -336,13 +330,10 @@ namespace TdM.Database.Migrations
                     b.Property<Guid?>("ContinenteId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("ImgBox")
+                    b.Property<string>("ImgSrc")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ImgCard")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid?>("MundoFK")
+                    b.Property<Guid?>("MundoFk")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Nome")
@@ -353,7 +344,7 @@ namespace TdM.Database.Migrations
                     b.Property<int?>("Raca")
                         .HasColumnType("int");
 
-                    b.Property<Guid?>("RegiaoFK")
+                    b.Property<Guid?>("RegiaoFk")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Titulo")
@@ -368,9 +359,9 @@ namespace TdM.Database.Migrations
 
                     b.HasIndex("ContinenteId");
 
-                    b.HasIndex("MundoFK");
+                    b.HasIndex("MundoFk");
 
-                    b.HasIndex("RegiaoFK");
+                    b.HasIndex("RegiaoFk");
 
                     b.ToTable("Personagens");
                 });
@@ -388,13 +379,10 @@ namespace TdM.Database.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ImgBox")
+                    b.Property<string>("ImgSrc")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ImgCard")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid?>("MundoFK")
+                    b.Property<Guid?>("MundoFk")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Nome")
@@ -407,7 +395,7 @@ namespace TdM.Database.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("MundoFK");
+                    b.HasIndex("MundoFk");
 
                     b.ToTable("Povos");
                 });
@@ -418,20 +406,17 @@ namespace TdM.Database.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("ContinenteFK")
+                    b.Property<Guid?>("ContinenteFk")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Descricao")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ImgBox")
+                    b.Property<string>("ImgSrc")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ImgCard")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid?>("MundoFK")
+                    b.Property<Guid?>("MundoFk")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Nome")
@@ -441,16 +426,17 @@ namespace TdM.Database.Migrations
 
                     b.Property<string>("Simbolo")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(3)
+                        .HasColumnType("nvarchar(3)");
 
                     b.Property<bool>("Visible")
                         .HasColumnType("bit");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ContinenteFK");
+                    b.HasIndex("ContinenteFk");
 
-                    b.HasIndex("MundoFK");
+                    b.HasIndex("MundoFk");
 
                     b.ToTable("Regioes");
                 });
@@ -609,7 +595,7 @@ namespace TdM.Database.Migrations
                 {
                     b.HasOne("TdM.Database.Models.Domain.Mundo", "Mundo")
                         .WithMany("Continentes")
-                        .HasForeignKey("MundoFK");
+                        .HasForeignKey("MundoFk");
 
                     b.Navigation("Mundo");
                 });
@@ -618,7 +604,7 @@ namespace TdM.Database.Migrations
                 {
                     b.HasOne("TdM.Database.Models.Domain.Mundo", "Mundo")
                         .WithMany("Contos")
-                        .HasForeignKey("MundoFK");
+                        .HasForeignKey("MundoFk");
 
                     b.Navigation("Mundo");
                 });
@@ -627,7 +613,7 @@ namespace TdM.Database.Migrations
                 {
                     b.HasOne("TdM.Database.Models.Domain.Mundo", "Mundo")
                         .WithMany("Criaturas")
-                        .HasForeignKey("MundoFK");
+                        .HasForeignKey("MundoFk");
 
                     b.HasOne("TdM.Database.Models.Domain.Povo", null)
                         .WithMany("Criaturas")
@@ -644,11 +630,11 @@ namespace TdM.Database.Migrations
 
                     b.HasOne("TdM.Database.Models.Domain.Mundo", "Mundo")
                         .WithMany("Personagens")
-                        .HasForeignKey("MundoFK");
+                        .HasForeignKey("MundoFk");
 
                     b.HasOne("TdM.Database.Models.Domain.Regiao", "Regiao")
                         .WithMany("Personagens")
-                        .HasForeignKey("RegiaoFK");
+                        .HasForeignKey("RegiaoFk");
 
                     b.Navigation("Mundo");
 
@@ -659,7 +645,7 @@ namespace TdM.Database.Migrations
                 {
                     b.HasOne("TdM.Database.Models.Domain.Mundo", "Mundo")
                         .WithMany("Povos")
-                        .HasForeignKey("MundoFK");
+                        .HasForeignKey("MundoFk");
 
                     b.Navigation("Mundo");
                 });
@@ -668,11 +654,11 @@ namespace TdM.Database.Migrations
                 {
                     b.HasOne("TdM.Database.Models.Domain.Continente", "Continente")
                         .WithMany("Regioes")
-                        .HasForeignKey("ContinenteFK");
+                        .HasForeignKey("ContinenteFk");
 
                     b.HasOne("TdM.Database.Models.Domain.Mundo", "Mundo")
                         .WithMany("Regioes")
-                        .HasForeignKey("MundoFK");
+                        .HasForeignKey("MundoFk");
 
                     b.Navigation("Continente");
 

@@ -51,7 +51,8 @@ public class ContinenteRepository : IContinenteRepository
         {
             existingContinente.Nome = continente.Nome;
             existingContinente.Descricao = continente.Descricao;
-            existingContinente.ImgSrc = continente.ImgSrc;
+            existingContinente.ImgCard = continente.ImgCard;
+            existingContinente.ImgBox = continente.ImgBox;
             existingContinente.Visible = continente.Visible;
             await tavernaDbContext.SaveChangesAsync();
 

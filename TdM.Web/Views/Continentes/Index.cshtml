@@ -10,7 +10,7 @@
             @foreach (var continente in Model)
             {
                 <div class="card bg-dark text-white m-3 col-12 " style="height:350px;">
-                    <img src="@continente.ImgSrc" class="card-img h-100 w-100" style=" object-fit: cover" alt="Responsive Image">
+                    <img src="@continente.ImgCard" class="card-img h-100 w-100" style=" object-fit: cover" alt="Responsive Image">
                     <div class="card-img-overlay">
                         <button id="btnEdit" class="btn btn-warning btn-small position-absolute top-0 start-100 translate-middle">
                             <a class="" asp-area="btnEdit" asp-controller="Continentes" asp-action="Edit" asp-route-id="@continente.Id"><i class="bi bi-wrench-adjustable"></i></a>

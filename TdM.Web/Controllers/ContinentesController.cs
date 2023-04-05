@@ -49,7 +49,8 @@ public class ContinentesController : Controller
         {
             Nome = addContinenteRequest.Nome,
             Descricao = addContinenteRequest.Descricao,
-            ImgSrc = addContinenteRequest.ImgSrc,
+            ImgCard = addContinenteRequest.ImgCard,
+            ImgBox = addContinenteRequest.ImgBox,
             Visible = addContinenteRequest.Visible,
             
 
@@ -81,6 +82,17 @@ public class ContinentesController : Controller
         var continentes = await continenteRepository.GetAllAsync();
         return View(continentes);
     }
+   
+    public async Task<IActionResult> Edit()
+    {
+        //get mundos from repository
+        var mundos = await mundoRepository.GetAllAsync();
+        var model = new EditContinenteRequest
+        {
+            Mundos = mundos.Select(x => new SelectListItem { Text = x.Nome, Value = x.Id.ToString() })
+        };
+        return View(model);
+    }
 
     [HttpGet]
     public async Task<IActionResult> Edit(Guid id)
@@ -94,16 +106,19 @@ public class ContinentesController : Controller
                 Id = continente.Id,
                 Nome = continente.Nome,
                 Descricao = continente.Descricao,
-                ImgSrc = continente.ImgSrc,
+                ImgCard = continente.ImgCard,
+                ImgBox = continente.ImgBox,
                 Visible = continente.Visible,
-               
-                
 
             };
+
             return View(editContinenteRequest);
         }
         return View(null);
     }
+
+    
+
     [HttpPost]
     public async Task<IActionResult> Edit(EditContinenteRequest editContinenteRequest)
     {
@@ -112,10 +127,23 @@ public class ContinentesController : Controller
             Id = editContinenteRequest.Id,
             Nome = editContinenteRequest.Nome,
             Descricao = editContinenteRequest.Descricao,
-            ImgSrc = editContinenteRequest.ImgSrc,
-            Visible = editContinenteRequest.Visible
+            ImgCard = editContinenteRequest.ImgCard,
+            ImgBox = editContinenteRequest.ImgBox,
+            Visible = editContinenteRequest.Visible,
 
         };
+
+        var selectedMundoId = editContinenteRequest.SelectedMundo;
+
+        var selectedMundoIdAsGuid = Guid.Parse(selectedMundoId);
+        var existingMundo = await mundoRepository.GetAsync(selectedMundoIdAsGuid);
+
+        if (existingMundo != null)
+        {
+            var selectedMundo = existingMundo;
+            //Maping Continentes back to domain modal
+            continente.Mundo = selectedMundo;
+        }
 
         var updatedContinente = await continenteRepository.UpdateAsync(continente);
 

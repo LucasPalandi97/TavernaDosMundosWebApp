@@ -51,9 +51,9 @@ public class MundosController : Controller
             Nome = addMundoRequest.Nome,
             Descricao = addMundoRequest.Descricao,
             Autor = (Autor)addMundoRequest.Autor,
-            ImgSrc = addMundoRequest.ImgSrc,
+            ImgBox = addMundoRequest.ImgBox,
             Visible = addMundoRequest.Visible,
-           
+
         };
 
 
@@ -90,38 +90,67 @@ public class MundosController : Controller
     [HttpGet]
     public async Task<IActionResult> Edit(Guid id)
     {
-       var mundo = await mundoRepository.GetAsync(id);
+        //Retrieve result from repositoty
+        var mundo = await mundoRepository.GetAsync(id);
+        var contientesDomainModel = await continenteRepository.GetAllAsync();
 
         if (mundo != null)
         {
+            //Map the domain model into the view model
             var editMundoRequest = new EditMundoRequest
             {
                 Id = mundo.Id,
                 Nome = mundo.Nome,
                 Descricao = mundo.Descricao,
-                Autor = mundo.Autor,
-                ImgSrc = mundo.ImgSrc,
-                Visible = mundo.Visible
-                
+                Autor = mundo.Autor,               
+                ImgBox = mundo.ImgBox,
+                Visible = mundo.Visible,
+                Continentes = contientesDomainModel.Select(x => new SelectListItem
+                {
+                    Text = x.Nome,
+                    Value = x.Id.ToString()
+                }),
+                SelectedContinentes = mundo.Continentes.Select(x => x.Id.ToString()).ToArray(),
+
+
             };
             return View(editMundoRequest);
         }
         return View(null);
     }
     [HttpPost]
+    [ActionName("Edit")]
     public async Task<IActionResult> Edit(EditMundoRequest editMundoRequest)
     {
+        //Map view model back to damain model
         var mundo = new Mundo
         {
             Id = editMundoRequest.Id,
             Nome = editMundoRequest.Nome,
             Descricao = editMundoRequest.Descricao,
             Autor = editMundoRequest.Autor,
-            ImgSrc = editMundoRequest.ImgSrc,
-            Visible = editMundoRequest.Visible
-           
+            ImgBox = editMundoRequest.ImgBox,
+            Visible = editMundoRequest.Visible,
         };
 
+        //Map Continentes into domain model
+        var selectedContinentes = new List<Continente>();
+        foreach (var selectedContinent in editMundoRequest.SelectedContinentes)
+        {
+            if (Guid.TryParse(selectedContinent, out var tag))
+            {
+                var foundContinente = await continenteRepository.GetAsync(tag);
+                if (foundContinente != null)
+                {
+                    selectedContinentes.Add(foundContinente);
+                }
+            }
+
+        }
+
+        mundo.Continentes = selectedContinentes;
+
+        //Submit information to repository
         var updatedMundo = await mundoRepository.UpdateAsync(mundo);
 
         if (updatedMundo != null)
@@ -131,17 +160,19 @@ public class MundosController : Controller
         }
         else
         {
-            //Show error notification          
+            //Show error notification
+            return RedirectToAction("Edit", new { id = editMundoRequest.Id });
         }
-
-        return RedirectToAction("Edit", new { id = editMundoRequest.Id });
+        //Redirect to Get
     }
+    [HttpPost]
+    [ActionName("Delete")]
     public async Task<IActionResult> Delete(EditMundoRequest editMundoRequest)
     {
+        // Talk to repository to delete this mundo and tags
         var deletedMundo = await mundoRepository.DeleteAsync(editMundoRequest.Id);
-
         if (deletedMundo != null)
-        {
+        { 
             //Show success notification
             return RedirectToAction("List");
         }
