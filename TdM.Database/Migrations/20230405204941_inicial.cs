@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace TdM.Database.Migrations
 {
     /// <inheritdoc />
-    public partial class Inicial : Migration
+    public partial class inicial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -19,7 +19,7 @@ namespace TdM.Database.Migrations
                     Nome = table.Column<string>(type: "nvarchar(32)", maxLength: 32, nullable: false),
                     Descricao = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Autor = table.Column<int>(type: "int", nullable: false),
-                    ImgSrc = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ImgBox = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Visible = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
@@ -34,16 +34,17 @@ namespace TdM.Database.Migrations
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Nome = table.Column<string>(type: "nvarchar(32)", maxLength: 32, nullable: false),
                     Descricao = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ImgSrc = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ImgCard = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ImgBox = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Visible = table.Column<bool>(type: "bit", nullable: false),
-                    MundoFk = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                    MundoFK = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Continentes", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Continentes_Mundos_MundoFk",
-                        column: x => x.MundoFk,
+                        name: "FK_Continentes_Mundos_MundoFK",
+                        column: x => x.MundoFK,
                         principalTable: "Mundos",
                         principalColumn: "Id");
                 });
@@ -58,16 +59,17 @@ namespace TdM.Database.Migrations
                     Autor = table.Column<int>(type: "int", nullable: false),
                     Data = table.Column<DateTime>(type: "datetime2", nullable: false),
                     AudioDrama = table.Column<bool>(type: "bit", nullable: false),
-                    ImgSrc = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ImgCard = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ImgBox = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Visible = table.Column<bool>(type: "bit", nullable: false),
-                    MundoFk = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                    MundoFK = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Contos", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Contos_Mundos_MundoFk",
-                        column: x => x.MundoFk,
+                        name: "FK_Contos_Mundos_MundoFK",
+                        column: x => x.MundoFK,
                         principalTable: "Mundos",
                         principalColumn: "Id");
                 });
@@ -80,16 +82,17 @@ namespace TdM.Database.Migrations
                     Nome = table.Column<string>(type: "nvarchar(32)", maxLength: 32, nullable: false),
                     ClassRaca = table.Column<int>(type: "int", nullable: true),
                     Descricao = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ImgSrc = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ImgCard = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ImgBox = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Visible = table.Column<bool>(type: "bit", nullable: false),
-                    MundoFk = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                    MundoFK = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Povos", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Povos_Mundos_MundoFk",
-                        column: x => x.MundoFk,
+                        name: "FK_Povos_Mundos_MundoFK",
+                        column: x => x.MundoFK,
                         principalTable: "Mundos",
                         principalColumn: "Id");
                 });
@@ -100,24 +103,25 @@ namespace TdM.Database.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Nome = table.Column<string>(type: "nvarchar(32)", maxLength: 32, nullable: false),
-                    Simbolo = table.Column<string>(type: "nvarchar(3)", maxLength: 3, nullable: false),
                     Descricao = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ImgSrc = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Simbolo = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ImgCard = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ImgBox = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Visible = table.Column<bool>(type: "bit", nullable: false),
-                    ContinenteFk = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    MundoFk = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                    MundoFK = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    ContinenteFK = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Regioes", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Regioes_Continentes_ContinenteFk",
-                        column: x => x.ContinenteFk,
+                        name: "FK_Regioes_Continentes_ContinenteFK",
+                        column: x => x.ContinenteFK,
                         principalTable: "Continentes",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_Regioes_Mundos_MundoFk",
-                        column: x => x.MundoFk,
+                        name: "FK_Regioes_Mundos_MundoFK",
+                        column: x => x.MundoFK,
                         principalTable: "Mundos",
                         principalColumn: "Id");
                 });
@@ -202,17 +206,18 @@ namespace TdM.Database.Migrations
                     Nome = table.Column<string>(type: "nvarchar(32)", maxLength: 32, nullable: false),
                     Tipo = table.Column<int>(type: "int", nullable: true),
                     Descricao = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ImgSrc = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ImgCard = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ImgBox = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Visible = table.Column<bool>(type: "bit", nullable: false),
-                    MundoFk = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    MundoFK = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     PovoId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Criaturas", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Criaturas_Mundos_MundoFk",
-                        column: x => x.MundoFk,
+                        name: "FK_Criaturas_Mundos_MundoFK",
+                        column: x => x.MundoFK,
                         principalTable: "Mundos",
                         principalColumn: "Id");
                     table.ForeignKey(
@@ -256,10 +261,11 @@ namespace TdM.Database.Migrations
                     Classe = table.Column<int>(type: "int", nullable: true),
                     Raca = table.Column<int>(type: "int", nullable: true),
                     Biografia = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ImgSrc = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ImgCard = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ImgBox = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Visible = table.Column<bool>(type: "bit", nullable: false),
-                    MundoFk = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    RegiaoFk = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    MundoFK = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    RegiaoFK = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     ContinenteId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
@@ -271,13 +277,13 @@ namespace TdM.Database.Migrations
                         principalTable: "Continentes",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_Personagens_Mundos_MundoFk",
-                        column: x => x.MundoFk,
+                        name: "FK_Personagens_Mundos_MundoFK",
+                        column: x => x.MundoFK,
                         principalTable: "Mundos",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_Personagens_Regioes_RegiaoFk",
-                        column: x => x.RegiaoFk,
+                        name: "FK_Personagens_Regioes_RegiaoFK",
+                        column: x => x.RegiaoFK,
                         principalTable: "Regioes",
                         principalColumn: "Id");
                 });
@@ -442,9 +448,9 @@ namespace TdM.Database.Migrations
                 column: "PovosId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Continentes_MundoFk",
+                name: "IX_Continentes_MundoFK",
                 table: "Continentes",
-                column: "MundoFk");
+                column: "MundoFK");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ContoCriatura_CriaturasId",
@@ -467,9 +473,9 @@ namespace TdM.Database.Migrations
                 column: "RegioesId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Contos_MundoFk",
+                name: "IX_Contos_MundoFK",
                 table: "Contos",
-                column: "MundoFk");
+                column: "MundoFK");
 
             migrationBuilder.CreateIndex(
                 name: "IX_CriaturaRegiao_RegioesId",
@@ -477,9 +483,9 @@ namespace TdM.Database.Migrations
                 column: "RegioesId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Criaturas_MundoFk",
+                name: "IX_Criaturas_MundoFK",
                 table: "Criaturas",
-                column: "MundoFk");
+                column: "MundoFK");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Criaturas_PovoId",
@@ -497,14 +503,14 @@ namespace TdM.Database.Migrations
                 column: "ContinenteId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Personagens_MundoFk",
+                name: "IX_Personagens_MundoFK",
                 table: "Personagens",
-                column: "MundoFk");
+                column: "MundoFK");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Personagens_RegiaoFk",
+                name: "IX_Personagens_RegiaoFK",
                 table: "Personagens",
-                column: "RegiaoFk");
+                column: "RegiaoFK");
 
             migrationBuilder.CreateIndex(
                 name: "IX_PovoRegiao_RegioesId",
@@ -512,19 +518,19 @@ namespace TdM.Database.Migrations
                 column: "RegioesId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Povos_MundoFk",
+                name: "IX_Povos_MundoFK",
                 table: "Povos",
-                column: "MundoFk");
+                column: "MundoFK");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Regioes_ContinenteFk",
+                name: "IX_Regioes_ContinenteFK",
                 table: "Regioes",
-                column: "ContinenteFk");
+                column: "ContinenteFK");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Regioes_MundoFk",
+                name: "IX_Regioes_MundoFK",
                 table: "Regioes",
-                column: "MundoFk");
+                column: "MundoFK");
         }
 
         /// <inheritdoc />

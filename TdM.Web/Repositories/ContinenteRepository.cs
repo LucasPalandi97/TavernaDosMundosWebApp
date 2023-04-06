@@ -34,18 +34,19 @@ public class ContinenteRepository : IContinenteRepository
 
     public async Task<IEnumerable<Continente>> GetAllAsync()
     {
-        return await tavernaDbContext.Continentes.ToListAsync();
+        //return list and include navigation Icollection from model database
+        return await tavernaDbContext.Continentes.Include(x => x.Mundo).ToListAsync();
     }
 
     public Task<Continente?> GetAsync(Guid id)
     {
-        return tavernaDbContext.Continentes.FirstOrDefaultAsync(x => x.Id == id);
+        return tavernaDbContext.Continentes.Include(x => x.Mundo).FirstOrDefaultAsync(x => x.Id == id);
     }
 
     public async Task<Continente?> UpdateAsync(Continente continente)
     {
 
-        var existingContinente = await tavernaDbContext.Continentes.FindAsync(continente.Id);
+        var existingContinente = await tavernaDbContext.Continentes.Include(x => x.Mundo).FirstOrDefaultAsync(x => x.Id == continente.Id);
 
         if (existingContinente != null)
         {
@@ -54,6 +55,7 @@ public class ContinenteRepository : IContinenteRepository
             existingContinente.ImgCard = continente.ImgCard;
             existingContinente.ImgBox = continente.ImgBox;
             existingContinente.Visible = continente.Visible;
+            existingContinente.Mundo = continente.Mundo;
             await tavernaDbContext.SaveChangesAsync();
 
             return existingContinente;

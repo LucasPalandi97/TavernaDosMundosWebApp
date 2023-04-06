@@ -82,22 +82,14 @@ public class ContinentesController : Controller
         var continentes = await continenteRepository.GetAllAsync();
         return View(continentes);
     }
-   
-    public async Task<IActionResult> Edit()
-    {
-        //get mundos from repository
-        var mundos = await mundoRepository.GetAllAsync();
-        var model = new EditContinenteRequest
-        {
-            Mundos = mundos.Select(x => new SelectListItem { Text = x.Nome, Value = x.Id.ToString() })
-        };
-        return View(model);
-    }
+
 
     [HttpGet]
     public async Task<IActionResult> Edit(Guid id)
     {
+        //Retrieve Result from repository
         var continente = await continenteRepository.GetAsync(id);
+        var mundosDomainModel = await mundoRepository.GetAllAsync();
 
         if (continente != null)
         {
@@ -109,15 +101,20 @@ public class ContinentesController : Controller
                 ImgCard = continente.ImgCard,
                 ImgBox = continente.ImgBox,
                 Visible = continente.Visible,
+                Mundos = mundosDomainModel.Select(x => new SelectListItem
+                {
+                    Text = x.Nome,
+                    Value = x.Id.ToString()
+                }),
+                SelectedMundo = continente.Mundo.Id.ToString(),
 
-            };
-
-            return View(editContinenteRequest);
-        }
-        return View(null);
+            }; 
+        return View(editContinenteRequest);
     }
+        return View(null);
+}
 
-    
+
 
     [HttpPost]
     public async Task<IActionResult> Edit(EditContinenteRequest editContinenteRequest)
@@ -133,6 +130,7 @@ public class ContinentesController : Controller
 
         };
 
+        //Map Mundo into domain model
         var selectedMundoId = editContinenteRequest.SelectedMundo;
 
         var selectedMundoIdAsGuid = Guid.Parse(selectedMundoId);

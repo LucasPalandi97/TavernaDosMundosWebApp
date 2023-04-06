@@ -1,7 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
-using TdM.Database.Models.Domain;
-using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace TdM.Web.Models.ViewModels
 {
@@ -18,7 +15,7 @@ namespace TdM.Web.Models.ViewModels
         public IEnumerable<SelectListItem> Mundos { get; set; }
 
         //Collect Continente     
-        public string SelectedMundo { get; set; }
+        public string? SelectedMundo { get; set; }
 
         //Collect Multiple itens
         //public string[] SelectedContinentes { get; set; } = Array.Empty<string>();

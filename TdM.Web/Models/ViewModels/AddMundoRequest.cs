@@ -18,6 +18,6 @@ namespace TdM.Web.Models.ViewModels
         //public string SelectedMundo { get; set; }
 
          //Collect Multiple itens
-         public string[] SelectedContinentes { get; set; } = Array.Empty<string>();
+         public string?[] SelectedContinentes { get; set; } = Array.Empty<string>();
     }
 }

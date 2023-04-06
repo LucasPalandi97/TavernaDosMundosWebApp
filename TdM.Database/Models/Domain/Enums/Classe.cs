@@ -21,5 +21,6 @@ namespace TdM.Database.Models.Domain.Enums
         Mago,
         Monge
 
+
     }
 }

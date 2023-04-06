@@ -12,8 +12,8 @@ using TdM.Database.Data;
 namespace TdM.Database.Migrations
 {
     [DbContext(typeof(TavernaDbContext))]
-    [Migration("20230405015747_AddImgCardImgBox")]
-    partial class AddImgCardImgBox
+    [Migration("20230405204941_inicial")]
+    partial class inicial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

@@ -9,7 +9,7 @@
     </div>
 </div>
 
-<div class="container py-5 col-4 ">
+<div class="container py-5 col-8 ">
     <form method="post">
         <div class="mb-3 col-8">
             <label for="nome" class="form-label">World</label>
@@ -44,11 +44,39 @@
             <label class="form-check-label" for="visible">Visible?</label>
             <input class="form-check-input" type="checkbox" id="visible" asp-for="Visible" checked>
         </div>
-        <div class="mb-3">
-            <label class="form-label">Continents</label>
-            <select class="form-select" asp-items="@Model.Continentes" asp-for="SelectedContinentes">
-            </select>
+        <div class="mb-3 d-flex">
+            <div class="m-2">
+                <label class="form-label">Continents</label>
+                <select class="form-select" style="width:100px;" asp-items="@Model.Continentes" asp-for="SelectedContinentes">
+                </select>
+            </div>
+            <div class="m-2">
+                <label class="form-label">Regions</label>
+                <select class="form-select" style="width:100px;" asp-items="@Model.Continentes" asp-for="SelectedContinentes">
+                </select>
+            </div>
+            <div class="m-2">
+                <label class="form-label">Characters</label>
+                <select class="form-select" style="width:100px;" asp-items="@Model.Continentes" asp-for="SelectedContinentes">
+                </select>
+            </div>
+            <div class="m-2">
+                <label class="form-label">People</label>
+                <select class="form-select" style="width:100px;" asp-items="@Model.Continentes" asp-for="SelectedContinentes">
+                </select>
+            </div>
+            <div class="m-2">
+                <label class="form-label">Criatures</label>
+                <select class="form-select" style="width:100px;" asp-items="@Model.Continentes" asp-for="SelectedContinentes">
+                </select>
+            </div>
+            <div class="m-2">
+                <label class="form-label">Short Stories</label>
+                <select class="form-select" style="width:100px;" asp-items="@Model.Continentes" asp-for="SelectedContinentes">
+                </select>
+            </div>
         </div>
+      
         <div class="mb-3">
             <button type="submit" class="btn btn-dark">Submit</button>
         </div>
