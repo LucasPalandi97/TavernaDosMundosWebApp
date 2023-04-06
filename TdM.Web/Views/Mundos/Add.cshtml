@@ -17,10 +17,7 @@
         </div>
         <div class="mb-3">
             <label for="descricao" class="form-label">Description</label>
-            <div class="input-group mb-3">
-                <input type="text" class="form-control" placeholder="World's Description" aria-label="World's Description" aria-describedby="button-addon2" id="descricao" name="descricao" asp-for="Descricao">
-                <button class="btn btn-outline-secondary" type="button" id="button-addon2" data-bs-toggle="modal" data-bs-target="#descriptionModal">...</button>
-            </div>
+            <textarea placeholder="World's Description" id="descricao" name="descricao" asp-for="Descricao"></textarea>
         </div>
         <div class="mb-3">
             <label class="form-label">Upload Image</label>
@@ -76,38 +73,22 @@
                 </select>
             </div>
         </div>
-      
+
         <div class="mb-3">
             <button type="submit" class="btn btn-dark">Submit</button>
         </div>
-        <!-- Modal Description -->
-        <form method="post" action="change-goal">
-            <div class="modal fade " id="descriptionModal" tabindex="-1" aria-labelledby="descriptionModal" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
 
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <div class="form-outline">
-                                <label class="form-label" for="DetailDesc">Description: </label>
-                                <textarea class="form-control" name="DetailDesc" id="DetailDesc" rows="6"></textarea>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button id="save" type="button" class="btn btn-primary" data-dismiss="modal">Save</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </form>
     </form>
 </div>
 
 
 @section Scripts {
     <script>
+
+        var editor = new FroalaEditor('#descricao', {
+            imageUploadURL: '/api/images'
+        });
+
         var text = $("#descricao").val();
         $("#DetailDesc").val(text);
         $('#save').on('click', function () {
@@ -124,25 +105,25 @@
 
             let data = new FormData();
             data.append('file', e.target.files[0]);
-            
+
             await fetch('/api/images', {
                 method: 'POST',
                 headers: {
                     'Accept': '*/*',
                 },
                 body: data
-             }).then(response => response.json())
-                .then(result =>{
+            }).then(response => response.json())
+                .then(result => {
                     ImgBoxUrlElement.value = result.link;
                     ImageBoxDisplayElement.src = result.link;
                     ImageBoxDisplayElement.style.display = 'block';
-             });
+                });
         }
 
         ImageBoxUploadElement.addEventListener('change', uploadBoxImage);
-        
+
 
     </script>
 
-   
+
 }

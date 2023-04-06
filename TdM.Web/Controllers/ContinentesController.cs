@@ -59,7 +59,7 @@ public class ContinentesController : Controller
         //Maps Mundos from Selected mundo
      
         var selectedMundoId = addContinenteRequest.SelectedMundo;
-      
+        if (selectedMundoId !=null) { 
             var selectedMundoIdAsGuid = Guid.Parse(selectedMundoId);
             var existingMundo = await mundoRepository.GetAsync(selectedMundoIdAsGuid);
 
@@ -69,7 +69,7 @@ public class ContinentesController : Controller
             //Maping Continentes back to domain modal
             continente.Mundo = selectedMundo;
             }
-          
+        }
         await continenteRepository.AddAsync(continente);
 
         return RedirectToAction("List");
@@ -106,8 +106,8 @@ public class ContinentesController : Controller
                     Text = x.Nome,
                     Value = x.Id.ToString()
                 }),
-                SelectedMundo = continente.Mundo.Id.ToString(),
-
+                //SelectedMundo = continente.Mundo.Id.ToString()
+               
             }; 
         return View(editContinenteRequest);
     }

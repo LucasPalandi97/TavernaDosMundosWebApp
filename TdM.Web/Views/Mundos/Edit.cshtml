@@ -13,7 +13,6 @@
     @if (Model != null)
     {
         <form method="post">
-            <div class="container py-5 col-4 ">
                 <div class="mb-3 ">
                     <label class="form-label">Id</label>
                     <input type="text" id="id" class="form-control" asp-for="Id" readonly />
@@ -24,10 +23,7 @@
                 </div>
                 <div class="mb-3">
                     <label for="descricao" class="form-label">Description</label>
-                    <div class="input-group mb-3">
-                        <input type="text" class="form-control" placeholder="World's Description" aria-label="World's Description" aria-describedby="button-addon2" id="descricao" name="descricao" asp-for="Descricao">
-                        <button class="btn btn-outline-secondary" type="button" id="button-addon2" data-bs-toggle="modal" data-bs-target="#descriptionModal">...</button>
-                    </div>
+                    <textarea placeholder="World's Description" id="descricao" name="descricao" asp-for="Descricao"></textarea>
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Upload Image</label>
@@ -76,7 +72,7 @@
 
                 </div>
 
-            </div>
+         
 
             <!-- Modal Delete -->
             <div class="modal fade " id="confirmDelete" tabindex="-1" aria-labelledby="confirmDeleteLabel" aria-hidden="true">
@@ -93,28 +89,7 @@
                 </div>
             </div>
 
-            <!-- Modal Description -->
-            <form method="post" action="change-goal">
-                <div class="modal fade " id="descriptionModal" tabindex="-1" aria-labelledby="descriptionModal" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                <div class="form-outline">
-                                    <label class="form-label" for="DetailDesc">Description: </label>
-                                    <textarea class="form-control" name="DetailDesc" id="DetailDesc" rows="6"></textarea>
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                                <button id="save" type="button" class="btn btn-primary" data-dismiss="modal">Save</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </form>
+        
         </form>
 
 
@@ -127,6 +102,12 @@
 @section Scripts
     {
     <script>
+
+        var editor = new FroalaEditor('#descricao', {
+            imageUploadURL: '/api/images'
+        });
+
+
         var text = $("#descricao").val();
         $("#DetailDesc").val(text);
         $('#save').on('click', function () {

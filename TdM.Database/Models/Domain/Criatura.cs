@@ -33,5 +33,6 @@ public class Criatura
 
     public ICollection<Continente>? Continentes { get; set; }
     public ICollection<Regiao>? Regioes { get; set; }
+    public ICollection<Povo>? Povos { get; set; }
     public ICollection<Conto>? Contos { get; set; }
 }

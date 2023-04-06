@@ -9,6 +9,8 @@
 
 @section Scripts{
     <script>
-        var editor = new FroalaEditor('#content')
+        var editor = new FroalaEditor('#content',{
+            imageUploadUrl: '/api/images'
+        });
     </script>
 }

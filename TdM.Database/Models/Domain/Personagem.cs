@@ -37,6 +37,9 @@ public class Personagem
     [ForeignKey("MundoFK")]
     public virtual Mundo? Mundo { get; set; }
 
+    [ForeignKey("ContinenteFK")]
+    public virtual Continente? Continente { get; set; }
+
     [ForeignKey("RegiaoFK")]
     public virtual Regiao? Regiao { get; set; }
 

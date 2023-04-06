@@ -14,7 +14,7 @@ public class Povo
     public string Nome { get; set; }
 
     [Display(Name = "Raça")]
-    public Raca? ClassRaca { get; set; }
+    public Raca? Raca { get; set; }
 
     [Required]
     [Display(Name = "Descrição")]
