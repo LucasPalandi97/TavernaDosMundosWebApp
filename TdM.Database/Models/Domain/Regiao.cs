@@ -17,12 +17,19 @@ public class Regiao
     [Display(Name = "Descrição")]
     public string Descricao { get; set; }
 
+    [Display(Name = "Descrição Prévia")]
+    public string CurtaDescricao { get; set; }
+
     [Display(Name = "Símbolo")]
     public string Simbolo { get; set; }
 
     public string? ImgCard { get; set; }
 
     public string? ImgBox { get; set; }
+
+    public DateTime PublishedDate { get; set; }
+
+    public string UrlHandle { get; set; }
 
     [Required]
     public bool Visible { get; set; }

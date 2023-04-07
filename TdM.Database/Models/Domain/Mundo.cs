@@ -12,6 +12,9 @@ public class Mundo
     [Display(Name = "Mundo")]
     public string Nome { get; set; }
 
+    [Display(Name = "Descrição Prévia")]
+    public string CurtaDescricao { get; set; }
+
     [Display(Name = "Descrição")]
     public string Descricao { get; set; }
 
@@ -20,8 +23,12 @@ public class Mundo
 
     public string? ImgBox { get; set; }
 
-    public bool Visible { get; set; }
+    public DateTime PublishedDate { get; set; }
 
+    public string UrlHandle { get; set; }
+
+    public bool Visible { get; set; }
+ 
 
     public ICollection<Continente>? Continentes { get; set; }
     public ICollection<Regiao>? Regioes { get; set; }

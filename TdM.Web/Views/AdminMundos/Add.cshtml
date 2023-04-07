@@ -15,16 +15,24 @@
             <label for="nome" class="form-label">World</label>
             <input type="text" class="form-control" id="nome" asp-for="Nome" />
         </div>
+
+        <div class="mb-3">
+            <label for="descricao" class="form-label">Short Description</label>
+            <input class="form-control" type="text" placeholder="World's Short Description" id="CurtaDescricao" name="CurtaDescricao" asp-for="CurtaDescricao" />
+        </div>
+
         <div class="mb-3">
             <label for="descricao" class="form-label">Description</label>
             <textarea placeholder="World's Description" id="descricao" name="descricao" asp-for="Descricao"></textarea>
         </div>
+
         <div class="mb-3">
             <label class="form-label">Upload Image</label>
             <input type="file" id="ImageBoxUpload" class="form-control" />
 
             <img src="" id="ImageBoxUploadDisplay" style="display:none;width:300px; margin-top:1em;" />
         </div>
+
         <div class="mb-3">
             <label for="ImgBoxUrl" class="form-label">Content Image</label>
             <input type="text" class="form-control" id="ImgBoxUrl" placeholder="Image's URL" asp-for="ImgBox">
@@ -37,6 +45,18 @@
             </select>
             <span asp-validation-for="Autor" class="text-danger"></span>
         </div>
+
+        <div class="mb-3 col-2">
+            <label class="form-label">Published Date</label>
+        <input type="date" class="form-control" id="publishedDate" asp-for="PublishedDate" readonly />
+        </div>
+
+       <div class="mb-3">
+            <label class="form-label">URL Handle</label>
+            <input type="text" class="form-control" id="urlHandle" asp-for="UrlHandle" placeholder="Suggestion: TheGalaxyOfLuna"/>
+        </div>
+
+
         <div class="form-check form-switch mb-3">
             <label class="form-check-label" for="visible">Visible?</label>
             <input class="form-check-input" type="checkbox" id="visible" asp-for="Visible" checked>
@@ -84,6 +104,14 @@
 
 @section Scripts {
     <script>
+
+        Date.prototype.toDateInputValue = (function () {
+            var local = new Date(this);
+            local.setMinutes(this.getMinutes() - this.getTimezoneOffset());
+            return local.toJSON().slice(0, 10);
+        });
+        document.getElementById('publishedDate').value = new Date().toDateInputValue();
+
 
         var editor = new FroalaEditor('#descricao', {
             imageUploadURL: '/api/images'

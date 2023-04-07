@@ -16,6 +16,11 @@
             <label class="form-label" for="nome">Name</label>
             <input type="text" class="form-control" id="nome" asp-for="Nome" />
         </div>
+     
+        <div class="mb-3">
+            <label for="descricao" class="form-label">Short Description</label>
+             <input class="form-control" type="text" placeholder="Continent's Short Description" id="CurtaDescricao" name="CurtaDescricao" asp-for="CurtaDescricao"/>
+        </div>
 
         <div class="mb-3">
             <label for="descricao" class="form-label">Description</label>
@@ -45,6 +50,17 @@
             <input type="text" class="form-control" id="ImgBoxUrl" placeholder="Image's URL" asp-for="ImgBox" />
         </div>
 
+           <div class="mb-3">
+            <label class="form-label">Published Date</label>
+        <input type="date" class="form-control" id="publishedDate" asp-for="PublishedDate" />
+        </div>
+
+       <div class="mb-3">
+            <label class="form-label">URL Handle</label>
+            <input type="text" class="form-control" id="urlHandle" asp-for="UrlHandle" />
+        </div>
+
+
         <div class="form-check form-switch mb-3">
             <label class="form-check-label" for="visible">Visible?</label>
             <input class="form-check-input" type="checkbox" id="visible" asp-for="Visible" checked>
@@ -69,6 +85,15 @@
     {
 
     <script>
+
+           Date.prototype.toDateInputValue = (function () {
+            var local = new Date(this);
+            local.setMinutes(this.getMinutes() - this.getTimezoneOffset());
+            return local.toJSON().slice(0, 10);
+        });
+        $(document).ready( function() {
+    $('#publishedDate').val(new Date().toDateInputValue());
+});​
 
         var editor = new FroalaEditor('#descricao', {
             imageUploadURL: '/api/images'

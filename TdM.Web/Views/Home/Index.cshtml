@@ -1,9 +1,54 @@
-﻿@{
+﻿@model List<TdM.Database.Models.Domain.Mundo>
+@using TdM.Database.Models.Domain.Enums
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
-<div class="container-fluid">
-    <div class="trapezoidLeft">Some dummy text.</div>
-    <div class="trapezoidRight">Some dummy text.</div>
+@*hero section*@
+<div class="containter coll-xxl-8 px-4 py-5">
+    <div class="row align-items-center g-5 py-5 ">
+        <div class="col-12 col-lg-6">
+            <h1 class="display-5 fw-bold lh-1 mb-3">
+                Taverna dos Mundos
+            </h1>
+            <p class="lead">
+                Worlds are built by TdM members and represents
+                original content of worldbuilding and history teller.
+            </p>
+        </div>
+        <div class="col-12 col-lg-6">
+            <img src="https://images.pexels.com/photos/270360/pexels-photo-270360.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+                 alt="Tdm = Worlds" class="d-block mx-lg-auto img-fluid" width="300" />
+        </div>
+    </div>
+</div>
+@*end hero*@
 
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-6">
+            @if (Model != null && Model.Any())
+            {
+                foreach (var mundo in Model)
+                {
+                    <div class="mb-5 bg-light box-shadow p-5">
+                        <img src="@mundo.ImgBox" alt="@mundo.Nome" class="mb-2 d-block img-fluid"/>
+
+                        <h2 class="mb-2">@mundo.Nome</h2>
+                        <p class="mb-2">
+                            By: @mundo.Autor.GetDisplayName()
+                            <br />
+                        </p>
+                        <p class="mb-2">@mundo.PublishedDate</p>
+                        <p class="mb-2">@mundo.CurtaDescricao</p>
+                     @*   <a class="btn btn-dark" asp-area="" asp-controller="Mundos" asp-action="Index" asp-route-urlHandle="@mundo.UrlHandle">Read more</a>*@
+                    </div>
+                }
+            }
+
+
+
+        </div>
+    </div>
 </div>

@@ -12,9 +12,9 @@
 <div class="container py-5">
     @if (Model != null)
     {
-
+         <form method="post">
         <div class="container py-5 col-4 ">
-            <form method="post">
+           
                 <div class="mb-3 ">
                     <label class="form-label">Id</label>
                     <input type="text" id="id" class="form-control" asp-for="Id" readonly />
@@ -23,6 +23,11 @@
                 <div class="mb-3 col-8">
                     <label for="nome" class="form-label">World</label>
                     <input type="text" class="form-control" id="nome" asp-for="Nome" />
+                </div>
+
+                <div class="mb-3">
+                    <label for="descricao" class="form-label">Short Description</label>
+                    <input class="form-control" type="text" placeholder="Continent's Short Description" id="CurtaDescricao" name="CurtaDescricao" asp-for="CurtaDescricao" />
                 </div>
 
                 <div class="mb-3">
@@ -72,6 +77,16 @@
                     <input type="text" class="form-control" id="ImgBoxUrl" placeholder="Image's URL" asp-for="ImgBox" />
                 </div>
 
+                <div class="mb-3 col-2">
+                    <label class="form-label">Published Date</label>
+                    <input type="date" class="form-control" id="publishedDate" asp-for="PublishedDate" />
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">URL Handle</label>
+                    <input type="text" class="form-control" id="urlHandle" asp-for="UrlHandle" placeholder="Suggestion: TheGalaxyOfLuna" />
+                </div>
+
                 <div class="mb-3 col-8">
                     <label class="form-label">Mundo</label>
                     <select class="form-select" asp-items="@Model.Mundos" asp-for="SelectedMundo">
@@ -93,7 +108,7 @@
                     </div>
 
                 </div>
-            </form>
+           
         </div>
 
         <!-- Modal Delete -->
@@ -105,13 +120,12 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
-                        <button class="btn btn-danger ms-2" type="submit" asp-area="" asp-controller="Continentes" asp-action="Delete">Delete</button>
+                        <button class="btn btn-danger ms-2" type="submit" asp-area="" asp-controller="AdminContinentes" asp-action="Delete">Delete</button>
                     </div>
                 </div>
             </div>
         </div>
         </form>
-
     }
     else
     {
@@ -123,6 +137,15 @@
     {
 
     <script>
+
+             Date.prototype.toDateInputValue = (function () {
+            var local = new Date(this);
+            local.setMinutes(this.getMinutes() - this.getTimezoneOffset());
+            return local.toJSON().slice(0, 10);
+        });
+        $(document).ready( function() {
+    $('#publishedDate').val(new Date().toDateInputValue());
+});​
 
         var editor = new FroalaEditor('#descricao', {
             imageUploadURL: '/api/images'

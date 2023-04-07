@@ -7,6 +7,7 @@ public interface IMundoRepository
     Task<IEnumerable<Mundo>> GetAllAsync();
 
     Task<Mundo?> GetAsync(Guid id);
+    //Task<Mundo?> GetByUrlHandleAsync(string urlHandle);
 
     Task<Mundo> AddAsync(Mundo mundo);
 

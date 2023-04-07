@@ -23,19 +23,17 @@ public class Conto
     public Autor Autor { get; set; }
 
     [Required]
-    [DataType(DataType.Date)]
-    [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
-    public DateTime Data { get; set; }
-
-    [Required]
     [Display(Name = "Audio Drama")]
     public bool AudioDrama { get; set; }
 
     public string? ImgCard { get; set; }
 
     public string? ImgBox { get; set; }
-    [Required]
+  
+    public DateTime PublishedDate { get; set; }
 
+    public string UrlHandle { get; set; }
+    [Required]
     public bool Visible { get; set; }
 
     [ForeignKey("MundoFK")]

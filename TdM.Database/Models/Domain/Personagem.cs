@@ -24,6 +24,9 @@ public class Personagem
     [Display(Name = "Raça")]
     public Raca? Raca { get; set; }
 
+    [Display(Name = "Descrição Prévia")]
+    public string CurtaDescricao { get; set; }
+
     [Required]
     [Display(Name = "Biografia")]
     public string Biografia { get; set; }
@@ -31,6 +34,10 @@ public class Personagem
     public string? ImgCard { get; set; }
 
     public string? ImgBox { get; set; }
+
+    public DateTime PublishedDate { get; set; }
+
+    public string UrlHandle { get; set; }
 
     public bool Visible { get; set; }
 

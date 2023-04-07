@@ -1,0 +1,122 @@
+﻿@model List<TdM.Database.Models.Domain.Mundo>
+@using TdM.Database.Models.Domain.Enums;
+@{
+
+}
+
+
+<div class="bg-secondary bg-opacity-10 py-2">
+    <div class="containter">
+        <h1>Show all Worlds - Admin Funcionality</h1>
+    </div>
+</div>
+
+<div class="container py-5">
+    @if (Model != null && Model.Any())
+    {
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>World</th>
+                    <th>Description</th>
+                    <th>Author</th>
+                    <th>World Building</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var mundo in Model)
+                {
+                    <tr>
+                        <td>@mundo.Id</td>
+                        <td>@mundo.Nome</td>
+                        <td>@mundo.CurtaDescricao</td>
+                        <td>@mundo.Autor.GetDisplayName()</td>
+                        <td>
+
+                            <div class="dropdown mt-3">
+                                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    World Build
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">                             
+                                    <div class="dropdown dropend">
+                                        <a class="dropdown-item dropdown-toggle" href="#" id="dropdown-layouts" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Continents</a>
+                                        <div class="dropdown-menu" aria-labelledby="dropdown-layouts">
+
+                                            <ul class="dropdown-item" aria-labelledby="dropdown-layouts">
+                                                @foreach (var continente in mundo.Continentes)
+                                                {
+                                                    <a class="dropdown-item" asp-route-id="@continente.Id">@continente.Nome</a>
+                                                }
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </td>
+                        <td>
+                            <a asp-area="" asp-controller="AdminMundos" asp-action="Edit" asp-route-id="@mundo.Id">Edit</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p>No Worlds found!</p>
+    }
+</div>
+@section Scripts
+{
+    <script>
+   (function($bs) {
+    const CLASS_NAME = 'has-child-dropdown-show';
+    $bs.Dropdown.prototype.toggle = function(_orginal) {
+        return function() {
+            document.querySelectorAll('.' + CLASS_NAME).forEach(function(e) {
+                e.classList.remove(CLASS_NAME);
+            });
+            let dd = this._element.closest('.dropdown').parentNode.closest('.dropdown');
+            for (; dd && dd !== document; dd = dd.parentNode.closest('.dropdown')) {
+                dd.classList.add(CLASS_NAME);
+            }
+            return _orginal.call(this);
+        }
+    }($bs.Dropdown.prototype.toggle);
+
+    document.querySelectorAll('.dropdown').forEach(function(dd) {
+        dd.addEventListener('hide.bs.dropdown', function(e) {
+            if (this.classList.contains(CLASS_NAME)) {
+                this.classList.remove(CLASS_NAME);
+                e.preventDefault();
+            }
+            e.stopPropagation(); // do not need pop in multi level mode
+        });
+    });
+
+    // for hover
+    document.querySelectorAll('.dropdown-hover, .dropdown-hover-all .dropdown').forEach(function(dd) {
+        dd.addEventListener('mouseenter', function(e) {
+            let toggle = e.target.querySelector(':scope>[data-bs-toggle="dropdown"]');
+            if (!toggle.classList.contains('show')) {
+                $bs.Dropdown.getOrCreateInstance(toggle).toggle();
+                dd.classList.add(CLASS_NAME);
+                $bs.Dropdown.clearMenus();
+            }
+        });
+        dd.addEventListener('mouseleave', function(e) {
+            let toggle = e.target.querySelector(':scope>[data-bs-toggle="dropdown"]');
+            if (toggle.classList.contains('show')) {
+                $bs.Dropdown.getOrCreateInstance(toggle).toggle();
+            }
+        });
+    });
+})(bootstrap);
+    </script>
+
+}

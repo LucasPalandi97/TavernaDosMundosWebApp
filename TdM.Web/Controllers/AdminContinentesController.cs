@@ -10,12 +10,12 @@ namespace TdM.Web.Controllers;
 
 
 
-public class ContinentesController : Controller
+public class AdminContinentesController : Controller
 {
     private readonly IMundoRepository mundoRepository;
     private readonly IContinenteRepository continenteRepository;
 
-    public ContinentesController(IMundoRepository mundoRepository, IContinenteRepository continenteRepository)
+    public AdminContinentesController(IMundoRepository mundoRepository, IContinenteRepository continenteRepository)
     {
         this.mundoRepository = mundoRepository;
         this.continenteRepository = continenteRepository;
@@ -48,9 +48,12 @@ public class ContinentesController : Controller
         var continente = new Continente
         {
             Nome = addContinenteRequest.Nome,
+            CurtaDescricao = addContinenteRequest.CurtaDescricao,
             Descricao = addContinenteRequest.Descricao,
             ImgCard = addContinenteRequest.ImgCard,
             ImgBox = addContinenteRequest.ImgBox,
+            PublishedDate = addContinenteRequest.PublishedDate,
+            UrlHandle = addContinenteRequest.UrlHandle,
             Visible = addContinenteRequest.Visible,
             
 
@@ -97,16 +100,19 @@ public class ContinentesController : Controller
             {
                 Id = continente.Id,
                 Nome = continente.Nome,
+                CurtaDescricao = continente.CurtaDescricao,  
                 Descricao = continente.Descricao,
                 ImgCard = continente.ImgCard,
                 ImgBox = continente.ImgBox,
+                PublishedDate = continente.PublishedDate,
+                UrlHandle = continente.UrlHandle,
                 Visible = continente.Visible,
                 Mundos = mundosDomainModel.Select(x => new SelectListItem
                 {
                     Text = x.Nome,
                     Value = x.Id.ToString()
                 }),
-                //SelectedMundo = continente.Mundo.Id.ToString()
+                SelectedMundo = continente.Mundo?.Id.ToString()
                
             }; 
         return View(editContinenteRequest);
@@ -115,7 +121,7 @@ public class ContinentesController : Controller
 }
 
 
-
+     
     [HttpPost]
     public async Task<IActionResult> Edit(EditContinenteRequest editContinenteRequest)
     {
@@ -123,26 +129,30 @@ public class ContinentesController : Controller
         {
             Id = editContinenteRequest.Id,
             Nome = editContinenteRequest.Nome,
+            CurtaDescricao=editContinenteRequest.CurtaDescricao,
             Descricao = editContinenteRequest.Descricao,
             ImgCard = editContinenteRequest.ImgCard,
             ImgBox = editContinenteRequest.ImgBox,
+            PublishedDate=editContinenteRequest.PublishedDate,
+            UrlHandle = editContinenteRequest.UrlHandle,
             Visible = editContinenteRequest.Visible,
 
         };
 
         //Map Mundo into domain model
         var selectedMundoId = editContinenteRequest.SelectedMundo;
-
-        var selectedMundoIdAsGuid = Guid.Parse(selectedMundoId);
-        var existingMundo = await mundoRepository.GetAsync(selectedMundoIdAsGuid);
-
-        if (existingMundo != null)
+        if (selectedMundoId != null)
         {
-            var selectedMundo = existingMundo;
-            //Maping Continentes back to domain modal
-            continente.Mundo = selectedMundo;
-        }
+            var selectedMundoIdAsGuid = Guid.Parse(selectedMundoId);
+            var existingMundo = await mundoRepository.GetAsync(selectedMundoIdAsGuid);
 
+            if (existingMundo != null)
+            {
+                var selectedMundo = existingMundo;
+                //Maping Continentes back to domain modal
+                continente.Mundo = selectedMundo;
+            }
+        }
         var updatedContinente = await continenteRepository.UpdateAsync(continente);
 
         if (updatedContinente != null)

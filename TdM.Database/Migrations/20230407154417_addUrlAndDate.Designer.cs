@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TdM.Database.Data;
 
@@ -11,9 +12,11 @@ using TdM.Database.Data;
 namespace TdM.Database.Migrations
 {
     [DbContext(typeof(TavernaDbContext))]
-    partial class TavernaDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230407154417_addUrlAndDate")]
+    partial class addUrlAndDate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -193,10 +196,6 @@ namespace TdM.Database.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("CurtaDescricao")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Descricao")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -285,10 +284,6 @@ namespace TdM.Database.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("CurtaDescricao")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Descricao")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -336,10 +331,6 @@ namespace TdM.Database.Migrations
                     b.Property<int>("Autor")
                         .HasColumnType("int");
 
-                    b.Property<string>("CurtaDescricao")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Descricao")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -382,10 +373,6 @@ namespace TdM.Database.Migrations
 
                     b.Property<Guid?>("ContinenteFK")
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("CurtaDescricao")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ImgBox")
                         .HasColumnType("nvarchar(max)");
@@ -439,10 +426,6 @@ namespace TdM.Database.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("CurtaDescricao")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Descricao")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -489,10 +472,6 @@ namespace TdM.Database.Migrations
 
                     b.Property<Guid?>("ContinenteFK")
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("CurtaDescricao")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Descricao")
                         .IsRequired()

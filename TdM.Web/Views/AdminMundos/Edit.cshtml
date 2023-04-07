@@ -1,0 +1,177 @@
+﻿@using TdM.Database.Models.Domain.Enums;
+@model TdM.Web.Models.ViewModels.EditMundoRequest;
+@{
+}
+
+<div class="bg-secondary bg-opacity-10 py-2">
+    <div class="containter">
+        <h1>Edit World - Admin Funcionality</h1>
+    </div>
+</div>
+
+<div class="container py-5">
+    @if (Model != null)
+    {
+        <form method="post">
+            <div class="mb-3 ">
+                <label class="form-label">Id</label>
+                <input type="text" id="id" class="form-control" asp-for="Id" readonly />
+            </div>
+
+            <div class="mb-3 col-8">
+                <label for="nome" class="form-label">World</label>
+                <input type="text" class="form-control" id="nome" asp-for="Nome" />
+            </div>
+
+            <div class="mb-3">
+                <label for="descricao" class="form-label">Short Description</label>
+                <input class="form-control" type="text" placeholder="World's Short Description" id="CurtaDescricao" name="CurtaDescricao" asp-for="CurtaDescricao" />
+            </div>
+
+            <div class="mb-3">
+                <label for="descricao" class="form-label">Description</label>
+                <textarea placeholder="World's Description" id="descricao" name="descricao" asp-for="Descricao"></textarea>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Upload Image</label>
+                <input type="file" id="ImageBoxUpload" class="form-control" />
+
+                @if (Model.ImgBox != null)
+                {
+                    <img src="@Model.ImgBox" id="ImageBoxUploadDisplay" style="width:300px; margin-top:1em;" />
+
+                }
+                else
+                {
+                    <img src="" id="ImageBoxUploadDisplay" style="width:300px; margin-top:1em;" />
+
+                }
+            </div>
+            <div class="mb-3">
+                <label for="ImgBoxUrl" class="form-label">Content Image</label>
+                <input type="text" class="form-control" id="ImgBoxUrl" placeholder="Image's URL" asp-for="ImgBox">
+            </div>
+
+            <div class=" mb-3 form-group col-8">
+                <label for="autor" class="form-label">Author</label>
+                <select id="autor" asp-for="Autor" class="form-control" asp-items="Html.GetEnumSelectList<Autor>()">
+                </select>
+                <span asp-validation-for="Autor" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3 col-2">
+                <label class="form-label">Published Date</label>
+                <input type="date" class="form-control" id="publishedDate" asp-for="PublishedDate" />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">URL Handle</label>
+                <input type="text" class="form-control" id="urlHandle" asp-for="UrlHandle" placeholder="Suggestion: TheGalaxyOfLuna" />
+            </div>
+
+            <div class="form-check form-switch mb-3">
+                <label class="form-check-label" for="visible">Visible?</label>
+                <input class="form-check-input" type="checkbox" id="visible" asp-for="Visible" checked>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Continents</label>
+                <select class="form-select" asp-items="@Model.Continentes" asp-for="SelectedContinentes">
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <div class="d-flex">
+
+                    <button type="submit" class="btn btn-dark">Update</button>
+                    <button type="button" class="btn btn-danger ms-2" data-bs-toggle="modal" data-bs-target="#confirmDelete">
+                        Delete
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- Modal Delete -->
+            <div class="modal fade " id="confirmDelete" tabindex="-1" aria-labelledby="confirmDeleteLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <p>Are you sure you want to delete this world?</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                            <button class="btn btn-danger ms-2" type="submit" asp-area="" asp-controller="AdminMundos" asp-action="Delete">Delete</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </form>
+
+
+    }
+    else
+    {
+        <p>No World found!</p>
+    }
+</div>
+@section Scripts
+    {
+    <script>
+
+
+        Date.prototype.toDateInputValue = (function () {
+            var local = new Date(this);
+            local.setMinutes(this.getMinutes() - this.getTimezoneOffset());
+            return local.toJSON().slice(0, 10);
+        });
+        document.getElementById('publishedDate').value = new Date().toDateInputValue();
+
+
+        var editor = new FroalaEditor('#descricao', {
+            imageUploadURL: '/api/images'
+        });
+
+
+        var text = $("#descricao").val();
+        $("#DetailDesc").val(text);
+        $('#save').on('click', function () {
+            var text = $("#DetailDesc").val();
+            $("#descricao").val(text);
+        });
+    </script>
+    <script>
+        const ImageBoxUploadElement = document.getElementById('ImageBoxUpload');
+        const ImgBoxUrlElement = document.getElementById('ImgBoxUrl');
+        const ImageBoxDisplayElement = document.getElementById('ImageBoxUploadDisplay');
+        async function uploadBoxImage(e) {
+            console.log(e.target.files[0]);
+
+            let data = new FormData();
+            data.append('file', e.target.files[0]);
+
+            await fetch('/api/images', {
+                method: 'POST',
+                headers: {
+                    'Accept': '*/*',
+                },
+                body: data
+            }).then(response => response.json())
+                .then(result => {
+                    ImgBoxUrlElement.value = result.link;
+                    ImageBoxDisplayElement.src = result.link;
+                    ImageBoxDisplayElement.style.display = 'block';
+                });
+        }
+
+        ImageBoxUploadElement.addEventListener('change', uploadBoxImage);
+
+
+    </script>
+
+}
+

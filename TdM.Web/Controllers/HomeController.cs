@@ -1,21 +1,27 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using TdM.Web.Models;
-
+using TdM.Web.Repositories;
 namespace TdM.Web.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger)
+        public IMundoRepository MundoRepository { get; }
+
+        public HomeController(ILogger<HomeController> logger, IMundoRepository mundoRepository)
         {
             _logger = logger;
+            MundoRepository = mundoRepository;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var mundo = await MundoRepository.GetAllAsync();
+
+
+            return View(mundo);
         }
 
         public IActionResult Privacy()

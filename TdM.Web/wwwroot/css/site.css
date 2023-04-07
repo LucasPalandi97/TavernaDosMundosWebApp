@@ -8,10 +8,6 @@ html {
   }
 }
 
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
-}
-
 html {
   position: relative;
   min-height: 100%;
@@ -20,62 +16,3 @@ html {
 body {
   margin-bottom: 60px;
 }
-
-.trapezoidRight {
-    position: relative;
-    height: 100px;
-    width: 100px;
-    background: beige;
-    border: 1px solid red;
-    border-right-width: 0px;
-    margin-right: 50px;
-}
-
-    .trapezoidRight:before {
-        position: absolute;
-        content: '';
-        left: -25px;
-        top: -1px;
-        height: 100px;
-        width: 50px;
-        background: beige;
-        border: 1px solid red;
-        z-index: -1;
-        -webkit-transform: skew(20deg);
-        -moz-transform: skew(20deg);
-        transform: skew(20deg);
-    }
-
-.trapezoidLeft {
-    position: relative;
-    height: 100px;
-    width: 100px;
-    background: beige;
-    border: 1px solid red;
-    border-left-width: 0px;
-    margin-left: 50px;
-}
-
-    .trapezoidLeft:before {
-        position: absolute;
-        content: '';
-        left: -25px;
-        top: -1px;
-        height: 100px;
-        width: 50px;
-        background: beige;
-        border: 1px solid red;
-        z-index: -1;
-        -webkit-transform: skew(20deg);
-        -moz-transform: skew(20deg);
-        transform: skew(20deg);
-    }
-
-.preview {
-    display: inline-block;
-    max-width: 50px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-

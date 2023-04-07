@@ -21,6 +21,7 @@
                     <th>Id</th>
                     <th>Continent</th>
                     <th>Description</th>
+                    <th>World</th>
                     <th></th>
                 </tr>
             </thead>
@@ -30,9 +31,10 @@
                     <tr>
                         <td>@continente.Id</td>
                         <td>@continente.Nome</td>
-                        <td>@continente.Descricao</td>                                             
+                        <td>@continente.CurtaDescricao</td>
+                        <td>@continente.Mundo?.Nome</td>
                         <td>
-                            <a asp-area="" asp-controller="Continentes" asp-action="Edit" asp-route-id="@continente.Id">Edit</a>
+                            <a asp-area="" asp-controller="AdminContinentes" asp-action="Edit" asp-route-id="@continente.Id">Edit</a>
                         </td>
                     </tr>
                 }

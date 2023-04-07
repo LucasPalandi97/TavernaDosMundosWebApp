@@ -21,7 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Views\Regioes\" />
+
   </ItemGroup>
 
 </Project>

@@ -45,6 +45,12 @@ namespace TdM.Web.Repositories
 
         }
 
+        //public async Task<Mundo?> GetByUrlHandleAsync(string urlHandle)
+        //{
+        //    return await tavernaDbContext.Mundos.Include(x => x.Continentes)
+        //    await tavernaDbContext.Mundos.FirstOrDefaultAsync(x => x.UrlHandle == urlHandle);
+        //}
+
         public async Task<Mundo?> UpdateAsync(Mundo mundo)
         {
             var existingMundo = await tavernaDbContext.Mundos.Include(x => x.Continentes).FirstOrDefaultAsync(x => x.Id == mundo.Id);
@@ -52,12 +58,15 @@ namespace TdM.Web.Repositories
             if(existingMundo != null)
             {
                 existingMundo.Nome = mundo.Nome;
+                existingMundo.CurtaDescricao = mundo.CurtaDescricao;
                 existingMundo.Descricao = mundo.Descricao;
                 existingMundo.Autor = mundo.Autor;
                 existingMundo.ImgBox = mundo.ImgBox;
+                existingMundo.PublishedDate = mundo.PublishedDate;
+                existingMundo.UrlHandle = mundo.UrlHandle;
                 existingMundo.Visible = mundo.Visible;
                 existingMundo.Continentes = mundo.Continentes;
-
+          
                 await tavernaDbContext.SaveChangesAsync();
                 return existingMundo;
             }

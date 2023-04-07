@@ -16,6 +16,9 @@ public class Povo
     [Display(Name = "Raça")]
     public Raca? Raca { get; set; }
 
+    [Display(Name = "Descrição Prévia")]
+    public string CurtaDescricao { get; set; }
+
     [Required]
     [Display(Name = "Descrição")]
     public string Descricao { get; set; }
@@ -23,6 +26,10 @@ public class Povo
     public string? ImgCard { get; set; }
 
     public string? ImgBox { get; set; }
+
+    public DateTime PublishedDate { get; set; }
+
+    public string UrlHandle { get; set; }
 
     [Required]
     public bool Visible { get; set; }
