@@ -21,7 +21,7 @@ public class Regiao
     public string CurtaDescricao { get; set; }
 
     [Display(Name = "Símbolo")]
-    public string Simbolo { get; set; }
+    public string? Simbolo { get; set; }
 
     public string? ImgCard { get; set; }
 

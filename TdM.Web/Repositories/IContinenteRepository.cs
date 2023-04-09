@@ -8,6 +8,8 @@ public interface IContinenteRepository
 
     Task<Continente?> GetAsync(Guid id);
 
+    Task<Continente?> GetByUrlHandleAsync(string urlHandle);
+
     Task<Continente> AddAsync(Continente continente);
 
     Task<Continente?> UpdateAsync(Continente continente);

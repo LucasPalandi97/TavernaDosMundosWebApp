@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TdM.Database.Data;
 
@@ -11,9 +12,11 @@ using TdM.Database.Data;
 namespace TdM.Database.Migrations
 {
     [DbContext(typeof(TavernaDbContext))]
-    partial class TavernaDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230409203552_SymbolNull")]
+    partial class SymbolNull
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

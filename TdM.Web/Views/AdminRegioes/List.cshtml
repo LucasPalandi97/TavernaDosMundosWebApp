@@ -1,0 +1,49 @@
+﻿@model List<TdM.Database.Models.Domain.Regiao>
+@{
+
+}
+
+
+<div class="bg-secondary bg-opacity-10 py-2">
+    <div class="containter">
+        <h1>Show all Regions - Admin Funcionality</h1>
+    </div>
+</div>
+
+<div class="container py-5">
+    @if (Model != null && Model.Any())
+    {
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Region</th>
+                    <th>Description</th>
+                    <th>Continent</th>                   
+                    <th>World</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var regiao in Model)
+                {
+                    <tr>
+                        <td>@regiao.Id</td>
+                        <td>@regiao.Nome</td>
+                        <td>@regiao.CurtaDescricao</td>
+                        <td>@regiao.Continente?.Nome</td>
+                        <td>@regiao.Mundo?.Nome</td>
+                        <td>
+                            <a asp-area="" asp-controller="AdminRegioes" asp-action="Edit" asp-route-id="@regiao.Id">Edit</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p>No Regions found!</p>
+    }
+</div>

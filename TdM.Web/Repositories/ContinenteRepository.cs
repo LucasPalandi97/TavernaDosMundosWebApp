@@ -43,6 +43,11 @@ public class ContinenteRepository : IContinenteRepository
         return tavernaDbContext.Continentes.Include(x => x.Mundo).FirstOrDefaultAsync(x => x.Id == id);
     }
 
+    public async Task<Continente?> GetByUrlHandleAsync(string urlHandle)
+    {
+        return await tavernaDbContext.Continentes.Include(x => x.Mundo).FirstOrDefaultAsync(x => x.UrlHandle == urlHandle);
+    }
+
     public async Task<Continente?> UpdateAsync(Continente continente)
     {
 

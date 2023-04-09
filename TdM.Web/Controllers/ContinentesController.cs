@@ -2,7 +2,7 @@
 
 namespace TdM.Web.Controllers
 {
-    public class Continentes : Controller
+    public class ContinentesController : Controller
     {
         public IActionResult Index()
         {
