@@ -19,8 +19,6 @@ public class AdminMundosController : Controller
         this.mundoRepository = mundoRepository;
         this.continenteRepository = continenteRepository;
     }
-    [HttpGet]
-    [ActionName("Index")]
 
     [HttpGet]
     public async Task<IActionResult> Add()
@@ -34,8 +32,8 @@ public class AdminMundosController : Controller
         };
         return View(model);
     }
+
     [HttpPost]
-    [ActionName("Add")]
     public async Task<IActionResult> Add(AddMundoRequest addMundoRequest)
     {
         //Maping AddMundoRequest to Mundo domain model
@@ -76,7 +74,6 @@ public class AdminMundosController : Controller
     }
 
     [HttpGet]
-    [ActionName("List")]
     public async Task<IActionResult> List()
     {
         // Use dbContext to read the mundos
@@ -118,8 +115,8 @@ public class AdminMundosController : Controller
         }
         return View(null);
     }
+
     [HttpPost]
-    [ActionName("Edit")]
     public async Task<IActionResult> Edit(EditMundoRequest editMundoRequest)
     {
         //Map view model back to damain model
@@ -169,7 +166,6 @@ public class AdminMundosController : Controller
         //Redirect to Get
     }
     [HttpPost]
-    [ActionName("Delete")]
     public async Task<IActionResult> Delete(EditMundoRequest editMundoRequest)
     {
         // Talk to repository to delete this mundo and tags

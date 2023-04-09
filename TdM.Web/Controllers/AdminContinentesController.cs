@@ -3,7 +3,6 @@ using TdM.Web.Models.ViewModels;
 using TdM.Web.Repositories;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using TdM.Database.Models.Domain;
-using Microsoft.AspNetCore.Routing.Constraints;
 using System.Data;
 using Microsoft.AspNetCore.Authorization;
 
@@ -20,7 +19,6 @@ public class AdminContinentesController : Controller
         this.mundoRepository = mundoRepository;
         this.continenteRepository = continenteRepository;
     }
-    [HttpGet]
 
     [HttpGet]
     public async Task<IActionResult> Add()
@@ -37,7 +35,7 @@ public class AdminContinentesController : Controller
     [HttpPost]
     public async Task<IActionResult> Add(AddContinenteRequest addContinenteRequest)
     {
-
+       
         //Map view model to domain model
 
         var continente = new Continente
