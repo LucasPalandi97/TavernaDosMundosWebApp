@@ -4,6 +4,7 @@
 }
 
 <div class="container py-5">
+
     @if (Model != null && Model.Any())
     {
         <div class="d-flex flex-column bd-highlight mb-3">
@@ -13,9 +14,9 @@
                     <img src="@continente.ImgCard" class="card-img h-100 w-100" style=" object-fit: cover" alt="Responsive Image">
                     <div class="card-img-overlay">
                         <button id="btnEdit" class="btn btn-warning btn-small position-absolute top-0 start-100 translate-middle">
-                            <a class="" asp-area="btnEdit" asp-controller="AdminContinentes" asp-action="Edit" asp-route-id="@continente.Id"><i class="bi bi-wrench-adjustable"></i></a>
+                            <a class="" asp-area="" asp-controller="AdminContinentes" asp-action="Edit" asp-route-id="@continente.Id"><i class="bi bi-wrench-adjustable"></i></a>
                         </button>
-                        <h5 class="card-title">@continente.Nome</h5>
+                        <h5 class="card-body">@continente.Nome</h5>
                         <p class="card-text text-black ">@continente.CurtaDescricao</p>
                         <p class="card-text text-capitalize">Por @continente.Mundo</p>
                     </div>

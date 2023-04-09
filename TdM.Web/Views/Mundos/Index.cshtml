@@ -1,0 +1,67 @@
+﻿@model TdM.Database.Models.Domain.Mundo
+@using TdM.Database.Models.Domain.Enums
+@{
+    ViewData["Title"] = Model.Nome+", "+Model.CurtaDescricao;
+}
+
+@if (Model != null)
+{
+
+    <!-- Header - set the background image for the header in the line below-->
+    <header class="py-5 bg-image-full" style="background-image: url('@Model.ImgBox'); background-size:cover; height:50em;">
+        <div class="mask bg-dark bg-opacity-50 text-center my-5 ">
+            <h1 class="text-white fs-3 fw-bolder text-uppercase">@Model.Nome</h1>
+            <p class="text-white-50 mb-0 text-uppercase">@Model.CurtaDescricao</p>
+            <p class="text-white-50 mb-0">By: @Model.Autor.GetDisplayName()</p>
+        </div>
+    </header>
+    <!-- Content section-->
+    <section class="py-2">
+        <div class="container my-5">
+            <div class="row justify-content-center ">
+                <div class="w-100 col-lg-6">
+                    @Html.Raw(Model.Descricao)
+                </div>
+            </div>
+        </div>
+    </section>
+    if(Model.Continentes.Any()){
+    <!-- Image element - set the background image for the header in the line below-->
+    <div class="py-2 px-5 bg-image-full mb-3 justify-content-center aling-items-center" style="background-image: url('https://source.unsplash.com/4ulffa6qoKA/1200x800')">
+        
+        <h2 class="text-center text-white-50">Related Continents</h2>
+
+        @foreach (var continente in Model.Continentes)
+        {
+            <div class="float-start card text-white m-3 col-12 " style="background-image:url(@continente.ImgCard); background-size:cover; height:250px; width:200px;">
+                <div class="mask bg-dark bg-opacity-75">
+                    <div class="justify-content-center align-items-center">
+                        <h5 class="card-title">@continente.Nome</h5>
+                        <p class="card-text text-black ">@continente.CurtaDescricao</p>
+                        <a class="btn btn-dark" asp-area="" asp-controller="Continentes" asp-action="Index" asp-route-urlHandle="@continente.UrlHandle">Read more</a>
+                    </div>
+                </div>
+            </div>
+        }
+        <!-- Put anything you want here! The spacer below with inline CSS is just for demo purposes!-->
+        <div style="height: 20rem"></div>
+    </div>
+    }
+    <!-- Content section-->
+    <section class="py-5">
+        <div class="container my-5">
+            <div class="row justify-content-center">
+                <div class="col-lg-6">
+                    <h2>Engaging Background Images</h2>
+                    <p class="lead">The background images used in this template are sourced from Unsplash and are open source and free to use.</p>
+                    <p class="mb-0">I can't tell you how many people say they were turned off from science because of a science teacher that completely sucked out all the inspiration and enthusiasm they had for the course.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+}
+else
+{
+    <p>World not found!</p>
+}

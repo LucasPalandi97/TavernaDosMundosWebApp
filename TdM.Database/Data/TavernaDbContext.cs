@@ -15,7 +15,7 @@ public class TavernaDbContext : DbContext
     public DbSet<Conto> Contos { get; set; }
 
 
-    public TavernaDbContext(DbContextOptions options) : base(options) { }
+    public TavernaDbContext(DbContextOptions<TavernaDbContext> options) : base(options) { }
 
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

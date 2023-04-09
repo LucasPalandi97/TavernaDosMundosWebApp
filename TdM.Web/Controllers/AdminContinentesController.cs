@@ -5,11 +5,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using TdM.Database.Models.Domain;
 using Microsoft.AspNetCore.Routing.Constraints;
 using System.Data;
+using Microsoft.AspNetCore.Authorization;
 
 namespace TdM.Web.Controllers;
 
-
-
+[Authorize(Roles = "Admin")]
 public class AdminContinentesController : Controller
 {
     private readonly IMundoRepository mundoRepository;
@@ -21,14 +21,8 @@ public class AdminContinentesController : Controller
         this.continenteRepository = continenteRepository;
     }
     [HttpGet]
-    [ActionName("Index")]
-    public async Task<IActionResult> Index()
-    {
-        // Use dbContext to read the continente
-        var continente = await continenteRepository.GetAllAsync();
-        return View(continente);
-    }
-   
+
+    [HttpGet]
     public async Task<IActionResult> Add()
     {
         //get mundos from repository
@@ -39,6 +33,7 @@ public class AdminContinentesController : Controller
         };
         return View(model); 
     }
+
     [HttpPost]
     public async Task<IActionResult> Add(AddContinenteRequest addContinenteRequest)
     {
@@ -77,15 +72,14 @@ public class AdminContinentesController : Controller
 
         return RedirectToAction("List");
     }
+
     [HttpGet]
-    [ActionName("List")]
     public async Task<IActionResult> List()
     {
         // Use dbContext to read the continente
         var continentes = await continenteRepository.GetAllAsync();
         return View(continentes);
     }
-
 
     [HttpGet]
     public async Task<IActionResult> Edit(Guid id)
@@ -120,8 +114,6 @@ public class AdminContinentesController : Controller
         return View(null);
 }
 
-
-     
     [HttpPost]
     public async Task<IActionResult> Edit(EditContinenteRequest editContinenteRequest)
     {
@@ -167,6 +159,7 @@ public class AdminContinentesController : Controller
 
         return RedirectToAction("Edit", new { id = editContinenteRequest.Id });
     }
+
     public async Task<IActionResult> Delete(EditContinenteRequest editContinenteRequest)
     {
         var deletedContinente = await continenteRepository.DeleteAsync(editContinenteRequest.Id);

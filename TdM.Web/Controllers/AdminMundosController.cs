@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using TdM.Database.Models.Domain;
 using TdM.Database.Models.Domain.Enums;
@@ -7,6 +8,7 @@ using TdM.Web.Repositories;
 
 namespace TdM.Web.Controllers;
 
+[Authorize(Roles = "Admin")]
 public class AdminMundosController : Controller
 {
     private readonly IMundoRepository mundoRepository;
@@ -19,12 +21,6 @@ public class AdminMundosController : Controller
     }
     [HttpGet]
     [ActionName("Index")]
-    public async Task<IActionResult> Index()
-    {
-        // Use dbContext to read the mundos
-        var mundos = await mundoRepository.GetAllAsync();
-        return View(mundos);
-    }
 
     [HttpGet]
     public async Task<IActionResult> Add()

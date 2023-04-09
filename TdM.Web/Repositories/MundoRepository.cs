@@ -45,11 +45,11 @@ namespace TdM.Web.Repositories
 
         }
 
-        //public async Task<Mundo?> GetByUrlHandleAsync(string urlHandle)
-        //{
-        //    return await tavernaDbContext.Mundos.Include(x => x.Continentes)
-        //    await tavernaDbContext.Mundos.FirstOrDefaultAsync(x => x.UrlHandle == urlHandle);
-        //}
+        public async Task<Mundo?> GetByUrlHandleAsync(string urlHandle)
+        {
+            return await tavernaDbContext.Mundos.Include(x => x.Continentes).FirstOrDefaultAsync(x => x.UrlHandle == urlHandle);
+        }
+
 
         public async Task<Mundo?> UpdateAsync(Mundo mundo)
         {

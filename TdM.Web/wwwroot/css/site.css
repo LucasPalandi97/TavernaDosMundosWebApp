@@ -1,4 +1,7 @@
-html {
+html, body{
+    margin:0;
+    width:100%;
+    overflow-x:hidden;
   font-size: 14px;
 }
 
@@ -15,4 +18,8 @@ html {
 
 body {
   margin-bottom: 60px;
+}
+
+descricao_content{
+    max-width:100%;
 }
