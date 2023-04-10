@@ -18,3 +18,10 @@ body  {
 
         transform: scale(1.025);
     }
+
+  @media (max-width: 992px){
+    .grow:hover {
+        transform:none;
+    }
+
+  }

@@ -1,0 +1,66 @@
+﻿@{
+}
+@model List<TdM.Database.Models.Domain.Regiao>
+@using TdM.Database.Models.Domain.Enums
+@{
+    ViewBag.Title = "Regions";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="container py-5">
+    @if (Model != null && Model.Any())
+    {
+        <div id="regionList" class="d-flex">
+            @foreach (var regiao in Model)
+            {
+                <a class="text-white " style="object-fit:cover;" asp-area="" asp-controller="Regioes" asp-action="Index" asp-route-urlHandle="@regiao.UrlHandle">
+                    <div class="card m-3 col-lg-3 col-md-4 col-sm-6 col-xs-12" style="width: 22rem; height:12rem;">
+
+                        <img src="@regiao.ImgCard" class="card-img-top objcenter h-100 w-100" alt="Responsive Image">
+                        <img src="@regiao.Simbolo" class="center imground objcenter" alt="Responsive Image">
+                        <div class="card-img-overlay w-100 bottom-0 bg-dark bottom text-center " style="height:4rem;">
+                            <h5 class="card-title">@regiao.Nome</h5>
+                        </div>
+                    </div>
+                </a>
+            }
+        </div>
+
+
+
+
+    }
+    else
+    {
+        <p>No Worlds found!</p>
+    }
+</div>
+<style>
+    .imground {
+        height: 80px;
+        width: 80px;
+        border-radius: 50%;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        top: 0;
+        margin: auto;
+        display: block;
+        position: absolute;
+        z-index:2000;
+    }
+    .bottom{
+        margin-top: auto;      
+        display: block;
+        position: absolute;
+    }
+
+    .imgfit {
+        width: 100%; /* or any custom size */
+        height: 100%;
+    }
+
+    .objcenter {
+        object-fit: cover;
+        object-position: center;
+    }
+</style>

@@ -14,17 +14,15 @@
 <div class="container py-5">
     @if (Model != null && Model.Any())
     {
-        @foreach (var mundo in Model)
-        {
-            
-        }
-        <table class="table">
+
+        <table class="table" id="table">
             <thead>
                 <tr>
-                    <th>Id</th>
-                    <th>Continent</th>
+                    <th onclick="sortTable(0)">Id <span class="pointer">&#9660</span></th>
+                    <th onclick="sortTable(1)">Continent <span class="pointer">&#9660</span></th>
+                    <th onclick="sortTable(2)">World <span class="pointer">&#9660</span></th>
                     <th>Description</th>
-                    <th>World</th>
+
                     <th></th>
                 </tr>
             </thead>
@@ -34,8 +32,9 @@
                     <tr>
                         <td>@continente.Id</td>
                         <td>@continente.Nome</td>
-                        <td>@continente.CurtaDescricao</td>
                         <td>@continente.Mundo?.Nome</td>
+                        <td>@continente.CurtaDescricao</td>
+
                         <td>
                             <a asp-area="" asp-controller="AdminContinentes" asp-action="Edit" asp-route-id="@continente.Id">Edit</a>
                         </td>
@@ -49,3 +48,8 @@
         <p>No Continents found!</p>
     }
 </div>
+@section Scripts
+    {
+
+
+}

@@ -1,9 +1,5 @@
-html, body{
-    margin:0;
-    width:100%;
-    overflow-x:hidden;
-  font-size: 14px;
-  z-index:0;
+html, body {  
+    font-size: 16px;
 }
 
 @media (min-width: 768px) {
@@ -14,4 +10,7 @@ html, body{
 
 descricao_content{
     max-width:100%;
+}
+.pointer {
+    cursor: pointer;
 }
