@@ -14,14 +14,14 @@
     @if (Model != null && Model.Any())
     {
 
-        <table class="table">
+        <table class="table table-hover" id="table">
             <thead>
                 <tr>
-                    <th>Id</th>
-                    <th>Region</th>
-                    <th>Description</th>
-                    <th>Continent</th>                   
-                    <th>World</th>
+                    <th id="idcolumn">Id</th>
+                    <th onclick="sortTable(1)">Region <span class="pointer">&#9660</span></th>
+                    <th onclick="sortTable(1)">Continent <span class="pointer">&#9660</span></th>
+                    <th onclick="sortTable(1)">World <span class="pointer">&#9660</span></th>
+                    <th id="desccolumn">Description</th>
                     <th></th>
                 </tr>
             </thead>
@@ -29,11 +29,11 @@
                 @foreach (var regiao in Model)
                 {
                     <tr>
-                        <td>@regiao.Id</td>
-                        <td>@regiao.Nome</td>
-                        <td>@regiao.CurtaDescricao</td>
+                        <td id="tdid">@regiao.Id</td>
+                        <td>@regiao.Nome</td>                       
                         <td>@regiao.Continente?.Nome</td>
                         <td>@regiao.Mundo?.Nome</td>
+                        <td id="tddesc">@regiao.CurtaDescricao</td>
                         <td>
                             <a asp-area="" asp-controller="AdminRegioes" asp-action="Edit" asp-route-id="@regiao.Id">Edit</a>
                         </td>

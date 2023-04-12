@@ -28,15 +28,14 @@
         </div>
 
         <div class="mb-3">
-            <label class="form-label">Upload Image</label>
-            <input type="file" id="ImageBoxUpload" class="form-control" />
+            <label class="form-label">Upload Content Image</label>
+            <input type="file" id="ImageBoxUpload" class="form-control">
 
-            <img src="" id="ImageBoxUploadDisplay" style="display:none;width:300px; margin-top:1em;" />
+            <img src="" id="ImageBoxUploadDisplay" style="display:none;width:300px; margin-top:1em;">
         </div>
-
         <div class="mb-3">
-            <label for="ImgBoxUrl" class="form-label">Content Image</label>
-            <input type="text" class="form-control" id="ImgBoxUrl" placeholder="Image's URL" asp-for="ImgBox">
+            <label class="form-label" for="ImgBoxUrl">Content Image</label>
+            <input type="text" class="form-control" id="ImgBoxUrl" placeholder="Image's URL" asp-for="ImgBox" />
         </div>
 
         <div class=" mb-3 form-group col-8">
@@ -47,9 +46,9 @@
             <span asp-validation-for="Autor" class="text-danger"></span>
         </div>
 
-        <div class="mb-3 col-2">
+        <div class="mb-3 col-4">
             <label class="form-label">Published Date</label>
-            <input type="date" class="form-control" id="publishedDate" asp-for="PublishedDate" readonly />
+            <input type="datetime-local" class="form-control" id="publishedDate" asp-for="PublishedDate" />
         </div>
 
         <div class="mb-3">
@@ -101,7 +100,6 @@
 
     </form>
 </div>
-
 
 @section Scripts {
 

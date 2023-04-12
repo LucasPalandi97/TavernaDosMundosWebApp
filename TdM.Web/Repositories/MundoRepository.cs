@@ -38,9 +38,9 @@ public class MundoRepository : IMundoRepository
         return await tavernaDbContext.Mundos.Include(x => x.Continentes).ToListAsync();
     }
 
-    public Task<Mundo?> GetAsync(Guid id)
+    public async Task<Mundo?> GetAsync(Guid id)
     {
-        return tavernaDbContext.Mundos.Include(x => x.Continentes).FirstOrDefaultAsync(x => x.Id == id);
+        return await tavernaDbContext.Mundos.Include(x => x.Continentes).FirstOrDefaultAsync(x => x.Id == id);
     }
 
     public async Task<Mundo?> GetByUrlHandleAsync(string urlHandle)

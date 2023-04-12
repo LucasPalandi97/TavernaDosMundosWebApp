@@ -8,18 +8,19 @@ namespace TdM.Database.Models.Domain.Enums
 {
     public enum Classe
     {
-        Artífice,
-        Bárbaro,
-        Bardo,
-        Bruxo,
-        Clérigo,
-        Druida,
-        Feiticeiro,
-        Guardião,
-        Guerreiro,
-        Ladino,
-        Mago,
-        Monge
+        Artificer,
+        Barbarian,
+        Bard,
+        Cleric,
+        Druid,
+        Fighter,
+        Monk,
+        Paladin,
+        Ranger,
+        Rogue,
+        Sorcerer,
+        Warlock,
+        Wizard,
 
 
     }

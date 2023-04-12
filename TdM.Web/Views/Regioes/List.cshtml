@@ -6,61 +6,32 @@
     ViewBag.Title = "Regions";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<div class="container py-5">
+<head>
+    <link type="text/css" rel="stylesheet" href="~/css/ListRegioes.css" />
+</head>
+
+<div class="container-fluid py-5">
     @if (Model != null && Model.Any())
     {
-        <div id="regionList" class="d-flex">
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-2 row-cols-xl-4  g-2 justify-content-center align-items-center">
             @foreach (var regiao in Model)
             {
-                <a class="text-white " style="object-fit:cover;" asp-area="" asp-controller="Regioes" asp-action="Index" asp-route-urlHandle="@regiao.UrlHandle">
-                    <div class="card m-3 col-lg-3 col-md-4 col-sm-6 col-xs-12" style="width: 22rem; height:12rem;">
-
-                        <img src="@regiao.ImgCard" class="card-img-top objcenter h-100 w-100" alt="Responsive Image">
+                <div id="regioncard" class="card-container card px-0 mx-3" style="width:20rem; height:12rem;">
+                    <a class="text-white" asp-area="" asp-controller="Regioes" asp-action="Index" asp-route-urlHandle="@regiao.UrlHandle">
+                        <img src="@regiao.ImgCard" class="card-img-top imgfit h-100 w-100" style="object-fit: cover;" alt="@regiao.Nome">
                         <img src="@regiao.Simbolo" class="center imground objcenter" alt="Responsive Image">
-                        <div class="card-img-overlay w-100 bottom-0 bg-dark bottom text-center " style="height:4rem;">
-                            <h5 class="card-title">@regiao.Nome</h5>
+                        <div class="card-img-overlay w-100 bottom-0 bg-dark bottom text-center" style="height:4rem;">
+                            <h5 class="card-title text-truncate">@regiao.Nome</h5>
                         </div>
-                    </div>
-                </a>
+                    </a>
+                </div>
             }
         </div>
-
-
 
 
     }
     else
     {
-        <p>No Worlds found!</p>
+        <p>No Regions found!</p>
     }
 </div>
-<style>
-    .imground {
-        height: 80px;
-        width: 80px;
-        border-radius: 50%;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        top: 0;
-        margin: auto;
-        display: block;
-        position: absolute;
-        z-index:2000;
-    }
-    .bottom{
-        margin-top: auto;      
-        display: block;
-        position: absolute;
-    }
-
-    .imgfit {
-        width: 100%; /* or any custom size */
-        height: 100%;
-    }
-
-    .objcenter {
-        object-fit: cover;
-        object-position: center;
-    }
-</style>

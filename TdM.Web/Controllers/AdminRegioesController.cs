@@ -76,9 +76,9 @@ public class AdminRegioesController : Controller
     [HttpGet]
     public async Task<IActionResult> List()
     {
-        // Use dbContext to read the continente
-        var continentes = await regiaoRepository.GetAllAsync();
-        return View(continentes);
+        // Use dbContext to read the regiao
+        var regioes = await regiaoRepository.GetAllAsync();
+        return View(regioes);
     }
 
     [HttpGet]

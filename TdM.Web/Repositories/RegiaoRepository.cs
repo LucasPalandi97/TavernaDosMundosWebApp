@@ -21,6 +21,7 @@ public class RegiaoRepository : IRegiaoRepository
 
     public async Task<Regiao?> DeleteAsync(Guid id)
     {
+
         var existingRegiao = await tavernaDbContext.Regioes.FindAsync(id);
 
         if (existingRegiao != null)
@@ -30,6 +31,7 @@ public class RegiaoRepository : IRegiaoRepository
             return existingRegiao;
         }
         return null;
+
     }
 
     public async Task<IEnumerable<Regiao>> GetAllAsync()
@@ -38,9 +40,9 @@ public class RegiaoRepository : IRegiaoRepository
         return await tavernaDbContext.Regioes.Include(x => x.Continente).Include(x => x.Mundo).ToListAsync();
     }
 
-    public Task<Regiao?> GetAsync(Guid id)
+    public async Task<Regiao?> GetAsync(Guid id)
     {
-        return tavernaDbContext.Regioes.Include(x => x.Continente).Include(x => x.Mundo).FirstOrDefaultAsync(x => x.Id == id);
+        return await tavernaDbContext.Regioes.Include(x => x.Continente).Include(x => x.Mundo).FirstOrDefaultAsync(x => x.Id == id);
     }
 
     public async Task<Regiao?> GetByUrlHandleAsync(string urlHandle)

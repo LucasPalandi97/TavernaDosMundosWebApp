@@ -1,0 +1,56 @@
+﻿@model List<TdM.Database.Models.Domain.Personagem>
+@using TdM.Database.Models.Domain.Enums;
+@{
+
+}
+
+
+<div class="bg-secondary bg-opacity-10 py-2">
+    <div class="containter">
+        <h1>Show all Characters - Admin Funcionality</h1>
+    </div>
+</div>
+
+<div class="container py-5">
+    @if (Model != null && Model.Any())
+    {
+
+        <table class="table table-hover" id="table">
+            <thead>
+                <tr>
+                    <th id="idcolumn">Id</th>
+                    <th onclick="sortTable(1)">Character <span class="pointer">&#9660</span></th>
+                    <th onclick="sortTable(2)">Race <span class="pointer">&#9660</span></th>
+                    <th onclick="sortTable(3)">Class <span class="pointer">&#9660</span></th>
+                    <th id="desccolumn">Description</th>
+                    <th onclick="sortTable(4)">Region <span class="pointer">&#9660</span></th>
+                    <th onclick="sortTable(5)">World <span class="pointer">&#9660</span></th>
+                    <th onclick="sortTable(6)">Published</th>                    
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var personagem in Model)
+                {
+                    <tr>
+                        <td id="tdid">@personagem.Id</td>
+                        <td>@personagem.Nome</td>
+                        <td>@personagem.Raca?.GetDisplayName()</td>
+                        <td>@personagem.Classe?.GetDisplayName()</td>
+                        <td id="tddesc">@personagem.CurtaDescricao</td>
+                        <td>@personagem.Regiao?.Nome</td>                       
+                        <td>@personagem.Mundo?.Nome</td>
+                        <td>@personagem.PublishedDate</td>
+                        <td>
+                            <a asp-area="" asp-controller="AdminPersonagens" asp-action="Edit" asp-route-id="@personagem.Id">Edit</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p>No Characters found!</p>
+    }
+</div>

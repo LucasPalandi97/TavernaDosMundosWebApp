@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using TdM.Database.Models.Domain.Enums;
 
 namespace TdM.Web.Models.ViewModels;
 
@@ -7,7 +8,7 @@ public class AddMundoRequest
     public string Nome { get; set; }
     public string CurtaDescricao { get; set; }
     public string Descricao { get; set; }
-    public int Autor { get; set; }
+    public Autor Autor { get; set; }
     public string? ImgBox { get; set; }
     public DateTime PublishedDate { get; set; }
     public string UrlHandle { get; set; }

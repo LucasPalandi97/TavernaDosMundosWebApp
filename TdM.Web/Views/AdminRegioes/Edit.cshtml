@@ -13,6 +13,11 @@
     @if (Model != null)
     {
         <form method="post">
+
+            <div class="mb-3 col-8">
+                <label class="form-label" for="nome">Id</label>
+                <input type="text" class="form-control" id="nome" asp-for="Id" readonly/>
+            </div>
                 <div class="mb-3 col-8">
                     <label class="form-label" for="nome">Name</label>
                     <input type="text" class="form-control" id="nome" asp-for="Nome" />

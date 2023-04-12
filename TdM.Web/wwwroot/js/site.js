@@ -6,6 +6,9 @@
 
 
 //Set default date to today
+
+
+
 Date.prototype.toDateInputValue = (function () {
     var local = new Date(this);
     local.setMinutes(this.getMinutes() - this.getTimezoneOffset());
@@ -14,44 +17,18 @@ Date.prototype.toDateInputValue = (function () {
 document.getElementById('publishedDate').value = new Date().toDateInputValue();
 
 
+
 //froala editor HTML
 var editor = new FroalaEditor('#descricao', {
     imageUploadURL: '/api/images'
 });
 
-var text = $("#descricao").val();
-$("#DetailDesc").val(text);
-$('#save').on('click', function () {
-    var text = $("#DetailDesc").val();
-    $("#descricao").val(text);
+//froala editor HTML
+var editor2 = new FroalaEditor('#biografia', {
+    imageUploadURL: '/api/images'
 });
 
 
-//Symbol image for regions 
-const SymbolUploadElement = document.getElementById('SymbolUpload');
-const SymbolUrlElement = document.getElementById('SymbolUrl');
-const SymbolDisplayElement = document.getElementById('SymbolUploadDisplay');
-async function uploadSymbol(e) {
-    console.log(e.target.files[0]);
-
-    let data = new FormData();
-    data.append('file', e.target.files[0]);
-
-    await fetch('/api/images', {
-        method: 'POST',
-        headers: {
-            'Accept': '*/*',
-        },
-        body: data
-    }).then(response => response.json())
-        .then(result => {
-            SymbolUrlElement.value = result.link;
-            SymbolDisplayElement.src = result.link;
-            SymbolDisplayElement.style.display = 'block';
-        });
-}
-
-SymbolUploadElement.addEventListener('change', uploadSymbol);
 
 
 //Card image
@@ -108,6 +85,31 @@ async function uploadBoxImage(e) {
 ImageBoxUploadElement.addEventListener('change', uploadBoxImage);
 
 
+//Symbol image for regions 
+const SymbolUploadElement = document.getElementById('SymbolUpload');
+const SymbolUrlElement = document.getElementById('SymbolUrl');
+const SymbolDisplayElement = document.getElementById('SymbolUploadDisplay');
+async function uploadSymbol(e) {
+    console.log(e.target.files[0]);
+
+    let data = new FormData();
+    data.append('file', e.target.files[0]);
+
+    await fetch('/api/images', {
+        method: 'POST',
+        headers: {
+            'Accept': '*/*',
+        },
+        body: data
+    }).then(response => response.json())
+        .then(result => {
+            SymbolUrlElement.value = result.link;
+            SymbolDisplayElement.src = result.link;
+            SymbolDisplayElement.style.display = 'block';
+        });
+}
+
+SymbolUploadElement.addEventListener('change', uploadSymbol);
 
 //Sort table elements by column
 function sortTable(n) {

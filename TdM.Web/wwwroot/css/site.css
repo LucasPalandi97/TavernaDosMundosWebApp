@@ -1,16 +1,52 @@
-html, body {  
-    font-size: 16px;
+.container, container-fluid {
+    transition: all 0.3s ease-in-out;
 }
 
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
-}
+/*Responsive*/
+@media (max-width: 991px) {
+    .navbar-nav > li {
+        margin-top: 0.5rem;
+        margin-bottom: 0.5rem;
+    }
 
-descricao_content{
-    max-width:100%;
+        #desccolumn, #idcolumn, #tddesc, #tdid {
+            display: none;
+        }
+    
 }
-.pointer {
-    cursor: pointer;
+@media (max-width: 991px) {
+
+    html,body{
+        font-size:8px;
+    }
 }
+    /*Custom code*/
+    descricao_content {
+        max-width: 100%;
+    }
+
+    .pointer {
+        cursor: pointer;
+    }
+
+    #tdid {
+        max-width: 50px;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+    }
+
+    #tddesc {
+        max-width: 100px;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+    }
+
+    .footer {
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        height: 7rem;
+        z-index: 0; /* set the z-index of the footer to a lower value */
+    }

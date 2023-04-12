@@ -1,47 +1,36 @@
 ﻿@model List<TdM.Database.Models.Domain.Mundo>
 @using TdM.Database.Models.Domain.Enums
 @{
-     ViewBag.Title = "Index";
+    ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<link rel="stylesheet" href="~/css/HomePage.css"/>
+<head>
+<link rel="stylesheet" type="text/css" href="~/css/HomePage.css"/>
+</head>
 @*hero section*@
 
 <body class="bg-dark">
 
-    <div class="containter-fluid coll-xxl-8 bg-dark">
-    <div class="justify-content-center">
-        <div class="d-block d-lg-flex col-12 ">
+    <div class="containter-fluid coll-xxl-8 bg-dark" style="min-height:100vh;">
+        <div class="d-block d-lg-flex col-12 justify-content-center h-auto ">
             @if (Model != null && Model.Any())
             {
                 foreach (var mundo in Model)
                 {
-                        <div class="card grow mt-1 bg-dark text-white col border-0" style="border-radius:1rem; margin-left:0.135rem; margin-right:0.135rem;">
-                           
+                    <div class="card grow mt-1 bg-dark text-white col border-0 h-100" style="border-radius:1rem; margin-left:0.135rem; margin-right:0.135rem;">
                         <a class="text-white" asp-area="" asp-controller="Mundos" asp-action="Index" asp-route-urlHandle="@mundo.UrlHandle">
-
-                        <img src="@mundo.ImgBox" class="card-img" style="object-fit:cover; height:52.5rem" alt="...">
-                        <div class="py-5 card-img-overlay">
-                                    <h2 class="mb-2">
-                                        @mundo.Nome
-                                    </h2>
-                            <p class="mb-2">
-                                By: @mundo.Autor.GetDisplayName()
-                                <br />
-                            </p>
-                            <p class="mb-2">@mundo.PublishedDate</p>
-                            <p class="mb-2">@mundo.CurtaDescricao</p>
-                           
-                        </div>
+                            <img src="@mundo.ImgBox" class="card-img" style="object-fit:cover; height: calc(100vh - 7rem);" alt="...">
+                            <div class="py-5 card-img-overlay">
+                                <h2 class="mb-2">@mundo.Nome </h2>
+                                <p class="mb-2">By: @mundo.Autor.GetDisplayName()</p>
+                                <p class="mb-2">@mundo.PublishedDate</p>
+                                <p class="mb-2">@mundo.CurtaDescricao</p>
+                            </div>
                         </a>
                     </div>
                 }
             }
-
-           
-
         </div>
     </div>
-</div>
-@*end hero*@
+    @*end hero*@
 </body>

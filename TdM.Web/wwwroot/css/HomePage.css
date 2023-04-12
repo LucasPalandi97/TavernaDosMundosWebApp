@@ -1,6 +1,7 @@
 ﻿
-body  {
-
+.card:hover .card-img-overlay {
+    opacity: 1;
+    z-index: 1000;
 }
 
 
@@ -15,7 +16,7 @@ body  {
 }
 
     .grow:hover {
-
+        z-index: 2100;
         transform: scale(1.025);
     }
 

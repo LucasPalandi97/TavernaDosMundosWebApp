@@ -38,9 +38,9 @@ public class ContinenteRepository : IContinenteRepository
         return await tavernaDbContext.Continentes.Include(x => x.Mundo).ToListAsync();
     }
 
-    public Task<Continente?> GetAsync(Guid id)
+    public async Task<Continente?> GetAsync(Guid id)
     {
-        return tavernaDbContext.Continentes.Include(x => x.Mundo).FirstOrDefaultAsync(x => x.Id == id);
+        return await tavernaDbContext.Continentes.Include(x => x.Mundo).FirstOrDefaultAsync(x => x.Id == id);
     }
 
     public async Task<Continente?> GetByUrlHandleAsync(string urlHandle)

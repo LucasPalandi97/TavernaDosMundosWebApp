@@ -1,0 +1,112 @@
+﻿body {
+}
+
+#regionList {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+
+.card {
+    margin-bottom: 1.5rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.card-img-top {
+    transition: transform 0.2s ease-in-out;
+    transition: transform 0.2s ease-in-out;
+    object-fit: contain;
+    max-height: 200px;
+    display: block;
+    margin: 0 auto;
+    vertical-align: middle;
+}
+
+
+    /*Hover*/
+.card-img-top:hover .card {
+        box-shadow: 0 0 10px rgba(255, 255, 255, 0.8), 0 0 100px rgba(255, 255, 255, 0.8);
+}
+
+.card:hover .card-img-top {
+    transform: scale(1.1);
+}
+
+#regioncard:hover {
+    color: white;
+    box-shadow: 0 5px 15px #b29229;
+}
+
+
+/*Responsive*/
+
+
+/* Reduce size of card image and title on smaller screens */
+@media (max-width: 767px) {
+    #regionList {
+        justify-content: center;
+    }
+
+    .card {
+        height: 30rem !important;
+        width: 100% !important;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .card-img-top {
+        height: 100%;
+        max-height: 100% !important;
+        object-fit: cover;
+        object-position: center;
+    }
+
+    .imground {
+        height: 10rem;
+        width: 10rem;
+    }
+
+    .card-title {
+        font-size: 1rem;
+    }
+
+    .bottom {
+        height: 2rem;
+    }
+}
+
+
+
+.imground {
+    height: 80px;
+    width: 80px;
+    border-radius: 50%;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+    margin: auto;
+    display: block;
+    position: absolute;
+    z-index: 2000;
+}
+
+.bottom {
+    margin-top: auto;
+    display: block;
+    position: absolute;
+}
+
+.imgfit {
+    width: 100%; /* or any custom size */
+    height: 100%;
+}
+
+.objcenter {
+    object-fit: cover;
+    object-position: center;
+}

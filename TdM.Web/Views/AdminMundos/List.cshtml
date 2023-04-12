@@ -4,7 +4,6 @@
 
 }
 
-
 <div class="bg-secondary bg-opacity-10 py-2">
     <div class="containter">
         <h1>Show all Worlds - Admin Funcionality</h1>
@@ -15,49 +14,44 @@
     @if (Model != null && Model.Any())
     {
 
-        <table class="table">
+        <table class="table table-hover text-nowrap" id="table">
             <thead>
                 <tr>
-                    <th>Id</th>
-                    <th>World</th>
-                    <th>Description</th>
-                    <th>Author</th>
-                    <th>World Building</th>
+                    <th id="idcolumn">Id</th>
+                    <th onclick="sortTable(1)">World <span class="pointer">&#9660</span></th>                    
+                    <th onclick="sortTable(2)">Author <span class="pointer">&#9660</span></th>
+                    <th id="desccolumn">Description</th>                 
+                    <th class="text-center">World Building</th>
+                    <th onclick="sortTable(3)">Published <span class="pointer">&#9660</span></th>
                     <th></th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody id="table-body">
                 @foreach (var mundo in Model)
                 {
                     <tr>
-                        <td>@mundo.Id</td>
+                        <td id="tdid">@mundo.Id</td>
                         <td>@mundo.Nome</td>
-                        <td>@mundo.CurtaDescricao</td>
-                        <td>@mundo.Autor.GetDisplayName()</td>
+                        <td>@mundo.Autor.GetDisplayName()</td>                       
+                        <td id="tddesc">@mundo.CurtaDescricao</td>                       
                         <td>
-
-                            <div class="dropdown mt-3">
-                                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    World Build
+                            <div class="container-fluid justify-content-center align-content-center text-center">
+                            <div class="dropdown">
+                                <button class="btn btn-secondary dropdown-toggle w-100" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    @mundo.Nome Content
                                 </button>
-                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                    <div class="dropdown dropend">
-                                        <a class="dropdown-item dropdown-toggle" href="#" id="dropdown-layouts" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Continents</a>
-                                        <div class="dropdown-menu" aria-labelledby="dropdown-layouts">
-
-                                            <ul class="dropdown-item" aria-labelledby="dropdown-layouts">
-                                                @foreach (var continente in mundo.Continentes)
-                                                {
-                                                    <a class="dropdown-item" asp-route-id="@continente.Id">@continente.Nome</a>
-                                                }
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
+                                    <ul class="dropdown-menu dropdown-menu w-100 text-center" aria-labelledby="dropdownMenuButton2">
+                                        <li><a class="dropdown-item active" href="#">Action</a></li>
+                                        <li><a class="dropdown-item" href="#">Another action</a></li>
+                                        <li><a class="dropdown-item" href="#">Something else here</a></li>
+                                        <li><hr class="dropdown-divider" /></li>
+                                        <li><a class="dropdown-item" href="#">Separated link</a></li>
+                                    </ul>
                             </div>
 
-
+                            </div>
                         </td>
+                        <td>@mundo.PublishedDate</td>
                         <td>
                             <a asp-area="" asp-controller="AdminMundos" asp-action="Edit" asp-route-id="@mundo.Id">Edit</a>
                         </td>

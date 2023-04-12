@@ -8,7 +8,6 @@ public class AddRegiaoRequest
 {
 
 
-    [MaxLength(32, ErrorMessage = "Name has to be a maximum of 32 characteres")]
     public string Nome { get; set; }
     public string CurtaDescricao { get; set; }
     public string Descricao { get; set; }

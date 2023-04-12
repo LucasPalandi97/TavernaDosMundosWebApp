@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using TdM.Database.Models.Domain;
-using TdM.Database.Models.Domain.Enums;
 using TdM.Web.Models.ViewModels;
 using TdM.Web.Repositories;
 
@@ -42,7 +41,7 @@ public class AdminMundosController : Controller
             Nome = addMundoRequest.Nome,
             Descricao = addMundoRequest.Descricao,
             CurtaDescricao = addMundoRequest.CurtaDescricao,
-            Autor = (Autor)addMundoRequest.Autor,
+            Autor = addMundoRequest.Autor,
             ImgBox = addMundoRequest.ImgBox,
             PublishedDate = addMundoRequest.PublishedDate,
             UrlHandle = addMundoRequest.UrlHandle,

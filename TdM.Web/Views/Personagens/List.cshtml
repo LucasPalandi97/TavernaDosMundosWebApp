@@ -1,0 +1,45 @@
+﻿@{
+}
+@model List<TdM.Database.Models.Domain.Personagem>
+@using TdM.Database.Models.Domain.Enums
+@{
+    ViewBag.Title = "Personagens";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<head>
+    <link type="text/css" rel="stylesheet" href="~/css/ListPersonagens.css" />
+</head>
+<div class="container-fluid py-5">
+    @if (Model != null && Model.Any())
+    {
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-2 row-cols-xl-4  g-2 justify-content-center align-items-center">
+            @foreach (var personagem in Model)
+            {
+                <div id="charactercard" class="card card-container mx-3" style="height: 20rem; width: 12rem;">
+                    <div class="card_mask p-0 justify-content-between">
+                        <a class="text-white" asp-area="" asp-controller="Personagens" asp-action="Index" asp-route-urlHandle="@personagem.UrlHandle">
+                            <img src="@personagem.ImgCard" class="card-img-top imgfit h-100 w-100" alt="Image not found!">
+                        </a>
+                        <div class="mask_text w-100">
+                            <div class="card-body">
+                                <ul id="listcardbottom" class="list-group list-group-flush">
+                                    <li><h3 class="card-title">@personagem.Nome</h3></li>
+                                    <li><p class="card-text text-nowrap">@personagem.CurtaDescricao</p></li>
+                                    <li class="list-group-item">@personagem.Raca?.GetDisplayName()</li>
+                                    <li class="list-group-item">@personagem.Classe?.GetDisplayName()</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            }
+        </div>
+
+
+    }
+    else
+    {
+        <p>No Worlds found!</p>
+    }
+</div>
