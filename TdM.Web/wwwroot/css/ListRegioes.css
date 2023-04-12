@@ -9,16 +9,43 @@
     min-height: 100vh;
 }
 
+#continentcard .card-img-top {
+    max-height: 30rem;
+}
+
+#nomecontinente {
+    top: 18%;
+    position: absolute;
+}
+
 
 .card {
     margin-bottom: 1.5rem;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     overflow: hidden;
+    transition: all .5s ease-in;
+}
+
+.card_mask {
+    transition: all .5s ease-in;
+    position: relative;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+    width: 100%;
+    opacity: 0.4;
+    transition: .5s ease;
+    background-color: #393839;
+}
+
+.card-body {
+    padding: 2rem;
 }
 
 .card-img-top {
-    transition: transform 0.2s ease-in-out;
-    transition: transform 0.2s ease-in-out;
+    transition: all .2s ease-in;
     object-fit: contain;
     max-height: 200px;
     display: block;
@@ -26,62 +53,81 @@
     vertical-align: middle;
 }
 
-
-    /*Hover*/
-.card-img-top:hover .card {
-        box-shadow: 0 0 10px rgba(255, 255, 255, 0.8), 0 0 100px rgba(255, 255, 255, 0.8);
+.card-img-overlay {
+    visibility: visible;
+    opacity: 0.9;
+    transition: visibility 0s linear 0s, opacity 300ms;
 }
 
-.card:hover .card-img-top {
-    transform: scale(1.1);
-}
-
+/*Hover*/
 #regioncard:hover {
     color: white;
     box-shadow: 0 5px 15px #b29229;
 }
 
-
-/*Responsive*/
-
-
-/* Reduce size of card image and title on smaller screens */
-@media (max-width: 767px) {
-    #regionList {
-        justify-content: center;
+    #regioncard:hover #regionimg {
+        transform: scale(1.1);
     }
 
-    .card {
-        height: 30rem !important;
-        width: 100% !important;
-        margin-left: auto;
-        margin-right: auto;
+    #regioncard:hover .imground {
+        transform: scale(1.2);
+        opacity: 0
     }
 
-    .card-img-top {
-        height: 100%;
-        max-height: 100% !important;
-        object-fit: cover;
-        object-position: center;
+    #regioncard:hover .card-img-overlay {
+        visibility: hidden;
+        opacity: 0;
+        transition: visibility 0s linear 300ms, opacity 300ms;
     }
 
-    .imground {
-        height: 10rem;
-        width: 10rem;
-    }
-
-    .card-title {
-        font-size: 1rem;
-    }
-
-    .bottom {
-        height: 2rem;
-    }
+#continentcard:hover {
+    color: white;
+    box-shadow: 0 5px 15px #b29229;
 }
 
+    #continentcard:hover #continentimg {
+        transform: scale(1.1);
+    }
 
+    #continentcard:hover .card_mask {
+        opacity: 1;
+    }
+
+    @media (max-width: 767px) {
+        #regionList {
+            justify-content: center;
+        }
+
+        .card {
+            height: 30rem !important;
+            width: 100% !important;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .card-img-top {
+            height: 100%;
+            max-height: 100% !important;
+            object-fit: cover;
+            object-position: center;
+        }
+
+        .imground {
+            height: 10rem;
+            width: 10rem;
+        }
+
+        .card-title {
+            font-size: 1rem;
+        }
+
+        .bottom {
+            height: 2rem;
+        }
+    }
 
 .imground {
+    transition: all .3s ease-in;
     height: 80px;
     width: 80px;
     border-radius: 50%;

@@ -35,23 +35,23 @@ public class ContinenteRepository : IContinenteRepository
     public async Task<IEnumerable<Continente>> GetAllAsync()
     {
         //return list and include navigation Icollection from model database
-        return await tavernaDbContext.Continentes.Include(x => x.Mundo).ToListAsync();
+        return await tavernaDbContext.Continentes.Include(x => x.Regioes).Include(x => x.Mundo).ToListAsync();
     }
 
     public async Task<Continente?> GetAsync(Guid id)
     {
-        return await tavernaDbContext.Continentes.Include(x => x.Mundo).FirstOrDefaultAsync(x => x.Id == id);
+        return await tavernaDbContext.Continentes.Include(x => x.Regioes).Include(x => x.Mundo).FirstOrDefaultAsync(x => x.Id == id);
     }
 
     public async Task<Continente?> GetByUrlHandleAsync(string urlHandle)
     {
-        return await tavernaDbContext.Continentes.Include(x => x.Mundo).FirstOrDefaultAsync(x => x.UrlHandle == urlHandle);
+        return await tavernaDbContext.Continentes.Include(x => x.Regioes).Include(x => x.Mundo).FirstOrDefaultAsync(x => x.UrlHandle == urlHandle);
     }
 
     public async Task<Continente?> UpdateAsync(Continente continente)
     {
 
-        var existingContinente = await tavernaDbContext.Continentes.Include(x => x.Mundo).FirstOrDefaultAsync(x => x.Id == continente.Id);
+        var existingContinente = await tavernaDbContext.Continentes.Include(x => x.Regioes).Include(x => x.Mundo).FirstOrDefaultAsync(x => x.Id == continente.Id);
 
         if (existingContinente != null)
         {

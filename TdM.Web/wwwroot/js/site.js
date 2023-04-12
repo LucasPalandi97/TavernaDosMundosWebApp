@@ -29,36 +29,8 @@ var editor2 = new FroalaEditor('#biografia', {
 });
 
 
-
-
-//Card image
-const ImageCardUploadElement = document.getElementById('ImageCardUpload');
-const ImgCardUrlElement = document.getElementById('ImgCardUrl');
-const ImageCardDisplayElement = document.getElementById('ImageCardUploadDisplay');
-async function uploadCardImage(e) {
-    console.log(e.target.files[0]);
-
-    let data = new FormData();
-    data.append('file', e.target.files[0]);
-
-    await fetch('/api/images', {
-        method: 'POST',
-        headers: {
-            'Accept': '*/*',
-        },
-        body: data
-    }).then(response => response.json())
-        .then(result => {
-            ImgCardUrlElement.value = result.link;
-            ImageCardDisplayElement.src = result.link;
-            ImageCardDisplayElement.style.display = 'block';
-        });
-}
-
-ImageCardUploadElement.addEventListener('change', uploadCardImage);
-
-
 //Content image 
+
 const ImageBoxUploadElement = document.getElementById('ImageBoxUpload');
 const ImgBoxUrlElement = document.getElementById('ImgBoxUrl');
 const ImageBoxDisplayElement = document.getElementById('ImageBoxUploadDisplay');
@@ -81,15 +53,16 @@ async function uploadBoxImage(e) {
             ImageBoxDisplayElement.style.display = 'block';
         });
 }
+if (uploadBoxImage != null) {
+    ImageBoxUploadElement.addEventListener('change', uploadBoxImage);
+}
 
-ImageBoxUploadElement.addEventListener('change', uploadBoxImage);
+//Card image
 
-
-//Symbol image for regions 
-const SymbolUploadElement = document.getElementById('SymbolUpload');
-const SymbolUrlElement = document.getElementById('SymbolUrl');
-const SymbolDisplayElement = document.getElementById('SymbolUploadDisplay');
-async function uploadSymbol(e) {
+const ImageCardUploadElement = document.getElementById('ImageCardUpload');
+const ImgCardUrlElement = document.getElementById('ImgCardUrl');
+const ImageCardDisplayElement = document.getElementById('ImageCardUploadDisplay');
+async function uploadCardImage(e) {
     console.log(e.target.files[0]);
 
     let data = new FormData();
@@ -103,14 +76,44 @@ async function uploadSymbol(e) {
         body: data
     }).then(response => response.json())
         .then(result => {
-            SymbolUrlElement.value = result.link;
-            SymbolDisplayElement.src = result.link;
-            SymbolDisplayElement.style.display = 'block';
+            ImgCardUrlElement.value = result.link;
+            ImageCardDisplayElement.src = result.link;
+            ImageCardDisplayElement.style.display = 'block';
         });
 }
+if (uploadCardImage != null) {
+ImageCardUploadElement.addEventListener('change', uploadCardImage);
+}
 
-SymbolUploadElement.addEventListener('change', uploadSymbol);
 
+
+//Symbol image for regions
+
+    const SymbolUploadElement = document.getElementById('SymbolUpload');
+    const SymbolUrlElement = document.getElementById('SymbolUrl');
+    const SymbolDisplayElement = document.getElementById('SymbolUploadDisplay');
+    async function uploadSymbol(e) {
+        console.log(e.target.files[0]);
+
+        let data = new FormData();
+        data.append('file', e.target.files[0]);
+
+        await fetch('/api/images', {
+            method: 'POST',
+            headers: {
+                'Accept': '*/*',
+            },
+            body: data
+        }).then(response => response.json())
+            .then(result => {
+                SymbolUrlElement.value = result.link;
+                SymbolDisplayElement.src = result.link;
+                SymbolDisplayElement.style.display = 'block';
+            });
+    }
+if (uploadSymbol != null) {
+    SymbolUploadElement.addEventListener('change', uploadSymbol);
+}
 //Sort table elements by column
 function sortTable(n) {
     var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;

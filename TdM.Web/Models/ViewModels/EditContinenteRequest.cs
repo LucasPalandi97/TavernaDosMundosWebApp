@@ -15,12 +15,9 @@ public class EditContinenteRequest
     public bool Visible { get; set; }
 
     // Display Mundos 
-    public IEnumerable<SelectListItem> Mundos { get; set; }
-
-    //Collect Continente     
+    public IEnumerable<SelectListItem> Mundos { get; set; }   
     public string? SelectedMundo { get; set; }
-
-    //Collect Multiple itens
-    //public string[] SelectedContinentes { get; set; } = Array.Empty<string>();
+    public IEnumerable<SelectListItem> Regioes { get; set; }
+    public string[] SelectedRegioes { get; set; } = Array.Empty<string>();
 }
 
