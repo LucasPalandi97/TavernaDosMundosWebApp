@@ -8,15 +8,18 @@
     <link type="text/css" rel="stylesheet" href="~/css/ListRegioes.css" />
 </head>
 <div class="container-fluid py-5">
+    <div class="hero mb-5">
+        <h1><span class="section-title"></span>Regions</h1>
+    </div>
     @if (Model.Continentes != null && Model.Continentes.Any())
     {
-        <div id="continentList" class="row row-cols-xxl-1 my-3 justify-content-center">
+        <div id="continentList" class="row row-cols-xl-2 my-3 justify-content-center">
             @foreach (var continente in Model.Continentes)
             {
-                <div id="continentcard" class="card px-0 my-auto mx-2 mb-3" style="width:80rem; height:auto">
-                    <div class="card_mask p-0 justify-content-between">
+                <div id="continentcard" class="card px-0 mx-2 mb-3" style="width:50rem; height:auto">
+                    <div id="continentmask" class="card_mask p-0 justify-content-between">
                         <a class="text-white" asp-area="" asp-controller="Continentes" asp-action="Index" asp-route-urlHandle="@continente.UrlHandle">
-                            <img id="continentimg" src="@continente.ImgCard" class="card-img-top imgfit" style="object-fit:cover;">
+                            <img id="continentimg" src="@continente.ImgCard" class="card-img-top imgfit" style="object-fit:cover; object-position:center;">
                         </a>
                     </div>
                     <h1 id="nomecontinente" class="card-title text-truncate text-center align-self-center">@continente.Nome<br /><span class="text-secondary" style="font-size:16px">@continente.CurtaDescricao</span></h1>
@@ -28,13 +31,15 @@
                                     @foreach (var regiao in continente.Regioes)
                                     {
                                         <div id="regioncard" class="card px-0 my-auto mx-2 mb-3" style="width:20rem; height:12rem;">
-                                            <a class="text-white" asp-area="" asp-controller="Regioes" asp-action="Index" asp-route-urlHandle="@regiao.UrlHandle">
-                                                <img id="regionimg" src="@regiao.ImgCard" class="card-img-top imgfit h-100 w-100" style="object-fit: cover;" alt="@regiao.Nome">
-                                                <img src="@regiao.Simbolo" class="center imground objcenter" alt="Responsive Image">
-                                                <div class="card-img-overlay w-100 bg-dark bottom text-center" style="height:4rem;">
-                                                    <h5 id="tittleregion" class="card-title text-truncate">@regiao.Nome</h5>
-                                                </div>
-                                            </a>
+                                            <div id="regionmask" class="card_mask position-absolute p-0 justify-content-between">
+                                                <a class="text-white" asp-area="" asp-controller="Regioes" asp-action="Index" asp-route-urlHandle="@regiao.UrlHandle">
+                                                    <img id="regionimg" src="@regiao.ImgCard" class="card-img-top imgfit" style="object-fit: cover;" alt="@regiao.Nome">
+                                                    <img src="@regiao.Simbolo" class="center imground objcenter" alt="Responsive Image">
+                                                    <div id="titlebox" class="card-img-overlay w-100 bottom text-center" style="height:4rem;">
+                                                        <h5 id="titleregion" class="card-title text-truncate">@regiao.Nome</h5>
+                                                    </div>
+                                                </a>
+                                            </div>
                                         </div>
                                     }
                                 </div>

@@ -14,10 +14,22 @@
 }
 
 #nomecontinente {
+    transition: all .2s ease-in;
     top: 18%;
     position: absolute;
 }
 
+#titlebox {
+    background-color: rgb(57, 56, 57, 0.9)
+}
+
+#titleregion {
+    transition: all .2s ease-in;
+}
+
+.card-img-overlay {
+    transition: all .2s ease-in;
+}
 
 .card {
     margin-bottom: 1.5rem;
@@ -27,14 +39,11 @@
 }
 
 .card_mask {
-    transition: all .5s ease-in;
-    position: relative;
+    transition: all .2s ease-in;
     top: 0;
     bottom: 0;
     left: 0;
     right: 0;
-    height: 100%;
-    width: 100%;
     opacity: 0.4;
     transition: .5s ease;
     background-color: #393839;
@@ -53,13 +62,28 @@
     vertical-align: middle;
 }
 
-.card-img-overlay {
-    visibility: visible;
-    opacity: 0.9;
-    transition: visibility 0s linear 0s, opacity 300ms;
-}
 
 /*Hover*/
+
+/* Continent*/
+#continentcard:hover {
+    color: white;
+    box-shadow: 0 5px 15px #b29229;
+}
+
+    #continentcard:hover #continentimg {
+        transform: scale(1.1);
+    }
+
+    #continentcard:hover #continentmask {
+        opacity: 1;
+    }
+
+    #continentcard:hover #nomecontinente {
+        transform: scale(1.1);
+    }
+
+/*Region*/
 #regioncard:hover {
     color: white;
     box-shadow: 0 5px 15px #b29229;
@@ -75,59 +99,63 @@
     }
 
     #regioncard:hover .card-img-overlay {
-        visibility: hidden;
-        opacity: 0;
-        transition: visibility 0s linear 300ms, opacity 300ms;
+        background-color: rgb(57, 56, 57, 0);
     }
 
-#continentcard:hover {
-    color: white;
-    box-shadow: 0 5px 15px #b29229;
-}
-
-    #continentcard:hover #continentimg {
-        transform: scale(1.1);
+    #regioncard:hover #titleregion {
+        transform: scale(1.3);
     }
 
-    #continentcard:hover .card_mask {
+    #regioncard:hover #regionmask {
         opacity: 1;
     }
 
-    @media (max-width: 767px) {
-        #regionList {
-            justify-content: center;
-        }
 
-        .card {
-            height: 30rem !important;
-            width: 100% !important;
-            margin-left: auto;
-            margin-right: auto;
-        }
 
-        .card-img-top {
-            height: 100%;
-            max-height: 100% !important;
-            object-fit: cover;
-            object-position: center;
-        }
-
-        .imground {
-            height: 10rem;
-            width: 10rem;
-        }
-
-        .card-title {
-            font-size: 1rem;
-        }
-
-        .bottom {
-            height: 2rem;
-        }
+@media (max-width: 767px) {
+    #regionList {
+        justify-content: center;
     }
 
+    .card {
+        height: 30rem !important;
+        width: 100% !important;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .card-img-top {
+        height: 100%;
+        max-height: 100% !important;
+        object-fit: cover;
+        object-position: center;
+    }
+
+    .imground {
+        height: 10rem;
+        width: 10rem;
+    }
+
+    .card-title {
+        font-size: 1rem;
+    }
+
+    .bottom {
+        height: 2rem;
+    }
+}
+
+.hero {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    padding: 2rem;
+    margin: 0;
+}
+
+
 .imground {
-    transition: all .3s ease-in;
+    transition: all .1s ease-in;
     height: 80px;
     width: 80px;
     border-radius: 50%;

@@ -1,6 +1,4 @@
-﻿body {
-}
-
+﻿
 #regionList {
     display: flex;
     flex-direction: column;
@@ -11,7 +9,7 @@
 
 
 .card {
-    transition: all .5s ease-in;
+    transition: all .2s ease-in;
     margin-bottom: 1.5rem;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     overflow: hidden;
@@ -110,21 +108,6 @@
         text-align: left;
         padding: 0;
     }
-}
-
-
-.imground {
-    height: 80px;
-    width: 80px;
-    border-radius: 50%;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    top: 0;
-    margin: auto;
-    display: block;
-    position: absolute;
-    z-index: 2000;
 }
 
 .bottom {
