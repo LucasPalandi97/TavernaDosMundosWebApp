@@ -7,6 +7,7 @@ public interface IRegiaoRepository
     Task<IEnumerable<Regiao>> GetAllAsync();
 
     Task<Regiao?> GetAsync(Guid id);
+    Task<IEnumerable<Regiao>>? GetRegioesByContinenteAsync(List<Guid> selectedContinentes);
 
     Task<Regiao?> GetByUrlHandleAsync(string urlHandle);
 

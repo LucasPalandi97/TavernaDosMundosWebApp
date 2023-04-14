@@ -73,6 +73,18 @@ public class AdminRegioesController : Controller
         return RedirectToAction("List");
     }
 
+    public async Task<IActionResult> ListRegioesByContinente(List<Guid> selectedContinentIds)
+    {
+        var regioes = await regiaoRepository.GetRegioesByContinenteAsync(selectedContinentIds);
+        var selectListItems = regioes.Select(x => new SelectListItem
+        {
+            Text = x.Nome,
+            Value = x.Id.ToString()
+        });
+
+        return Json(selectListItems);
+    }
+
     [HttpGet]
     public async Task<IActionResult> List()
     {

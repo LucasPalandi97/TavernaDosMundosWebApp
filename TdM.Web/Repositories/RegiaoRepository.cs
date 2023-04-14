@@ -45,6 +45,11 @@ public class RegiaoRepository : IRegiaoRepository
         return await tavernaDbContext.Regioes.Include(x => x.Continente).Include(x => x.Mundo).FirstOrDefaultAsync(x => x.Id == id);
     }
 
+    public async Task<IEnumerable<Regiao>> GetRegioesByContinenteAsync(List<Guid> selectedContinentIds)
+    {
+        return await tavernaDbContext.Regioes.Where(r => selectedContinentIds.Contains(r.Continente.Id)).ToListAsync();
+    }
+
     public async Task<Regiao?> GetByUrlHandleAsync(string urlHandle)
     {
         return await tavernaDbContext.Regioes.Include(x => x.Continente).Include(x => x.Mundo).FirstOrDefaultAsync(x => x.UrlHandle == urlHandle);

@@ -34,6 +34,7 @@ builder.Services.AddScoped<IMundoRepository, MundoRepository>();
 builder.Services.AddScoped<IContinenteRepository, ContinenteRepository>();
 builder.Services.AddScoped<IRegiaoRepository, RegiaoRepository>();
 builder.Services.AddScoped<IPersonagemRepository, PersonagemRepository>();
+builder.Services.AddScoped<ICriaturaRepository, CriaturaRepository>();
 builder.Services.AddScoped<IImageRepository, CloudnaryImageRepository>();
 
 var app = builder.Build();

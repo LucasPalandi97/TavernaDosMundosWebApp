@@ -42,6 +42,10 @@ public class ContinenteRepository : IContinenteRepository
     {
         return await tavernaDbContext.Continentes.Include(x => x.Regioes).Include(x => x.Mundo).FirstOrDefaultAsync(x => x.Id == id);
     }
+    public async Task<IEnumerable<Continente>>? GetContinentesByMundoAsync(Guid id)
+    {
+        return await tavernaDbContext.Continentes.Where(c => c.Mundo.Id == id).ToListAsync();
+    }
 
     public async Task<Continente?> GetByUrlHandleAsync(string urlHandle)
     {
@@ -61,7 +65,7 @@ public class ContinenteRepository : IContinenteRepository
             existingContinente.ImgCard = continente.ImgCard;
             existingContinente.ImgBox = continente.ImgBox;
             existingContinente.PublishedDate = continente.PublishedDate;
-            existingContinente.UrlHandle = continente.UrlHandle;         
+            existingContinente.UrlHandle = continente.UrlHandle;
             existingContinente.Visible = continente.Visible;
             existingContinente.Mundo = continente.Mundo;
             await tavernaDbContext.SaveChangesAsync();
@@ -72,5 +76,4 @@ public class ContinenteRepository : IContinenteRepository
         return null;
     }
 
-  
 }

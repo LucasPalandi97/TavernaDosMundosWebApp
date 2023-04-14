@@ -7,7 +7,7 @@ public interface IContinenteRepository
     Task<IEnumerable<Continente>> GetAllAsync();
 
     Task<Continente?> GetAsync(Guid id);
-
+    Task<IEnumerable<Continente>>? GetContinentesByMundoAsync(Guid id);
     Task<Continente?> GetByUrlHandleAsync(string urlHandle);
 
     Task<Continente> AddAsync(Continente continente);
@@ -15,5 +15,5 @@ public interface IContinenteRepository
     Task<Continente?> UpdateAsync(Continente continente);
 
     Task<Continente?> DeleteAsync(Guid id);
-
+  
 }

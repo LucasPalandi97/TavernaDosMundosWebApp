@@ -9,10 +9,14 @@
 <head>
     <link type="text/css" rel="stylesheet" href="~/css/ListPersonagens.css" />
 </head>
+
 <div class="container-fluid py-5">
+    <div class="hero mb-5">
+        <h1><span class="section-title"></span>Characters</h1>
+    </div>
     @if (Model != null && Model.Any())
     {
-        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-2 row-cols-xl-4  g-2 justify-content-center align-items-center">
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-2 row-cols-xl-4 my-3 g-2 justify-content-center align-items-center">
             @foreach (var personagem in Model)
             {
                 <div id="charactercard" class="card card-container mx-3" style="height: 20rem; width: 12rem;">
@@ -25,9 +29,16 @@
                             <div class="card-body">
                                 <ul id="listcardbottom" class="list-group list-group-flush">
                                     <li><h3 class="card-title">@personagem.Nome</h3></li>
-                                    <li><p class="card-text text-nowrap">@personagem.CurtaDescricao</p></li>
-                                    <li class="list-group-item">@personagem.Raca?.GetDisplayName()</li>
-                                    <li class="list-group-item">@personagem.Classe?.GetDisplayName()</li>
+                                    <li><p class="card-text text-nowrap text-secondary" style="font-size:16px;">@personagem.CurtaDescricao</p></li>
+                               
+                                @if (personagem.Classe != null)
+                                {
+                                    <li class="list-group-item">@personagem.Regiao?.Nome</li>
+                                }
+                                else
+                                {
+                                    <li class="list-group-item text-secondary">No Region</li>
+                                }
                                 </ul>
                             </div>
                         </div>

@@ -62,7 +62,6 @@
     vertical-align: middle;
 }
 
-
 /*Hover*/
 
 /* Continent*/
@@ -110,8 +109,6 @@
         opacity: 1;
     }
 
-
-
 @media (max-width: 767px) {
     #regionList {
         justify-content: center;
@@ -152,7 +149,6 @@
     padding: 2rem;
     margin: 0;
 }
-
 
 .imground {
     transition: all .1s ease-in;

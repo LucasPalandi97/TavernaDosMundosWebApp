@@ -3,11 +3,7 @@
 
 // Write your JavaScript code.
 
-
-
 //Set default date to today
-
-
 
 Date.prototype.toDateInputValue = (function () {
     var local = new Date(this);
@@ -15,8 +11,6 @@ Date.prototype.toDateInputValue = (function () {
     return local.toJSON().slice(0, 10);
 });
 document.getElementById('publishedDate').value = new Date().toDateInputValue();
-
-
 
 //froala editor HTML
 var editor = new FroalaEditor('#descricao', {
@@ -27,7 +21,6 @@ var editor = new FroalaEditor('#descricao', {
 var editor2 = new FroalaEditor('#biografia', {
     imageUploadURL: '/api/images'
 });
-
 
 //Content image 
 
@@ -82,38 +75,40 @@ async function uploadCardImage(e) {
         });
 }
 if (uploadCardImage != null) {
-ImageCardUploadElement.addEventListener('change', uploadCardImage);
+    ImageCardUploadElement.addEventListener('change', uploadCardImage);
 }
-
-
 
 //Symbol image for regions
 
-    const SymbolUploadElement = document.getElementById('SymbolUpload');
-    const SymbolUrlElement = document.getElementById('SymbolUrl');
-    const SymbolDisplayElement = document.getElementById('SymbolUploadDisplay');
-    async function uploadSymbol(e) {
-        console.log(e.target.files[0]);
+const SymbolUploadElement = document.getElementById('SymbolUpload');
+const SymbolUrlElement = document.getElementById('SymbolUrl');
+const SymbolDisplayElement = document.getElementById('SymbolUploadDisplay');
+async function uploadSymbol(e) {
+    console.log(e.target.files[0]);
 
-        let data = new FormData();
-        data.append('file', e.target.files[0]);
+    let data = new FormData();
+    data.append('file', e.target.files[0]);
 
-        await fetch('/api/images', {
-            method: 'POST',
-            headers: {
-                'Accept': '*/*',
-            },
-            body: data
-        }).then(response => response.json())
-            .then(result => {
-                SymbolUrlElement.value = result.link;
-                SymbolDisplayElement.src = result.link;
-                SymbolDisplayElement.style.display = 'block';
-            });
-    }
+    await fetch('/api/images', {
+        method: 'POST',
+        headers: {
+            'Accept': '*/*',
+        },
+        body: data
+    }).then(response => response.json())
+        .then(result => {
+            SymbolUrlElement.value = result.link;
+            SymbolDisplayElement.src = result.link;
+            SymbolDisplayElement.style.display = 'block';
+        });
+}
 if (uploadSymbol != null) {
     SymbolUploadElement.addEventListener('change', uploadSymbol);
 }
+
+
+
+
 //Sort table elements by column
 function sortTable(n) {
     var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
@@ -169,4 +164,53 @@ function sortTable(n) {
         }
     }
 }
+//SElECT MENUS
 
+
+//GET CONTINENT BY MUNDO ID
+function updateContinentes() {
+    var mundoId = $("#SelectedMundo").val();
+    if (mundoId != "") {
+        $.ajax({
+            url: "/AdminContinentes/ListContinentesbyMundo",
+            type: "POST",
+            dataType: "json",
+            data: { id: mundoId },
+            success: function (data) {
+                $("#SelectedContinentes").empty();
+                $("#SelectedContinentes").append('<option value="" class="text-danger">No Continent</option>');
+                $.each(data, function (index, value) {
+                    $("#SelectedContinentes").append('<option value="' + value.value + '">' + value.text + '</option>');
+                });
+
+                // Set the selected value
+                if (data.length > 0) {
+                    $("#SelectedContinentes").val(data[0].value);
+                }
+            }
+        });
+    }
+}
+//GET REGION BY CONTINENTEList IDs
+function updateRegioes() {
+    var selectedContinentIds = $("#SelectedContinentes").val();
+    if (selectedContinentIds != null && selectedContinentIds.length > 0) {
+        $.ajax({
+            url: "/AdminRegioes/ListRegioesByContinente",
+            type: "POST",
+            dataType: "json",
+            data: { selectedContinentIds: selectedContinentIds },
+            success: function (data) {
+                $("#SelectedRegioes").empty();
+                $("#SelectedRegioes").append('<option value="" class="text-danger">No Region</option>');
+                $.each(data, function (index, value) {
+                    $("#SelectedRegioes").append('<option value="' + value.value + '">' + value.text + '</option>');
+                });
+                // Set the selected value
+                if (data.length > 0) {
+                    $("#SelectedRegioes").val(data[0].value);
+                }
+            }
+        });
+    }
+}

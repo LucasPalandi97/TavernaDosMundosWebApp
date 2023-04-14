@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using TdM.Database.Models.Domain;
 using System.Data;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.EntityFrameworkCore;
 
 namespace TdM.Web.Controllers;
 
@@ -18,6 +19,19 @@ public class AdminContinentesController : Controller
     {
         this.mundoRepository = mundoRepository;
         this.continenteRepository = continenteRepository;
+    }
+
+
+    public async Task<IActionResult> ListContinentesbyMundo(Guid id)
+    {
+        var continentes = await continenteRepository.GetContinentesByMundoAsync(id);
+        var selectListItems = continentes.Select(x => new SelectListItem
+        {
+            Text = x.Nome,
+            Value = x.Id.ToString()
+        });
+
+        return Json(selectListItems);
     }
 
     [HttpGet]

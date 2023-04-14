@@ -136,9 +136,9 @@ public class AdminMundosController : Controller
         var selectedContinentes = new List<Continente>();
         foreach (var selectedContinent in editMundoRequest.SelectedContinentes)
         {
-            if (Guid.TryParse(selectedContinent, out var tag))
+            if (Guid.TryParse(selectedContinent, out var continente))
             {
-                var foundContinente = await continenteRepository.GetAsync(tag);
+                var foundContinente = await continenteRepository.GetAsync(continente);
                 if (foundContinente != null)
                 {
                     selectedContinentes.Add(foundContinente);
@@ -167,7 +167,7 @@ public class AdminMundosController : Controller
     [HttpPost]
     public async Task<IActionResult> Delete(EditMundoRequest editMundoRequest)
     {
-        // Talk to repository to delete this mundo and tags
+        // Talk to repository to delete this mundo and continente
         var deletedMundo = await mundoRepository.DeleteAsync(editMundoRequest.Id);
         if (deletedMundo != null)
         { 
