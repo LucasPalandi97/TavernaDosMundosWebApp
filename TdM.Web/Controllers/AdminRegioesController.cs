@@ -73,9 +73,17 @@ public class AdminRegioesController : Controller
         return RedirectToAction("List");
     }
 
-    public async Task<IActionResult> ListRegioesByContinente(List<Guid> selectedContinentIds)
+    public async Task<IActionResult> ListRegioesByContinente(Guid id, List<Guid> selectedContinenteIds = null)
     {
-        var regioes = await regiaoRepository.GetRegioesByContinenteAsync(selectedContinentIds);
+        IEnumerable<Regiao> regioes;
+        if (selectedContinenteIds == null)
+        {
+            regioes = await regiaoRepository.GetRegioesByContinenteAsync(id);
+        }
+        else
+        {
+            regioes = await regiaoRepository.GetRegioesByContinenteAsync(selectedContinenteIds);
+        }
         var selectListItems = regioes.Select(x => new SelectListItem
         {
             Text = x.Nome,

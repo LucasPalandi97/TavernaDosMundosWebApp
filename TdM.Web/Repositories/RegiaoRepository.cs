@@ -45,9 +45,20 @@ public class RegiaoRepository : IRegiaoRepository
         return await tavernaDbContext.Regioes.Include(x => x.Continente).Include(x => x.Mundo).FirstOrDefaultAsync(x => x.Id == id);
     }
 
-    public async Task<IEnumerable<Regiao>> GetRegioesByContinenteAsync(List<Guid> selectedContinentIds)
+    public async Task<IEnumerable<Regiao>>? GetRegioesByContinenteAsync(object selectedContinenteIds)
     {
-        return await tavernaDbContext.Regioes.Where(r => selectedContinentIds.Contains(r.Continente.Id)).ToListAsync();
+        if (selectedContinenteIds is Guid)
+        {
+            return await tavernaDbContext.Regioes.Where(r => r.Continente.Id == (Guid)selectedContinenteIds).ToListAsync();
+        }
+        else if (selectedContinenteIds is List<Guid> selectedContinenteIdsList)
+        {
+            return await tavernaDbContext.Regioes.Where(r => selectedContinenteIdsList.Contains(r.Continente.Id)).ToListAsync();
+        }
+        else
+        {
+            throw new ArgumentException("Invalid argument type");
+        }
     }
 
     public async Task<Regiao?> GetByUrlHandleAsync(string urlHandle)

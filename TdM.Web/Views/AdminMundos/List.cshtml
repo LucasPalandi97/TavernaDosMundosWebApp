@@ -18,9 +18,9 @@
             <thead>
                 <tr>
                     <th id="idcolumn">Id</th>
-                    <th onclick="sortTable(1)">World <span class="pointer">&#9660</span></th>                    
+                    <th onclick="sortTable(1)">World <span class="pointer">&#9660</span></th>
                     <th onclick="sortTable(2)">Author <span class="pointer">&#9660</span></th>
-                    <th id="desccolumn">Description</th>                 
+                    <th id="desccolumn">Description</th>
                     <th class="text-center">World Building</th>
                     <th onclick="sortTable(3)">Published <span class="pointer">&#9660</span></th>
                     <th></th>
@@ -32,26 +32,74 @@
                     <tr>
                         <td id="tdid">@mundo.Id</td>
                         <td>@mundo.Nome</td>
-                        <td>@mundo.Autor.GetDisplayName()</td>                       
-                        <td id="tddesc">@mundo.CurtaDescricao</td>                       
+                        <td>@mundo.Autor.GetDisplayName()</td>
+                        <td id="tddesc">@mundo.CurtaDescricao</td>
                         <td>
-                            <div class="container-fluid justify-content-center align-content-center text-center">
-                            <div class="dropdown">
-                                <button class="btn btn-secondary dropdown-toggle w-100" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    @mundo.Nome Content
+                            <div class="dropdown w-100" id="worldbuild">
+                                <button class="btn btn-secondary dropdown-toggle w-100" type="button" id="worldDropdownButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    @mundo.Nome
                                 </button>
-                                    <ul class="dropdown-menu dropdown-menu w-100 text-center" aria-labelledby="dropdownMenuButton2">
-                                        <li><a class="dropdown-item active" href="#">Action</a></li>
-                                        <li><a class="dropdown-item" href="#">Another action</a></li>
-                                        <li><a class="dropdown-item" href="#">Something else here</a></li>
-                                        <li><hr class="dropdown-divider" /></li>
-                                        <li><a class="dropdown-item" href="#">Separated link</a></li>
-                                    </ul>
-                            </div>
+                                <div class="dropdown-menu w-100 text-center" aria-labelledby="worldDropdownButton">
+                                    <div class="dropdown">
+                                        <button class="dropdown-item dropdown-toggle" type="button" id="charactersDropdownButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            Characters
+                                        </button>
+                                    </div>
+                                    <div class="dropdown w-100 text-center" id="continentsDropdown">
+                                        <button class="dropdown-item dropdown-toggle" type="button" id="continentsDropdownButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            Continents
+                                        </button>
 
+                                        <div class="dropdown-menu w-100 text-center" aria-labelledby="continentsDropdownButton">
+                                            @if (mundo.Continentes != null && mundo.Continentes.Any())
+                                            {
+                                                @foreach (var continente in mundo.Continentes)
+                                                {
+                                                    <button class="dropdown-item dropdown-toggle" type="button" id="regionsDropdownButton-@continente.Id"
+                                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                        @continente.Nome
+                                                    </button>
+                                                    <div class="dropdown-menu w-100" aria-labelledby="regionsDropdownButton-@continente.Id">
+                                                        @if (continente.Regioes != null && continente.Regioes.Any())
+                                                        {
+                                                            @foreach (var regiao in continente.Regioes)
+                                                            {
+                                                                <a class="dropdown-item" href="#">@regiao.Nome</a>
+                                                            }
+                                                        }
+                                                        else
+                                                        {
+                                                            <a class="dropdown-item text-danger" href="#">No regions found!</a>
+                                                        }
+                                                    </div>
+                                                }
+                                            }
+                                            else
+                                            {
+                                                <a class="dropdown-item text-danger" href="#">No continents found!</a>
+                                            }
+                                        </div>
+                                    </div>
+
+                                    <div class="dropdown">
+                                        <button class="dropdown-item dropdown-toggle" type="button" id="creaturesDropdownButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            Creatures
+                                        </button>
+                                    </div>
+                                    <div class="dropdown">
+                                        <button class="dropdown-item dropdown-toggle" type="button" id="peoplesDropdownButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            People
+                                        </button>
+                                    </div>
+                                    <div class="dropdown">
+                                        <button class="dropdown-item dropdown-toggle" type="button" id="storiesDropdownButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            Stories
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
                         </td>
-                        <td>@mundo.PublishedDate</td>
+                        <td class="published-date">@mundo.PublishedDate.ToString("yyyy-MM-dd HH:mm")</td>
                         <td>
                             <a asp-area="" asp-controller="AdminMundos" asp-action="Edit" asp-route-id="@mundo.Id">Edit</a>
                         </td>
@@ -67,5 +115,26 @@
 </div>
 @section Scripts
     {
-   
+    <script type="text/javascript" src="~/js/SortElements.js"></script>
+    <script>
+        //MULTI DROPDOWN BUTTONS FOR WORLDBUILD
+        // Get the dropdown buttons
+        const dropdownBtns = document.querySelectorAll("#worldbuild .dropdown-toggle");
+
+        // Toggle the dropdown menu when the button is clicked
+        document.addEventListener("click", function (event) {
+            if (event.target.matches("#worldbuild .dropdown-toggle")) {
+                event.preventDefault();
+                const dropdownMenu = event.target.nextElementSibling;
+                dropdownMenu.classList.toggle("show");
+            } else {
+                // Close the dropdown menu when the user clicks outside of it
+                const dropdownMenus = document.querySelectorAll("#worldbuild .dropdown-menu.show");
+                dropdownMenus.forEach(function (menu) {
+                    menu.classList.remove("show");
+                });
+            }
+        });
+    </script>
 }
+

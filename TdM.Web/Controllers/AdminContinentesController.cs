@@ -21,10 +21,10 @@ public class AdminContinentesController : Controller
         this.continenteRepository = continenteRepository;
     }
 
-
-    public async Task<IActionResult> ListContinentesbyMundo(Guid id)
+    public async Task<IActionResult> ListContinentesByMundo(Guid id)
     {
-        var continentes = await continenteRepository.GetContinentesByMundoAsync(id);
+        IEnumerable<Continente> continentes;      
+            continentes = await continenteRepository.GetContinentesByMundoAsync(id);                     
         var selectListItems = continentes.Select(x => new SelectListItem
         {
             Text = x.Nome,

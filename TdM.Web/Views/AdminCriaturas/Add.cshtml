@@ -61,7 +61,7 @@
 
         <div class="mb-3 col-2">
             <label class="form-label">Published Date</label>
-            <input type="date" class="form-control" id="publishedDate" asp-for="PublishedDate" />
+            <input type="datetime-local" class="form-control" id="publishedDate" asp-for="PublishedDate" />
         </div>
 
         <div class="mb-3">
@@ -91,7 +91,6 @@
         <div class="mb-3 col-8">
             <label class="form-label">Region</label>
             <select id="SelectedRegioes" class="form-select" asp-items="@Model.Regioes" asp-for="SelectedRegioes">
-              
             </select>
         </div>
 
@@ -105,7 +104,5 @@
 
 @section Scripts
     {
-  <script>
-  
-</script>
+        <script type="text/javascript" src="~/js/Formulario.js"></script> 
 }

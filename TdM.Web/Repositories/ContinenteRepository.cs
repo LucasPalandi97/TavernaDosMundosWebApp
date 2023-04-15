@@ -42,7 +42,7 @@ public class ContinenteRepository : IContinenteRepository
     {
         return await tavernaDbContext.Continentes.Include(x => x.Regioes).Include(x => x.Mundo).FirstOrDefaultAsync(x => x.Id == id);
     }
-    public async Task<IEnumerable<Continente>>? GetContinentesByMundoAsync(Guid id)
+    public async Task<IEnumerable<Continente>> GetContinentesByMundoAsync(Guid id)
     {
         return await tavernaDbContext.Continentes.Where(c => c.Mundo.Id == id).ToListAsync();
     }

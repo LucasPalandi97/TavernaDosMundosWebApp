@@ -14,7 +14,7 @@
 }
 
 #nomecontinente {
-    transition: all .2s ease-in;
+    transition: all .1s ease-in;
     top: 18%;
     position: absolute;
 }
@@ -24,22 +24,22 @@
 }
 
 #titleregion {
-    transition: all .2s ease-in;
+    transition: all .1s ease-in;
 }
 
 .card-img-overlay {
-    transition: all .2s ease-in;
+    transition: all .1s ease-in;
 }
 
 .card {
     margin-bottom: 1.5rem;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     overflow: hidden;
-    transition: all .5s ease-in;
+    transition: all .1s ease-in;
 }
 
 .card_mask {
-    transition: all .2s ease-in;
+    transition: all .3s ease-in;
     top: 0;
     bottom: 0;
     left: 0;
@@ -54,7 +54,7 @@
 }
 
 .card-img-top {
-    transition: all .2s ease-in;
+    transition: all .1s ease-in;
     object-fit: contain;
     max-height: 200px;
     display: block;
@@ -71,7 +71,7 @@
 }
 
     #continentcard:hover #continentimg {
-        transform: scale(1.1);
+        transform: scale(1.05);
     }
 
     #continentcard:hover #continentmask {
@@ -79,7 +79,7 @@
     }
 
     #continentcard:hover #nomecontinente {
-        transform: scale(1.1);
+        transform: scale(1.05);
     }
 
 /*Region*/
@@ -89,11 +89,11 @@
 }
 
     #regioncard:hover #regionimg {
-        transform: scale(1.1);
+        transform: scale(1.05);
     }
 
     #regioncard:hover .imground {
-        transform: scale(1.2);
+        transform: scale(1.05);
         opacity: 0
     }
 
@@ -102,7 +102,7 @@
     }
 
     #regioncard:hover #titleregion {
-        transform: scale(1.3);
+        transform: scale(1.05);
     }
 
     #regioncard:hover #regionmask {
@@ -151,7 +151,7 @@
 }
 
 .imground {
-    transition: all .1s ease-in;
+    transition: all .5s ease-in;
     height: 80px;
     width: 80px;
     border-radius: 50%;
