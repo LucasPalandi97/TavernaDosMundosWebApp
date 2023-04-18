@@ -1,0 +1,57 @@
+﻿@{
+}
+@model List<TdM.Database.Models.Domain.Criatura>
+@using TdM.Database.Models.Domain.Enums
+@{
+    ViewBag.Title = "Creatures";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<head>
+    <link type="text/css" rel="stylesheet" href="~/css/ListCriaturas.css" />
+</head>
+
+<div class="container-fluid py-5">
+    <div class="hero mb-5">
+        <h1><span class="section-title"></span>Creatures</h1>
+    </div>
+    @if (Model != null && Model.Any())
+    {
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-2 row-cols-xl-4 my-3 g-2 justify-content-center align-items-center">
+            @foreach (var criatura in Model)
+            {
+                <div id="charactercard" class="card card-container mx-3" style="height: 20rem; width: 12rem;">
+                    <div class="card_mask p-0 justify-content-between">
+                        <a class="text-white" asp-area="" asp-controller="Criaturas" asp-action="Index" asp-route-urlHandle="@criatura.UrlHandle">
+                            <img src="@criatura.ImgCard" class="card-img-top imgfit h-100 w-100" alt="Image not found!">
+                        </a>
+                    </div>
+                    <div class="mask_text w-100">
+                        <div class="card-body">
+                            <ul id="listcardbottom" class="list-group list-group-flush">
+                                <li><h3 class="card-title">@criatura.Nome</h3></li>
+                                <li><p class="card-text text-nowrap text-secondary" style="font-size:16px;">@criatura.CurtaDescricao</p></li>
+
+                                @if (criatura.Tipo != null)
+                                {
+                                    <li class="list-group-item">@criatura.Tipo</li>
+                                }
+                                else
+                                {
+                                    <li class="list-group-item text-secondary">No Type</li>
+                                }
+                            </ul>
+                        </div>
+                    </div>
+
+                </div>
+
+            }
+        </div>
+
+
+    }
+    else
+    {
+        <p>No Creatures found!</p>
+    }
+</div>

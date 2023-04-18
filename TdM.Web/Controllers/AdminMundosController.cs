@@ -85,7 +85,7 @@ public class AdminMundosController : Controller
     {
         //Retrieve result from repositoty
         var mundo = await mundoRepository.GetAsync(id);
-        var contientesDomainModel = await continenteRepository.GetAllAsync();
+        var continentesDomainModel = await continenteRepository.GetAllAsync();
 
         if (mundo != null)
         {
@@ -101,7 +101,7 @@ public class AdminMundosController : Controller
                 PublishedDate = mundo.PublishedDate,
                 UrlHandle   = mundo.UrlHandle,
                 Visible = mundo.Visible,
-                Continentes = contientesDomainModel.Select(x => new SelectListItem
+                Continentes = continentesDomainModel.Select(x => new SelectListItem
                 {
                     Text = x.Nome,
                     Value = x.Id.ToString()
@@ -134,9 +134,9 @@ public class AdminMundosController : Controller
 
         //Map Continentes into domain model
         var selectedContinentes = new List<Continente>();
-        foreach (var selectedContinent in editMundoRequest.SelectedContinentes)
+        foreach (var selectedContinente in editMundoRequest.SelectedContinentes)
         {
-            if (Guid.TryParse(selectedContinent, out var continente))
+            if (Guid.TryParse(selectedContinente, out var continente))
             {
                 var foundContinente = await continenteRepository.GetAsync(continente);
                 if (foundContinente != null)

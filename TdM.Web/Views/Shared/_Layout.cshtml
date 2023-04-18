@@ -82,6 +82,7 @@
                                     <ul class="dropdown-menu dropdown-menu-dark">
                                         <li><a class="dropdown-item" asp-area="" asp-controller="AdminContinentes" asp-action="Add">Add Continent</a></li>
                                         <li><a class="dropdown-item" asp-area="" asp-controller="AdminContinentes" asp-action="List">Show Continents</a></li>
+                                        <li><hr class="dropdown-divider"></li>
                                         <li><a class="dropdown-item" asp-area="" asp-controller="AdminRegioes" asp-action="Add">Add Region</a></li>
                                         <li><a class="dropdown-item" asp-area="" asp-controller="AdminRegioes" asp-action="List">Show Regions</a></li>
                                     </ul>
@@ -222,6 +223,8 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script type="text/javascript" src="~/js/site.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.32/moment-timezone-with-data-10-year-range.min.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
 
 </body>

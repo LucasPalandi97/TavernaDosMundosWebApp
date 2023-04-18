@@ -4,7 +4,6 @@
 
 }
 
-
 <div class="bg-secondary bg-opacity-10 py-2">
     <div class="containter">
         <h1>Show all Characters - Admin Funcionality</h1>
@@ -14,18 +13,17 @@
 <div class="container py-5">
     @if (Model != null && Model.Any())
     {
-
         <table class="table table-hover" id="table">
             <thead>
                 <tr>
                     <th id="idcolumn">Id</th>
                     <th onclick="sortTable(1)">Character <span class="pointer">&#9660</span></th>
-                    <th onclick="sortTable(2)">Race <span class="pointer">&#9660</span></th>
-                    <th onclick="sortTable(3)">Class <span class="pointer">&#9660</span></th>
                     <th id="desccolumn">Description</th>
-                    <th onclick="sortTable(4)">Region <span class="pointer">&#9660</span></th>
-                    <th onclick="sortTable(5)">World <span class="pointer">&#9660</span></th>
-                    <th onclick="sortTable(6)">Published</th>                    
+                    <th onclick="sortTable(2)">Race <span class="pointer">&#9660</span></th>
+                    <th onclick="sortTable(4)">Class <span class="pointer">&#9660</span></th>
+                    <th onclick="sortTable(5)">Region <span class="pointer">&#9660</span></th>
+                    <th onclick="sortTable(6)">World <span class="pointer">&#9660</span></th>
+                    <th onclick="sortTable(3)">Published <span class="pointer">&#9660</span></th>
                     <th></th>
                 </tr>
             </thead>
@@ -35,12 +33,12 @@
                     <tr>
                         <td id="tdid">@personagem.Id</td>
                         <td>@personagem.Nome</td>
+                        <td id="tddesc">@personagem.CurtaDescricao</td>
                         <td>@personagem.Raca?.GetDisplayName()</td>
                         <td>@personagem.Classe?.GetDisplayName()</td>
-                        <td id="tddesc">@personagem.CurtaDescricao</td>
                         <td>@personagem.Regiao?.Nome</td>                       
                         <td>@personagem.Mundo?.Nome</td>
-                        <td>@personagem.PublishedDate</td>
+                        <td class="published-date">@personagem.PublishedDate.ToString("yyyy-MM-dd HH:mm")</td>
                         <td>
                             <a asp-area="" asp-controller="AdminPersonagens" asp-action="Edit" asp-route-id="@personagem.Id">Edit</a>
                         </td>

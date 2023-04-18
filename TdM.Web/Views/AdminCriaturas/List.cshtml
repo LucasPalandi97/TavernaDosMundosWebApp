@@ -1,5 +1,54 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model List<TdM.Database.Models.Domain.Criatura>
+@using TdM.Database.Models.Domain.Enums;
 @{
+
+}
+
+<div class="bg-secondary bg-opacity-10 py-2">
+    <div class="containter">
+        <h1>Show all Creatures - Admin Funcionality</h1>
+    </div>
+</div>
+
+<div class="container py-5">
+    @if (Model != null && Model.Any())
+    {
+        <table class="table table-hover  table-responsive-sx" id="table">
+            <thead>
+                <tr>
+                    <th id="idcolumn">Id</th>
+                    <th onclick="sortTable(1)">Creature <span class="pointer">&#9660</span></th>
+                    <th id="desccolumn">Description</th>
+                    <th onclick="sortTable(4)">Type <span class="pointer">&#9660</span></th>
+                    <th onclick="sortTable(5)">World <span class="pointer">&#9660</span></th>         
+                    <th onclick="sortTable(3)">Published <span class="pointer">&#9660</span></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var criatura in Model)
+                {
+                    <tr>
+                        <td id="tdid">@criatura.Id</td>
+                        <td>@criatura.Nome</td>
+                        <td id="tddesc">@criatura.CurtaDescricao</td>
+                        <td>@criatura.Tipo.GetValueOrDefault()</td>
+                        <td>@criatura.Mundo?.Nome</td>
+                        <td class="published-date">@criatura.PublishedDate.ToString("yyyy-MM-dd HH:mm")</td>
+                        <td>
+                            <a asp-area="" asp-controller="AdminCriaturas" asp-action="Edit" asp-route-id="@criatura.Id">Edit</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p>No Creatures found!</p>
+    }
+</div>
+@section Scripts
+    {
+    <script type="text/javascript" src="~/js/SortElements.js"></script>
 }

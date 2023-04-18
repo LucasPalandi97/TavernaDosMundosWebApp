@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Drawing;
 using TdM.Database.Models.Domain;
 using TdM.Web.Models.ViewModels;
 using TdM.Web.Repositories;
@@ -27,16 +28,13 @@ public class AdminPersonagensController : Controller
     [HttpGet]
     public async Task<IActionResult> Add()
     {
-        //Get models from repository
-
-        //get regiao from repository
-        var regiao = await regiaoRepository.GetAllAsync();
+        //get mundos from repository
+        var mundos = await mundoRepository.GetAllAsync();
         var model = new AddPersonagemRequest
         {
-            Regioes = regiao.Select(x => new SelectListItem { Text = x.Nome, Value = x.Id.ToString() })
+            Mundos = mundos.Select(x => new SelectListItem { Text = x.Nome, Value = x.Id.ToString() })
         };
         return View(model);
-
     }
 
     [HttpPost]
@@ -61,6 +59,38 @@ public class AdminPersonagensController : Controller
 
         };
 
+        //Maps Mundos from Selected mundo
+
+        var selectedMundoId = addPersonagemRequest.SelectedMundo;
+        if (selectedMundoId != null)
+        {
+            var selectedMundoIdAsGuid = Guid.Parse(selectedMundoId);
+            var existingMundo = await mundoRepository.GetAsync(selectedMundoIdAsGuid);
+
+            if (existingMundo != null)
+            {
+                var selectedMundo = existingMundo;
+                //Maping Regioes back to domain modal
+                personagem.Mundo = selectedMundo;
+            }
+        }
+
+        //Maps Continentes from Selected Continente
+
+        var selectedContinenteId = addPersonagemRequest.SelectedContinente;
+        if (selectedContinenteId != null)
+        {
+            var selectedContinenteIdAsGuid = Guid.Parse(selectedContinenteId);
+            var existingContinente = await continenteRepository.GetAsync(selectedContinenteIdAsGuid);
+
+            if (existingContinente != null)
+            {
+                var selectedContinente = existingContinente;
+                //Maping Regioes back to domain modal
+                personagem.Continente = selectedContinente;
+            }
+        }
+
         //Maps Regioes from Selected Regiao
 
         var selectedRegiaoId = addPersonagemRequest.SelectedRegiao;
@@ -74,8 +104,6 @@ public class AdminPersonagensController : Controller
                 var selectedRegiao = existingRegiao;
                 //Maping Regiaos back to domain modal
                 personagem.Regiao = selectedRegiao;
-                personagem.Continente = selectedRegiao.Continente;
-                personagem.Mundo = selectedRegiao.Mundo;
             }
         }
 
@@ -98,6 +126,8 @@ public class AdminPersonagensController : Controller
     {
         //Retrieve Result from repository
         var personagem = await personagemRepository.GetAsync(id);
+        var mundosDomainModel = await mundoRepository.GetAllAsync();
+        var continenteDomainModel = await continenteRepository.GetAllAsync();
         var regiaoDomainModel = await regiaoRepository.GetAllAsync();
 
         if (personagem != null)
@@ -117,14 +147,24 @@ public class AdminPersonagensController : Controller
                 PublishedDate = personagem.PublishedDate,
                 UrlHandle = personagem.UrlHandle,
                 Visible = personagem.Visible,
+                Mundos = mundosDomainModel.Select(x => new SelectListItem
+                {
+                    Text = x.Nome,
+                    Value = x.Id.ToString()
+                }),
+                SelectedMundo = personagem.Mundo?.Id.ToString(),
+                Continentes = continenteDomainModel.Select(x => new SelectListItem
+                {
+                    Text = x.Nome,
+                    Value = x.Id.ToString()
+                }),
+                SelectedContinente = personagem.Continente?.Id.ToString(),
                 Regioes = regiaoDomainModel.Select(x => new SelectListItem
                 {
                     Text = x.Nome,
                     Value = x.Id.ToString()
                 }),
                 SelectedRegiao = personagem.Regiao?.Id.ToString(),
-                SelectedContinente = personagem.Regiao?.Continente?.Id.ToString(),
-                SelectedMundo = personagem.Regiao?.Mundo?.Id.ToString()
 
             };
 
@@ -154,7 +194,41 @@ public class AdminPersonagensController : Controller
 
         };
 
-        // Maps Regioes from Selected Regiao
+
+        //Maps Mundos from Selected mundo
+
+        var selectedMundoId = editPersonagemRequest.SelectedMundo;
+        if (selectedMundoId != null)
+        {
+            var selectedMundoIdAsGuid = Guid.Parse(selectedMundoId);
+            var existingMundo = await mundoRepository.GetAsync(selectedMundoIdAsGuid);
+
+            if (existingMundo != null)
+            {
+                var selectedMundo = existingMundo;
+                //Maping Regioes back to domain modal
+                personagem.Mundo = selectedMundo;
+            }
+        }
+
+        //Maps Continentes from Selected Continente
+
+        var selectedContinenteId = editPersonagemRequest.SelectedContinente;
+        if (selectedContinenteId != null)
+        {
+            var selectedContinenteIdAsGuid = Guid.Parse(selectedContinenteId);
+            var existingContinente = await continenteRepository.GetAsync(selectedContinenteIdAsGuid);
+
+            if (existingContinente != null)
+            {
+                var selectedContinente = existingContinente;
+                //Maping Regioes back to domain modal
+                personagem.Continente = selectedContinente;
+            }
+        }
+
+        //Maps Regioes from Selected Regiao
+
         var selectedRegiaoId = editPersonagemRequest.SelectedRegiao;
         if (selectedRegiaoId != null)
         {
@@ -166,8 +240,6 @@ public class AdminPersonagensController : Controller
                 var selectedRegiao = existingRegiao;
                 //Maping Regiaos back to domain modal
                 personagem.Regiao = selectedRegiao;
-                personagem.Continente = selectedRegiao.Continente;
-                personagem.Mundo = selectedRegiao.Mundo;
             }
         }
 

@@ -8,20 +8,24 @@ namespace TdM.Database.Models.Domain.Enums
 {
     public enum Tipo
     {
-        Aberração,
-        Bestas,
+        Beast,
         Celestial,
-        Constructo,
-        Corruptor,
-        Dragão,
+        Construct,
+        Dragon,
         Elemental,
-        Fada,
-        Gigante,
-        Humanóide,
-        Monstruosidade,
-        MortoVivo,
-        Lodo,
-        Planta
-
+        Fey,
+        Fiend,
+        Demons,
+        Devils,
+        Yugoloths,
+        Giant,      
+        Humanoid,
+        Humans,
+        Elves,
+        Dwarves,
+        Monstrosity,
+        Ooze,
+        Plant,
+        Undead,
     }
 }

@@ -19,8 +19,8 @@
                 <tr>
                     <th id="idcolumn">Id</th>
                     <th onclick="sortTable(1)">World <span class="pointer">&#9660</span></th>
-                    <th onclick="sortTable(2)">Author <span class="pointer">&#9660</span></th>
                     <th id="desccolumn">Description</th>
+                    <th onclick="sortTable(4)">Author <span class="pointer">&#9660</span></th>
                     <th class="text-center">World Building</th>
                     <th onclick="sortTable(3)">Published <span class="pointer">&#9660</span></th>
                     <th></th>
@@ -32,8 +32,8 @@
                     <tr>
                         <td id="tdid">@mundo.Id</td>
                         <td>@mundo.Nome</td>
-                        <td>@mundo.Autor.GetDisplayName()</td>
                         <td id="tddesc">@mundo.CurtaDescricao</td>
+                        <td>@mundo.Autor.GetDisplayName()</td>      
                         <td>
                             <div class="dropdown w-100" id="worldbuild">
                                 <button class="btn btn-secondary dropdown-toggle w-100" type="button" id="worldDropdownButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -55,11 +55,11 @@
                                             {
                                                 @foreach (var continente in mundo.Continentes)
                                                 {
-                                                    <button class="dropdown-item dropdown-toggle" type="button" id="regionsDropdownButton-@continente.Id"
+                                                    <button class="dropdown-item dropdown-toggle" type="button" id="continente-@continente.Id"
                                                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                         @continente.Nome
                                                     </button>
-                                                    <div class="dropdown-menu w-100" aria-labelledby="regionsDropdownButton-@continente.Id">
+                                                    <div class="dropdown-menu w-100" aria-labelledby="continente-@continente.Id-dropdown">
                                                         @if (continente.Regioes != null && continente.Regioes.Any())
                                                         {
                                                             @foreach (var regiao in continente.Regioes)
@@ -79,6 +79,7 @@
                                                 <a class="dropdown-item text-danger" href="#">No continents found!</a>
                                             }
                                         </div>
+
                                     </div>
 
                                     <div class="dropdown">

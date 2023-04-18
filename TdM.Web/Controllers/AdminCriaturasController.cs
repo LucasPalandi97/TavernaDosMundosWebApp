@@ -105,9 +105,9 @@ public class AdminCriaturasController : Controller
                 selectedRegioes.Add(existingRegiao);
             }
         }
+
         //Maping Continentes back to domain modal
         criatura.Regioes = selectedRegioes;
-
 
         await criaturaRepository.AddAsync(criatura);
 
@@ -127,10 +127,12 @@ public class AdminCriaturasController : Controller
     {
         //Retrieve Result from repository
         var criatura = await criaturaRepository.GetAsync(id);
-        var regiaoDomainModel = await regiaoRepository.GetAllAsync();
+        var mundosDomainModel = await mundoRepository.GetAllAsync();
+        var continentesDomainModel = await continenteRepository.GetAllAsync();
+        var regioesDomainModel = await regiaoRepository.GetAllAsync();
 
         if (criatura != null)
-        {
+        {   //Map the domain model into the view model
             var editCriaturaRequest = new EditCriaturaRequest
             {
                 Id = criatura.Id,
@@ -143,6 +145,24 @@ public class AdminCriaturasController : Controller
                 PublishedDate = criatura.PublishedDate,
                 UrlHandle = criatura.UrlHandle,
                 Visible = criatura.Visible,
+                Mundos = mundosDomainModel.Select(x => new SelectListItem
+                {
+                    Text = x.Nome,
+                    Value = x.Id.ToString()
+                }),
+                SelectedMundo = criatura.Mundo?.Id.ToString(),
+                Continentes = continentesDomainModel.Select(x => new SelectListItem
+                {
+                    Text = x.Nome,
+                    Value = x.Id.ToString()
+                }),
+                SelectedContinentes = criatura.Continentes.Select(x => x.Id.ToString()).ToArray(),
+                Regioes = regioesDomainModel.Select(x => new SelectListItem
+                {
+                    Text = x.Nome,
+                    Value = x.Id.ToString()
+                }),
+                SelectedRegioes = criatura.Regioes.Select(x => x.Id.ToString()).ToArray()
             };
             
             return View(editCriaturaRequest);
@@ -177,10 +197,45 @@ public class AdminCriaturasController : Controller
             if (existingMundo != null)
             {
                 var selectedMundo = existingMundo;
-                //Maping Criaturas back to domain modal
+                //Maping Continentes back to domain modal
                 criatura.Mundo = selectedMundo;
             }
         }
+        
+
+        //Map Continentes into domain model
+        var selectedContinentes = new List<Continente>();
+        foreach (var selectedContinente in editCriaturaRequest.SelectedContinentes)
+        {
+            if (Guid.TryParse(selectedContinente, out var continente))
+            {
+                var foundContinente = await continenteRepository.GetAsync(continente);
+                if (foundContinente != null)
+                {
+                    selectedContinentes.Add(foundContinente);
+                }
+            }
+
+        }
+        criatura.Continentes = selectedContinentes;
+
+        //Map Regioes into domain model
+        var selectedRegioes = new List<Regiao>();
+        foreach (var selectedRegiao in editCriaturaRequest.SelectedRegioes)
+        {
+            if (Guid.TryParse(selectedRegiao, out var regiao))
+            {
+                var foundRegiao = await regiaoRepository.GetAsync(regiao);
+                if (foundRegiao != null)
+                {
+                    selectedRegioes.Add(foundRegiao);
+                }
+            }
+
+        }
+        criatura.Regioes = selectedRegioes;
+
+        //Submit information to repository
         var updatedCriatura = await criaturaRepository.UpdateAsync(criatura);
 
         if (updatedCriatura != null)

@@ -19,9 +19,10 @@
                 <tr>
                     <th id="idcolumn">Id</th>
                     <th onclick="sortTable(1)">Region <span class="pointer">&#9660</span></th>
-                    <th onclick="sortTable(1)">Continent <span class="pointer">&#9660</span></th>
-                    <th onclick="sortTable(1)">World <span class="pointer">&#9660</span></th>
                     <th id="desccolumn">Description</th>
+                    <th onclick="sortTable(4)">Continent <span class="pointer">&#9660</span></th>
+                    <th onclick="sortTable(5)">World <span class="pointer">&#9660</span></th>
+                    <th onclick="sortTable(3)">Published <span class="pointer">&#9660</span></th>
                     <th></th>
                 </tr>
             </thead>
@@ -30,10 +31,11 @@
                 {
                     <tr>
                         <td id="tdid">@regiao.Id</td>
-                        <td>@regiao.Nome</td>                       
+                        <td>@regiao.Nome</td>
+                        <td id="tddesc">@regiao.CurtaDescricao</td>
                         <td>@regiao.Continente?.Nome</td>
                         <td>@regiao.Mundo?.Nome</td>
-                        <td id="tddesc">@regiao.CurtaDescricao</td>
+                        <td class="published-date">@regiao.PublishedDate.ToString("yyyy-MM-dd HH:mm")</td>
                         <td>
                             <a asp-area="" asp-controller="AdminRegioes" asp-action="Edit" asp-route-id="@regiao.Id">Edit</a>
                         </td>
@@ -47,3 +49,6 @@
         <p>No Regions found!</p>
     }
 </div>
+@section Scripts{
+    <script type="text/javascript" src="~/js/SortElements.js" ></script>
+}

@@ -16,117 +16,123 @@
 
             <div class="mb-3 col-8">
                 <label class="form-label" for="nome">Id</label>
-                <input type="text" class="form-control" id="nome" asp-for="Id" readonly/>
+                <input type="text" class="form-control" id="nome" asp-for="Id" readonly />
             </div>
-                <div class="mb-3 col-8">
-                    <label class="form-label" for="nome">Name</label>
-                    <input type="text" class="form-control" id="nome" asp-for="Nome" />
-                </div>
+            <div class="mb-3 col-8">
+                <label class="form-label" for="nome">Name</label>
+                <input type="text" class="form-control" id="nome" asp-for="Nome" />
+            </div>
 
-                <div class="mb-3">
-                    <label for="descricao" class="form-label">Short Description</label>
-                    <input class="form-control" type="text" placeholder="Continent's Short Description" id="CurtaDescricao" name="CurtaDescricao" asp-for="CurtaDescricao" />
-                </div>
+            <div class="mb-3">
+                <label for="descricao" class="form-label">Short Description</label>
+                <input class="form-control" type="text" placeholder="Continent's Short Description" id="CurtaDescricao" name="CurtaDescricao" asp-for="CurtaDescricao" />
+            </div>
 
-                <div class="mb-3">
-                    <label for="descricao" class="form-label">Description</label>
-                    <textarea placeholder="Region's Description" id="descricao" name="descricao" asp-for="Descricao"></textarea>
-                </div>
+            <div class="mb-3">
+                <label for="descricao" class="form-label">Description</label>
+                <textarea placeholder="Region's Description" id="descricao" name="descricao" asp-for="Descricao"></textarea>
+            </div>
 
-                @if (Model.Simbolo != null)
-                {
-                    <img src="@Model.Simbolo" id="SymbolUploadDisplay" style="width:300px; margin-top:1em;" />
+            @if (Model.Simbolo != null)
+            {
+                <img src="@Model.Simbolo" id="SymbolUploadDisplay" style="width:300px; margin-top:1em;" />
 
-                }
-                else
-                {
-                    <img src="" id="SymbolUploadDisplay" style="width:300px; margin-top:1em;" />
+            }
+            else
+            {
+                <img src="" id="SymbolUploadDisplay" style="width:300px; margin-top:1em;" />
 
-                }
+            }
 
-                <div class="mb-3">
-                    <label class="form-label">Upload Symbol Image</label>
-                    <input type="file" id="SymbolUpload" class="form-control" />
-                </div>
+            <div class="mb-3">
+                <label class="form-label">Upload Symbol Image</label>
+                <input type="file" id="SymbolUpload" class="form-control" />
+            </div>
 
-                <div class="mb-3">
-                    <label class="form-label" for="SymbolUrl">Display Image</label>
-                    <input type="text" class="form-control" id="SymbolUrl" placeholder="Image's URL" asp-for="Simbolo" />
-                </div>
+            <div class="mb-3">
+                <label class="form-label" for="SymbolUrl">Display Image</label>
+                <input type="text" class="form-control" id="SymbolUrl" placeholder="Image's URL" asp-for="Simbolo" />
+            </div>
 
-                @if (Model.ImgCard != null)
-                {
+            @if (Model.ImgCard != null)
+            {
                 <img src="@Model.ImgCard" id="ImageCardUploadDisplay" style="width:300px; margin-top:1em;" />
 
-                }
-                else
-                {
+            }
+            else
+            {
                 <img src="" id="ImageCardUploadDisplay" style="width:300px; margin-top:1em;" />
 
-                }
+            }
 
-                <div class="mb-3">
-                    <label class="form-label">Upload Display Image</label>
-                    <input type="file" id="ImageCardUpload" class="form-control" />
+            <div class="mb-3">
+                <label class="form-label">Upload Display Image</label>
+                <input type="file" id="ImageCardUpload" class="form-control" />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label" for="ImgCardUrl">Display Image</label>
+                <input type="text" class="form-control" id="ImgCardUrl" placeholder="Image's URL" asp-for="ImgCard" />
+            </div>
+
+            @if (Model.ImgBox != null)
+            {
+                <img src="@Model.ImgBox" id="ImageBoxUploadDisplay" style="width:300px; margin-top:1em;" />
+
+            }
+            else
+            {
+                <img src="" id="ImageBoxUploadDisplay" style="width:300px; margin-top:1em;" />
+
+            }
+
+            <div class="mb-3">
+                <label class="form-label">Upload Content Image</label>
+                <input type="file" id="ImageBoxUpload" class="form-control" />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label" for="ImgBoxUrl">Content Image</label>
+                <input type="text" class="form-control" id="ImgBoxUrl" placeholder="Image's URL" asp-for="ImgBox" />
+            </div>
+
+            <div class="mb-3 col-2">
+                <label class="form-label">Published Date</label>
+                <input type="date" class="form-control" id="publishedDate" asp-for="PublishedDate" />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">URL Handle</label>
+                <input type="text" class="form-control" placeholder="Suggestion: Volos-Capital" id="urlHandle" asp-for="UrlHandle" />
+            </div>
+
+            <div class="form-check form-switch mb-3">
+                <label class="form-check-label" for="visible">Visible?</label>
+                <input class="form-check-input" type="checkbox" id="visible" asp-for="Visible" checked>
+            </div>
+
+            <div class="mb-3 col-8">
+                <label class="form-label">World</label>
+                <select id="SelectedMundo" class="form-select" asp-items="@Model.Mundos" asp-for="SelectedMundo" onchange="updateContinentes() ">
+                    <option value="" class="text-danger">No World</option>
+                </select>
+            </div>
+
+            <div class="mb-3 col-8">
+                <label class="form-label">Continent</label>
+                <select id="SelectedContinentes" class="form-control" asp-items="@Model.Continentes" asp-for="SelectedContinente" onchange="updateRegioes()" data-single>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <div class="d-flex">
+
+                    <button type="submit" class="btn btn-dark">Update</button>
+                    <button type="button" class="btn btn-danger ms-2" data-bs-toggle="modal" data-bs-target="#exampleModal">Delete</button>
+
                 </div>
 
-                <div class="mb-3">
-                    <label class="form-label" for="ImgCardUrl">Display Image</label>
-                    <input type="text" class="form-control" id="ImgCardUrl" placeholder="Image's URL" asp-for="ImgCard" />
-                </div>
-
-                @if (Model.ImgBox != null)
-                {
-                    <img src="@Model.ImgBox" id="ImageBoxUploadDisplay" style="width:300px; margin-top:1em;" />
-
-                }
-                else
-                {
-                    <img src="" id="ImageBoxUploadDisplay" style="width:300px; margin-top:1em;" />
-
-                }
-
-                <div class="mb-3">
-                    <label class="form-label">Upload Content Image</label>
-                    <input type="file" id="ImageBoxUpload" class="form-control" />
-                </div>
-
-                <div class="mb-3">
-                    <label class="form-label" for="ImgBoxUrl">Content Image</label>
-                    <input type="text" class="form-control" id="ImgBoxUrl" placeholder="Image's URL" asp-for="ImgBox" />
-                </div>
-
-                <div class="mb-3 col-2">
-                    <label class="form-label">Published Date</label>
-                    <input type="date" class="form-control" id="publishedDate" asp-for="PublishedDate" />
-                </div>
-
-                <div class="mb-3">
-                    <label class="form-label">URL Handle</label>
-                    <input type="text" class="form-control" placeholder="Suggestion: Volos-Capital" id="urlHandle" asp-for="UrlHandle" />
-                </div>
-
-                <div class="form-check form-switch mb-3">
-                    <label class="form-check-label" for="visible">Visible?</label>
-                    <input class="form-check-input" type="checkbox" id="visible" asp-for="Visible" checked>
-                </div>
-
-                <div class="mb-3 col-8">
-                    <label class="form-label">Continente</label>
-                    <select class="form-select" asp-items="@Model.Continentes" asp-for="SelectedContinente">
-                        <option value="" class="text-danger">No Continent</option>
-                    </select>
-                </div>
-
-                <div class="mb-3">
-                    <div class="d-flex">
-
-                        <button type="submit" class="btn btn-dark">Update</button>
-                        <button type="button" class="btn btn-danger ms-2" data-bs-toggle="modal" data-bs-target="#exampleModal">Delete</button>
-
-                    </div>
-
-                </div>
+            </div>
 
             <!-- Modal Delete -->
             <div class="modal fade " id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -154,5 +160,5 @@
 
 @section Scripts
     {
-
+    <script type="text/javascript" src="~/js/Formulario.js"></script>
 }

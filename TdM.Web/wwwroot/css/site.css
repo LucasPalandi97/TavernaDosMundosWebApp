@@ -59,3 +59,43 @@
         height: 7rem;
         z-index: 0; /* set the z-index of the footer to a lower value */
     }
+
+/* Hide the default select arrow 
+    Checkbox for select with multiple items
+*/
+select[multiple]::-ms-expand {
+    display: none;
+}
+
+select[multiple] {
+    height: auto;
+    width: 100%;
+    padding: 6px 30px 6px 12px;
+    font-size: 14px;
+    line-height: 1.4;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+
+    select[multiple] option {
+        position: relative;
+        padding-left: 32px;
+    }
+
+        select[multiple] option:before {
+            content: '';
+            position: absolute;
+            top: 5px;
+            left: 7px;
+            width: 18px;
+            height: 18px;
+            border: 1px solid #adb5bd;
+            border-radius: 4px;
+        }
+
+        select[multiple] option:checked:before {
+            content: '\2713';
+            color: #007bff;
+            border-color: #007bff;
+        }

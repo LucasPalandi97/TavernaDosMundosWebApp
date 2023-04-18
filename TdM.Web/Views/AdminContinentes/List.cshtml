@@ -4,7 +4,6 @@
 
 }
 
-
 <div class="bg-secondary bg-opacity-10 py-2">
     <div class="containter">
         <h1>Show all Continents - Admin Funcionality</h1>
@@ -20,9 +19,9 @@
                 <tr>
                     <th id="idcolumn">Id</th>
                     <th onclick="sortTable(1)">Continent <span class="pointer">&#9660</span></th>
-                    <th onclick="sortTable(2)">World <span class="pointer">&#9660</span></th>
                     <th id="desccolumn">Description</th>
-
+                    <th onclick="sortTable(4)">World <span class="pointer">&#9660</span></th>
+                    <th onclick="sortTable(3)">Published <span class="pointer">&#9660</span></th>               
                     <th></th>
                 </tr>
             </thead>
@@ -32,9 +31,9 @@
                     <tr>
                         <td id="tdid">@continente.Id</td>
                         <td>@continente.Nome</td>
-                        <td>@continente.Mundo?.Nome</td>
                         <td id="tddesc">@continente.CurtaDescricao</td>
-
+                        <td>@continente.Mundo?.Nome</td>
+                        <td class="published-date">@continente.PublishedDate.ToString("yyyy-MM-dd HH:mm")</td>
                         <td>
                             <a asp-area="" asp-controller="AdminContinentes" asp-action="Edit" asp-route-id="@continente.Id">Edit</a>
                         </td>

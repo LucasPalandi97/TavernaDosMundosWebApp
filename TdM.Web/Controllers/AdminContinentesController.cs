@@ -157,6 +157,7 @@ public class AdminContinentesController : Controller
                 continente.Mundo = selectedMundo;
             }
         }
+        
         var updatedContinente = await continenteRepository.UpdateAsync(continente);
 
         if (updatedContinente != null)

@@ -1,11 +1,16 @@
-﻿//TODAY DEFAULT DATA
+﻿//TODAY DEFAULT DATETIME
+const publishedDateInput = document.getElementById('publishedDate');
+if (publishedDateInput) {
+    const now = moment().tz('America/Sao_Paulo');
+    const datetimeLocalString = now.format('YYYY-MM-DDTHH:mm');
+    const datetimeFormatted = now.format('DD/MM/YYYY HH:mm');
+    publishedDateInput.value = datetimeLocalString;
+    publishedDateInput.setAttribute('title', datetimeFormatted);
+} else {
+    console.error('Could not find element with ID "publishedDate".');
+}
 
-Date.prototype.toDateInputValue = (function () {
-    var local = new Date(this);
-    local.setMinutes(this.getMinutes() - this.getTimezoneOffset());
-    return local.toJSON().slice(0, 10);
-});
-document.getElementById('publishedDate').value = new Date().toDateInputValue();
+
 
 
 //FROLADA EDITOR HTML
@@ -74,7 +79,6 @@ if (SymbolUploadElement != null) {
     });
 }
 
-
 //SELECT MENUS
 
 //GET LIST<CONTINENTES> BY MUNDOID (ALLOW MULTIPLE ITEMS)
@@ -88,20 +92,27 @@ function updateContinentes() {
             data: { id: mundoId },
             success: function (data) {
                 $("#SelectedContinentes").empty();
-                $("#SelectedContinentes").append('<option value="" class="text-danger">No Continent</option>');
+                $("#SelectedContinentes").append('<option value="" class="text-danger" selected>No Continent</option>'); // add empty default option
                 $.each(data, function (index, value) {
                     $("#SelectedContinentes").append('<option value="' + value.value + '">' + value.text + '</option>');
                 });
-
-                // Set the selected value
-                if (data.length > 0) {
-                    $("#SelectedContinentes").val(data[0].value);
+                // Clear selected region if a different mundo is selected
+                if ($("#SelectedMundo").data("selected") != mundoId) {
+                    $("#SelectedRegioes").empty();
+                    $("#SelectedRegioes").append('<option value="" class="text-danger" selected>No Region</option>');
                 }
+
+                $("#SelectedMundo").data("selected", mundoId);
             }
         });
+    } else {
+        // Clear both continent and region if no mundo is selected
+        $("#SelectedContinentes").empty();
+        $("#SelectedContinentes").append('<option value="" class="text-danger" selected>No Continent</option>'); // add empty default option
+        $("#SelectedRegioes").empty();
+        $("#SelectedRegioes").append('<option value="" class="text-danger" selected>No Region</option>');
     }
 }
-
 
 //GET LIST<REGIOES> BY LIST<CONTINENTES> IDs (ALLOW MULTIPLE ITEMS)
 function updateRegioes() {
@@ -114,17 +125,15 @@ function updateRegioes() {
             data: { selectedContinenteIds: selectedContinenteIds },
             success: function (data) {
                 $("#SelectedRegioes").empty();
-                $("#SelectedRegioes").append('<option value="" class="text-danger">No Region</option>');
+                $("#SelectedRegioes").append('<option value="" class="text-danger" selected>No Region</option>'); // add empty default option
                 $.each(data, function (index, value) {
                     $("#SelectedRegioes").append('<option value="' + value.value + '">' + value.text + '</option>');
                 });
-                // Set the selected value
-                if (data.length > 0) {
-                    $("#SelectedRegioes").val(data[0].value);
-                }
             }
         });
+    } else {
+        // Reset the region dropdown
+        $("#SelectedRegioes").empty().append('<option value="" class="text-danger" selected>No Region</option>'); // add empty default option
     }
 }
-
 

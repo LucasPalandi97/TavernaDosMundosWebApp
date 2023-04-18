@@ -18,13 +18,8 @@ public class EditRegiaoRequest
     public bool Visible { get; set; }
     public Mundo Mundo { get; set; }
 
-    // Display Continentes 
+    public IEnumerable<SelectListItem> Mundos { get; set; }
+    public string? SelectedMundo { get; set; }
     public IEnumerable<SelectListItem> Continentes { get; set; }
-
-    //Collect Continente     
     public string? SelectedContinente { get; set; }
-
-    //Collect Multiple itens
-    //public string[] SelectedContinentes { get; set; } = Array.Empty<string>();
-
 }
