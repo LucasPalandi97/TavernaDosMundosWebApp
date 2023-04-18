@@ -37,22 +37,53 @@ public class PersonagemRepository : IPersonagemRepository
     public async Task<IEnumerable<Personagem>> GetAllAsync()
     {
         //return list and include navigation Icollection from model database
-        return await tavernaDbContext.Personagens.Include(x => x.Regiao).Include(x => x.Continente).Include(x => x.Mundo).ToListAsync();
+        return await tavernaDbContext.Personagens.Include(x => x.Continente)
+            .Include(x => x.Regiao)
+            .Include(x => x.Mundo)
+            .Include(x => x.Povos).Include(x => x.Contos)
+            .Include(x => x.Mundo).ToListAsync();
+    }
+
+    public async Task<IEnumerable<Personagem>> GetAllByMundoAsync(Guid mundoId)
+    {
+        return await tavernaDbContext.Personagens
+            .Include(x => x.Continente)
+            .Include(x => x.Regiao)
+            .Include(x => x.Povos)
+            .Include(x => x.Contos)
+            .Include(x => x.Mundo)
+            .Where(x => x.Mundo.Id == mundoId)
+            .ToListAsync();
     }
 
     public async Task<Personagem?> GetAsync(Guid id)
     {
-        return await tavernaDbContext.Personagens.Include(x => x.Regiao).Include(x => x.Continente).Include(x => x.Mundo).FirstOrDefaultAsync(x => x.Id == id);
+        return await tavernaDbContext.Personagens
+            .Include(x => x.Continente)
+            .Include(x => x.Regiao)
+            .Include(x => x.Povos)
+            .Include(x => x.Contos)
+            .Include(x => x.Mundo).FirstOrDefaultAsync(x => x.Id == id);
     }
 
     public async Task<Personagem?> GetByUrlHandleAsync(string urlHandle)
     {
-        return await tavernaDbContext.Personagens.Include(x => x.Regiao).Include(x => x.Continente).Include(x => x.Mundo).FirstOrDefaultAsync(x => x.UrlHandle == urlHandle);
+        return await tavernaDbContext.Personagens
+            .Include(x => x.Continente)
+            .Include(x => x.Regiao)
+            .Include(x => x.Povos)
+            .Include(x => x.Contos)
+            .Include(x => x.Mundo).FirstOrDefaultAsync(x => x.UrlHandle == urlHandle);
     }
 
     public async Task<Personagem?> UpdateAsync(Personagem personagem)
     {
-        var existingPersonagem = await tavernaDbContext.Personagens.Include(x => x.Regiao).Include(x => x.Continente).Include(x => x.Mundo).FirstOrDefaultAsync(x => x.Id == personagem.Id);
+        var existingPersonagem = await tavernaDbContext.Personagens.Include(x => x.Continente)
+            .Include(x => x.Regiao)
+            .Include(x => x.Povos)
+            .Include(x => x.Contos)
+            .Include(x => x.Mundo)
+            .FirstOrDefaultAsync(x => x.Id == personagem.Id);
 
         if (existingPersonagem != null)
         {

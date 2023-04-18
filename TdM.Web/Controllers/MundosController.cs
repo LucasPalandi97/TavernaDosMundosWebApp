@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using TdM.Web.Models.ViewModels;
 using TdM.Web.Repositories;
 
 namespace TdM.Web.Controllers;
@@ -15,6 +16,18 @@ public class MundosController : Controller
     public async Task<IActionResult> Index(string urlHandle)
     {
         var mundo = await mundoRepository.GetByUrlHandleAsync(urlHandle);
-        return View(mundo);
+
+        if (mundo == null)
+        {
+            return NotFound();
+        }      
+        var navbarViewModel = new NavbarViewModel
+        {
+            Mundo = mundo,
+            MundoUrlHandle = mundo.UrlHandle
+
+        };
+
+        return View("Index", navbarViewModel);
     }
 }

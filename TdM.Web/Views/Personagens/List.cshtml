@@ -1,11 +1,21 @@
 ﻿@{
 }
-@model List<TdM.Database.Models.Domain.Personagem>
+@model TdM.Web.Models.ViewModels.NavbarViewModel
 @using TdM.Database.Models.Domain.Enums
 @{
     ViewBag.Title = "Personagens";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<!-- Include the navbar partial view and pass the Mundo object to it -->
+@if (string.IsNullOrEmpty(ViewBag.MundoUrlHandle))
+{
+    @await Html.PartialAsync("_Navbar", new TdM.Web.Models.ViewModels.NavbarViewModel {})
+}
+else
+{
+    @await Html.PartialAsync("_Navbar", new TdM.Web.Models.ViewModels.NavbarViewModel { MundoUrlHandle = ViewBag.MundoUrlHandle })
+}
+
 <head>
     <link type="text/css" rel="stylesheet" href="~/css/ListPersonagens.css" />
 </head>
@@ -16,16 +26,16 @@
     </div>
 
     <nav class="navbar navbar-light justify-content-center mt-4">
-    <form class="form-inline">
-        <button type="button" class="btn btn-primary btn-lg mr-3" id="btnSort">Sort</button>
-        <input class="form-control form-control-lg mr-sm-2" type="search" placeholder="Type a name" aria-label="Search" id="search">
-        <!-- <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button> -->
-    </form>
-</nav>
-    @if (Model != null && Model.Any())
+        <form class="form-inline">
+            <button type="button" class="btn btn-primary btn-lg mr-3" id="btnSort">Sort</button>
+            <input class="form-control form-control-lg mr-sm-2" type="search" placeholder="Type a name" aria-label="Search" id="search">
+            <!-- <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button> -->
+        </form>
+    </nav>
+    @if (Model.Personagens != null && Model.Personagens.Any())
     {
         <div class="card-deck row row-cols-1 row-cols-sm-2 row-cols-md-2 row-cols-xl-4 my-3 g-2 justify-content-center align-items-center">
-            @foreach (var personagem in Model)
+            @foreach (var personagem in Model.Personagens)
             {
                 <div id="charactercard" class="card card-container mx-3" style="height: 20rem; width: 12rem;">
                     <div class="card_mask p-0 justify-content-between">
@@ -33,11 +43,11 @@
                             <img src="@personagem.ImgCard" class="card-img-top imgfit h-100 w-100" alt="Image not found!">
                         </a>
                     </div>
-                        <div class="mask_text w-100">
-                            <div class="card-body">
-                                <ul id="listcardbottom" class="list-group list-group-flush">
-                                    <li><h3 class="card-title">@personagem.Nome</h3></li>
-                                    <li><p class="card-text text-nowrap text-secondary" style="font-size:16px;">@personagem.CurtaDescricao</p></li>
+                    <div class="mask_text w-100">
+                        <div class="card-body">
+                            <ul id="listcardbottom" class="list-group list-group-flush">
+                                <li><h3 class="card-title">@personagem.Nome</h3></li>
+                                <li><p class="card-text text-nowrap text-secondary" style="font-size:16px;">@personagem.CurtaDescricao</p></li>
                                 @if (personagem.Classe != null)
                                 {
                                     <li class="list-group-item">@personagem.Regiao?.Nome</li>
@@ -46,10 +56,10 @@
                                 {
                                     <li class="list-group-item text-secondary">No Region</li>
                                 }
-                                </ul>
-                            </div>
+                            </ul>
                         </div>
-                    
+                    </div>
+
                 </div>
 
             }
@@ -59,9 +69,9 @@
     }
     else
     {
-        <p>No Worlds found!</p>
+        <p>No Characters found!</p>
     }
 </div>
 @section Scripts {
-    <script type="text/javascript" src="~/js/SortElements.js" ></script>
+    <script type="text/javascript" src="~/js/SortElements.js"></script>
 }

@@ -5,7 +5,7 @@ namespace TdM.Web.Repositories;
 public interface IRegiaoRepository
 {
     Task<IEnumerable<Regiao>> GetAllAsync();
-
+    Task<IEnumerable<Regiao>> GetAllByMundoAsync(Guid id);
     Task<Regiao?> GetAsync(Guid id);
     Task<IEnumerable<Regiao>>? GetRegioesByContinenteAsync(object selectedContinentIds);
 

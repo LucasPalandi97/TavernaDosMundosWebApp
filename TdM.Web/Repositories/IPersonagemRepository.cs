@@ -5,7 +5,7 @@ namespace TdM.Web.Repositories;
 public interface IPersonagemRepository
 {
     Task<IEnumerable<Personagem>> GetAllAsync();
-
+    Task<IEnumerable<Personagem>> GetAllByMundoAsync(Guid mundoId);
     Task<Personagem?> GetAsync(Guid id);
 
     Task<Personagem?> GetByUrlHandleAsync(string urlHandle);

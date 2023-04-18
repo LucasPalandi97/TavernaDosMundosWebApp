@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using TdM.Database.Models.Domain;
 using TdM.Web.Models.ViewModels;
 using TdM.Web.Repositories;
 
@@ -7,11 +8,13 @@ namespace TdM.Web.Controllers;
 public class ContinentesController : Controller
 {
     private readonly IContinenteRepository continenteRepository;
+    private readonly IMundoRepository mundoRepository;
     private readonly IRegiaoRepository regiaoRepository;
 
-    public ContinentesController(IContinenteRepository continenteRepository, IRegiaoRepository regiaoRepository)
+    public ContinentesController(IContinenteRepository continenteRepository, IMundoRepository mundoRepository, IRegiaoRepository regiaoRepository)
     {
         this.continenteRepository = continenteRepository;
+        this.mundoRepository = mundoRepository;
         this.regiaoRepository = regiaoRepository;
     }
     [HttpGet]
@@ -22,21 +25,37 @@ public class ContinentesController : Controller
     }
 
     [HttpGet]
-    public async Task<IActionResult> List()
+    public async Task<IActionResult> List(string urlHandle)
     {
-        //get all continentes
-        var continentes = await continenteRepository.GetAllAsync();
-
-        //get all regions
-        var regioes = await regiaoRepository.GetAllAsync();
-
-        var model = new RegionViewModel
+        if (urlHandle == null)
         {
-            Continentes = continentes,
-            Regioes = regioes
-        };
-        return View(model);
+            var continentes = await continenteRepository.GetAllAsync();
+            var regioes = await regiaoRepository.GetAllAsync();
+            var viewModel = new NavbarViewModel
+            {             
+                Continentes = continentes,
+                Regioes = regioes
+            };
+            return View(viewModel);
+        }
+        else
+        {
+            var mundo = await mundoRepository.GetByUrlHandleAsync(urlHandle);
+            var continentes = await continenteRepository.GetAllByMundoAsync(mundo.Id);
+            var regioes = await regiaoRepository.GetAllByMundoAsync(mundo.Id);
+            ViewBag.MundoUrlHandle = mundo.UrlHandle; // set the value of ViewBag here
+            var viewModel = new NavbarViewModel
+
+            {
+                Mundo = mundo,
+                Continentes = continentes,
+                Regioes = regioes
+            };
+
+            return View(viewModel);
+        }
     }
 }
+
 
 

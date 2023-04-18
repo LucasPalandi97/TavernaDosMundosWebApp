@@ -5,6 +5,15 @@
     ViewData["Title"] = Model.Nome + ", " + Model.CurtaDescricao;
 
 }
+<!-- Include the navbar partial view and pass the Mundo object to it -->
+@if (string.IsNullOrEmpty(ViewBag.MundoUrlHandle))
+{
+    @await Html.PartialAsync("_Navbar", new TdM.Web.Models.ViewModels.NavbarViewModel {})
+}
+else
+{
+    @await Html.PartialAsync("_Navbar", new TdM.Web.Models.ViewModels.NavbarViewModel { MundoUrlHandle = ViewBag.MundoUrlHandle })
+}
 <style>
     .imground {
         height: 80px;
@@ -48,7 +57,7 @@
             </div>
         </div>
     </section>
-  @*  if (Model.Continentes.Any())
+    @*  if (Model.Continentes.Any())
     {
         <!-- Image element - set the background image for the header in the line below-->
         <div class="py-2 px-5 bg-image-full mb-3 justify-content-center aling-items-center" style="background-image: url('https://source.unsplash.com/4ulffa6qoKA/1200x800')">

@@ -37,12 +37,36 @@ public class RegiaoRepository : IRegiaoRepository
     public async Task<IEnumerable<Regiao>> GetAllAsync()
     {
         //return list and include navigation Icollection from model database
-        return await tavernaDbContext.Regioes.Include(x => x.Continente).Include(x => x.Mundo).ToListAsync();
+        return await tavernaDbContext.Regioes
+            .Include(x => x.Personagens)
+            .Include(x => x.Criaturas)
+            .Include(x => x.Povos)
+            .Include(x => x.Contos)
+            .Include(x => x.Continente)
+            .Include(x => x.Mundo).ToListAsync();
+    }
+
+    public async Task<IEnumerable<Regiao>> GetAllByMundoAsync(Guid id)
+    {
+        //return list and include navigation Icollection from model database
+        return await tavernaDbContext.Regioes
+            .Include(x => x.Personagens)
+            .Include(x => x.Criaturas)
+            .Include(x => x.Povos)
+            .Include(x => x.Contos)
+            .Include(x => x.Continente)
+            .Include(x => x.Mundo).ToListAsync();
     }
 
     public async Task<Regiao?> GetAsync(Guid id)
     {
-        return await tavernaDbContext.Regioes.Include(x => x.Continente).Include(x => x.Mundo).FirstOrDefaultAsync(x => x.Id == id);
+        return await tavernaDbContext.Regioes
+            .Include(x => x.Personagens)
+            .Include(x => x.Criaturas)
+            .Include(x => x.Povos)
+            .Include(x => x.Contos)
+            .Include(x => x.Continente)
+            .Include(x => x.Mundo).FirstOrDefaultAsync(x => x.Id == id);
     }
 
     public async Task<IEnumerable<Regiao>>? GetRegioesByContinenteAsync(object selectedContinenteIds)
@@ -63,12 +87,24 @@ public class RegiaoRepository : IRegiaoRepository
 
     public async Task<Regiao?> GetByUrlHandleAsync(string urlHandle)
     {
-        return await tavernaDbContext.Regioes.Include(x => x.Continente).Include(x => x.Mundo).FirstOrDefaultAsync(x => x.UrlHandle == urlHandle);
+        return await tavernaDbContext.Regioes.Include(x => x.Personagens)
+            .Include(x => x.Criaturas)
+            .Include(x => x.Povos)
+            .Include(x => x.Contos)
+            .Include(x => x.Continente)
+            .Include(x => x.Mundo)
+            .FirstOrDefaultAsync(x => x.UrlHandle == urlHandle);
     }
 
     public async Task<Regiao?> UpdateAsync(Regiao regiao)
     {
-        var existingRegiao = await tavernaDbContext.Regioes.Include(x => x.Continente).Include(x => x.Mundo).FirstOrDefaultAsync(x => x.Id == regiao.Id);
+        var existingRegiao = await tavernaDbContext.Regioes
+            .Include(x => x.Personagens)
+            .Include(x => x.Criaturas)
+            .Include(x => x.Povos)
+            .Include(x => x.Contos)
+            .Include(x => x.Continente)
+            .Include(x => x.Mundo).FirstOrDefaultAsync(x => x.Id == regiao.Id);
 
         if (existingRegiao != null)
         {
@@ -90,4 +126,5 @@ public class RegiaoRepository : IRegiaoRepository
 
         return null;
     }
+
 }

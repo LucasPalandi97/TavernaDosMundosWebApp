@@ -6,7 +6,15 @@
     ViewData["Title"] = Model.Nome + ", " + Model.Titulo;
 
 }
-
+<!-- Include the navbar partial view and pass the Mundo object to it -->
+@if (string.IsNullOrEmpty(ViewBag.MundoUrlHandle))
+{
+    @await Html.PartialAsync("_Navbar", new TdM.Web.Models.ViewModels.NavbarViewModel {})
+}
+else
+{
+    @await Html.PartialAsync("_Navbar", new TdM.Web.Models.ViewModels.NavbarViewModel { MundoUrlHandle = ViewBag.MundoUrlHandle })
+}
 @if (Model != null)
 {
 

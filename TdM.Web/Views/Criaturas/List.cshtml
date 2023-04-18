@@ -1,11 +1,21 @@
 ﻿@{
 }
-@model List<TdM.Database.Models.Domain.Criatura>
+@model TdM.Web.Models.ViewModels.NavbarViewModel
 @using TdM.Database.Models.Domain.Enums
 @{
     ViewBag.Title = "Creatures";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<!-- Include the navbar partial view and pass the Mundo object to it -->
+@if (string.IsNullOrEmpty(ViewBag.MundoUrlHandle))
+{
+    @await Html.PartialAsync("_Navbar", new TdM.Web.Models.ViewModels.NavbarViewModel {})
+}
+else
+{
+    @await Html.PartialAsync("_Navbar", new TdM.Web.Models.ViewModels.NavbarViewModel { MundoUrlHandle = ViewBag.MundoUrlHandle })
+}
+
 <head>
     <link type="text/css" rel="stylesheet" href="~/css/ListCriaturas.css" />
 </head>
@@ -14,10 +24,10 @@
     <div class="hero mb-5">
         <h1><span class="section-title"></span>Creatures</h1>
     </div>
-    @if (Model != null && Model.Any())
+    @if (Model.Criaturas != null && Model.Criaturas.Any())
     {
         <div class="row row-cols-1 row-cols-sm-2 row-cols-md-2 row-cols-xl-4 my-3 g-2 justify-content-center align-items-center">
-            @foreach (var criatura in Model)
+            @foreach (var criatura in Model.Criaturas)
             {
                 <div id="charactercard" class="card card-container mx-3" style="height: 20rem; width: 12rem;">
                     <div class="card_mask p-0 justify-content-between">

@@ -35,22 +35,50 @@ public class MundoRepository : IMundoRepository
     public async Task<IEnumerable<Mundo>> GetAllAsync()
     {
         //return list and include navigation Icollection from model database
-        return await tavernaDbContext.Mundos.Include(x => x.Continentes).ToListAsync();
+        return await tavernaDbContext.Mundos
+            .Include(x => x.Personagens)
+            .Include(x => x.Continentes)
+            .Include(x => x.Regioes)
+            .Include(x => x.Criaturas)
+            .Include(x => x.Povos)
+            .Include(x => x.Contos)
+            .ToListAsync();
     }
 
     public async Task<Mundo?> GetAsync(Guid id)
     {
-        return await tavernaDbContext.Mundos.Include(x => x.Continentes).FirstOrDefaultAsync(x => x.Id == id);
+        return await tavernaDbContext.Mundos
+            .Include(x => x.Personagens)
+            .Include(x => x.Continentes)
+            .Include(x => x.Regioes)
+            .Include(x => x.Criaturas)
+            .Include(x => x.Povos)
+            .Include(x => x.Contos)
+            .FirstOrDefaultAsync(x => x.Id == id);
     }
 
     public async Task<Mundo?> GetByUrlHandleAsync(string urlHandle)
     {
-        return await tavernaDbContext.Mundos.Include(x => x.Continentes).FirstOrDefaultAsync(x => x.UrlHandle == urlHandle);
+        return await tavernaDbContext.Mundos
+            .Include(x => x.Personagens)
+            .Include(x => x.Continentes)
+            .Include(x => x.Regioes)
+            .Include(x => x.Criaturas)
+            .Include(x => x.Povos)
+            .Include(x => x.Contos)
+            .FirstOrDefaultAsync(x => x.UrlHandle == urlHandle);
     }
 
     public async Task<Mundo?> UpdateAsync(Mundo mundo)
     {
-        var existingMundo = await tavernaDbContext.Mundos.Include(x => x.Continentes).FirstOrDefaultAsync(x => x.Id == mundo.Id);
+        var existingMundo = await tavernaDbContext.Mundos
+            .Include(x => x.Personagens)
+            .Include(x => x.Continentes)
+            .Include(x => x.Regioes)
+            .Include(x => x.Criaturas)
+            .Include(x => x.Povos)
+            .Include(x => x.Contos)
+            .FirstOrDefaultAsync(x => x.Id == mundo.Id);
 
         if (existingMundo != null)
         {

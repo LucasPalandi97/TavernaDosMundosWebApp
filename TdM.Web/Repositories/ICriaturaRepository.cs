@@ -5,7 +5,7 @@ namespace TdM.Web.Repositories;
 public interface ICriaturaRepository
 {
     Task<IEnumerable<Criatura>> GetAllAsync();
-
+    Task<IEnumerable<Criatura>> GetAllByMundoAsync(Guid mundoId);
     Task<Criatura?> GetAsync(Guid id);
 
     Task<Criatura?> GetByUrlHandleAsync(string urlHandle);

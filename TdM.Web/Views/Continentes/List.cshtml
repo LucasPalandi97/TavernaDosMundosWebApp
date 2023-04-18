@@ -1,9 +1,19 @@
-﻿@model TdM.Web.Models.CombinedModels.RegionViewModel
+﻿@model TdM.Web.Models.ViewModels.NavbarViewModel
 @using TdM.Database.Models.Domain.Enums
 @{
     ViewBag.Title = "Regions";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<!-- Include the navbar partial view and pass the Mundo object to it -->
+@if (string.IsNullOrEmpty(ViewBag.MundoUrlHandle))
+{
+    @await Html.PartialAsync("_Navbar", new TdM.Web.Models.ViewModels.NavbarViewModel {})
+}
+else
+{
+    @await Html.PartialAsync("_Navbar", new TdM.Web.Models.ViewModels.NavbarViewModel { MundoUrlHandle = ViewBag.MundoUrlHandle })
+}
+
 <head>
     <link type="text/css" rel="stylesheet" href="~/css/ListRegioes.css" />
 </head>
