@@ -167,7 +167,27 @@
                     <div class="text-light me-3">
                         <span class="text-secondary text-nowrap" id="userShow">@User?.Identity?.Name!</span>
                     </div>
-                    <a class="btn bg-light text-dark ms-2 ms-lg-3 w-100" asp-area="" asp-controller="Account" asp-action="Logout">Logout</a>
+                    @if (signInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+                    {
+                        <div class="nav-item dropdown  mx-auto">
+                            <div class="btn-group dropstart">
+                                <button type="button" class="btn  btn-secondary nav-link dropdown-toggle dropdown-toggle-split " id="dropdownMenuReference" data-bs-toggle="dropdown" aria-expanded="false" data-bs-reference="parent">
+                                    <span class="visually-hidden">Toggle Dropdown</span>
+                                </button>
+                                    <a class="btn bg-light text-dark w-100 nav-link" asp-area="" asp-controller="Account" asp-action="Logout">Logout</a>
+
+                                <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end dropdown-menu-lg-start">
+                                    <li><a class="dropdown-item" asp-area="" asp-controller="AdminUsers" asp-action="List">Show Users</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+  
+                    }
+                    else
+                    {
+                        <a class="btn bg-light text-dark w-100 nav-link" asp-area="" asp-controller="Account" asp-action="Logout">Logout</a>
+
+                    }
                 }
                 else
                 {
