@@ -20,24 +20,21 @@ else
     <link type="text/css" rel="stylesheet" href="~/css/ListPersonagens.css" />
 </head>
 
-<div class="container-fluid py-5">
+<div class="container py-5">
     <div class="hero mb-5">
         <h1><span class="section-title"></span>Characters</h1>
     </div>
 
     <nav class="navbar navbar-light justify-content-center mt-4">
-        <form class="form-inline">
-            <button type="button" class="btn btn-primary btn-lg mr-3" id="btnSort">Sort</button>
-            <input class="form-control form-control-lg mr-sm-2" type="search" placeholder="Type a name" aria-label="Search" id="search">
-            <!-- <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button> -->
-        </form>
+            <input type="text" id="search-box" placeholder="Search...">
     </nav>
     @if (Model.Personagens != null && Model.Personagens.Any())
     {
-        <div class="card-deck row row-cols-1 row-cols-sm-2 row-cols-md-2 row-cols-xl-4 my-3 g-2 justify-content-center align-items-center">
-            @foreach (var personagem in Model.Personagens)
+
+        <div class="card-deck my-3 row-cols-lg-4 row-cols-sm-2 justify-content-center align-items-center">
+            @foreach (var personagem in Model.Personagens.OrderBy(p => p.Nome))
             {
-                <div id="charactercard" class="card card-container mx-3" style="height: 20rem; width: 12rem;">
+                <div id="charactercard" class="card row-cols-lg-4 row-cols-sm-2 my-auto mx-2 mb-3" style="height: 20rem; width: 12rem;">
                     <div class="card_mask p-0 justify-content-between">
                         <a class="text-white" asp-area="" asp-controller="Personagens" asp-action="Index" asp-route-urlHandle="@personagem.UrlHandle">
                             <img src="@personagem.ImgCard" class="card-img-top imgfit h-100 w-100" alt="Image not found!">
@@ -64,14 +61,14 @@ else
 
             }
         </div>
-
-
     }
     else
     {
         <p>No Characters found!</p>
     }
 </div>
-@section Scripts {
+    
+ @section Scripts{
     <script type="text/javascript" src="~/js/SortElements.js"></script>
-}
+ }
+  

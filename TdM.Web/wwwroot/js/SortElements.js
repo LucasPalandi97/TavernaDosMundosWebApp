@@ -1,4 +1,47 @@
-﻿function sortTable(columnIndex) {
+﻿//FILTER CARDS
+//FILTER CARDS
+var searchBox = document.getElementById('search-box');
+var cards = document.querySelectorAll('#charactercard');
+
+searchBox.addEventListener('input', function () {
+    var searchText = searchBox.value.trim().toLowerCase();
+
+    cards.forEach(function (card) {
+        var title = card.querySelector('.card-title').textContent.trim().toLowerCase();
+
+        if (title.includes(searchText)) {
+            card.style.opacity = '1';
+            card.style.transform = 'translateY(0)';
+            card.style.display = 'block';
+        } else {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(10%)';
+            card.addEventListener('transitionend', function () {
+                if (card.style.opacity === '0') {
+                    card.style.display = 'none';
+                }
+            }, { once: true });
+        }
+    });
+});
+
+cards.forEach(function (card) {
+    card.addEventListener('mouseover', function () {
+        if (card.style.display === 'block') {
+  
+        }
+    });
+
+    card.addEventListener('mouseout', function () {
+        if (card.style.display === 'block') {
+     
+        }
+    });
+});
+
+
+//FILTER TABLE FOR ADMINS
+function sortTable(columnIndex) {
     var table, rows, switching, i, x, y, shouldSwitch;
     table = document.getElementById("table");
     switching = true;
@@ -29,20 +72,5 @@
     }
 }
 
-// this overrides `contains` to make it case insenstive
-jQuery.expr[':'].contains = function (a, i, m) {
-    return jQuery(a).text().toUpperCase()
-        .indexOf(m[3].toUpperCase()) >= 0;
-};
 
-$('#search').keyup(function () {
-    $('.card').removeClass('d-none');
-    var filter = $(this).val(); // get the value of the input, which we filter on
-    $('.card-deck').find('.card .card-body h3:not(:contains("' + filter + '"))').parent().parent().addClass('d-none');
-})
-
-$('#btnSort').click(function () {
-    $('.card-deck .card').sort(function (a, b) {
-        return $(a).find(".card-title").text() > $(b).find(".card-title").text() ? 1 : -1;
-    }).appendTo(".card-deck");
-})
+  

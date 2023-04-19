@@ -20,16 +20,21 @@ else
     <link type="text/css" rel="stylesheet" href="~/css/ListCriaturas.css" />
 </head>
 
-<div class="container-fluid py-5">
+<div class="container py-5">
     <div class="hero mb-5">
         <h1><span class="section-title"></span>Creatures</h1>
     </div>
+
+    <nav class="navbar navbar-light justify-content-center mt-4">
+        <input type="text" id="search-box" placeholder="Search...">
+    </nav>
     @if (Model.Criaturas != null && Model.Criaturas.Any())
     {
-        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-2 row-cols-xl-4 my-3 g-2 justify-content-center align-items-center">
-            @foreach (var criatura in Model.Criaturas)
+
+        <div class="card-deck my-3 row-cols-lg-4 row-cols-sm-2 justify-content-center align-items-center">
+            @foreach (var criatura in Model.Criaturas.OrderBy(p => p.Nome))
             {
-                <div id="charactercard" class="card card-container mx-3" style="height: 20rem; width: 12rem;">
+                <div id="charactercard" class="card row-cols-lg-4 row-cols-sm-2 my-auto mx-2 mb-3" style="height: 20rem; width: 24rem;">
                     <div class="card_mask p-0 justify-content-between">
                         <a class="text-white" asp-area="" asp-controller="Criaturas" asp-action="Index" asp-route-urlHandle="@criatura.UrlHandle">
                             <img src="@criatura.ImgCard" class="card-img-top imgfit h-100 w-100" alt="Image not found!">
@@ -40,10 +45,9 @@ else
                             <ul id="listcardbottom" class="list-group list-group-flush">
                                 <li><h3 class="card-title">@criatura.Nome</h3></li>
                                 <li><p class="card-text text-nowrap text-secondary" style="font-size:16px;">@criatura.CurtaDescricao</p></li>
-
                                 @if (criatura.Tipo != null)
                                 {
-                                    <li class="list-group-item">@criatura.Tipo</li>
+                                    <li class="list-group-item">@criatura.Tipo?.GetDisplayName()</li>
                                 }
                                 else
                                 {
@@ -57,11 +61,14 @@ else
 
             }
         </div>
-
-
     }
     else
     {
         <p>No Creatures found!</p>
     }
 </div>
+
+@section Scripts{
+    <script type="text/javascript" src="~/js/SortElements.js"></script>
+ }
+

@@ -1,4 +1,33 @@
-﻿
+﻿/*Search Menu*/
+#search-box {
+    background-color: transparent;
+    border: none;
+    border-bottom: 2px solid #ccc;
+    font-size: 16px;
+    margin-right: 10px;
+    padding: 10px 0;
+    width: 200px;
+    color: #fff;
+}
+
+    #search-box:focus {
+        outline: none;
+        border-bottom-color: #2196F3;
+    }
+
+#charactercard {
+    transition: opacity 0.5s ease-in-out;
+}
+
+    #charactercard.hidden {
+        opacity: 0;
+    }
+
+.selected {
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+}
+
 #regionList {
     flex-direction: column;
     justify-content: center;
@@ -12,10 +41,7 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     overflow: hidden;
     height: 100%;
-    padding: 3% 1.5%;
     border: none;
-    max-width: 375px;
-    flex-grow: 1;
 }
 
 .card-shadow {
@@ -26,8 +52,9 @@
 
 
 .card-body {
-   padding:0;
+    padding: 0;
 }
+
 .card-img-top {
     transition: transform 0.2s ease-in-out;
     object-fit: contain;
@@ -46,7 +73,6 @@
 
 
 .card_mask {
-
     top: 0;
     bottom: 0;
     left: 0;
@@ -68,7 +94,6 @@
     text-align: center;
     padding: 0;
     z-index: 1;
-    
 }
 
 /*Hover*/
@@ -92,19 +117,18 @@
     }
 
     .card {
-        height: auto !important;
+        max-height: 25rem;
         width: 100% !important;
         margin-left: auto;
         margin-right: auto;
     }
 
     .card-img-top {
-        height: 100%;
-        max-height: 100% !important;
-        object-fit: cover;
-        object-position: center;
+        height: 100%;       
     }
-
+    .imgfit{
+        object-position:top;
+    }
     .card-title {
         font-size: 1rem;
     }
@@ -114,11 +138,11 @@
     }
 
     .mask_text {
-    
-        bottom: auto;
+        text-align: center;
+        max-height: inherit;
+        bottom: 0;
         left: auto;
         right: auto;
-        text-align: left;
         padding: 0;
     }
 }
