@@ -18,10 +18,25 @@
         </div>
 
         <div class="mb-3 col-8">
-            <label class="form-label" for="nome">Tittle</label>
+            <label class="form-label" for="nome">Title</label>
             <input type="text" class="form-control" id="nome" asp-for="Titulo" />
         </div>
 
+        <div class=" mb-3 form-group col-8">
+            <label for="class" class="form-label">Class</label>
+            <select id="class" asp-for="Classe" class="form-control" asp-items="Html.GetEnumSelectList<Classe>()">
+                <option value="" class="text-danger">No Class ...</option>
+            </select>
+            <span asp-validation-for="Classe" class="text-danger"></span>
+        </div>
+
+        <div class=" mb-3 form-group col-8">
+            <label for="raca" class="form-label">Race</label>
+            <select id="raca" asp-for="Raca" class="form-control" asp-items="Html.GetEnumSelectList<Raca>()">
+                <option value="" class="text-danger">No Race ...</option>
+            </select>
+            <span asp-validation-for="Raca" class="text-danger"></span>
+        </div>
 
         <div class="mb-3">
             <label for="descricao" class="form-label">Short Description</label>
@@ -54,22 +69,6 @@
         <div class="mb-3">
             <label class="form-label" for="ImgBoxUrl">Content Image</label>
             <input type="text" class="form-control" id="ImgBoxUrl" placeholder="Image's URL" asp-for="ImgBox" />
-        </div>
-
-        <div class=" mb-3 form-group col-8">
-            <label for="class" class="form-label">Class</label>
-            <select id="class" asp-for="Classe" class="form-control" asp-items="Html.GetEnumSelectList<Classe>()">
-                <option value="" class="text-danger">No Class ...</option>
-            </select>
-            <span asp-validation-for="Classe" class="text-danger"></span>
-        </div>
-
-        <div class=" mb-3 form-group col-8">
-            <label for="raca" class="form-label">Race</label>
-            <select id="raca" asp-for="Raca" class="form-control" asp-items="Html.GetEnumSelectList<Raca>()">
-                <option value="" class="text-danger">No Race ...</option>
-            </select>
-            <span asp-validation-for="Raca" class="text-danger"></span>
         </div>
 
         <div class="mb-3 col-2">
@@ -116,5 +115,5 @@
 
 @section Scripts
     {
-        <script type="text/javascript" src="~/js/Formulario.js"></script>
+    <script type="text/javascript" src="~/js/Formulario.js"></script>
 }

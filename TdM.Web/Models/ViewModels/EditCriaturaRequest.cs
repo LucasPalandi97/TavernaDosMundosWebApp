@@ -20,8 +20,8 @@ public class EditCriaturaRequest
     public IEnumerable<SelectListItem> Mundos { get; set; }
     public string? SelectedMundo { get; set; }
     public IEnumerable<SelectListItem> Continentes { get; set; }
-    public string[] SelectedContinentes { get; set; } = Array.Empty<string>();
+    public string[]? SelectedContinentes { get; set; } = Array.Empty<string>();
     public IEnumerable<SelectListItem> Regioes { get; set; }
-    public string[] SelectedRegioes { get; set; } = Array.Empty<string>();
+    public string[]? SelectedRegioes { get; set; } = Array.Empty<string>();
 }
 

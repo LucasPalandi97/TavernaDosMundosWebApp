@@ -21,7 +21,7 @@
                     <th onclick="sortTable(1)">Continent <span class="pointer">&#9660</span></th>
                     <th id="desccolumn">Description</th>
                     <th onclick="sortTable(4)">World <span class="pointer">&#9660</span></th>
-                    <th onclick="sortTable(3)">Published <span class="pointer">&#9660</span></th>               
+                    <th onclick="sortTable(3)">Published <span class="pointer">&#9660</span></th>
                     <th></th>
                 </tr>
             </thead>
@@ -35,7 +35,27 @@
                         <td>@continente.Mundo?.Nome</td>
                         <td class="published-date">@continente.PublishedDate.ToString("yyyy-MM-dd HH:mm")</td>
                         <td>
-                            <a asp-area="" asp-controller="AdminContinentes" asp-action="Edit" asp-route-id="@continente.Id">Edit</a>
+                        <td>
+                            <form method="post" asp-controller="AdminContinentes" asp-action="Delete" asp-route-id="@continente.Id" id="deleteForm-@continente.Id">
+                                <div class="d-flex">
+                                    <a class="mx-1" asp-area="" asp-controller="AdminContinentes" asp-action="Edit" asp-route-id="@continente.Id">Edit</a>
+                                    <a href="#" class="text-danger mx-1" data-bs-toggle="modal" data-bs-target="#ConfirmDeleteModal-@continente.Id">Delete</a>
+                                </div>
+                                <!-- Modal Delete -->
+                                <div class="modal fade" id="ConfirmDeleteModal-@continente.Id" tabindex="-1" aria-labelledby="ConfirmDeleteModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-body">
+                                                <p>Are you sure you want to delete this continent?</p>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                                                <button type="submit" class="btn btn-danger">Delete</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
                         </td>
                     </tr>
                 }
@@ -49,5 +69,25 @@
 </div>
 @section Scripts
     {
-<script type="text/javascript" src="~/js/SortElements.js"></script>
+    <script type="text/javascript" src="~/js/SortElements.js"></script>
+    <script>
+        //MULTI DROPDOWN BUTTONS FOR WORLDBUILD
+        // Get the dropdown buttons
+        const dropdownBtns = document.querySelectorAll("#worldbuild .dropdown-toggle");
+
+        // Toggle the dropdown menu when the button is clicked
+        document.addEventListener("click", function (event) {
+            if (event.target.matches("#worldbuild .dropdown-toggle")) {
+                event.preventDefault();
+                const dropdownMenu = event.target.nextElementSibling;
+                dropdownMenu.classList.toggle("show");
+            } else {
+                // Close the dropdown menu when the user clicks outside of it
+                const dropdownMenus = document.querySelectorAll("#worldbuild .dropdown-menu.show");
+                dropdownMenus.forEach(function (menu) {
+                    menu.classList.remove("show");
+                });
+            }
+        });
+    </script>
 }

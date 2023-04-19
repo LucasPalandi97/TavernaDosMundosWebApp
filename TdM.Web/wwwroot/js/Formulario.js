@@ -110,7 +110,11 @@ function updateContinentes() {
         $("#SelectedContinentes").empty();
         $("#SelectedContinentes").append('<option value="" class="text-danger" selected>No Continent</option>'); // add empty default option
         $("#SelectedRegioes").empty();
-        $("#SelectedRegioes").append('<option value="" class="text-danger" selected>No Region</option>');
+        $("#SelectedRegioes").append('<option value="" class="text-danger" selected>No Region</option>'); // add empty default option
+        $("#SelectedPersonagens").empty();
+        $("#SelectedPersonagens").append('<option value="" class="text-danger" selected>No Character</option>'); // add empty default option
+        $("#SelectedCriaturas").empty();
+        $("#SelectedCriaturas").append('<option value="" class="text-danger" selected>No Creature</option>'); // add empty default option
     }
 }
 
@@ -137,3 +141,53 @@ function updateRegioes() {
     }
 }
 
+//GET LIST<PERSONAGENS> BY LIST<REGIOES> IDs (ALLOW MULTIPLE ITEMS)
+function updatePersonagens() {
+    var selectedRegiaoIds = $("#SelectedRegioes").val();
+    if (selectedRegiaoIds != null && selectedRegiaoIds.length > 0) {
+        $.ajax({
+            url: "/AdminPersonagens/ListPersonagensByRegiao",
+            type: "POST",
+            dataType: "json",
+            data: { selectedRegiaoIds: selectedRegiaoIds },
+            success: function (data) {
+                $("#SelectedPersonagens").empty();
+                $("#SelectedPersonagens").append('<option value="" class="text-danger" selected>No Character</option>'); // add empty default option
+                $.each(data, function (index, value) {
+                    $("#SelectedPersonagens").append('<option value="' + value.value + '">' + value.text + '</option>');
+                });
+            }
+        });
+    } else {
+        // Reset the character dropdown
+        $("#SelectedPersonagens").empty().append('<option value="" class="text-danger" selected>No Character</option>'); // add empty default option
+        $("#SelectedPersonagens").empty();
+        $("#SelectedPersonagens").append('<option value="" class="text-danger" selected>No Character</option>'); // add empty default option
+        $("#SelectedCriaturas").empty();
+        $("#SelectedCriaturas").append('<option value="" class="text-danger" selected>No Creature</option>'); // add empty default option
+    }
+}
+
+
+//GET LIST<CRIATURAS> BY LIST<REGIOES> IDs (ALLOW MULTIPLE ITEMS)
+function updateCriaturas() {
+    var selectedRegiaoIds = $("#SelectedRegioes").val();
+    if (selectedRegiaoIds != null && selectedRegiaoIds.length > 0) {
+        $.ajax({
+            url: "/AdminCriaturas/ListCriaturasByRegiao",
+            type: "POST",
+            dataType: "json",
+            data: { selectedRegiaoIds: selectedRegiaoIds },
+            success: function (data) {
+                $("#SelectedCriaturas").empty();
+                $("#SelectedCriaturas").append('<option value="" class="text-danger" selected>No Creature</option>'); // add empty default option
+                $.each(data, function (index, value) {
+                    $("#SelectedCriaturas").append('<option value="' + value.value + '">' + value.text + '</option>');
+                });
+            }
+        });
+    } else {
+        // Reset the creature dropdown
+        $("#SelectedCriaturas").empty().append('<option value="" class="text-danger" selected>No Creature</option>'); // add empty default option
+    }
+}

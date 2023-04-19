@@ -12,10 +12,7 @@ public class Povo
     [Required]
     [Display(Name = "Povo")]
     public string Nome { get; set; }
-
-    [Display(Name = "Raça")]
-    public Raca? Raca { get; set; }
-
+  
     [Display(Name = "Descrição Prévia")]
     public string CurtaDescricao { get; set; }
 

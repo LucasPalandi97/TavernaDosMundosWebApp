@@ -6,12 +6,10 @@ public interface ICriaturaRepository
 {
     Task<IEnumerable<Criatura>> GetAllAsync();
     Task<IEnumerable<Criatura>> GetAllByMundoAsync(Guid mundoId);
+    Task<IEnumerable<Criatura>> GetAllByRegiao(object selectedRegiaoIds);
     Task<Criatura?> GetAsync(Guid id);
-
     Task<Criatura?> GetByUrlHandleAsync(string urlHandle);
     Task<Criatura> AddAsync(Criatura mundo);
-
     Task<Criatura?> UpdateAsync(Criatura mundo);
-
     Task<Criatura?> DeleteAsync(Guid id);
 }

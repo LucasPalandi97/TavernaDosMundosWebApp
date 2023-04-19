@@ -17,16 +17,21 @@ else
 <head>
     <link type="text/css" rel="stylesheet" href="~/css/ListRegioes.css" />
 </head>
-<div class="container-fluid py-5">
+
+<div class="container py-5">
     <div class="hero mb-5">
         <h1><span class="section-title"></span>Regions</h1>
     </div>
+
+    <nav class="navbar navbar-light justify-content-center mt-4">
+        <input type="text" id="search-box" placeholder="Search... (beta)">
+    </nav>
     @if (Model.Continentes != null && Model.Continentes.Any())
     {
-        <div id="continentList" class="row row-cols-xl-2 my-3 justify-content-center">
+        <div id="continentList" class="my-3 row row-cols-xl-2 justify-content-center">
             @foreach (var continente in Model.Continentes)
             {
-                <div id="continentcard" class="card px-0 mx-2 mb-3" style="width:50rem; height:auto">
+                <div id="continentcard" class="card px-0 mx-2 mb-3" style="width:40rem; height:auto">
                     <div id="continentmask" class="card_mask p-0 justify-content-between">
                         <a class="text-white" asp-area="" asp-controller="Continentes" asp-action="Index" asp-route-urlHandle="@continente.UrlHandle">
                             <img id="continentimg" src="@continente.ImgCard" class="card-img-top imgfit" style="object-fit:cover; object-position:center;">
@@ -40,7 +45,7 @@ else
                                 <div id="regionList " class="row row-cols-1 row-cols-sm-2 row-cols-md-2 row-cols-xl-4 g-1 justify-content-center align-items-center">
                                     @foreach (var regiao in continente.Regioes)
                                     {
-                                        <div id="regioncard" class="card px-0 my-auto mx-2 mb-3" style="width:20rem; height:12rem;">
+                                        <div id="regioncard" class="card px-0 my-auto mx-2 mb-3" style="width:16rem; height:10rem;">
                                             <div id="regionmask" class="card_mask position-absolute p-0 justify-content-between">
                                                 <a class="text-white" asp-area="" asp-controller="Regioes" asp-action="Index" asp-route-urlHandle="@regiao.UrlHandle">
                                                     <img id="regionimg" src="@regiao.ImgCard" class="card-img-top imgfit" style="object-fit: cover;" alt="@regiao.Nome">
@@ -69,3 +74,7 @@ else
         <p>No Continents found!</p>
     }
 </div>
+@section Scripts{
+    <script type="text/javascript" src="~/js/SortElements.js"></script>
+ }
+

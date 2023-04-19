@@ -142,14 +142,6 @@
     }
 }
 
-.hero {
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    padding: 2rem;
-    margin: 0;
-}
-
 .imground {
     transition: all .5s ease-in;
     height: 80px;

@@ -1,3 +1,19 @@
+/*Search Menu*/
+#search-box {
+    background-color: transparent;
+    border: none;
+    border-bottom: 2px solid #ccc;
+    font-size: 16px;
+    margin-right: 10px;
+    padding: 10px 0;
+    width: 200px;
+    color: #fff;
+}
+    #search-box:focus {
+        outline: none;
+        border-bottom-color: #2196F3;
+    }
+
 .section-title {
     margin: 0;
     padding: 0;
@@ -6,13 +22,12 @@
     vertical-align: baseline;
 }
 
-
 .container, container-fluid {
     transition: all 0.2s ease-in-out;
 }
 
 /*Responsive*/
-@media (max-width:1200px){
+@media (max-width:1200px) {
     #userShow {
         display: none;
     }
@@ -28,38 +43,37 @@
     #desccolumn, #idcolumn, #tddesc, #tdid {
         display: none;
     }
-   
 }
-    /*Custom code*/
-    descricao_content {
-        max-width: 100%;
-    }
+/*Custom code*/
+descricao_content {
+    max-width: 100%;
+}
 
-    .pointer {
-        cursor: pointer;
-    }
+.pointer {
+    cursor: pointer;
+}
 
-    #tdid {
-        max-width: 50px;
-        text-overflow: ellipsis;
-        overflow: hidden;
-        white-space: nowrap;
-    }
+#tdid {
+    max-width: 100px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
 
-    #tddesc {
-        max-width: 100px;
-        text-overflow: ellipsis;
-        overflow: hidden;
-        white-space: nowrap;
-    }
+#tddesc {
+    max-width: 200px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
 
-    .footer {
-        position: fixed;
-        bottom: 0;
-        width: 100%;
-        height: 7rem;
-        z-index: 0; /* set the z-index of the footer to a lower value */
-    }
+.footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    height: 7rem;
+    z-index: 0; /* set the z-index of the footer to a lower value */
+}
 
 /* Hide the default select arrow 
     Checkbox for select with multiple items

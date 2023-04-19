@@ -70,6 +70,28 @@ public class CriaturaRepository : ICriaturaRepository
            .FirstOrDefaultAsync(x => x.Id == id);
     }
 
+    public async Task<IEnumerable<Criatura>> GetAllByRegiao(object selectedRegiaoIds)
+    {
+        if (selectedRegiaoIds is Guid)
+        {
+            return await tavernaDbContext.Criaturas
+            .Where(p => p.Regioes
+            .Any(pp => pp.Id == (Guid)selectedRegiaoIds))
+            .ToListAsync();
+        }
+        else if (selectedRegiaoIds is List<Guid> selectedRegiaoIdsList)
+        {
+            return await tavernaDbContext.Criaturas
+            .Where(p => p.Regioes
+            .Any(pp => selectedRegiaoIdsList.Contains(pp.Id)))
+            .ToListAsync();
+        }
+        else
+        {
+            throw new ArgumentException("Invalid argument type");
+        }
+    }
+
     public async Task<Criatura?> GetByUrlHandleAsync(string urlHandle)
     {
         return await tavernaDbContext.Criaturas

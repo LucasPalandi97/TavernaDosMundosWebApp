@@ -66,6 +66,22 @@ public class PersonagemRepository : IPersonagemRepository
             .Include(x => x.Mundo).FirstOrDefaultAsync(x => x.Id == id);
     }
 
+    public async Task<IEnumerable<Personagem>>? GetPersonagensByRegiaoAsync(object selectedRegiaoIds)
+    {
+        if (selectedRegiaoIds is Guid)
+        {
+            return await tavernaDbContext.Personagens.Where(r => r.Regiao.Id == (Guid)selectedRegiaoIds).ToListAsync();
+        }
+        else if (selectedRegiaoIds is List<Guid> selectedRegiaoIdsList)
+        {
+            return await tavernaDbContext.Personagens.Where(r => selectedRegiaoIdsList.Contains(r.Regiao.Id)).ToListAsync();
+        }
+        else
+        {
+            throw new ArgumentException("Invalid argument type");
+        }
+    }
+
     public async Task<Personagem?> GetByUrlHandleAsync(string urlHandle)
     {
         return await tavernaDbContext.Personagens
@@ -89,10 +105,10 @@ public class PersonagemRepository : IPersonagemRepository
         {
             existingPersonagem.Nome = personagem.Nome;
             existingPersonagem.Titulo = personagem.Titulo;
-            existingPersonagem.CurtaDescricao = personagem.CurtaDescricao;
-            existingPersonagem.Biografia = personagem.Biografia;
             existingPersonagem.Classe = personagem.Classe;
             existingPersonagem.Raca = personagem.Raca;
+            existingPersonagem.CurtaDescricao = personagem.CurtaDescricao;
+            existingPersonagem.Biografia = personagem.Biografia;
             existingPersonagem.ImgCard = personagem.ImgCard;
             existingPersonagem.ImgBox = personagem.ImgBox;
             existingPersonagem.PublishedDate = personagem.PublishedDate;

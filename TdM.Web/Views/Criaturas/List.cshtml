@@ -1,6 +1,4 @@
-﻿@{
-}
-@model TdM.Web.Models.ViewModels.NavbarViewModel
+﻿@model TdM.Web.Models.ViewModels.NavbarViewModel
 @using TdM.Database.Models.Domain.Enums
 @{
     ViewBag.Title = "Creatures";
@@ -34,7 +32,7 @@ else
         <div class="card-deck my-3 row-cols-lg-4 row-cols-sm-2 justify-content-center align-items-center">
             @foreach (var criatura in Model.Criaturas.OrderBy(p => p.Nome))
             {
-                <div id="charactercard" class="card row-cols-lg-4 row-cols-sm-2 my-auto mx-2 mb-3" style="height: 20rem; width: 24rem;">
+                <div id="creaturecard" class="card row-cols-lg-4 row-cols-sm-2 my-auto mx-2 mb-3" style="height: 20rem; width: 24rem;">
                     <div class="card_mask p-0 justify-content-between">
                         <a class="text-white" asp-area="" asp-controller="Criaturas" asp-action="Index" asp-route-urlHandle="@criatura.UrlHandle">
                             <img src="@criatura.ImgCard" class="card-img-top imgfit h-100 w-100" alt="Image not found!">

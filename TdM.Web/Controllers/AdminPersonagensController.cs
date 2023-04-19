@@ -47,10 +47,10 @@ public class AdminPersonagensController : Controller
         {
             Nome = addPersonagemRequest.Nome,
             Titulo = addPersonagemRequest.Titulo,
-            CurtaDescricao = addPersonagemRequest.CurtaDescricao,
-            Biografia = addPersonagemRequest.Biografia,
             Classe = addPersonagemRequest.Classe,
             Raca = addPersonagemRequest.Raca,
+            CurtaDescricao = addPersonagemRequest.CurtaDescricao,
+            Biografia = addPersonagemRequest.Biografia,       
             ImgCard = addPersonagemRequest.ImgCard,
             ImgBox = addPersonagemRequest.ImgBox,
             PublishedDate = addPersonagemRequest.PublishedDate,
@@ -91,6 +91,7 @@ public class AdminPersonagensController : Controller
             }
         }
 
+
         //Maps Regioes from Selected Regiao
 
         var selectedRegiaoId = addPersonagemRequest.SelectedRegiao;
@@ -112,6 +113,25 @@ public class AdminPersonagensController : Controller
         return RedirectToAction("List");
     }
 
+    public async Task<IActionResult> ListPersonagensByRegiao(Guid id, List<Guid> selectedRegiaoIds = null)
+    {
+        IEnumerable<Personagem> personagens;
+        if (selectedRegiaoIds == null)
+        {
+            personagens = await personagemRepository.GetPersonagensByRegiaoAsync(id);
+        }
+        else
+        {
+            personagens = await personagemRepository.GetPersonagensByRegiaoAsync(selectedRegiaoIds);
+        }
+        var selectListItems = personagens.Select(x => new SelectListItem
+        {
+            Text = x.Nome,
+            Value = x.Id.ToString()
+        });
+
+        return Json(selectListItems);
+    }
 
     [HttpGet]
     public async Task<IActionResult> List()
@@ -138,10 +158,10 @@ public class AdminPersonagensController : Controller
                 Id = personagem.Id,
                 Nome = personagem.Nome,
                 Titulo = personagem.Titulo,
-                CurtaDescricao = personagem.CurtaDescricao,
-                Biografia = personagem.Biografia,
                 Classe = personagem.Classe,
                 Raca = personagem.Raca,
+                CurtaDescricao = personagem.CurtaDescricao,
+                Biografia = personagem.Biografia,
                 ImgCard = personagem.ImgCard,
                 ImgBox = personagem.ImgBox,
                 PublishedDate = personagem.PublishedDate,
@@ -182,10 +202,10 @@ public class AdminPersonagensController : Controller
             Id = editPersonagemRequest.Id,
             Nome = editPersonagemRequest.Nome,
             Titulo = editPersonagemRequest.Titulo,
-            CurtaDescricao = editPersonagemRequest.CurtaDescricao,
-            Biografia = editPersonagemRequest.Biografia,
             Classe = editPersonagemRequest.Classe,
             Raca = editPersonagemRequest.Raca,
+            CurtaDescricao = editPersonagemRequest.CurtaDescricao,
+            Biografia = editPersonagemRequest.Biografia,
             ImgCard = editPersonagemRequest.ImgCard,
             ImgBox = editPersonagemRequest.ImgBox,
             PublishedDate = editPersonagemRequest.PublishedDate,

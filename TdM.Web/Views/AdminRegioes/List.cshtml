@@ -36,7 +36,26 @@
                         <td>@regiao.Mundo?.Nome</td>
                         <td class="published-date">@regiao.PublishedDate.ToString("yyyy-MM-dd HH:mm")</td>
                         <td>
-                            <a asp-area="" asp-controller="AdminRegioes" asp-action="Edit" asp-route-id="@regiao.Id">Edit</a>
+                            <form method="post" asp-controller="AdminRegioes" asp-action="Delete" asp-route-id="@regiao.Id" id="deleteForm-@regiao.Id">
+                                <div class="d-flex">
+                                    <a class="mx-1" asp-area="" asp-controller="AdminRegioes" asp-action="Edit" asp-route-id="@regiao.Id">Edit</a>
+                                    <a href="#" class="text-danger mx-1" data-bs-toggle="modal" data-bs-target="#ConfirmDeleteModal-@regiao.Id">Delete</a>
+                                </div>
+                                <!-- Modal Delete -->
+                                <div class="modal fade" id="ConfirmDeleteModal-@regiao.Id" tabindex="-1" aria-labelledby="ConfirmDeleteModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-body">
+                                                <p>Are you sure you want to delete this region?</p>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                                                <button type="submit" class="btn btn-danger">Delete</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
                         </td>
                     </tr>
                 }

@@ -1,19 +1,4 @@
-﻿/*Search Menu*/
-#search-box {
-    background-color: transparent;
-    border: none;
-    border-bottom: 2px solid #ccc;
-    font-size: 16px;
-    margin-right: 10px;
-    padding: 10px 0;
-    width: 200px;
-    color: #fff;
-}
-
-    #search-box:focus {
-        outline: none;
-        border-bottom-color: #2196F3;
-    }
+﻿
 
 #charactercard {
     transition: opacity 0.5s ease-in-out;

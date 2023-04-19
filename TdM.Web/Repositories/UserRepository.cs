@@ -15,9 +15,9 @@ public class UserRepository : IUserRepository
 
     public async Task<IEnumerable<IdentityUser>> GetAll()
     {
-        var users =  await authDbContext.Users.ToListAsync();
+        var users = await authDbContext.Users.ToListAsync();
         var superAdminUser = await authDbContext.Users
-            .FirstOrDefaultAsync(x => x.Email =="superadmin@taverna.com");
+            .FirstOrDefaultAsync(x => x.Email == "superadmin@taverna.com");
 
         if (superAdminUser != null)
         {

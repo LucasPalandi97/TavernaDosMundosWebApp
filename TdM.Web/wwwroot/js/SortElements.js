@@ -1,7 +1,27 @@
-﻿//FILTER CARDS
+﻿//Delete from List
+$(function () {
+    $('form[id^="deleteForm-"]').submit(function (e) {
+        e.preventDefault();
+        var form = $(this);
+        var url = form.attr('action');
+        $.ajax({
+            type: 'POST',
+            url: url,
+            data: form.serialize(),
+            success: function () {
+                // Reload the page after successful deletion
+                location.reload();
+            },
+            error: function () {
+                alert('An error occurred while deleting this entity');
+            }
+        });
+    });
+});
 //FILTER CARDS
 var searchBox = document.getElementById('search-box');
-var cards = document.querySelectorAll('#charactercard');
+var cards = document.querySelectorAll('.card ');
+var initialCardDisplay;
 
 searchBox.addEventListener('input', function () {
     var searchText = searchBox.value.trim().toLowerCase();
@@ -24,21 +44,21 @@ searchBox.addEventListener('input', function () {
         }
     });
 });
-
 cards.forEach(function (card) {
     card.addEventListener('mouseover', function () {
         if (card.style.display === 'block') {
-  
+            // Save the initial display value
+            initialCardDisplay = card.style.display;
         }
     });
 
     card.addEventListener('mouseout', function () {
         if (card.style.display === 'block') {
-     
+            // Set the display back to the initial value
+            card.style.display = initialCardDisplay;
         }
     });
 });
-
 
 //FILTER TABLE FOR ADMINS
 function sortTable(columnIndex) {

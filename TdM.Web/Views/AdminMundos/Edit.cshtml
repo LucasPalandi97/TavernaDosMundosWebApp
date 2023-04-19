@@ -36,7 +36,6 @@
             <div class="mb-3">
                 <label class="form-label">Upload Image</label>
                 <input type="file" id="ImageBoxUpload" class="form-control" />
-
                 @if (Model.ImgBox != null)
                 {
                     <img src="@Model.ImgBox" id="ImageBoxUploadDisplay" style="width:300px; margin-top:1em;" />
@@ -83,14 +82,11 @@
 
             <div class="mb-3">
                 <div class="d-flex">
-
                     <button type="submit" class="btn btn-dark">Update</button>
                     <button type="button" class="btn btn-danger ms-2" data-bs-toggle="modal" data-bs-target="#confirmDelete">
                         Delete
                     </button>
-
                 </div>
-
             </div>
 
 
@@ -116,11 +112,11 @@
     }
     else
     {
-        <p>No World found!</p>
+        <p>World not found!</p>
     }
 </div>
 @section Scripts
     {
-        <script type="text/javascript" src="~/js/Formulario.js"></script>  
+    <script type="text/javascript" src="~/js/Formulario.js"></script>
 }
 
