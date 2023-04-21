@@ -20,8 +20,13 @@ namespace TdM.Web.Controllers
         {
             var mundo = await MundoRepository.GetAllAsync();
 
-
             return View(mundo);
+        }
+
+        public IActionResult testcode()
+        {
+           
+            return View();
         }
 
         public IActionResult Privacy()

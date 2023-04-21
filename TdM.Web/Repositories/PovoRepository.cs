@@ -153,6 +153,10 @@ public class PovoRepository : IPovoRepository
             existingPovo.UrlHandle = povo.UrlHandle;
             existingPovo.Visible = povo.Visible;
             existingPovo.Mundo = povo.Mundo;
+            existingPovo.Continentes= povo.Continentes;
+            existingPovo.Regioes= povo.Regioes;
+            existingPovo.Personagens= povo.Personagens;
+            existingPovo.Criaturas= povo.Criaturas;
             await tavernaDbContext.SaveChangesAsync();
 
             return existingPovo;

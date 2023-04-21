@@ -1,4 +1,5 @@
-﻿//Delete from List
+﻿
+//Delete from List
 $(function () {
     $('form[id^="deleteForm-"]').submit(function (e) {
         e.preventDefault();
@@ -92,5 +93,3 @@ function sortTable(columnIndex) {
     }
 }
 
-
-  

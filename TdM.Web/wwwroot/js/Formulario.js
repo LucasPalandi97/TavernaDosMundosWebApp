@@ -10,9 +10,6 @@ if (publishedDateInput) {
     console.error('Could not find element with ID "publishedDate".');
 }
 
-
-
-
 //FROLADA EDITOR HTML
 var editor = new FroalaEditor('#descricao', {
     imageUploadURL: '/api/images'
@@ -21,7 +18,6 @@ var editor = new FroalaEditor('#descricao', {
 var editor2 = new FroalaEditor('#biografia', {
     imageUploadURL: '/api/images'
 });
-
 
 //IMAGE UPLOAD
 
@@ -83,44 +79,40 @@ if (SymbolUploadElement != null) {
 
 //GET LIST<CONTINENTES> BY MUNDOID (ALLOW MULTIPLE ITEMS)
 function updateContinentes() {
-    var mundoId = $("#SelectedMundo").val();
-    if (mundoId != "") {
+    const selectedmundoId = $("#SelectedMundo").val();
+    if (selectedmundoId != null && selectedmundoId.length > 0) {
         $.ajax({
             url: "/AdminContinentes/ListContinentesbyMundo",
             type: "POST",
             dataType: "json",
-            data: { id: mundoId },
+            data: { id: selectedmundoId },
             success: function (data) {
                 $("#SelectedContinentes").empty();
                 $("#SelectedContinentes").append('<option value="" class="text-danger" selected>No Continent</option>'); // add empty default option
                 $.each(data, function (index, value) {
                     $("#SelectedContinentes").append('<option value="' + value.value + '">' + value.text + '</option>');
                 });
-                // Clear selected region if a different mundo is selected
-                if ($("#SelectedMundo").data("selected") != mundoId) {
-                    $("#SelectedRegioes").empty();
-                    $("#SelectedRegioes").append('<option value="" class="text-danger" selected>No Region</option>');
+                // Clear selected region, character and creature if a different mundo is selected
+                if ($("#SelectedMundo").data("selected") != selectedmundoId) {
+                    $("#SelectedRegioes").empty().append('<option value="" class="text-danger" selected>No Region</option>');
+                    $("#SelectedPersonagens").empty().append('<option value="" class="text-danger" selected>No Character</option>'); // add empty default option
+                    $("#SelectedCriaturas").empty().append('<option value="" class="text-danger" selected>No Creature</option>'); // add empty default option
                 }
-
-                $("#SelectedMundo").data("selected", mundoId);
+                $("#SelectedMundo").data("selected", selectedmundoId);
             }
         });
     } else {
-        // Clear both continent and region if no mundo is selected
-        $("#SelectedContinentes").empty();
-        $("#SelectedContinentes").append('<option value="" class="text-danger" selected>No Continent</option>'); // add empty default option
-        $("#SelectedRegioes").empty();
-        $("#SelectedRegioes").append('<option value="" class="text-danger" selected>No Region</option>'); // add empty default option
-        $("#SelectedPersonagens").empty();
-        $("#SelectedPersonagens").append('<option value="" class="text-danger" selected>No Character</option>'); // add empty default option
-        $("#SelectedCriaturas").empty();
-        $("#SelectedCriaturas").append('<option value="" class="text-danger" selected>No Creature</option>'); // add empty default option
+        // Clear contient, region, character and creature if no world is selected
+        $("#SelectedContinentes").empty().append('<option value="" class="text-danger" selected>No Continent</option>'); // add empty default option
+        $("#SelectedRegioes").empty().append('<option value="" class="text-danger" selected>No Region</option>'); // add empty default option
+        $("#SelectedPersonagens").empty().append('<option value="" class="text-danger" selected>No Character</option>'); // add empty default option
+        $("#SelectedCriaturas").empty().append('<option value="" class="text-danger" selected>No Creature</option>'); // add empty default option
     }
 }
 
 //GET LIST<REGIOES> BY LIST<CONTINENTES> IDs (ALLOW MULTIPLE ITEMS)
 function updateRegioes() {
-    var selectedContinenteIds = $("#SelectedContinentes").val();
+    const selectedContinenteIds = $("#SelectedContinentes").val();
     if (selectedContinenteIds != null && selectedContinenteIds.length > 0) {
         $.ajax({
             url: "/AdminRegioes/ListRegioesByContinente",
@@ -133,6 +125,12 @@ function updateRegioes() {
                 $.each(data, function (index, value) {
                     $("#SelectedRegioes").append('<option value="' + value.value + '">' + value.text + '</option>');
                 });
+                // Clear selected character and creature if a diferent continente is selected
+                if ($("#SelectedContinentes").data("selected") != selectedContinenteIds) {
+                    $("#SelectedPersonagens").empty().append('<option value="" class="text-danger" selected>No Character</option>'); // add empty default option
+                    $("#SelectedCriaturas").empty().append('<option value="" class="text-danger" selected>No Creature</option>'); // add empty default option
+                }
+                $("#SelectedContinentes").data("selected", selectedContinenteIds);
             }
         });
     } else {
@@ -143,8 +141,9 @@ function updateRegioes() {
 
 //GET LIST<PERSONAGENS> BY LIST<REGIOES> IDs (ALLOW MULTIPLE ITEMS)
 function updatePersonagens() {
-    var selectedRegiaoIds = $("#SelectedRegioes").val();
-    if (selectedRegiaoIds != null && selectedRegiaoIds.length > 0) {
+    const selectedRegiaoIds = $("#SelectedRegioes").val();
+    const selectedContinenteIds = $("#SelectedContinentes").val();
+    if (selectedRegiaoIds != null && selectedRegiaoIds.length > 0 && selectedContinenteIds.length > 0) {
         $.ajax({
             url: "/AdminPersonagens/ListPersonagensByRegiao",
             type: "POST",
@@ -161,18 +160,14 @@ function updatePersonagens() {
     } else {
         // Reset the character dropdown
         $("#SelectedPersonagens").empty().append('<option value="" class="text-danger" selected>No Character</option>'); // add empty default option
-        $("#SelectedPersonagens").empty();
-        $("#SelectedPersonagens").append('<option value="" class="text-danger" selected>No Character</option>'); // add empty default option
-        $("#SelectedCriaturas").empty();
-        $("#SelectedCriaturas").append('<option value="" class="text-danger" selected>No Creature</option>'); // add empty default option
     }
 }
 
-
 //GET LIST<CRIATURAS> BY LIST<REGIOES> IDs (ALLOW MULTIPLE ITEMS)
 function updateCriaturas() {
-    var selectedRegiaoIds = $("#SelectedRegioes").val();
-    if (selectedRegiaoIds != null && selectedRegiaoIds.length > 0) {
+    const selectedRegiaoIds = $("#SelectedRegioes").val();
+    const selectedContinenteIds = $("#SelectedContinentes").val();
+    if (selectedRegiaoIds != null && selectedRegiaoIds.length > 0 && selectedContinenteIds.length > 0) {
         $.ajax({
             url: "/AdminCriaturas/ListCriaturasByRegiao",
             type: "POST",

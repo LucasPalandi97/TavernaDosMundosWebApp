@@ -42,7 +42,6 @@
 
 .card-img-top {
     transition: transform 0.2s ease-in-out;
-    object-fit: contain;
     max-height: calc(100% - 2rem);
     display: block;
     margin: 0 auto;
@@ -55,7 +54,6 @@
     flex-flow: row wrap;
     align-items: stretch;
 }
-
 
 .card_mask {
     top: 0;
@@ -112,9 +110,6 @@
         height: 100%;
     }
 
-    .imgfit {
-        object-position: top;
-    }
 
     .card-title {
         font-size: 1rem;
@@ -143,7 +138,7 @@
 .imgfit {
     min-height: 20rem;
     object-fit: cover;
-    object-position: center;
+    object-position: top;
 }
 
 .objcenter {

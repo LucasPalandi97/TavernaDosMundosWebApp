@@ -36,11 +36,12 @@
                             <td>@user.Username</td>
                             <td>@user.EmailAdress</td>
                             <td>
-                                <form method="post" asp-controller="AdminUsers" asp-action="Delete" asp-route-id="@user.Id">
-                                    <button type="button" class="btn btn-danger ms-2" data-bs-toggle="modal" data-bs-target="#ConfirmDeleteModal">Delete</button>
-
+                                <form method="post" asp-controller="AdminUsers" asp-action="Delete" asp-route-id="@user.Id" id="deleteForm-@user.Id">
+                                    <div class="d-flex">
+                                        <a href="#" class="text-danger mx-1" data-bs-toggle="modal" data-bs-target="#ConfirmDeleteModal-@user.Id">Delete</a>
+                                    </div>
                                     <!-- Modal Delete -->
-                                    <div class="modal fade " id="ConfirmDeleteModal" tabindex="-1" aria-labelledby="ConfirmDeleteModalLabel" aria-hidden="true">
+                                    <div class="modal fade" id="ConfirmDeleteModal-@user.Id" tabindex="-1" aria-labelledby="ConfirmDeleteModalLabel" aria-hidden="true">
                                         <div class="modal-dialog">
                                             <div class="modal-content">
                                                 <div class="modal-body">
@@ -48,7 +49,7 @@
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
-                                                    <button class="btn btn-danger" type="submit">Delete</button>
+                                                    <button type="submit" class="btn btn-danger">Delete</button>
                                                 </div>
                                             </div>
                                         </div>

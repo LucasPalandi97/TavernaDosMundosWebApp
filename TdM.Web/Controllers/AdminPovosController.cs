@@ -59,9 +59,7 @@ public class AdminPovosController : Controller
     [HttpPost]
     public async Task<IActionResult> Add(AddPovoRequest addPovoRequest)
     {
-
         //Map view model to domain model
-
         var povo = new Povo
         {
             Nome = addPovoRequest.Nome,
@@ -85,34 +83,35 @@ public class AdminPovosController : Controller
             if (existingMundo != null)
             {
                 var selectedMundo = existingMundo;
-                //Maping Povos back to domain modal
+                //Maping Continentes back to domain modal
                 povo.Mundo = selectedMundo;
             }
         }
+
         //Maps Continents from Selected continent
-
-        var selectedContinents = new List<Continente>();
-        if (selectedContinents != null && selectedContinents.Any())
+        var selectedContinentes = new List<Continente>();
+        foreach (var selectedContinenteId in addPovoRequest.SelectedContinentes)
         {
-            foreach (var selectedContinentId in addPovoRequest.SelectedContinentes)
+            if (!string.IsNullOrEmpty(selectedContinenteId))
             {
-                var selectedContinentIdAsGuid = Guid.Parse(selectedContinentId);
-                var existingContinent = await continenteRepository.GetAsync(selectedContinentIdAsGuid);
+                var selectedContinenteIdAsGuid = Guid.Parse(selectedContinenteId);
+                var existingContinente = await continenteRepository.GetAsync(selectedContinenteIdAsGuid);
 
-                if (existingContinent != null)
+                if (existingContinente != null)
                 {
-                    selectedContinents.Add(existingContinent);
+                    selectedContinentes.Add(existingContinente);
                 }
             }
         }
         //Maping Continentes back to domain modal
-        povo.Continentes = selectedContinents;
+        povo.Continentes = selectedContinentes;
 
         //Maps Regioes from Selected continent
         var selectedRegioes = new List<Regiao>();
-        if (selectedRegioes != null && selectedRegioes.Any())
+
+        foreach (var selectedRegiaoId in addPovoRequest.SelectedRegioes)
         {
-            foreach (var selectedRegiaoId in addPovoRequest.SelectedRegioes)
+            if (!string.IsNullOrEmpty(selectedRegiaoId))
             {
                 var selectedRegiaoIdAsGuid = Guid.Parse(selectedRegiaoId);
                 var existingRegiao = await regiaoRepository.GetAsync(selectedRegiaoIdAsGuid);
@@ -126,12 +125,12 @@ public class AdminPovosController : Controller
         //Maping Regioes back to domain modal
         povo.Regioes = selectedRegioes;
 
-
         //Maps Personagens from Selected Regiao
         var selectedPersonagens = new List<Personagem>();
-        if (selectedPersonagens != null && selectedPersonagens.Any())
+
+        foreach (var selectedPersonagemId in addPovoRequest.SelectedPersonagens)
         {
-            foreach (var selectedPersonagemId in addPovoRequest.SelectedPersonagens)
+            if (!string.IsNullOrEmpty(selectedPersonagemId))
             {
                 var selectedPersonagemIdAsGuid = Guid.Parse(selectedPersonagemId);
                 var existingPersonagem = await personagemRepository.GetAsync(selectedPersonagemIdAsGuid);
@@ -147,9 +146,10 @@ public class AdminPovosController : Controller
 
         //Maps Criaturas from Selected Regiao
         var selectedCriaturas = new List<Criatura>();
-        if (selectedCriaturas != null && selectedCriaturas.Any())
+
+        foreach (var selectedCriaturaId in addPovoRequest.SelectedCriaturas)
         {
-            foreach (var selectedCriaturaId in addPovoRequest.SelectedCriaturas)
+            if (!string.IsNullOrEmpty(selectedCriaturaId))
             {
                 var selectedCriaturaIdAsGuid = Guid.Parse(selectedCriaturaId);
                 var existingCriatura = await criaturaRepository.GetAsync(selectedCriaturaIdAsGuid);
@@ -216,7 +216,7 @@ public class AdminPovosController : Controller
                         Text = x.Nome,
                         Value = x.Id.ToString()
                     }),
-                    SelectedRegioes = povo.Personagens.Select(x => x.Id.ToString()).ToArray(),
+                    SelectedRegioes = povo.Regioes.Select(x => x.Id.ToString()).ToArray(),
                     Personagens = personagensDomainModel.Select(x => new SelectListItem
                     {
                         Text = x.Nome,
@@ -249,11 +249,10 @@ public class AdminPovosController : Controller
             PublishedDate = editPovoRequest.PublishedDate,
             UrlHandle = editPovoRequest.UrlHandle,
             Visible = editPovoRequest.Visible,
-
-
         };
 
-        //Map Mundo into domain model
+
+        //Maps Mundos from Selected mundo
         var selectedMundoId = editPovoRequest.SelectedMundo;
         if (selectedMundoId != null)
         {
@@ -263,10 +262,85 @@ public class AdminPovosController : Controller
             if (existingMundo != null)
             {
                 var selectedMundo = existingMundo;
-                //Maping Povos back to domain modal
+                //Maping Continentes back to domain modal
                 povo.Mundo = selectedMundo;
             }
         }
+
+        //Maps Continents from Selected continent
+        var selectedContinentes = new List<Continente>();
+        foreach (var selectedContinenteId in editPovoRequest.SelectedContinentes)
+        {
+            if (!string.IsNullOrEmpty(selectedContinenteId))
+            {
+                var selectedContinenteIdAsGuid = Guid.Parse(selectedContinenteId);
+                var existingContinente = await continenteRepository.GetAsync(selectedContinenteIdAsGuid);
+
+                if (existingContinente != null)
+                {
+                    selectedContinentes.Add(existingContinente);
+                }
+            }
+        }
+        //Maping Continentes back to domain modal
+        povo.Continentes = selectedContinentes;
+
+        //Maps Regioes from Selected continent
+        var selectedRegioes = new List<Regiao>();
+
+        foreach (var selectedRegiaoId in editPovoRequest.SelectedRegioes)
+        {
+            if (!string.IsNullOrEmpty(selectedRegiaoId))
+            {
+                var selectedRegiaoIdAsGuid = Guid.Parse(selectedRegiaoId);
+                var existingRegiao = await regiaoRepository.GetAsync(selectedRegiaoIdAsGuid);
+
+                if (existingRegiao != null)
+                {
+                    selectedRegioes.Add(existingRegiao);
+                }
+            }
+        }
+        //Maping Regioes back to domain modal
+        povo.Regioes = selectedRegioes;
+
+        //Maps Personagens from Selected Regiao
+        var selectedPersonagens = new List<Personagem>();
+
+        foreach (var selectedPersonagemId in editPovoRequest.SelectedPersonagens)
+        {
+            if (!string.IsNullOrEmpty(selectedPersonagemId))
+            {
+                var selectedPersonagemIdAsGuid = Guid.Parse(selectedPersonagemId);
+                var existingPersonagem = await personagemRepository.GetAsync(selectedPersonagemIdAsGuid);
+
+                if (existingPersonagem != null)
+                {
+                    selectedPersonagens.Add(existingPersonagem);
+                }
+            }
+        }
+        //Maping Personagens back to domain modal
+        povo.Personagens = selectedPersonagens;
+
+        //Maps Criaturas from Selected Regiao
+        var selectedCriaturas = new List<Criatura>();
+
+        foreach (var selectedCriaturaId in editPovoRequest.SelectedCriaturas)
+        {
+            if (!string.IsNullOrEmpty(selectedCriaturaId))
+            {
+                var selectedCriaturaIdAsGuid = Guid.Parse(selectedCriaturaId);
+                var existingCriatura = await criaturaRepository.GetAsync(selectedCriaturaIdAsGuid);
+
+                if (existingCriatura != null)
+                {
+                    selectedCriaturas.Add(existingCriatura);
+                }
+            }
+        }
+        //Maping Criaturas back to domain modal
+        povo.Criaturas = selectedCriaturas;
 
         var updatedPovo = await povoRepository.UpdateAsync(povo);
 

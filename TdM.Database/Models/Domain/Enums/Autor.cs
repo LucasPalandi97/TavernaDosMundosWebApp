@@ -15,6 +15,4 @@ public enum Autor
     Lucas,
     [Display(Name = "Rodrigo Bueno Guedes")]
     Rodrigo
-
-
 }

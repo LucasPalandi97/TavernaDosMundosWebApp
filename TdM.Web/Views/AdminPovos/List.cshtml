@@ -13,15 +13,13 @@
 <div class="container py-5">
     @if (Model != null && Model.Any())
     {
-
         <table class="table table-hover  table-responsive-sx" id="table">
             <thead>
                 <tr>
                     <th id="idcolumn">Id</th>
-                    <th onclick="sortTable(1)">People <span class="pointer">&#9660</span></th>
+                    <th onclick="sortTable(1)">World <span class="pointer">&#9660</span></th>
+                    <th onclick="sortTable(2)">People <span class="pointer">&#9660</span></th>
                     <th id="desccolumn">Description</th>
-                    <th onclick="sortTable(4)">World <span class="pointer">&#9660</span></th>
-                    <th>People Building</th>
                     <th onclick="sortTable(3)">Published <span class="pointer">&#9660</span></th>
                     <th></th>
                 </tr>
@@ -31,75 +29,116 @@
                 {
                     <tr>
                         <td id="tdid">@povo.Id</td>
-                        <td>@povo.Nome</td>
-                        <td id="tddesc">@povo.CurtaDescricao</td>
                         <td>@povo.Mundo?.Nome</td>
                         <td>
-                            <div class="dropdown w-100" id="worldbuild">
-                                <button class="btn btn-secondary dropdown-toggle w-100" type="button" id="worldDropdownButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <div class="dropdown" id="worldbuild">
+                                <button class=" nav-link dropdown-toggle" type="button" id="worldDropdownButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     @povo.Nome
                                 </button>
-                                <div class="dropdown-menu w-100 text-center" aria-labelledby="worldDropdownButton">
-                                    <div class="dropdown">
-                                        <button class="dropdown-item dropdown-toggle" type="button" id="charactersDropdownButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            Characters
-                                        </button>
-                                    </div>
-                                    <div class="dropdown w-100 text-center" id="continentsDropdown">
-                                        <button class="dropdown-item dropdown-toggle" type="button" id="continentsDropdownButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            Continents
-                                        </button>
-
-                                        <div class="dropdown-menu w-100 text-center" aria-labelledby="continentsDropdownButton">
+                                <ul class="dropdown-menu text-center " aria-labelledby="worldDropdownButton">
+                                    <li>
+                                        <a class="dropdown-item" asp-controller="Povos" asp-action="index" asp-route-urlHandle="@povo.UrlHandle">@povo.Nome</a>
+                                    </li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li>
+                                        <a class="dropdown-item" href="#" id="continentsDropdown">
+                                            Continents &raquo;
+                                        </a>
+                                        <ul class="dropdown-menu dropdown-submenu" aria-labelledby="continentsDropdownButton">
                                             @if (povo.Continentes != null && povo.Continentes.Any())
                                             {
-                                                @foreach (var continente in povo.Continentes)
+                                                @foreach (var continente in povo.Continentes.OrderBy(c => c.Nome))
                                                 {
-                                                    <button class="dropdown-item dropdown-toggle" type="button" id="continente-@continente.Id"
-                                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                        @continente.Nome
-                                                    </button>
-                                                    <div class="dropdown-menu w-100" aria-labelledby="continente-@continente.Id-dropdown">
-                                                        @if (continente.Regioes != null && continente.Regioes.Any())
-                                                        {
-                                                            @foreach (var regiao in continente.Regioes)
+                                                    <li>
+                                                        <a class="dropdown-item" asp-controller="Continentes" asp-action="index" asp-route-urlHandle="@continente.UrlHandle" id="regionDropdown">@continente.Nome &raquo </a>
+                                                        <ul class="dropdown-menu dropdown-submenu" aria-labelledby="regionDropdown">
+                                                            @if (continente.Regioes != null && continente.Regioes.Any())
                                                             {
-                                                                <a class="dropdown-item" href="#">@regiao.Nome</a>
+                                                                @foreach (var regiao in continente.Regioes.Where(r => r.Povos.Any()).OrderBy(r => r.Nome))
+                                                                {
+                                                                    <li>
+                                                                        <a class="dropdown-item" asp-controller="Regioes" asp-action="index" asp-route-urlHandle="@regiao.UrlHandle">@regiao.Nome</a>
+                                                                    </li>
+                                                                }
                                                             }
-                                                        }
-                                                        else
-                                                        {
-                                                            <a class="dropdown-item text-danger" href="#">No regions found!</a>
-                                                        }
-                                                    </div>
+                                                            else
+                                                            {
+                                                                <li class="dropdown-item text-danger" href="#">No regions found!</li>
+                                                            }
+                                                        </ul>
+                                                    </li>
                                                 }
                                             }
                                             else
                                             {
-                                                <a class="dropdown-item text-danger" href="#">No continents found!</a>
+                                                <li class="dropdown-item text-danger" href="#">No continents found!</li>
                                             }
-                                        </div>
-
-                                    </div>
-
-                                    <div class="dropdown">
-                                        <button class="dropdown-item dropdown-toggle" type="button" id="creaturesDropdownButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            Creatures
-                                        </button>
-                                    </div>
-                                    <div class="dropdown">
-                                        <button class="dropdown-item dropdown-toggle" type="button" id="peoplesDropdownButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            People
-                                        </button>
-                                    </div>
-                                    <div class="dropdown">
-                                        <button class="dropdown-item dropdown-toggle" type="button" id="storiesDropdownButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            Stories
-                                        </button>
-                                    </div>
-                                </div>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="#" id="charactersDropdown">
+                                            Characters &raquo;
+                                        </a>
+                                        <ul class="dropdown-menu dropdown-submenu" aria-labelledby="charactersDropdown">
+                                            @if (povo.Personagens != null && povo.Personagens.Any())
+                                            {
+                                                @foreach (var personagem in povo.Personagens.OrderBy(r => r.Nome))
+                                                {
+                                                    <li>
+                                                        <a class="dropdown-item" asp-controller="Personagens" asp-action="index" asp-route-urlHandle="@personagem.UrlHandle">@personagem.Nome</a>
+                                                    </li>
+                                                }
+                                            }
+                                            else
+                                            {
+                                                <li class="dropdown-item text-danger" href="#">No characters found!</li>
+                                            }
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="#" id="creaturesDropdown">
+                                            Creatures &raquo;
+                                        </a>
+                                        <ul class="dropdown-menu dropdown-submenu" aria-labelledby="creaturesDropdown">
+                                            @if (povo.Criaturas != null && povo.Criaturas.Any())
+                                            {
+                                                @foreach (var criatura in povo.Criaturas.OrderBy(r => r.Nome))
+                                                {
+                                                    <li>
+                                                        <a class="dropdown-item" asp-controller="Criaturas" asp-action="index" asp-route-urlHandle="@criatura.UrlHandle">@criatura.Nome</a>
+                                                    </li>
+                                                }
+                                            }
+                                            else
+                                            {
+                                                <li class="dropdown-item text-danger" href="#">No creatures found!</li>
+                                            }
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="#" id="creaturesDropdown">
+                                            Stories &raquo;
+                                        </a>
+                                        <ul class="dropdown-menu dropdown-submenu" aria-labelledby="creaturesDropdown">
+                                            @if (povo.Contos != null && povo.Contos.Any())
+                                            {
+                                                @foreach (var conto in povo.Contos.OrderBy(r => r.Titulo))
+                                                {
+                                                    <li>
+                                                        <a class="dropdown-item" asp-controller="Contos" asp-action="index" asp-route-urlHandle="@conto.UrlHandle">@conto.Titulo</a>
+                                                    </li>
+                                                }
+                                            }
+                                            else
+                                            {
+                                                <li class="dropdown-item text-danger" href="#">No stories found!</li>
+                                            }
+                                        </ul>
+                                    </li>
+                                </ul>
                             </div>
                         </td>
+                        <td id="tddesc">@povo.CurtaDescricao</td>                      
                         <td class="published-date">@povo.PublishedDate.ToString("yyyy-MM-dd HH:mm")</td>
                         <td>
                             <form method="post" asp-controller="AdminPovos" asp-action="Delete" asp-route-id="@povo.Id" id="deleteForm-@povo.Id">
@@ -136,4 +175,5 @@
 @section Scripts
     {
     <script type="text/javascript" src="~/js/SortElements.js"></script>
+    <script type="text/javascript" src="~/js/DropdownBuild.js"></script>
 }

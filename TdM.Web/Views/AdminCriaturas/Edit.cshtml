@@ -110,6 +110,7 @@
             <div class="mb-3 col-8">
                 <label class="form-label">Continent</label>
                 <select id="SelectedContinentes" class="form-control" asp-items="@Model.Continentes" asp-for="SelectedContinentes" onchange="updateRegioes()">
+                    <option value="" class="text-danger">No Continent</option>
                 </select>
             </div>
 
@@ -117,6 +118,7 @@
             <div class="mb-3 col-8">
                 <label class="form-label">Region</label>
                 <select id="SelectedRegioes" class="form-select" asp-items="@Model.Regioes" asp-for="SelectedRegioes">
+                    <option value="" class="text-danger">No Region</option>
                 </select>
             </div>
 

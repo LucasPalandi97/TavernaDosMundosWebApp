@@ -18,8 +18,8 @@ public class AdminCriaturasController : Controller
     private readonly IContinenteRepository continenteRepository;
     private readonly IRegiaoRepository regiaoRepository;
 
-    public AdminCriaturasController(ICriaturaRepository criaturaRepository,IMundoRepository mundoRepository
-        ,IContinenteRepository continenteRepository , IRegiaoRepository regiaoRepository)
+    public AdminCriaturasController(ICriaturaRepository criaturaRepository, IMundoRepository mundoRepository
+        , IContinenteRepository continenteRepository, IRegiaoRepository regiaoRepository)
     {
         this.criaturaRepository = criaturaRepository;
         this.mundoRepository = mundoRepository;
@@ -27,7 +27,7 @@ public class AdminCriaturasController : Controller
         this.regiaoRepository = regiaoRepository;
     }
 
-   
+
     [HttpGet]
     public async Task<IActionResult> Add()
     {
@@ -44,7 +44,7 @@ public class AdminCriaturasController : Controller
     [HttpPost]
     public async Task<IActionResult> Add(AddCriaturaRequest addCriaturaRequest)
     {
-       
+
         //Map view model to domain model
 
         var criatura = new Criatura
@@ -58,7 +58,7 @@ public class AdminCriaturasController : Controller
             PublishedDate = addCriaturaRequest.PublishedDate,
             UrlHandle = addCriaturaRequest.UrlHandle,
             Visible = addCriaturaRequest.Visible,
-           
+
         };
 
         //Maps Mundos from Selected mundo
@@ -78,31 +78,32 @@ public class AdminCriaturasController : Controller
         }
 
         //Maps Continents from Selected continent
-        var selectedContinents = new List<Continente>();
-        if(selectedContinents != null && selectedContinents.Any()) { 
-        foreach (var selectedContinentId in addCriaturaRequest.SelectedContinentes)
+        var selectedContinentes = new List<Continente>();
+        foreach (var selectedContinenteId in addCriaturaRequest.SelectedContinentes)
         {
-            var selectedContinentIdAsGuid = Guid.Parse(selectedContinentId);
-            var existingContinent = await continenteRepository.GetAsync(selectedContinentIdAsGuid);
-
-            if (existingContinent != null)
+            if (!string.IsNullOrEmpty(selectedContinenteId))
             {
-                selectedContinents.Add(existingContinent);
+                var selectedContinenteIdAsGuid = Guid.Parse(selectedContinenteId);
+                var existingContinente = await continenteRepository.GetAsync(selectedContinenteIdAsGuid);
+
+                if (existingContinente != null)
+                {
+                    selectedContinentes.Add(existingContinente);
+                }
             }
         }
-        }
         //Maping Continentes back to domain modal
-        criatura.Continentes = selectedContinents;
+        criatura.Continentes = selectedContinentes;
 
         //Maps Regioes from Selected continent
         var selectedRegioes = new List<Regiao>();
-        if (selectedRegioes != null && selectedRegioes.Any())
+
+        foreach (var selectedRegiaoId in addCriaturaRequest.SelectedRegioes)
         {
-            foreach (var selectedRegiaoId in addCriaturaRequest.SelectedRegioes)
+            if (!string.IsNullOrEmpty(selectedRegiaoId))
             {
                 var selectedRegiaoIdAsGuid = Guid.Parse(selectedRegiaoId);
                 var existingRegiao = await regiaoRepository.GetAsync(selectedRegiaoIdAsGuid);
-
                 if (existingRegiao != null)
                 {
                     selectedRegioes.Add(existingRegiao);
@@ -111,6 +112,8 @@ public class AdminCriaturasController : Controller
         }
         //Maping Regioes back to domain modal
         criatura.Regioes = selectedRegioes;
+
+
 
         await criaturaRepository.AddAsync(criatura);
         return RedirectToAction("List");
@@ -158,8 +161,8 @@ public class AdminCriaturasController : Controller
             {
                 Id = criatura.Id,
                 Nome = criatura.Nome,
-                Tipo = criatura.Tipo,  
-                CurtaDescricao = criatura.CurtaDescricao,  
+                Tipo = criatura.Tipo,
+                CurtaDescricao = criatura.CurtaDescricao,
                 Descricao = criatura.Descricao,
                 ImgCard = criatura.ImgCard,
                 ImgBox = criatura.ImgBox,
@@ -185,11 +188,11 @@ public class AdminCriaturasController : Controller
                 }),
                 SelectedRegioes = criatura.Regioes.Select(x => x.Id.ToString()).ToArray()
             };
-            
+
             return View(editCriaturaRequest);
-    }
+        }
         return View(null);
-}
+    }
 
     [HttpPost]
     public async Task<IActionResult> Edit(EditCriaturaRequest editCriaturaRequest)
@@ -199,17 +202,18 @@ public class AdminCriaturasController : Controller
             Id = editCriaturaRequest.Id,
             Nome = editCriaturaRequest.Nome,
             Tipo = editCriaturaRequest.Tipo,
-            CurtaDescricao=editCriaturaRequest.CurtaDescricao,
+            CurtaDescricao = editCriaturaRequest.CurtaDescricao,
             Descricao = editCriaturaRequest.Descricao,
             ImgCard = editCriaturaRequest.ImgCard,
             ImgBox = editCriaturaRequest.ImgBox,
-            PublishedDate=editCriaturaRequest.PublishedDate,
+            PublishedDate = editCriaturaRequest.PublishedDate,
             UrlHandle = editCriaturaRequest.UrlHandle,
             Visible = editCriaturaRequest.Visible,
 
         };
 
-        //Map Mundo into domain model
+        //Maps Mundos from Selected mundo
+
         var selectedMundoId = editCriaturaRequest.SelectedMundo;
         if (selectedMundoId != null)
         {
@@ -223,39 +227,44 @@ public class AdminCriaturasController : Controller
                 criatura.Mundo = selectedMundo;
             }
         }
-        
 
-        //Map Continentes into domain model
+        //Maps Continents from Selected continent
         var selectedContinentes = new List<Continente>();
-        foreach (var selectedContinente in editCriaturaRequest.SelectedContinentes)
+        foreach (var selectedContinenteId in editCriaturaRequest.SelectedContinentes)
         {
-            if (Guid.TryParse(selectedContinente, out var continente))
+            if (!string.IsNullOrEmpty(selectedContinenteId))
             {
-                var foundContinente = await continenteRepository.GetAsync(continente);
-                if (foundContinente != null)
+                var selectedContinenteIdAsGuid = Guid.Parse(selectedContinenteId);
+                var existingContinente = await continenteRepository.GetAsync(selectedContinenteIdAsGuid);
+
+                if (existingContinente != null)
                 {
-                    selectedContinentes.Add(foundContinente);
+                    selectedContinentes.Add(existingContinente);
                 }
             }
-
         }
+        //Maping Continentes back to domain modal
         criatura.Continentes = selectedContinentes;
 
-        //Map Regioes into domain model
+        //Maps Regioes from Selected continent
         var selectedRegioes = new List<Regiao>();
-        foreach (var selectedRegiao in editCriaturaRequest.SelectedRegioes)
+
+        foreach (var selectedRegiaoId in editCriaturaRequest.SelectedRegioes)
         {
-            if (Guid.TryParse(selectedRegiao, out var regiao))
+            if (!string.IsNullOrEmpty(selectedRegiaoId))
             {
-                var foundRegiao = await regiaoRepository.GetAsync(regiao);
-                if (foundRegiao != null)
+                var selectedRegiaoIdAsGuid = Guid.Parse(selectedRegiaoId);
+                var existingRegiao = await regiaoRepository.GetAsync(selectedRegiaoIdAsGuid);
+
+                if (existingRegiao != null)
                 {
-                    selectedRegioes.Add(foundRegiao);
+                    selectedRegioes.Add(existingRegiao);
                 }
             }
-
         }
+        //Maping Regioes back to domain modal
         criatura.Regioes = selectedRegioes;
+
 
         //Submit information to repository
         var updatedCriatura = await criaturaRepository.UpdateAsync(criatura);
@@ -286,5 +295,5 @@ public class AdminCriaturasController : Controller
         return RedirectToAction("Edit", new { Id = editCriaturaRequest.Id });
     }
 
-         
+
 }

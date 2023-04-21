@@ -99,24 +99,28 @@
             <div class="mb-3 col-8">
                 <label class="form-label">Continents</label>
                 <select id="SelectedContinentes" class="form-control" asp-items="@Model.Continentes" asp-for="SelectedContinentes" onchange="updateRegioes()" multiple>
+                    <option value="" class="text-danger">No Continent</option>
                 </select>
             </div>
 
             <div class="mb-3 col-8">
                 <label class="form-label">Regions</label>
                 <select id="SelectedRegioes" class="form-select" asp-items="@Model.Regioes" asp-for="SelectedRegioes" onchange="updatePersonagens(), updateCriaturas()" multiple>
+                    <option value="" class="text-danger">No Region</option>
                 </select>
             </div>
 
             <div class="mb-3 col-8">
                 <label class="form-label">Characters</label>
                 <select id="SelectedPersonagens" class="form-select" asp-items="@Model.Personagens" asp-for="SelectedPersonagens" multiple>
+                    <option value="" class="text-danger">No Character</option>
                 </select>
             </div>
 
             <div class="mb-3 col-8">
                 <label class="form-label">Creatures</label>
                 <select id="SelectedCriaturas" class="form-select" asp-items="@Model.Criaturas" asp-for="SelectedCriaturas" multiple>
+                    <option value="" class="text-danger">No Creature</option>
                 </select>
             </div>
 

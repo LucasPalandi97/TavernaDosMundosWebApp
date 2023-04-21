@@ -1,0 +1,201 @@
+﻿
+@{
+}
+<style>
+    /*  Drop down Menus*/
+    .dropdown-menu li {
+        position: relative;
+    }
+
+    .dropdown-menu .dropdown-submenu {
+        display: none;
+        position: absolute;
+        left: 100%;
+        top: -7px;
+    }
+
+    .dropdown-menu .dropdown-submenu-left {
+        right: 100%;
+        left: auto;
+    }
+
+    .dropdown-menu > li:hover > .dropdown-submenu {
+        display: block;
+    }
+</style>
+<div class="dropdown" id="worldbuild">
+    <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton"
+            data-mdb-toggle="dropdown" aria-expanded="false">
+        Dropdown button
+    </button>
+    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+        <li><a class="dropdown-item" href="#">Action</a></li>
+        <li>
+            <a class="dropdown-item" href="#">Another action</a>
+        </li>
+        <li>
+            <a class="dropdown-item" href="#">
+                Submenu &raquo;
+            </a>
+            <ul class="dropdown-menu dropdown-submenu">
+                <li>
+                    <a class="dropdown-item" href="#">Submenu item 1</a>
+                </li>
+                <li>
+                    <a class="dropdown-item" href="#">Submenu item 2</a>
+                </li>
+                <li>
+                    <a class="dropdown-item" href="#">Submenu item 3 &raquo; </a>
+                    <ul class="dropdown-menu dropdown-submenu">
+                        <li>
+                            <a class="dropdown-item" href="#">Multi level 1</a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="#">Multi level 2</a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a class="dropdown-item" href="#">Submenu item 4</a>
+                </li>
+                <li>
+                    <a class="dropdown-item" href="#">Submenu item 5</a>
+                </li>
+            </ul>
+        </li>
+    </ul>
+</div>
+
+
+@*
+<div class="dropdown dropend w-100" id="worldbuild">
+    <button class="btn btn-secondary dropdown-toggle w-100" type="button" id="worldDropdownButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        @mundo.Nome
+    </button>
+    <div class="dropdown-menu w-100 text-center" aria-labelledby="worldDropdownButton">
+
+        <div class="dropdown w-100 text-center" id="continentsDropdown">
+            <button class="dropdown-item dropdown-toggle" type="button" id="continentsDropdownButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Continents
+            </button>
+
+            <div class="dropdown-menu w-100 text-center" aria-labelledby="continentsDropdownButton">
+                @if (mundo.Continentes != null && mundo.Continentes.Any())
+                {
+                    @foreach (var continente in mundo.Continentes.OrderBy(c => c.Nome))
+                    {
+                        <button class="dropdown-item dropdown-toggle" type="button" id="continente-@continente.Id"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <a asp-controller="Continentes" asp-action="index" asp-route-urlHandle="@continente.UrlHandle" style="color:#adb5bd" class="link-underline-secondary">@continente.Nome</a>
+                        </button>
+                        <div class="dropdown-menu w-100" aria-labelledby="continente-@continente.Id-dropdown">
+                            @if (continente.Regioes != null && continente.Regioes.Any())
+                            {
+                                @foreach (var regiao in continente.Regioes.OrderBy(r => r.Nome))
+                                {
+                                    <a class="dropdown-item" asp-controller="Regioes" asp-action="index" asp-route-urlHandle="@regiao.UrlHandle">@regiao.Nome</a>
+
+                                }
+                            }
+                            else
+                            {
+                                <a class="dropdown-item text-danger" href="#">No regions found!</a>
+                            }
+                        </div>
+                    }
+                }
+                else
+                {
+                    <a class="dropdown-item text-danger" href="#">No continents found!</a>
+                }
+            </div>
+
+        </div>
+
+        <div class="dropdown">
+            <button class="dropdown-item dropdown-toggle" type="button" id="charactersDropdownButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Characters
+            </button>
+            <div class="dropdown-menu w-100 text-center">
+                @if (mundo.Personagens != null && mundo.Personagens.Any())
+                {
+                    @foreach (var personagem in mundo.Personagens.OrderBy(pe => pe.Nome))
+                    {
+                        <a class="dropdown-item" asp-controller="Personagens" asp-action="index" asp-route-urlHandle="@personagem.UrlHandle">@personagem.Nome</a>
+                    }
+                }
+                else
+                {
+                    <a class="dropdown-item text-danger" href="#">No characters found!</a>
+                }
+            </div>
+        </div>
+
+        <div class="dropdown">
+            <button class="dropdown-item dropdown-toggle" type="button" id="creaturesDropdownButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Creatures
+            </button>
+            <div class="dropdown-menu w-100 text-center">
+                @if (mundo.Criaturas != null && mundo.Criaturas.Any())
+                {
+                    @foreach (var criatura in mundo.Criaturas.OrderBy(cr => cr.Nome))
+                    {
+                        <a class="dropdown-item" asp-controller="Criaturas" asp-action="index" asp-route-urlHandle="@criatura.UrlHandle">@criatura.Nome</a>
+                    }
+                }
+                else
+                {
+                    <a class="dropdown-item text-danger" href="#">No creatures found!</a>
+                }
+            </div>
+        </div>
+        <div class="dropdown">
+            <button class="dropdown-item dropdown-toggle" type="button" id="peoplesDropdownButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                People
+            </button>
+            <div class="dropdown-menu w-100 text-center">
+                @if (mundo.Povos != null && mundo.Povos.Any())
+                {
+                    @foreach (var povo in mundo.Povos.OrderBy(po => po.Nome))
+                    {
+                        <a class="dropdown-item" asp-controller="Povos" asp-action="index" asp-route-urlHandle="@povo.UrlHandle">@povo.Nome</a>
+                    }
+                }
+                else
+                {
+                    <a class="dropdown-item text-danger" href="#">No people found!</a>
+                }
+            </div>
+        </div>
+        <div class="dropdown">
+            <button class="dropdown-item dropdown-toggle" type="button" id="storiesDropdownButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Stories
+            </button>
+        </div>
+    </div>
+</div>*@
+@section Scripts {
+    <script>
+
+        //MULTI DROPDOWN BUTTONS FOR WORLDBUILD
+        // Get the dropdown buttons
+        const dropdownBtns = document.querySelectorAll("#worldbuild .dropdown-toggle");
+        // Toggle the dropdown menu when the button is clicked
+        document.addEventListener("click", function (event) {
+            if (event.target.matches("#worldbuild .dropdown-toggle")) {
+                event.preventDefault();
+                const dropdownMenu = event.target.nextElementSibling;
+                dropdownMenu.classList.toggle("show");
+            } else {
+                // Close the dropdown menu when the user clicks outside of it
+                const dropdownMenus = document.querySelectorAll("#worldbuild .dropdown-menu.show");
+                dropdownMenus.forEach(function (menu) {
+                    menu.classList.remove("show");
+                });
+            }
+        });
+
+    </script>
+
+
+}
