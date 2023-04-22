@@ -1,4 +1,4 @@
-﻿@model TdM.Database.Models.Domain.Continente
+﻿@model TdM.Database.Models.Domain.Povo
 @using Microsoft.AspNetCore.Identity
 @inject SignInManager<IdentityUser> signInManager
 @{
@@ -25,11 +25,11 @@ else
                 @if (signInManager.IsSignedIn(User) && User.IsInRole("Admin"))
                 { @*  Admin Action*@
                     <button id="btnEdit" class="btn btn-warning btn-small rounded-circle translate-middle position-absolute mx-4">
-                        <a class="" asp-area="" asp-controller="AdminContinentes" asp-action="Edit" asp-route-id="@Model.Id"><i class="bi bi-wrench-adjustable"></i></a>
+                        <a class="" asp-area="" asp-controller="AdminPovos" asp-action="Edit" asp-route-id="@Model.Id"><i class="bi bi-wrench-adjustable"></i></a>
                     </button>
                 }    @*End of Admin Action*@
             </h1>
-            <p class="text-white-50 mb-0 text-uppercase">@Model.CurtaDescricao</p>          
+            <p class="text-white-50 mb-0 text-uppercase">@Model.CurtaDescricao</p>
         </div>
     </header>
     <!-- Content section-->
@@ -81,5 +81,5 @@ else
 }
 else
 {
-    <p>Continent not found!</p>
+    <p>People not found!</p>
 }

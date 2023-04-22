@@ -36,6 +36,7 @@ builder.Services.AddScoped<IRegiaoRepository, RegiaoRepository>();
 builder.Services.AddScoped<IPersonagemRepository, PersonagemRepository>();
 builder.Services.AddScoped<ICriaturaRepository, CriaturaRepository>();
 builder.Services.AddScoped<IPovoRepository, PovoRepository>();
+builder.Services.AddScoped<IContoRepository, ContoRepository>();
 builder.Services.AddScoped<IImageRepository, CloudnaryImageRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 

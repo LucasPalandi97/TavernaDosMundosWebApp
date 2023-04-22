@@ -78,7 +78,7 @@ descricao_content {
 /* Hide the default select arrow 
     Checkbox for select with multiple items
 */
-select[multiple]::-ms-expand {
+/*select[multiple]::-ms-expand {
     display: none;
 }
 
@@ -113,7 +113,7 @@ select[multiple] {
             content: '\2713';
             color: #007bff;
             border-color: #007bff;
-        }
+        }*/
 
 /*drodown menus*/
 

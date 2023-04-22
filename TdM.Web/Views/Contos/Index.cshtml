@@ -1,8 +1,9 @@
-﻿@model TdM.Database.Models.Domain.Continente
+﻿@model TdM.Database.Models.Domain.Conto
 @using Microsoft.AspNetCore.Identity
+@using TdM.Database.Models.Domain.Enums
 @inject SignInManager<IdentityUser> signInManager
 @{
-    ViewData["Title"] = Model.Nome + ", " + Model.CurtaDescricao;
+    ViewData["Title"] = Model.Titulo;
 
 }
 <!-- Include the navbar partial view and pass the Mundo object to it -->
@@ -14,22 +15,23 @@ else
 {
     @await Html.PartialAsync("_Navbar", new TdM.Web.Models.ViewModels.NavbarViewModel { MundoUrlHandle = ViewBag.MundoUrlHandle })
 }
-
 @if (Model != null)
 {
+
     <!-- Header - set the background image for the header in the line below-->
     <header class="py-5 bg-image-full" style="background-image: url('@Model.ImgBox'); background-size:cover;background-position:center; height:50em;">
         <div class="mask bg-dark bg-opacity-50 text-center my-5 ">
             <h1 class="text-white fs-3 fw-bolder text-uppercase">
-                @Model.Nome
+                @Model.Titulo
                 @if (signInManager.IsSignedIn(User) && User.IsInRole("Admin"))
                 { @*  Admin Action*@
                     <button id="btnEdit" class="btn btn-warning btn-small rounded-circle translate-middle position-absolute mx-4">
-                        <a class="" asp-area="" asp-controller="AdminContinentes" asp-action="Edit" asp-route-id="@Model.Id"><i class="bi bi-wrench-adjustable"></i></a>
+                        <a class="" asp-area="" asp-controller="AdminContos" asp-action="Edit" asp-route-id="@Model.Id"><i class="bi bi-wrench-adjustable"></i></a>
                     </button>
                 }    @*End of Admin Action*@
             </h1>
-            <p class="text-white-50 mb-0 text-uppercase">@Model.CurtaDescricao</p>          
+            <p class="text-white-50 mb-0 text-uppercase">@Model.Autor.GetDisplayName()</p>
+            <p class="text-white-50 mb-0">By: @Model.Titulo</p>
         </div>
     </header>
     <!-- Content section-->
@@ -37,7 +39,7 @@ else
         <div class="container my-5">
             <div class="row justify-content-center ">
                 <div class="w-100 col-lg-6">
-                    @Html.Raw(Model.Descricao)
+                    @Html.Raw(Model.Corpo)
                 </div>
             </div>
         </div>
@@ -81,5 +83,5 @@ else
 }
 else
 {
-    <p>Continent not found!</p>
+    <p>Story not found!</p>
 }

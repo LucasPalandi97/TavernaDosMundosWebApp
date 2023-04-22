@@ -84,7 +84,7 @@ public class PovoRepository : IPovoRepository
         }
     }
 
-    public async Task<IEnumerable<Povo>> GetAllByRegion(object selectedRegiaoIds)
+    public async Task<IEnumerable<Povo>> GetAllByRegiao(object selectedRegiaoIds)
     {
         if (selectedRegiaoIds is Guid)
         {

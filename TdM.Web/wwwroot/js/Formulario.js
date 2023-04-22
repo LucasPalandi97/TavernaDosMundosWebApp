@@ -142,8 +142,7 @@ function updateRegioes() {
 //GET LIST<PERSONAGENS> BY LIST<REGIOES> IDs (ALLOW MULTIPLE ITEMS)
 function updatePersonagens() {
     const selectedRegiaoIds = $("#SelectedRegioes").val();
-    const selectedContinenteIds = $("#SelectedContinentes").val();
-    if (selectedRegiaoIds != null && selectedRegiaoIds.length > 0 && selectedContinenteIds.length > 0) {
+    if (selectedRegiaoIds != null && selectedRegiaoIds.length > 0) {
         $.ajax({
             url: "/AdminPersonagens/ListPersonagensByRegiao",
             type: "POST",
@@ -166,8 +165,7 @@ function updatePersonagens() {
 //GET LIST<CRIATURAS> BY LIST<REGIOES> IDs (ALLOW MULTIPLE ITEMS)
 function updateCriaturas() {
     const selectedRegiaoIds = $("#SelectedRegioes").val();
-    const selectedContinenteIds = $("#SelectedContinentes").val();
-    if (selectedRegiaoIds != null && selectedRegiaoIds.length > 0 && selectedContinenteIds.length > 0) {
+    if (selectedRegiaoIds != null && selectedRegiaoIds.length > 0) {
         $.ajax({
             url: "/AdminCriaturas/ListCriaturasByRegiao",
             type: "POST",
@@ -184,5 +182,28 @@ function updateCriaturas() {
     } else {
         // Reset the creature dropdown
         $("#SelectedCriaturas").empty().append('<option value="" class="text-danger" selected>No Creature</option>'); // add empty default option
+    }
+}
+
+//GET LIST<POVOS> BY LIST<REGIOES> IDs (ALLOW MULTIPLE ITEMS)
+function updatePovos() {
+    const selectedRegiaoIds = $("#SelectedRegioes").val();
+    if (selectedRegiaoIds != null && selectedRegiaoIds.length > 0 ) {
+        $.ajax({
+            url: "/AdminPovos/ListPovosByRegiao",
+            type: "POST",
+            dataType: "json",
+            data: { selectedRegiaoIds: selectedRegiaoIds },
+            success: function (data) {
+                $("#SelectedPovos").empty();
+                $("#SelectedPovos").append('<option value="" class="text-danger" selected>No People</option>'); // add empty default option
+                $.each(data, function (index, value) {
+                    $("#SelectedPovos").append('<option value="' + value.value + '">' + value.text + '</option>');
+                });
+            }
+        });
+    } else {
+        // Reset the creature dropdown
+        $("#SelectedPovos").empty().append('<option value="" class="text-danger" selected>No People</option>'); // add empty default option
     }
 }
