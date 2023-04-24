@@ -74,9 +74,39 @@
                 <input class="form-check-input" type="checkbox" id="visible" asp-for="Visible" checked>
             </div>
 
-            <div class="mb-3">
+            <div class="mb-3 col-8">
                 <label class="form-label">Continents</label>
-                <select class="form-select" asp-items="@Model.Continentes" asp-for="SelectedContinentes">
+                <select id="SelectedNullContinentes" class="form-control" asp-items="@Model.Continentes" asp-for="SelectedContinentes" onchange="updateRegioes()" multiple>
+                </select>
+            </div>
+
+            <div class="mb-3 col-8">
+                <label class="form-label">Regions</label>
+                <select id="SelectedNullRegioes" class="form-select" asp-items="@Model.Regioes" asp-for="SelectedRegioes" onchange="updatePersonagens(), updateCriaturas()" multiple>
+                </select>
+            </div>
+
+            <div class="mb-3 col-8">
+                <label class="form-label">Characters</label>
+                <select id="SelectedNullPersonagens" class="form-select" asp-items="@Model.Personagens" asp-for="SelectedPersonagens" multiple>
+                </select>
+            </div>
+
+            <div class="mb-3 col-8">
+                <label class="form-label">Creatures</label>
+                <select id="SelectedNullCriaturas" class="form-select" asp-items="@Model.Criaturas" asp-for="SelectedCriaturas" multiple>
+                </select>
+            </div>
+
+            <div class="mb-3 col-8">
+                <label class="form-label">Peoples</label>
+                <select id="SelectedNullPovos" class="form-select" asp-items="@Model.Povos" asp-for="SelectedPovos" multiple>
+                </select>
+            </div>
+
+            <div class="mb-3 col-8">
+                <label class="form-label">Stories</label>
+                <select id="SelectedNullContos" class="form-select" asp-items="@Model.Contos" asp-for="SelectedContos" multiple>
                 </select>
             </div>
 

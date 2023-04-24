@@ -11,12 +11,25 @@ namespace TdM.Web.Controllers;
 public class AdminMundosController : Controller
 {
     private readonly IMundoRepository mundoRepository;
+    private readonly IPovoRepository povoRepository;
     private readonly IContinenteRepository continenteRepository;
+    private readonly IRegiaoRepository regiaoRepository;
+    private readonly IPersonagemRepository personagemRepository;
+    private readonly ICriaturaRepository criaturaRepository;
+    private readonly IContoRepository contoRepository;
 
-    public AdminMundosController(IMundoRepository mundoRepository, IContinenteRepository continenteRepository)
+    public AdminMundosController(IMundoRepository mundoRepository, IPovoRepository povoRepository
+        , IContinenteRepository continenteRepository, IRegiaoRepository regiaoRepository
+        , IPersonagemRepository personagemRepository, ICriaturaRepository criaturaRepository
+        , IContoRepository contoRepository)
     {
         this.mundoRepository = mundoRepository;
+        this.povoRepository = povoRepository;
         this.continenteRepository = continenteRepository;
+        this.regiaoRepository = regiaoRepository;
+        this.personagemRepository = personagemRepository;
+        this.criaturaRepository = criaturaRepository;
+        this.contoRepository = contoRepository;
     }
 
     [HttpGet]
@@ -24,17 +37,34 @@ public class AdminMundosController : Controller
     {
         //get continente from repository
         var continente = await continenteRepository.GetAllAsync();
+        var regiao = await regiaoRepository.GetAllAsync();
+        var personagem = await personagemRepository.GetAllAsync();
+        var criatura = await criaturaRepository.GetAllAsync();
+        var povo = await povoRepository.GetAllAsync();
+        var conto = await contoRepository.GetAllAsync();
 
         var model = new AddMundoRequest
         {
-            Continentes = continente.Select(x => new SelectListItem { Text = x.Nome, Value = x.Id.ToString() })
+            Continentes = continente.Where(c => c.Mundo == null).Select(x => new SelectListItem { Text = x.Nome, Value = x.Id.ToString(), }),
+            Regioes = regiao.Where(c => c.Mundo == null).Select(x => new SelectListItem { Text = x.Nome, Value = x.Id.ToString() }),
+            Personagens = personagem.Where(c => c.Mundo == null).Select(x => new SelectListItem { Text = x.Nome, Value = x.Id.ToString() }),
+            Criaturas = criatura.Where(c => c.Mundo == null).Select(x => new SelectListItem { Text = x.Nome, Value = x.Id.ToString() }),
+            Povos = povo.Where(c => c.Mundo == null).Select(x => new SelectListItem { Text = x.Nome, Value = x.Id.ToString() }),
+            Contos = conto.Where(c => c.Mundo == null).Select(x => new SelectListItem { Text = x.Titulo, Value = x.Id.ToString() }),
         };
         return View(model);
+
     }
 
     [HttpPost]
     public async Task<IActionResult> Add(AddMundoRequest addMundoRequest)
     {
+        //ValidateAddMundoRequest(addMundoRequest);
+        if (!ModelState.IsValid)
+        {
+            return View(addMundoRequest);
+        }
+
         //Maping AddMundoRequest to Mundo domain model
         var mundo = new Mundo
         {
@@ -46,26 +76,120 @@ public class AdminMundosController : Controller
             PublishedDate = addMundoRequest.PublishedDate,
             UrlHandle = addMundoRequest.UrlHandle,
             Visible = addMundoRequest.Visible,
-            
-
         };
 
-
-        //Maps Continents from Selected continent
-
-        var selectedContinents = new List<Continente>();
-        foreach (var selectedContinentId in addMundoRequest.SelectedContinentes)
+        //Maps Continents from Selected Continents
+        var selectedContinentes = new List<Continente>();
+        foreach (var selectedContinenteId in addMundoRequest.SelectedContinentes)
         {
-            var selectedContinentIdAsGuid = Guid.Parse(selectedContinentId);
-            var existingContinent = await continenteRepository.GetAsync(selectedContinentIdAsGuid);
-
-            if (existingContinent != null)
+            if (!string.IsNullOrEmpty(selectedContinenteId))
             {
-                selectedContinents.Add(existingContinent);
+                var selectedContinenteIdAsGuid = Guid.Parse(selectedContinenteId);
+                var existingContinente = await continenteRepository.GetAsync(selectedContinenteIdAsGuid);
+
+                if (existingContinente != null)
+                {
+                    selectedContinentes.Add(existingContinente);
+                }
             }
         }
         //Maping Continentes back to domain modal
-        mundo.Continentes = selectedContinents;
+        mundo.Continentes = selectedContinentes;
+
+        //Maps Regioes from Selected Regioes
+        var selectedRegioes = new List<Regiao>();
+
+        foreach (var selectedRegiaoId in addMundoRequest.SelectedRegioes)
+        {
+            if (!string.IsNullOrEmpty(selectedRegiaoId))
+            {
+                var selectedRegiaoIdAsGuid = Guid.Parse(selectedRegiaoId);
+                var existingRegiao = await regiaoRepository.GetAsync(selectedRegiaoIdAsGuid);
+
+                if (existingRegiao != null)
+                {
+                    selectedRegioes.Add(existingRegiao);
+                }
+            }
+        }
+        //Maping Regioes back to domain modal
+        mundo.Regioes = selectedRegioes;
+
+        //Maps Personagens from Selected Personagens
+        var selectedPersonagens = new List<Personagem>();
+
+        foreach (var selectedPersonagemId in addMundoRequest.SelectedPersonagens)
+        {
+            if (!string.IsNullOrEmpty(selectedPersonagemId))
+            {
+                var selectedPersonagemIdAsGuid = Guid.Parse(selectedPersonagemId);
+                var existingPersonagem = await personagemRepository.GetAsync(selectedPersonagemIdAsGuid);
+
+                if (existingPersonagem != null)
+                {
+                    selectedPersonagens.Add(existingPersonagem);
+                }
+            }
+        }
+        //Maping Personagens back to domain modal
+        mundo.Personagens = selectedPersonagens;
+
+        //Maps Criaturas from Selected Criaturas
+        var selectedCriaturas = new List<Criatura>();
+
+        foreach (var selectedCriaturaId in addMundoRequest.SelectedCriaturas)
+        {
+            if (!string.IsNullOrEmpty(selectedCriaturaId))
+            {
+                var selectedCriaturaIdAsGuid = Guid.Parse(selectedCriaturaId);
+                var existingCriatura = await criaturaRepository.GetAsync(selectedCriaturaIdAsGuid);
+
+                if (existingCriatura != null)
+                {
+                    selectedCriaturas.Add(existingCriatura);
+                }
+            }
+        }
+        //Maping Criaturas back to domain modal
+        mundo.Criaturas = selectedCriaturas;
+
+        //Maping Povos from Selected Povos
+        var selectedPovos = new List<Povo>();
+
+        foreach (var selectedPovoId in addMundoRequest.SelectedPovos)
+        {
+            if (!string.IsNullOrEmpty(selectedPovoId))
+            {
+                var selectedPovoIdAsGuid = Guid.Parse(selectedPovoId);
+                var existingPovo = await povoRepository.GetAsync(selectedPovoIdAsGuid);
+
+                if (existingPovo != null)
+                {
+                    selectedPovos.Add(existingPovo);
+                }
+            }
+        }
+        //Maping Povos back to domain modal
+        mundo.Povos = selectedPovos;
+
+        //Maps Contos from Selected Contos
+        var selectedContos = new List<Conto>();
+
+        foreach (var selectedContoId in addMundoRequest.SelectedContos)
+        {
+            if (!string.IsNullOrEmpty(selectedContoId))
+            {
+                var selectedContoIdAsGuid = Guid.Parse(selectedContoId);
+                var existingConto = await contoRepository.GetAsync(selectedContoIdAsGuid);
+
+                if (existingConto != null)
+                {
+                    selectedContos.Add(existingConto);
+                }
+            }
+        }
+        //Maping Contos back to domain modal
+        mundo.Contos = selectedContos;
 
         await mundoRepository.AddAsync(mundo);
 
@@ -86,6 +210,10 @@ public class AdminMundosController : Controller
         //Retrieve result from repositoty
         var mundo = await mundoRepository.GetAsync(id);
         var continentesDomainModel = await continenteRepository.GetAllAsync();
+        var regioesDomainModel = await regiaoRepository.GetAllAsync();
+        var personagensDomainModel = await personagemRepository.GetAllAsync();
+        var criaturasDomainModel = await criaturaRepository.GetAllAsync();
+        var contosDomainModel = await contoRepository.GetAllAsync();
 
         if (mundo != null)
         {
@@ -94,12 +222,12 @@ public class AdminMundosController : Controller
             {
                 Id = mundo.Id,
                 Nome = mundo.Nome,
-                CurtaDescricao = mundo.CurtaDescricao,  
+                CurtaDescricao = mundo.CurtaDescricao,
                 Descricao = mundo.Descricao,
-                Autor = mundo.Autor,               
+                Autor = mundo.Autor,
                 ImgBox = mundo.ImgBox,
                 PublishedDate = mundo.PublishedDate,
-                UrlHandle   = mundo.UrlHandle,
+                UrlHandle = mundo.UrlHandle,
                 Visible = mundo.Visible,
                 Continentes = continentesDomainModel.Select(x => new SelectListItem
                 {
@@ -107,11 +235,35 @@ public class AdminMundosController : Controller
                     Value = x.Id.ToString()
                 }),
                 SelectedContinentes = mundo.Continentes.Select(x => x.Id.ToString()).ToArray(),
-
-
+                Regioes = regioesDomainModel.Select(x => new SelectListItem
+                {
+                    Text = x.Nome,
+                    Value = x.Id.ToString()
+                }),
+                SelectedRegioes = mundo.Regioes.Select(x => x.Id.ToString()).ToArray(),
+                Personagens = personagensDomainModel.Select(x => new SelectListItem
+                {
+                    Text = x.Nome,
+                    Value = x.Id.ToString()
+                }),
+                SelectedPersonagens = mundo.Personagens.Select(x => x.Id.ToString()).ToArray(),
+                Criaturas = criaturasDomainModel.Select(x => new SelectListItem
+                {
+                    Text = x.Nome,
+                    Value = x.Id.ToString()
+                }),
+                SelectedCriaturas = mundo.Criaturas.Select(x => x.Id.ToString()).ToArray(),
+                Contos = contosDomainModel.Select(x => new SelectListItem
+                {
+                    Text = x.Titulo,
+                    Value = x.Id.ToString()
+                }),
+                SelectedContos = mundo.Contos.Select(x => x.Id.ToString()).ToArray(),
             };
+
             return View(editMundoRequest);
         }
+
         return View(null);
     }
 
@@ -128,26 +280,123 @@ public class AdminMundosController : Controller
             Autor = editMundoRequest.Autor,
             ImgBox = editMundoRequest.ImgBox,
             PublishedDate = editMundoRequest.PublishedDate,
-            UrlHandle = editMundoRequest.UrlHandle, 
+            UrlHandle = editMundoRequest.UrlHandle,
             Visible = editMundoRequest.Visible,
         };
 
-        //Map Continentes into domain model
+
+        //Maps Continents from Selected Continents
         var selectedContinentes = new List<Continente>();
-        foreach (var selectedContinente in editMundoRequest.SelectedContinentes)
+        foreach (var selectedContinenteId in editMundoRequest.SelectedContinentes)
         {
-            if (Guid.TryParse(selectedContinente, out var continente))
+            if (!string.IsNullOrEmpty(selectedContinenteId))
             {
-                var foundContinente = await continenteRepository.GetAsync(continente);
-                if (foundContinente != null)
+                var selectedContinenteIdAsGuid = Guid.Parse(selectedContinenteId);
+                var existingContinente = await continenteRepository.GetAsync(selectedContinenteIdAsGuid);
+
+                if (existingContinente != null)
                 {
-                    selectedContinentes.Add(foundContinente);
+                    selectedContinentes.Add(existingContinente);
                 }
             }
-
         }
-
+        //Maping Continentes back to domain modal
         mundo.Continentes = selectedContinentes;
+
+        //Maps Regioes from Selected Regioes
+        var selectedRegioes = new List<Regiao>();
+
+        foreach (var selectedRegiaoId in editMundoRequest.SelectedRegioes)
+        {
+            if (!string.IsNullOrEmpty(selectedRegiaoId))
+            {
+                var selectedRegiaoIdAsGuid = Guid.Parse(selectedRegiaoId);
+                var existingRegiao = await regiaoRepository.GetAsync(selectedRegiaoIdAsGuid);
+
+                if (existingRegiao != null)
+                {
+                    selectedRegioes.Add(existingRegiao);
+                }
+            }
+        }
+        //Maping Regioes back to domain modal
+        mundo.Regioes = selectedRegioes;
+
+        //Maps Personagens from Selected Personagens
+        var selectedPersonagens = new List<Personagem>();
+
+        foreach (var selectedPersonagemId in editMundoRequest.SelectedPersonagens)
+        {
+            if (!string.IsNullOrEmpty(selectedPersonagemId))
+            {
+                var selectedPersonagemIdAsGuid = Guid.Parse(selectedPersonagemId);
+                var existingPersonagem = await personagemRepository.GetAsync(selectedPersonagemIdAsGuid);
+
+                if (existingPersonagem != null)
+                {
+                    selectedPersonagens.Add(existingPersonagem);
+                }
+            }
+        }
+        //Maping Personagens back to domain modal
+        mundo.Personagens = selectedPersonagens;
+
+        //Maps Criaturas from Selected Criaturas
+        var selectedCriaturas = new List<Criatura>();
+
+        foreach (var selectedCriaturaId in editMundoRequest.SelectedCriaturas)
+        {
+            if (!string.IsNullOrEmpty(selectedCriaturaId))
+            {
+                var selectedCriaturaIdAsGuid = Guid.Parse(selectedCriaturaId);
+                var existingCriatura = await criaturaRepository.GetAsync(selectedCriaturaIdAsGuid);
+
+                if (existingCriatura != null)
+                {
+                    selectedCriaturas.Add(existingCriatura);
+                }
+            }
+        }
+        //Maping Criaturas back to domain modal
+        mundo.Criaturas = selectedCriaturas;
+
+        //Maping Povos from Selected Povos
+        var selectedPovos = new List<Povo>();
+
+        foreach (var selectedPovoId in editMundoRequest.SelectedPovos)
+        {
+            if (!string.IsNullOrEmpty(selectedPovoId))
+            {
+                var selectedPovoIdAsGuid = Guid.Parse(selectedPovoId);
+                var existingPovo = await povoRepository.GetAsync(selectedPovoIdAsGuid);
+
+                if (existingPovo != null)
+                {
+                    selectedPovos.Add(existingPovo);
+                }
+            }
+        }
+        //Maping Povos back to domain modal
+        mundo.Povos = selectedPovos;
+
+        //Maps Contos from Selected Contos
+        var selectedContos = new List<Conto>();
+
+        foreach (var selectedContoId in editMundoRequest.SelectedContos)
+        {
+            if (!string.IsNullOrEmpty(selectedContoId))
+            {
+                var selectedContoIdAsGuid = Guid.Parse(selectedContoId);
+                var existingConto = await contoRepository.GetAsync(selectedContoIdAsGuid);
+
+                if (existingConto != null)
+                {
+                    selectedContos.Add(existingConto);
+                }
+            }
+        }
+        //Maping Contos back to domain modal
+        mundo.Contos = selectedContos;
 
         //Submit information to repository
         var updatedMundo = await mundoRepository.UpdateAsync(mundo);
@@ -170,13 +419,11 @@ public class AdminMundosController : Controller
         // Talk to repository to delete this mundo and continente
         var deletedMundo = await mundoRepository.DeleteAsync(editMundoRequest.Id);
         if (deletedMundo != null)
-        { 
+        {
             //Show success notification
             return RedirectToAction("List");
         }
         //Show an error notification
         return RedirectToAction("Edit", new { Id = editMundoRequest.Id });
-    }
-
-
+    }  
 }

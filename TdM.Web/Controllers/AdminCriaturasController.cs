@@ -45,8 +45,12 @@ public class AdminCriaturasController : Controller
     public async Task<IActionResult> Add(AddCriaturaRequest addCriaturaRequest)
     {
 
-        //Map view model to domain model
+        if (!ModelState.IsValid)
+        { //Pass the view model to the View method
+            return View(addCriaturaRequest);
+        }
 
+        //Map view model to domain model
         var criatura = new Criatura
         {
             Nome = addCriaturaRequest.Nome,

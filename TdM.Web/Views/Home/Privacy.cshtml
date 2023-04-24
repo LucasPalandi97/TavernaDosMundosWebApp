@@ -1,6 +1,15 @@
 ﻿@{
     ViewData["Title"] = "About Us";
 }
+<!-- Include the navbar partial view and pass the Mundo object to it -->
+@if (string.IsNullOrEmpty(ViewBag.MundoUrlHandle))
+{
+    @await Html.PartialAsync("_Navbar", new TdM.Web.Models.ViewModels.NavbarViewModel {})
+}
+else
+{
+    @await Html.PartialAsync("_Navbar", new TdM.Web.Models.ViewModels.NavbarViewModel { MundoUrlHandle = ViewBag.MundoUrlHandle })
+}
 
 <header class="py-5 bg-image-full border-5 border-bottom border-dark text-center text-white" style="background-image: url('https://www.dorkadia.com/wp-content/uploads/2013/06/Legend-RPG-Banner.jpg'); background-size:cover;background-position:center; height:60rem;">
     <div class="mask text-uppercase"><h1 class="fs-3 fw-bolder">About Us</h1></div>

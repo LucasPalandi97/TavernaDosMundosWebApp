@@ -1,5 +1,4 @@
 ﻿@model TdM.Web.Models.ViewModels.AddContinenteRequest
-
 @{
 }
 <partial name="_Navbar2" />
@@ -14,17 +13,20 @@
 
         <div class="mb-3 col-8">
             <label class="form-label" for="nome">Name</label>
-            <input type="text" class="form-control" id="nome" asp-for="Nome" />
+            <input type="text" class="form-control" id="nome" asp-for="Nome" required />
+            <span class="text-danger" asp-validation-for="Nome"></span>
         </div>
 
         <div class="mb-3">
             <label for="descricao" class="form-label">Short Description</label>
-            <input class="form-control" type="text" placeholder="Continent's Short Description" id="CurtaDescricao" name="CurtaDescricao" asp-for="CurtaDescricao" />
+            <input class="form-control" type="text" placeholder="Continent's Short Description" id="CurtaDescricao" name="CurtaDescricao" asp-for="CurtaDescricao" required />
+            <span class="text-danger" asp-validation-for="CurtaDescricao"></span>
         </div>
 
         <div class="mb-3">
             <label for="descricao" class="form-label">Description</label>
-            <textarea placeholder="Continent's Description" id="descricao" name="descricao" asp-for="Descricao"></textarea>
+            <textarea placeholder="Continent's Description" id="descricao" name="descricao" asp-for="Descricao" ></textarea>
+            <span class="text-danger" asp-validation-for="Descricao"></span>
         </div>
 
         <div class="mb-3">
@@ -52,26 +54,29 @@
 
         <div class="mb-3 col-2">
             <label class="form-label">Published Date</label>
-            <input type="datetime-local" class="form-control" id="publishedDate" asp-for="PublishedDate" />
+            <input type="datetime-local" class="form-control" id="publishedDate" asp-for="PublishedDate" required />
+            <span class="text-danger" asp-validation-for="PublishedDate"></span>
         </div>
 
         <div class="mb-3">
             <label class="form-label">URL Handle</label>
-            <input type="text" class="form-control" placeholder="Suggestion: TheContinentOfMaraad" id="urlHandle" asp-for="UrlHandle" />
+            <input type="text" class="form-control" placeholder="Suggestion: TheContinentOfMaraad" id="urlHandle" asp-for="UrlHandle" required />
+            <span class="text-danger" asp-validation-for="UrlHandle"></span>
         </div>
 
         <div class="form-check form-switch mb-3">
             <label class="form-check-label" for="visible">Visible?</label>
-            <input class="form-check-input" type="checkbox" id="visible" asp-for="Visible" checked>
+            <input class="form-check-input" type="checkbox" id="visible" asp-for="Visible" required checked>
+            <span class="text-danger" asp-validation-for="Visible"></span>
         </div>
-
+    
         <div class="mb-3 col-8">
             <label class="form-label">Mundo</label>
-            <select class="form-select" asp-items="@Model.Mundos" asp-for="SelectedMundo">
+            <select class="form-select"asp-items="Model.Mundos" asp-for="SelectedMundo" >
                 <option value="" class="text-danger">No World</option>
             </select>
         </div>
-
+       
         <div class="mb-3">
             <button type="submit" class="btn btn-dark">
                 Save

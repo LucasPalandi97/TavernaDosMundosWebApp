@@ -15,20 +15,23 @@
 
         <div class="mb-3 col-8">
             <label class="form-label" for="nome">Title</label>
-            <input type="text" class="form-control" id="nome" asp-for="Titulo" />
+            <input type="text" class="form-control" id="nome" asp-for="Titulo" required />
+            <span class="text-danger" asp-validation-for="Titulo"></span>
         </div>
 
         <div class=" mb-3 form-group col-8">
             <label for="autor" class="form-label">Author</label>
-            <select id="autor" asp-for="Autor" class="form-control" asp-items="Html.GetEnumSelectList<Autor>()">
+            <select id="autor" asp-for="Autor" class="form-control" asp-items="Html.GetEnumSelectList<Autor>()" required>
                 <option value="">Select Author ...</option>
             </select>
             <span asp-validation-for="Autor" class="text-danger"></span>
+            <span class="text-danger" asp-validation-for="Autor"></span>
         </div>
 
         <div class="mb-3">
             <label for="descricao" class="form-label">Body Text</label>
-            <textarea placeholder="Story's body" id="descricao" name="Corpo" asp-for="Corpo"></textarea>
+            <textarea placeholder="Story's body" id="descricao" name="Corpo" asp-for="Corpo" ></textarea>
+            <span class="text-danger" asp-validation-for="Corpo"></span>
         </div>
 
         <div class="mb-3">
@@ -56,22 +59,26 @@
 
         <div class="mb-3 col-2">
             <label class="form-label">Published Date</label>
-            <input type="datetime-local" class="form-control" id="publishedDate" asp-for="PublishedDate" />
+            <input type="datetime-local" class="form-control" id="publishedDate" asp-for="PublishedDate" required />
+            <span class="text-danger" asp-validation-for="PublishedDate"></span>
         </div>
 
         <div class="mb-3">
             <label class="form-label">URL Handle</label>
-            <input type="text" class="form-control" placeholder="Suggestion: TheCriatureOfMaraad" id="urlHandle" asp-for="UrlHandle" />
+            <input type="text" class="form-control" placeholder="Suggestion: TheCriatureOfMaraad" id="urlHandle" asp-for="UrlHandle" required />
+            <span class="text-danger" asp-validation-for="UrlHandle"></span>
         </div>
 
         <div class="form-check form-switch mb-3">
             <label class="form-check-label" for="visible">Audio Drama?</label>
-            <input class="form-check-input" type="checkbox" id="audiodrama" asp-for="AudioDrama" checked>
+            <input class="form-check-input" type="checkbox" id="audiodrama" asp-for="AudioDrama" required checked>
+            <span class="text-danger" asp-validation-for="AudioDrama"></span>
         </div>
 
         <div class="form-check form-switch mb-3">
             <label class="form-check-label" for="visible">Visible?</label>
-            <input class="form-check-input" type="checkbox" id="visible" asp-for="Visible" checked>
+            <input class="form-check-input" type="checkbox" id="visible" asp-for="Visible" required checked>
+            <span class="text-danger" asp-validation-for="Visible"></span>
         </div>
 
         <div class="mb-3 col-8">

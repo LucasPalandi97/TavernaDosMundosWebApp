@@ -1,10 +1,19 @@
-﻿namespace TdM.Web.Models.ViewModels
+﻿using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json.Serialization;
+using System.ComponentModel.DataAnnotations;
+
+namespace TdM.Web.Models.ViewModels;
+
+public class RegisterViewModel
 {
-    public class RegisterViewModel
-    {
-        public string Username { get; set; }
-        public string Email { get; set; }
-        public string Password { get; set; }
-       
-    }
-}
+    [Required]
+    public string Username { get; set; }
+
+    [Required]
+    [EmailAddress]
+    public string Email { get; set; }
+
+    [Required]
+    [MinLength(6,ErrorMessage = "Password has to be at least 6 characters")]
+    public string Password { get; set; }
+} 

@@ -4,16 +4,12 @@
 @{
     ViewData["Title"] = Model.Nome + ", " + Model.CurtaDescricao;
 
+    // Set the value of mundoUrlHandle based on your logic
+    var mundoUrlHandle = Model.Mundo.UrlHandle;
 }
 <!-- Include the navbar partial view and pass the Mundo object to it -->
-@if (string.IsNullOrEmpty(ViewBag.MundoUrlHandle))
-{
-    @await Html.PartialAsync("_Navbar", new TdM.Web.Models.ViewModels.NavbarViewModel {})
-}
-else
-{
-    @await Html.PartialAsync("_Navbar", new TdM.Web.Models.ViewModels.NavbarViewModel { MundoUrlHandle = ViewBag.MundoUrlHandle })
-}
+@await Html.PartialAsync("_Navbar", new TdM.Web.Models.ViewModels.NavbarViewModel { MundoUrlHandle = mundoUrlHandle})
+
 
 @if (Model != null)
 {

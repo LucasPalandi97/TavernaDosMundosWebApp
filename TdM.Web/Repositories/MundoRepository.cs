@@ -91,6 +91,11 @@ public class MundoRepository : IMundoRepository
             existingMundo.UrlHandle = mundo.UrlHandle;
             existingMundo.Visible = mundo.Visible;
             existingMundo.Continentes = mundo.Continentes;
+            existingMundo.Regioes = mundo.Regioes;
+            existingMundo.Personagens = mundo.Personagens;
+            existingMundo.Criaturas = mundo.Criaturas;
+            existingMundo.Povos = mundo.Povos;
+            existingMundo.Contos = mundo.Contos;
 
             await tavernaDbContext.SaveChangesAsync();
             return existingMundo;

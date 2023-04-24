@@ -37,8 +37,12 @@ public class AdminRegioesController : Controller
     public async Task<IActionResult> Add(AddRegiaoRequest addRegiaoRequest)
     {
 
-        //Map view model to domain model
+        if (!ModelState.IsValid)
+        {
+            return View(addRegiaoRequest);
+        }
 
+        //Map view model to domain model
         var regiao = new Regiao
         {
             Nome = addRegiaoRequest.Nome,

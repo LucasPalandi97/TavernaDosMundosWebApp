@@ -59,6 +59,12 @@ public class AdminPovosController : Controller
     [HttpPost]
     public async Task<IActionResult> Add(AddPovoRequest addPovoRequest)
     {
+
+        if (!ModelState.IsValid)
+        {
+            return View(addPovoRequest);
+        }
+
         //Map view model to domain model
         var povo = new Povo
         {

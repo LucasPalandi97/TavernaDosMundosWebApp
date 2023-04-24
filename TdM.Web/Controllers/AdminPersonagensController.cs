@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using System.Drawing;
 using TdM.Database.Models.Domain;
 using TdM.Web.Models.ViewModels;
 using TdM.Web.Repositories;
@@ -41,8 +40,12 @@ public class AdminPersonagensController : Controller
     public async Task<IActionResult> Add(AddPersonagemRequest addPersonagemRequest)
     {
 
-        //Map view model to domain model
+        if (!ModelState.IsValid)
+        {
+            return View(addPersonagemRequest);
+        }
 
+        //Map view model to domain model
         var personagem = new Personagem
         {
             Nome = addPersonagemRequest.Nome,

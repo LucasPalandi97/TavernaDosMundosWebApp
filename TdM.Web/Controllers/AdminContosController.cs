@@ -61,6 +61,12 @@ public class AdminContosController : Controller
     [HttpPost]
     public async Task<IActionResult> Add(AddContoRequest addContoRequest)
     {
+      
+        if (!ModelState.IsValid)
+        { //Pass the view model to the View method
+            return View(addContoRequest);
+        }
+
         //Map view model to domain model
         var conto = new Conto
         {
@@ -77,7 +83,7 @@ public class AdminContosController : Controller
 
         //Maps Mundos from Selected mundo
         var selectedMundoId = addContoRequest.SelectedMundo;
-        if (selectedMundoId != null)
+        if (!string.IsNullOrEmpty(selectedMundoId))
         {
             var selectedMundoIdAsGuid = Guid.Parse(selectedMundoId);
             var existingMundo = await mundoRepository.GetAsync(selectedMundoIdAsGuid);

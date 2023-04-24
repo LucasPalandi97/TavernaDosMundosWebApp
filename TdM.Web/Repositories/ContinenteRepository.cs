@@ -59,7 +59,8 @@ public class ContinenteRepository : IContinenteRepository
 
     public async Task<Continente?> GetAsync(Guid id)
     {
-        return await tavernaDbContext.Continentes.Include(x => x.Regioes)
+        return await tavernaDbContext.Continentes
+            .Include(x => x.Regioes)
             .Include(x => x.Personagens)
             .Include(x => x.Criaturas)
             .Include(x => x.Povos)
@@ -68,7 +69,8 @@ public class ContinenteRepository : IContinenteRepository
     }
     public async Task<IEnumerable<Continente>> GetContinentesByMundoAsync(Guid id)
     {
-        return await tavernaDbContext.Continentes.Include(x => x.Regioes)
+        return await tavernaDbContext.Continentes
+            .Include(x => x.Regioes)
             .Include(x => x.Personagens)
             .Include(x => x.Criaturas)
             .Include(x => x.Povos)
@@ -79,7 +81,8 @@ public class ContinenteRepository : IContinenteRepository
 
     public async Task<Continente?> GetByUrlHandleAsync(string urlHandle)
     {
-        return await tavernaDbContext.Continentes.Include(x => x.Regioes)
+        return await tavernaDbContext.Continentes
+            .Include(x => x.Regioes)
             .Include(x => x.Personagens)
             .Include(x => x.Criaturas)
             .Include(x => x.Povos)

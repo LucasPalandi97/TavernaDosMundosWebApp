@@ -2,10 +2,8 @@
 using TdM.Database.Models.Domain;
 namespace TdM.Database.Data;
 
-
 public class TavernaDbContext : DbContext
 {
-
     public DbSet<Mundo> Mundos { get; set; }
     public DbSet<Continente> Continentes { get; set; }
     public DbSet<Regiao> Regioes { get; set; }
@@ -14,9 +12,7 @@ public class TavernaDbContext : DbContext
     public DbSet<Criatura> Criaturas { get; set; }
     public DbSet<Conto> Contos { get; set; }
 
-
     public TavernaDbContext(DbContextOptions<TavernaDbContext> options) : base(options) { }
-
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -65,11 +61,6 @@ public class TavernaDbContext : DbContext
         modelBuilder.Entity<Regiao>()
                     .HasMany(pe => pe.Personagens)
                     .WithOne(r => r.Regiao)
-                    .OnDelete(DeleteBehavior.SetNull);
-
-
-
-        
-
+                    .OnDelete(DeleteBehavior.SetNull);       
     }
 }

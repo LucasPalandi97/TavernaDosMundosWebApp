@@ -138,7 +138,7 @@
                                 </ul>
                             </div>
                         </td>
-                        <td>@conto.AudioDrama</td>
+                        <td>@conto.Autor.GetDisplayName()</td>
                         <td class="published-date">@conto.PublishedDate.ToString("yyyy-MM-dd HH:mm")</td>
                         <td>
                             <form method="post" asp-controller="AdminContos" asp-action="Delete" asp-route-id="@conto.Id" id="deleteForm-@conto.Id">

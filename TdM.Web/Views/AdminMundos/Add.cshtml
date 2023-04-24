@@ -14,17 +14,22 @@
 
         <div class="mb-3 col-8">
             <label for="nome" class="form-label">World</label>
-            <input type="text" class="form-control" id="nome" asp-for="Nome" />
+            <input type="text" class="form-control" id="nome" asp-for="Nome" required />
+            <span class="text-danger" asp-validation-for="Nome"></span>
         </div>
 
         <div class="mb-3">
             <label for="descricao" class="form-label">Short Description</label>
-            <input class="form-control" type="text" placeholder="World's Short Description" id="CurtaDescricao" name="CurtaDescricao" asp-for="CurtaDescricao" />
+            <input class="form-control" type="text" placeholder="World's Short Description" id="CurtaDescricao" name="CurtaDescricao" asp-for="CurtaDescricao" required />
+            <span class="text-danger" asp-validation-for="CurtaDescricao"></span>
+
         </div>
 
         <div class="mb-3">
             <label for="descricao" class="form-label">Description</label>
-            <textarea placeholder="World's Description" id="descricao" name="descricao" asp-for="Descricao"></textarea>
+            <textarea placeholder="World's Description" id="descricao" name="descricao" asp-for="Descricao" ></textarea>
+            <span class="text-danger" asp-validation-for="Descricao"></span>
+
         </div>
 
         <div class="mb-3">
@@ -40,58 +45,66 @@
 
         <div class=" mb-3 form-group col-8">
             <label for="autor" class="form-label">Author</label>
-            <select id="autor" asp-for="Autor" class="form-control" asp-items="Html.GetEnumSelectList<Autor>()">
+            <select id="autor" asp-for="Autor" class="form-control" asp-items="Html.GetEnumSelectList<Autor>()" required>
                 <option value="">Select Author ...</option>
             </select>
             <span asp-validation-for="Autor" class="text-danger"></span>
+            <span class="text-danger" asp-validation-for="Autor"></span>
+
         </div>
 
         <div class="mb-3 col-4">
             <label class="form-label">Published Date</label>
-            <input type="datetime-local" class="form-control" id="publishedDate" asp-for="PublishedDate" />
+            <input type="datetime-local" class="form-control" id="publishedDate" asp-for="PublishedDate" required />
+            <span class="text-danger" asp-validation-for="PublishedDate"></span>
         </div>
 
         <div class="mb-3">
             <label class="form-label">URL Handle</label>
-            <input type="text" class="form-control" id="urlHandle" asp-for="UrlHandle" placeholder="Suggestion: TheGalaxyOfLuna" />
+            <input type="text" class="form-control" id="urlHandle" asp-for="UrlHandle" required />
+            <span class="text-danger" asp-validation-for="UrlHandle"></span>
         </div>
-
 
         <div class="form-check form-switch mb-3">
             <label class="form-check-label" for="visible">Visible?</label>
-            <input class="form-check-input" type="checkbox" id="visible" asp-for="Visible" checked>
+            <input class="form-check-input" type="checkbox" id="visible" asp-for="Visible" checked required>
+            <span class="text-danger" asp-validation-for="Visible"></span>
         </div>
-        <div class="mb-3 d-flex">
-            <div class="m-2">
-                <label class="form-label">Continents</label>
-                <select class="form-select" style="width:100px;" asp-items="@Model.Continentes" asp-for="SelectedContinentes">
-                </select>
-            </div>
-            <div class="m-2">
-                <label class="form-label">Regions</label>
-                <select class="form-select" style="width:100px;" asp-items="@Model.Continentes" asp-for="SelectedContinentes">
-                </select>
-            </div>
-            <div class="m-2">
-                <label class="form-label">Characters</label>
-                <select class="form-select" style="width:100px;" asp-items="@Model.Continentes" asp-for="SelectedContinentes">
-                </select>
-            </div>
-            <div class="m-2">
-                <label class="form-label">People</label>
-                <select class="form-select" style="width:100px;" asp-items="@Model.Continentes" asp-for="SelectedContinentes">
-                </select>
-            </div>
-            <div class="m-2">
-                <label class="form-label">Criatures</label>
-                <select class="form-select" style="width:100px;" asp-items="@Model.Continentes" asp-for="SelectedContinentes">
-                </select>
-            </div>
-            <div class="m-2">
-                <label class="form-label">Short Stories</label>
-                <select class="form-select" style="width:100px;" asp-items="@Model.Continentes" asp-for="SelectedContinentes">
-                </select>
-            </div>
+
+        <div class="mb-3 col-8">
+            <label class="form-label">Continents</label>
+            <select id="SelectedNullContinentes" class="form-control" asp-items="@Model.Continentes" asp-for="SelectedContinentes" onchange="updateRegioes()" multiple>
+            </select>
+        </div>
+
+        <div class="mb-3 col-8">
+            <label class="form-label">Regions</label>
+            <select id="SelectedNullRegioes" class="form-select" asp-items="@Model.Regioes" asp-for="SelectedRegioes" onchange="updatePersonagens(), updateCriaturas()" multiple>
+            </select>
+        </div>
+
+        <div class="mb-3 col-8">
+            <label class="form-label">Characters</label>
+            <select id="SelectedNullPersonagens" class="form-select" asp-items="@Model.Personagens" asp-for="SelectedPersonagens" multiple>
+            </select>
+        </div>
+
+        <div class="mb-3 col-8">
+            <label class="form-label">Creatures</label>
+            <select id="SelectedNullCriaturas" class="form-select" asp-items="@Model.Criaturas" asp-for="SelectedCriaturas" multiple>
+            </select>
+        </div>
+
+        <div class="mb-3 col-8">
+            <label class="form-label">Peoples</label>
+            <select id="SelectedNullPovos" class="form-select" asp-items="@Model.Povos" asp-for="SelectedPovos" multiple>
+            </select>
+        </div>
+
+        <div class="mb-3 col-8">
+            <label class="form-label">Stories</label>
+            <select id="SelectedNullContos" class="form-select" asp-items="@Model.Contos" asp-for="SelectedContos" multiple>
+            </select>
         </div>
 
         <div class="mb-3">
@@ -102,5 +115,5 @@
 </div>
 
 @section Scripts {
-        <script type="text/javascript" src="~/js/Formulario.js"></script>
+    <script type="text/javascript" src="~/js/Formulario.js"></script>
 }
