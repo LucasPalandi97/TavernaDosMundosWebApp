@@ -1,14 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
-using System.ComponentModel.DataAnnotations;
-using TdM.Database.Models.Domain;
+﻿using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace TdM.Web.Models.ViewModels;
 
 public class AddContinenteRequest
 {
-
     [Required]
-    [StringLength(32, ErrorMessage = "Continent length can't be more than 32 Characters.")]
+    [StringLength(32, ErrorMessage = "Continent length can't be more than 50 Characters.")]
     [Display(Name = "Continent")]
     public string Nome { get; set; }
 
@@ -41,6 +39,6 @@ public class AddContinenteRequest
 
     public IEnumerable<SelectListItem>? Mundos { get; set; }
     public string? SelectedMundo { get; set; }
-    public IEnumerable<SelectListItem> Regioes { get; set; }
+    public IEnumerable<SelectListItem>? Regioes { get; set; }
     public string[]? SelectedRegioes { get; set; } = Array.Empty<string>();
 }

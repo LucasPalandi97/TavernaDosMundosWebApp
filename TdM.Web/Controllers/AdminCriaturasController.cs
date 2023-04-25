@@ -46,7 +46,28 @@ public class AdminCriaturasController : Controller
     {
 
         if (!ModelState.IsValid)
-        { //Pass the view model to the View method
+        {
+            addCriaturaRequest.Mundos = (await mundoRepository.GetAllAsync())
+                .Select(x => new SelectListItem
+                {
+                    Text = x.Nome,
+                    Value = x.Id.ToString()
+                }).ToList();
+
+            addCriaturaRequest.Continentes = (await continenteRepository.GetAllAsync())
+                .Select(x => new SelectListItem
+                {
+                    Text = x.Nome,
+                    Value = x.Id.ToString()
+                }).ToList();
+
+            addCriaturaRequest.Regioes = (await regiaoRepository.GetAllAsync())
+               .Select(x => new SelectListItem
+               {
+                   Text = x.Nome,
+                   Value = x.Id.ToString()
+               }).ToList();
+
             return View(addCriaturaRequest);
         }
 
@@ -62,7 +83,6 @@ public class AdminCriaturasController : Controller
             PublishedDate = addCriaturaRequest.PublishedDate,
             UrlHandle = addCriaturaRequest.UrlHandle,
             Visible = addCriaturaRequest.Visible,
-
         };
 
         //Maps Mundos from Selected mundo
@@ -116,8 +136,6 @@ public class AdminCriaturasController : Controller
         }
         //Maping Regioes back to domain modal
         criatura.Regioes = selectedRegioes;
-
-
 
         await criaturaRepository.AddAsync(criatura);
         return RedirectToAction("List");
@@ -192,7 +210,6 @@ public class AdminCriaturasController : Controller
                 }),
                 SelectedRegioes = criatura.Regioes.Select(x => x.Id.ToString()).ToArray()
             };
-
             return View(editCriaturaRequest);
         }
         return View(null);
@@ -201,6 +218,32 @@ public class AdminCriaturasController : Controller
     [HttpPost]
     public async Task<IActionResult> Edit(EditCriaturaRequest editCriaturaRequest)
     {
+        if (!ModelState.IsValid)
+        {
+            editCriaturaRequest.Mundos = (await mundoRepository.GetAllAsync())
+                .Select(x => new SelectListItem
+                {
+                    Text = x.Nome,
+                    Value = x.Id.ToString()
+                }).ToList();
+
+            editCriaturaRequest.Continentes = (await continenteRepository.GetAllAsync())
+                .Select(x => new SelectListItem
+                {
+                    Text = x.Nome,
+                    Value = x.Id.ToString()
+                }).ToList();
+
+            editCriaturaRequest.Regioes = (await regiaoRepository.GetAllAsync())
+               .Select(x => new SelectListItem
+               {
+                   Text = x.Nome,
+                   Value = x.Id.ToString()
+               }).ToList();
+
+            return View(editCriaturaRequest);
+        }
+
         var criatura = new Criatura
         {
             Id = editCriaturaRequest.Id,
@@ -213,7 +256,6 @@ public class AdminCriaturasController : Controller
             PublishedDate = editCriaturaRequest.PublishedDate,
             UrlHandle = editCriaturaRequest.UrlHandle,
             Visible = editCriaturaRequest.Visible,
-
         };
 
         //Maps Mundos from Selected mundo

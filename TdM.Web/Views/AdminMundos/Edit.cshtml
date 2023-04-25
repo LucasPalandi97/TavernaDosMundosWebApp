@@ -15,17 +15,19 @@
         <form method="post">
             <div class="mb-3 ">
                 <label class="form-label">Id</label>
-                <input type="text" id="id" class="form-control" asp-for="Id" readonly />
+                <input type="text" id="id" class="form-control" asp-for="Id" required readonly />
             </div>
 
             <div class="mb-3 col-8">
                 <label for="nome" class="form-label">World</label>
-                <input type="text" class="form-control" id="nome" asp-for="Nome" />
+                <input type="text" class="form-control" id="nome" asp-for="Nome" required />
+                <span class="text-danger" asp-validation-for="Nome"></span>
             </div>
 
             <div class="mb-3">
                 <label for="descricao" class="form-label">Short Description</label>
-                <input class="form-control" type="text" placeholder="World's Short Description" id="CurtaDescricao" name="CurtaDescricao" asp-for="CurtaDescricao" />
+                <input class="form-control" type="text" placeholder="World's Short Description" id="CurtaDescricao" name="CurtaDescricao" asp-for="CurtaDescricao" required />
+                <span class="text-danger" asp-validation-for="CurtaDescricao"></span>
             </div>
 
             <div class="mb-3">
@@ -61,17 +63,20 @@
 
             <div class="mb-3 col-2">
                 <label class="form-label">Published Date</label>
-                <input type="datetime-local" class="form-control" id="publishedDate" asp-for="PublishedDate" />
+                <input type="datetime-local" class="form-control" id="publishedDate" asp-for="PublishedDate" required />
+                <span class="text-danger" asp-validation-for="PublishedDate"></span>
             </div>
 
             <div class="mb-3">
                 <label class="form-label">URL Handle</label>
-                <input type="text" class="form-control" id="urlHandle" asp-for="UrlHandle" placeholder="Suggestion: TheGalaxyOfLuna" />
+                <input type="text" class="form-control" id="urlHandle" asp-for="UrlHandle" required />
+                <span class="text-danger" asp-validation-for="UrlHandle"></span>
             </div>
 
             <div class="form-check form-switch mb-3">
                 <label class="form-check-label" for="visible">Visible?</label>
-                <input class="form-check-input" type="checkbox" id="visible" asp-for="Visible" checked>
+                <input class="form-check-input" type="checkbox" id="visible" asp-for="Visible" required checked>
+                <span class="text-danger" asp-validation-for="Visible"></span>
             </div>
 
             <div class="mb-3 col-8">

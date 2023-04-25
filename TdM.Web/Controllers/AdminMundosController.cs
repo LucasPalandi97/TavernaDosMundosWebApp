@@ -46,22 +46,62 @@ public class AdminMundosController : Controller
         var model = new AddMundoRequest
         {
             Continentes = continente.Where(c => c.Mundo == null).Select(x => new SelectListItem { Text = x.Nome, Value = x.Id.ToString(), }),
-            Regioes = regiao.Where(c => c.Mundo == null).Select(x => new SelectListItem { Text = x.Nome, Value = x.Id.ToString() }),
-            Personagens = personagem.Where(c => c.Mundo == null).Select(x => new SelectListItem { Text = x.Nome, Value = x.Id.ToString() }),
-            Criaturas = criatura.Where(c => c.Mundo == null).Select(x => new SelectListItem { Text = x.Nome, Value = x.Id.ToString() }),
-            Povos = povo.Where(c => c.Mundo == null).Select(x => new SelectListItem { Text = x.Nome, Value = x.Id.ToString() }),
-            Contos = conto.Where(c => c.Mundo == null).Select(x => new SelectListItem { Text = x.Titulo, Value = x.Id.ToString() }),
+            Regioes = regiao.Where(r => r.Mundo == null).Select(x => new SelectListItem { Text = x.Nome, Value = x.Id.ToString() }),
+            Personagens = personagem.Where(pe => pe.Mundo == null).Select(x => new SelectListItem { Text = x.Nome, Value = x.Id.ToString() }),
+            Criaturas = criatura.Where(cr => cr.Mundo == null).Select(x => new SelectListItem { Text = x.Nome, Value = x.Id.ToString() }),
+            Povos = povo.Where(po => po.Mundo == null).Select(x => new SelectListItem { Text = x.Nome, Value = x.Id.ToString() }),
+            Contos = conto.Where(co => co.Mundo == null).Select(x => new SelectListItem { Text = x.Titulo, Value = x.Id.ToString() }),
         };
         return View(model);
-
     }
 
     [HttpPost]
     public async Task<IActionResult> Add(AddMundoRequest addMundoRequest)
     {
-        //ValidateAddMundoRequest(addMundoRequest);
         if (!ModelState.IsValid)
         {
+            addMundoRequest.Continentes = (await continenteRepository.GetAllAsync()).Where(c => c.Mundo == null)
+                .Select(x => new SelectListItem
+                {
+                    Text = x.Nome,
+                    Value = x.Id.ToString()
+                }).ToList();
+
+            addMundoRequest.Regioes = (await regiaoRepository.GetAllAsync()).Where(r => r.Mundo == null)
+               .Select(x => new SelectListItem
+               {
+                   Text = x.Nome,
+                   Value = x.Id.ToString()
+               }).ToList();
+
+            addMundoRequest.Personagens = (await personagemRepository.GetAllAsync()).Where(pe => pe.Mundo == null)
+               .Select(x => new SelectListItem
+               {
+                   Text = x.Nome,
+                   Value = x.Id.ToString()
+               }).ToList();
+
+            addMundoRequest.Criaturas = (await criaturaRepository.GetAllAsync()).Where(cr => cr.Mundo == null)
+               .Select(x => new SelectListItem
+               {
+                   Text = x.Nome,
+                   Value = x.Id.ToString()
+               }).ToList();
+
+            addMundoRequest.Povos = (await povoRepository.GetAllAsync()).Where(po => po.Mundo == null)
+               .Select(x => new SelectListItem
+               {
+                   Text = x.Nome,
+                   Value = x.Id.ToString()
+               }).ToList();
+
+            addMundoRequest.Contos = (await contoRepository.GetAllAsync()).Where(co => co.Mundo == null)
+              .Select(x => new SelectListItem
+              {
+                  Text = x.Titulo,
+                  Value = x.Id.ToString()
+              }).ToList();
+
             return View(addMundoRequest);
         }
 
@@ -260,16 +300,61 @@ public class AdminMundosController : Controller
                 }),
                 SelectedContos = mundo.Contos.Select(x => x.Id.ToString()).ToArray(),
             };
-
             return View(editMundoRequest);
         }
-
         return View(null);
     }
 
     [HttpPost]
     public async Task<IActionResult> Edit(EditMundoRequest editMundoRequest)
     {
+        if (!ModelState.IsValid)
+        {
+            editMundoRequest.Continentes = (await continenteRepository.GetAllAsync())
+                .Select(x => new SelectListItem
+                {
+                    Text = x.Nome,
+                    Value = x.Id.ToString()
+                }).ToList();
+
+            editMundoRequest.Regioes = (await regiaoRepository.GetAllAsync())
+               .Select(x => new SelectListItem
+               {
+                   Text = x.Nome,
+                   Value = x.Id.ToString()
+               }).ToList();
+
+            editMundoRequest.Personagens = (await personagemRepository.GetAllAsync())
+               .Select(x => new SelectListItem
+               {
+                   Text = x.Nome,
+                   Value = x.Id.ToString()
+               }).ToList();
+
+            editMundoRequest.Criaturas = (await criaturaRepository.GetAllAsync())
+               .Select(x => new SelectListItem
+               {
+                   Text = x.Nome,
+                   Value = x.Id.ToString()
+               }).ToList();
+
+            editMundoRequest.Povos = (await povoRepository.GetAllAsync())
+               .Select(x => new SelectListItem
+               {
+                   Text = x.Nome,
+                   Value = x.Id.ToString()
+               }).ToList();
+
+            editMundoRequest.Contos = (await contoRepository.GetAllAsync())
+              .Select(x => new SelectListItem
+              {
+                  Text = x.Titulo,
+                  Value = x.Id.ToString()
+              }).ToList();
+
+            return View(editMundoRequest);
+        }
+
         //Map view model back to damain model
         var mundo = new Mundo
         {
@@ -283,7 +368,6 @@ public class AdminMundosController : Controller
             UrlHandle = editMundoRequest.UrlHandle,
             Visible = editMundoRequest.Visible,
         };
-
 
         //Maps Continents from Selected Continents
         var selectedContinentes = new List<Continente>();
@@ -425,5 +509,5 @@ public class AdminMundosController : Controller
         }
         //Show an error notification
         return RedirectToAction("Edit", new { Id = editMundoRequest.Id });
-    }  
+    }
 }

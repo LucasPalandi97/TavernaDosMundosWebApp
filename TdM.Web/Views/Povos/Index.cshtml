@@ -1,5 +1,6 @@
 ﻿@model TdM.Database.Models.Domain.Povo
 @using Microsoft.AspNetCore.Identity
+@using TdM.Database.Models.Domain.Enums
 @inject SignInManager<IdentityUser> signInManager
 @{
     ViewData["Title"] = Model.Nome + ", " + Model.CurtaDescricao;
@@ -7,6 +8,9 @@
     // Set the value of mundoUrlHandle based on your logic
     var mundoUrlHandle = Model.Mundo.UrlHandle;
 }
+<head>
+    <link type="text/css" rel="stylesheet" href="~/css/IndexPovo.css" />
+</head>
 <!-- Include the navbar partial view and pass the Mundo object to it -->
 @await Html.PartialAsync("_Navbar", new TdM.Web.Models.ViewModels.NavbarViewModel { MundoUrlHandle = mundoUrlHandle})
 
@@ -15,7 +19,7 @@
 {
     <!-- Header - set the background image for the header in the line below-->
     <header class="py-5 bg-image-full" style="background-image: url('@Model.ImgBox'); background-size:cover;background-position:center; height:50em;">
-        <div class="mask bg-dark bg-opacity-50 text-center my-5 ">
+        <div class="mask text-center " style="position: absolute;top:50%; left: 50%; transform: translate(-50%, -50%);">
             <h1 class="text-white fs-3 fw-bolder text-uppercase">
                 @Model.Nome
                 @if (signInManager.IsSignedIn(User) && User.IsInRole("Admin"))
@@ -30,7 +34,7 @@
     </header>
     <!-- Content section-->
     <section class="py-2">
-        <div class="container my-5">
+        <div class="container my-5 col-md-5">
             <div class="row justify-content-center ">
                 <div class="w-100 col-lg-6">
                     @Html.Raw(Model.Descricao)
@@ -38,41 +42,144 @@
             </div>
         </div>
     </section>
-    @*  if (Model.Continentes.Any())
-    {
-        <!-- Image element - set the background image for the header in the line below-->
-        <div class="py-2 px-5 bg-image-full mb-3 justify-content-center aling-items-center" style="background-image: url('https://source.unsplash.com/4ulffa6qoKA/1200x800')">
 
-            <h2 class="text-center text-white-50">Related Continents</h2>
-
-            @foreach (var continente in Model.Continentes)
+    <section>
+        <div class="container-fluid mb-2 p-3">
+            @if (Model.Regioes != null && Model.Regioes.Any())
             {
-                <div class="float-start card text-white m-3 col-12 " style="background-image:url(@continente.ImgCard); background-size:cover; height:250px; width:200px;">
-                    <div class="mask bg-dark bg-opacity-75">
-                        <div class="justify-content-center align-items-center">
-                            <h5 class="card-title">@continente.Nome</h5>
-                            <p class="card-text text-black ">@continente.CurtaDescricao</p>
-                            <a class="btn btn-dark" asp-area="" asp-controller="Continentes" asp-action="Index" asp-route-urlHandle="@continente.UrlHandle">Read more</a>
+                <!-- Image element - set the background image for the header in the line below-->
+                <div class="row py-2 justify-content-center aling-items-center mb-3" style="background-image: url('https://source.unsplash.com/4ulffa6qoKA/1200x800')">
+
+                    <h2 class="text-center text-white-50 m-1">Related Regions</h2>
+
+                    @foreach (var regiao in Model.Regioes.OrderBy(r => r.Nome).Take(6))
+                    {
+                        <div class="card my-auto mx-1 mb-3 p-0" style="height: 15rem; width: 15rem;">
+                            <div class="card_mask p-0 justify-content-between">
+                                <a class="text-white" asp-area="" asp-controller="Regioes" asp-action="Index" asp-route-urlHandle="@regiao.UrlHandle">
+                                    <img src="@regiao.ImgCard" class="card-img-top imgfit h-100 w-100" alt="Image not found!">
+                                </a>
+                            </div>
+                            <div class="mask_text w-100">
+                                <div class="card-body">
+                                    <ul id="listcardbottom" class="list-group list-group-flush">
+                                        <li><h3 class="card-title">@regiao.Nome</h3></li>
+                                        <li><p class="card-text text-nowrap text-secondary" style="font-size:16px;">@regiao.CurtaDescricao</p></li>
+                                        @if (@regiao.Continente != null)
+                                        {
+                                            <li class="list-group-item">@regiao.Continente?.Nome</li>
+                                        }
+                                        else
+                                        {
+                                            <li class="list-group-item text-secondary">No Continent</li>
+                                        }
+                                    </ul>
+                                </div>
+                            </div>
                         </div>
-                    </div>
+                    }
                 </div>
             }
-            <!-- Put anything you want here! The spacer below with inline CSS is just for demo purposes!-->
-            <div style="height: 20rem"></div>
-        </div>
-    }*@
-    <!-- Content section-->
-    <section class="py-5">
-        <div class="container my-5">
-            <div class="row justify-content-center">
-                <div class="col-lg-6">
-                    <h2>Engaging Background Images</h2>
-                    <p class="lead">The background images used in this template are sourced from Unsplash and are open source and free to use.</p>
-                    <p class="mb-0">I can't tell you how many people say they were turned off from science because of a science teacher that completely sucked out all the inspiration and enthusiasm they had for the course.</p>
+            @if (Model.Personagens != null && Model.Personagens.Any())
+            {
+                <!-- Image element - set the background image for the header in the line below-->
+                <div class="row py-2 justify-content-center aling-items-center mb-3" style="background-image: url('https://source.unsplash.com/4ulffa6qoKA/1200x800')">
+
+                    <h2 class="text-center text-white-50 m-1">Related Characters</h2>
+
+                    @foreach (var personagem in Model.Personagens.OrderBy(pe => pe.Nome).Take(6))
+                    {
+                        <div class="card my-auto mx-1 mb-3 p-0" style="height: 15rem; width: 15rem;">
+                            <div class="card_mask p-0 justify-content-between">
+                                <a class="text-white" asp-area="" asp-controller="Personagens" asp-action="Index" asp-route-urlHandle="@personagem.UrlHandle">
+                                    <img src="@personagem.ImgCard" class="card-img-top imgfit h-100 w-100" alt="Image not found!">
+                                </a>
+                            </div>
+                            <div class="mask_text w-100">
+                                <div class="card-body">
+                                    <ul id="listcardbottom" class="list-group list-group-flush">
+                                        <li><h3 class="card-title">@personagem.Nome</h3></li>
+                                        <li><p class="card-text text-nowrap text-secondary" style="font-size:16px;">@personagem.CurtaDescricao</p></li>
+                                        @if (personagem.Regiao != null)
+                                        {
+                                            <li class="list-group-item">@personagem.Regiao?.Nome</li>
+                                        }
+                                        else
+                                        {
+                                            <li class="list-group-item text-secondary">No Type</li>
+                                        }
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    }
                 </div>
-            </div>
+            }
+            @if (Model.Criaturas != null && Model.Criaturas.Any())
+            {
+                <!-- Image element - set the background image for the header in the line below-->
+                <div class="row py-2 justify-content-center aling-items-center mb-3" style="background-image: url('https://source.unsplash.com/4ulffa6qoKA/1200x800')">
+
+                    <h2 class="text-center text-white-50">Related Creatures</h2>
+
+                    @foreach (var criatura in Model.Criaturas.OrderBy(cr => cr.Nome).Take(6))
+                    {
+                        <div class="card my-auto mx-2 mb-3 p-0" style="height: 15rem; width: 15rem;">
+                            <div class="card_mask p-0 justify-content-between">
+                                <a class="text-white" asp-area="" asp-controller="Criaturas" asp-action="Index" asp-route-urlHandle="@criatura.UrlHandle">
+                                    <img src="@criatura.ImgCard" class="card-img-top imgfit h-100 w-100" alt="Image not found!">
+                                </a>
+                            </div>
+                            <div class="mask_text w-100">
+                                <div class="card-body">
+                                    <ul id="listcardbottom" class="list-group list-group-flush">
+                                        <li><h3 class="card-title">@criatura.Nome</h3></li>
+                                        <li><p class="card-text text-nowrap text-secondary" style="font-size:16px;">@criatura.CurtaDescricao</p></li>
+                                        @if (criatura.Tipo != null)
+                                        {
+                                            <li class="list-group-item">@criatura.Tipo?.GetDisplayName()</li>
+                                        }
+                                        else
+                                        {
+                                            <li class="list-group-item text-secondary">No Type</li>
+                                        }
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+            @if (Model.Contos != null && Model.Contos.Any())
+            {
+                <!-- Image element - set the background image for the header in the line below-->
+                <div class="row py-2 justify-content-center aling-items-center mb-3" style="background-image: url('https://source.unsplash.com/4ulffa6qoKA/1200x800')">
+
+                    <h2 class="text-center text-white-50">Related Stories</h2>
+
+                    @foreach (var conto in Model.Contos.OrderBy(co => co.Titulo).Take(6))
+                    {
+                        <div class="card my-auto mx-2 mb-3 p-0" style="height: 15rem; width: 15rem;">
+                            <div class="card_mask p-0 justify-content-between">
+                                <a class="text-white" asp-area="" asp-controller="Contos" asp-action="Index" asp-route-urlHandle="@conto.UrlHandle">
+                                    <img src="@conto.ImgCard" class="card-img-top imgfit h-100 w-100" alt="Image not found!">
+                                </a>
+                            </div>
+                            <div class="mask_text w-100">
+                                <div class="card-body">
+                                    <ul id="listcardbottom" class="list-group list-group-flush">
+                                        <li><h3 class="card-title">@conto.Titulo</h3></li>
+                                        <li><p class="card-text text-nowrap text-secondary" style="font-size:16px;">@conto.Autor.GetDisplayName()</p></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
         </div>
     </section>
+
 
 }
 else

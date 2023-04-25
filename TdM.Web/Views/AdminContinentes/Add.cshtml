@@ -12,7 +12,7 @@
     <form method="post">
 
         <div class="mb-3 col-8">
-            <label class="form-label" for="nome">Name</label>
+            <label for="nome" class="form-label">World</label>
             <input type="text" class="form-control" id="nome" asp-for="Nome" required />
             <span class="text-danger" asp-validation-for="Nome"></span>
         </div>
@@ -21,13 +21,16 @@
             <label for="descricao" class="form-label">Short Description</label>
             <input class="form-control" type="text" placeholder="Continent's Short Description" id="CurtaDescricao" name="CurtaDescricao" asp-for="CurtaDescricao" required />
             <span class="text-danger" asp-validation-for="CurtaDescricao"></span>
+
         </div>
 
         <div class="mb-3">
             <label for="descricao" class="form-label">Description</label>
-            <textarea placeholder="Continent's Description" id="descricao" name="descricao" asp-for="Descricao" ></textarea>
+            <textarea placeholder="Continent's Description" id="descricao" name="descricao" asp-for="Descricao"></textarea>
             <span class="text-danger" asp-validation-for="Descricao"></span>
+
         </div>
+
 
         <div class="mb-3">
             <label class="form-label">Upload Display Image</label>
@@ -52,7 +55,8 @@
             <input type="text" class="form-control" id="ImgBoxUrl" placeholder="Image's URL" asp-for="ImgBox" />
         </div>
 
-        <div class="mb-3 col-2">
+
+        <div class="mb-3 col-4">
             <label class="form-label">Published Date</label>
             <input type="datetime-local" class="form-control" id="publishedDate" asp-for="PublishedDate" required />
             <span class="text-danger" asp-validation-for="PublishedDate"></span>
@@ -60,20 +64,27 @@
 
         <div class="mb-3">
             <label class="form-label">URL Handle</label>
-            <input type="text" class="form-control" placeholder="Suggestion: TheContinentOfMaraad" id="urlHandle" asp-for="UrlHandle" required />
+            <input type="text" class="form-control" id="urlHandle" asp-for="UrlHandle" required />
             <span class="text-danger" asp-validation-for="UrlHandle"></span>
         </div>
 
         <div class="form-check form-switch mb-3">
             <label class="form-check-label" for="visible">Visible?</label>
-            <input class="form-check-input" type="checkbox" id="visible" asp-for="Visible" required checked>
+            <input class="form-check-input" type="checkbox" id="visible" asp-for="Visible" checked required>
             <span class="text-danger" asp-validation-for="Visible"></span>
         </div>
-    
+
         <div class="mb-3 col-8">
-            <label class="form-label">Mundo</label>
-            <select class="form-select"asp-items="Model.Mundos" asp-for="SelectedMundo" >
+            <label class="form-label">World</label>
+            <select id="SelectedNullMundo" class="form-select" asp-items="@Model.Mundos" asp-for="SelectedMundo" onchange="updateContinentes()">
                 <option value="" class="text-danger">No World</option>
+            </select>
+        </div>
+
+        <div class="mb-3 col-8">
+            <label class="form-label">Regions</label>
+            <select id="SelectedRegioes" class="form-select" asp-for="SelectedRegioes" multiple>
+                <option value="" class="text-danger">No Regions</option>
             </select>
         </div>
        

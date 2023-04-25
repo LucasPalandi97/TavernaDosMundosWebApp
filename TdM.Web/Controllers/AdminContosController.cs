@@ -35,14 +35,12 @@ public class AdminContosController : Controller
 
     public async Task<IActionResult> ListContosByMundo(Guid id)
     {
-        IEnumerable<Conto> contos;
-        contos = await contoRepository.GetAllByMundoAsync(id);
+        IEnumerable<Conto> contos = await contoRepository.GetAllByMundoAsync(id);
         var selectListItems = contos.Select(x => new SelectListItem
         {
             Text = x.Titulo,
             Value = x.Id.ToString()
         });
-
         return Json(selectListItems);
     }
 
@@ -61,9 +59,51 @@ public class AdminContosController : Controller
     [HttpPost]
     public async Task<IActionResult> Add(AddContoRequest addContoRequest)
     {
-      
+
         if (!ModelState.IsValid)
-        { //Pass the view model to the View method
+        {
+            addContoRequest.Mundos = (await mundoRepository.GetAllAsync())
+                .Select(x => new SelectListItem
+                {
+                    Text = x.Nome,
+                    Value = x.Id.ToString()
+                }).ToList();
+
+            addContoRequest.Continentes = (await continenteRepository.GetAllAsync())
+                .Select(x => new SelectListItem
+                {
+                    Text = x.Nome,
+                    Value = x.Id.ToString()
+                }).ToList();
+
+            addContoRequest.Regioes = (await regiaoRepository.GetAllAsync())
+               .Select(x => new SelectListItem
+               {
+                   Text = x.Nome,
+                   Value = x.Id.ToString()
+               }).ToList();
+
+            addContoRequest.Personagens = (await personagemRepository.GetAllAsync())
+               .Select(x => new SelectListItem
+               {
+                   Text = x.Nome,
+                   Value = x.Id.ToString()
+               }).ToList();
+
+            addContoRequest.Criaturas = (await criaturaRepository.GetAllAsync())
+               .Select(x => new SelectListItem
+               {
+                   Text = x.Nome,
+                   Value = x.Id.ToString()
+               }).ToList();
+
+            addContoRequest.Povos = (await povoRepository.GetAllAsync())
+               .Select(x => new SelectListItem
+               {
+                   Text = x.Nome,
+                   Value = x.Id.ToString()
+               }).ToList();
+
             return View(addContoRequest);
         }
 
@@ -274,6 +314,53 @@ public class AdminContosController : Controller
     [HttpPost]
     public async Task<IActionResult> Edit(EditContoRequest editContoRequest)
     {
+        if (!ModelState.IsValid)
+        {
+            editContoRequest.Mundos = (await mundoRepository.GetAllAsync())
+                .Select(x => new SelectListItem
+                {
+                    Text = x.Nome,
+                    Value = x.Id.ToString()
+                }).ToList();
+
+            editContoRequest.Continentes = (await continenteRepository.GetAllAsync())
+                .Select(x => new SelectListItem
+                {
+                    Text = x.Nome,
+                    Value = x.Id.ToString()
+                }).ToList();
+
+            editContoRequest.Regioes = (await regiaoRepository.GetAllAsync())
+               .Select(x => new SelectListItem
+               {
+                   Text = x.Nome,
+                   Value = x.Id.ToString()
+               }).ToList();
+
+            editContoRequest.Personagens = (await personagemRepository.GetAllAsync())
+               .Select(x => new SelectListItem
+               {
+                   Text = x.Nome,
+                   Value = x.Id.ToString()
+               }).ToList();
+
+            editContoRequest.Criaturas = (await criaturaRepository.GetAllAsync())
+               .Select(x => new SelectListItem
+               {
+                   Text = x.Nome,
+                   Value = x.Id.ToString()
+               }).ToList();
+
+            editContoRequest.Povos = (await povoRepository.GetAllAsync())
+               .Select(x => new SelectListItem
+               {
+                   Text = x.Nome,
+                   Value = x.Id.ToString()
+               }).ToList();
+
+            return View(editContoRequest);
+        }
+
         var conto = new Conto
         {
             Id = editContoRequest.Id,
@@ -287,7 +374,6 @@ public class AdminContosController : Controller
             UrlHandle = editContoRequest.UrlHandle,
             Visible = editContoRequest.Visible,
         };
-
 
         //Maps Mundos from Selected mundo
         var selectedMundoId = editContoRequest.SelectedMundo;
@@ -303,7 +389,6 @@ public class AdminContosController : Controller
                 conto.Mundo = selectedMundo;
             }
         }
-
         //Maps Continents from Selected continent
         var selectedContinentes = new List<Continente>();
         foreach (var selectedContinenteId in editContoRequest.SelectedContinentes)
@@ -425,6 +510,4 @@ public class AdminContosController : Controller
         //Show an error notification
         return RedirectToAction("Edit", new { Id = editContoRequest.Id });
     }
-
-
 }

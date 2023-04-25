@@ -1,0 +1,154 @@
+﻿
+
+.aractercard {
+    transition: opacity 0.5s ease-in-out;
+}
+
+.card.hidden {
+    opacity: 0;
+}
+
+.selected {
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+}
+
+.card {
+    transition: all .2s ease-in;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    height: 100%;
+    border: none;
+}
+
+.card-shadow {
+    -webkit-box-shadow: 0px 0px 28px 14px rgba(232,232,232,1);
+    -moz-box-shadow: 0px 0px 28px 14px rgba(232,232,232,1);
+    box-shadow: 0px 0px 28px 14px rgba(232,232,232,1);
+}
+
+
+.card-body {
+    padding: 0;
+}
+
+.card-img-top {
+    transition: transform 0.2s ease-in-out;
+    max-height: calc(100% - 2rem);
+    display: block;
+    margin: 0 auto;
+    vertical-align: middle;
+}
+
+.card-deck {
+    display: flex;
+    justify-content: space-around;
+    flex-flow: row wrap;
+    align-items: stretch;
+}
+
+.card_mask {
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+    width: 100%;
+    opacity: 0.4;
+    transition: .5s ease;
+    background-color: #393839;
+}
+
+.mask_text {
+    color: white;
+    font-size: 20px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    text-align: center;
+    padding: 0;
+    z-index: 1;
+}
+
+/*Hover*/
+
+.card:hover .card-img-top {
+    transform: scale(1.1);
+}
+
+.card:hover .card_mask {
+    opacity: 1;
+}
+
+.card:hover {
+    color: white;
+    box-shadow: 0 5px 15px #b29229;
+}
+/*Responsive*/
+@media (max-width: 767px) {
+    #regionList {
+        justify-content: center;
+    }
+
+    .card {
+        max-height: 25rem;
+        width: 100% !important;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .card-img-top {
+        height: 100%;
+    }
+
+
+    .card-title {
+        font-size: 1rem;
+    }
+
+    .bottom {
+        height: 2rem;
+    }
+
+    .mask_text {
+        text-align: center;
+        max-height: inherit;
+        bottom: 0;
+        left: auto;
+        right: auto;
+        padding: 0;
+    }
+}
+
+.bottom {
+    margin-top: auto;
+    display: block;
+    position: absolute;
+}
+
+.imgfit {
+    min-height: 20rem;
+    object-fit: cover;
+    object-position: top;
+}
+
+.objcenter {
+    object-fit: cover;
+    object-position: center;
+}
+.imground {
+    transition: all .5s ease-in;
+    height: 80px;
+    width: 80px;
+    border-radius: 50%;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+    margin: auto;
+    display: block;
+    position: absolute;
+    z-index: 2000;
+}

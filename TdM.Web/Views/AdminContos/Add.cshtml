@@ -10,16 +10,16 @@
     </div>
 </div>
 
-<div class="container py-5 col-8">
+<div class="container py-5 col-12 col-md-8 ">
     <form method="post">
 
-        <div class="mb-3 col-8">
+        <div class="mb-3 col-12 col-md-8">
             <label class="form-label" for="nome">Title</label>
             <input type="text" class="form-control" id="nome" asp-for="Titulo" required />
             <span class="text-danger" asp-validation-for="Titulo"></span>
         </div>
 
-        <div class=" mb-3 form-group col-8">
+        <div class=" mb-3 form-group col-12 col-md-8">
             <label for="autor" class="form-label">Author</label>
             <select id="autor" asp-for="Autor" class="form-control" asp-items="Html.GetEnumSelectList<Autor>()" required>
                 <option value="">Select Author ...</option>
@@ -28,7 +28,7 @@
             <span class="text-danger" asp-validation-for="Autor"></span>
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3 col-12 col-md-8">
             <label for="descricao" class="form-label">Body Text</label>
             <textarea placeholder="Story's body" id="descricao" name="Corpo" asp-for="Corpo" ></textarea>
             <span class="text-danger" asp-validation-for="Corpo"></span>
@@ -57,7 +57,7 @@
             <input type="text" class="form-control" id="ImgBoxUrl" placeholder="Image's URL" asp-for="ImgBox" />
         </div>
 
-        <div class="mb-3 col-2">
+        <div class="mb-3  col-12 col-md-8">
             <label class="form-label">Published Date</label>
             <input type="datetime-local" class="form-control" id="publishedDate" asp-for="PublishedDate" required />
             <span class="text-danger" asp-validation-for="PublishedDate"></span>
@@ -65,7 +65,7 @@
 
         <div class="mb-3">
             <label class="form-label">URL Handle</label>
-            <input type="text" class="form-control" placeholder="Suggestion: TheCriatureOfMaraad" id="urlHandle" asp-for="UrlHandle" required />
+            <input type="text" class="form-control" id="urlHandle" asp-for="UrlHandle" required />
             <span class="text-danger" asp-validation-for="UrlHandle"></span>
         </div>
 

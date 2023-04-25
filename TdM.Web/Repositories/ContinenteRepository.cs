@@ -113,6 +113,7 @@ public class ContinenteRepository : IContinenteRepository
             existingContinente.UrlHandle = continente.UrlHandle;
             existingContinente.Visible = continente.Visible;
             existingContinente.Mundo = continente.Mundo;
+            existingContinente.Regioes = continente.Regioes;  
             await tavernaDbContext.SaveChangesAsync();
 
             return existingContinente;

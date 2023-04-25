@@ -20,7 +20,7 @@
 
         <div class="mb-3">
             <label for="descricao" class="form-label">Short Description</label>
-            <input class="form-control" type="text" placeholder="Continent's Short Description" id="CurtaDescricao" name="CurtaDescricao" asp-for="CurtaDescricao" required />
+            <input class="form-control" type="text" placeholder="Region's Short Description" id="CurtaDescricao" name="CurtaDescricao" asp-for="CurtaDescricao" required />
             <span class="text-danger" asp-validation-for="CurtaDescricao"></span>
         </div>
 
@@ -73,7 +73,7 @@
 
         <div class="mb-3">
             <label class="form-label">URL Handle</label>
-            <input type="text" class="form-control" placeholder="Suggestion: Volos-Capital" id="urlHandle" asp-for="UrlHandle" required />
+            <input type="text" class="form-control" id="urlHandle" asp-for="UrlHandle" required />
             <span class="text-danger" asp-validation-for="UrlHandle"></span>
         </div>
 
@@ -93,6 +93,7 @@
         <div class="mb-3 col-8">
             <label class="form-label">Continent</label>
             <select id="SelectedContinentes" class="form-control" asp-items="@Model.Continentes" asp-for="SelectedContinente" onchange="updateRegioes()" data-single>
+                <option value="" class="text-danger">No Continent</option>
             </select>
         </div>
 

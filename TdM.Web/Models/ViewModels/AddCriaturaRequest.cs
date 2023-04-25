@@ -1,7 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using TdM.Database.Models.Domain;
 using TdM.Database.Models.Domain.Enums;
 
 namespace TdM.Web.Models.ViewModels;

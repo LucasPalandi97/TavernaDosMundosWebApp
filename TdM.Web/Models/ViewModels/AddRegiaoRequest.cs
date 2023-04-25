@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using System.ComponentModel.DataAnnotations;
-using TdM.Database.Models.Domain;
 
 namespace TdM.Web.Models.ViewModels;
 
@@ -41,7 +40,7 @@ public class AddRegiaoRequest
   
     public IEnumerable<SelectListItem>? Mundos { get; set; }
     public string? SelectedMundo { get; set; }
-    public IEnumerable<SelectListItem> Continentes { get; set; }
+    public IEnumerable<SelectListItem>? Continentes { get; set; }
     public string? SelectedContinente { get; set; }
 
 }

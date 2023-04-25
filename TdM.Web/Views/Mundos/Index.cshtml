@@ -1,35 +1,37 @@
-﻿
-@model TdM.Web.Models.ViewModels.NavbarViewModel
+﻿@model TdM.Web.Models.ViewModels.NavbarViewModel
 @using Microsoft.AspNetCore.Identity
 @using TdM.Database.Models.Domain.Enums
 @inject SignInManager<IdentityUser> signInManager
 @{
     ViewData["Title"] = Model.Mundo.Nome + ", " + Model.Mundo.CurtaDescricao;
 }
+<head>
+    <link type="text/css" rel="stylesheet" href="~/css/IndexMundo.css" />
+</head>
 <!-- Include the navbar partial view and pass the Mundo object to it -->
 @await Html.PartialAsync("_Navbar", new TdM.Web.Models.ViewModels.NavbarViewModel { MundoUrlHandle = Model.Mundo.UrlHandle })
 @if (Model != null)
 {
-
     <!-- Header - set the background image for the header in the line below-->
-    <header class="py-5 bg-image-full" style="background-image: url('@Model.Mundo.ImgBox'); background-size:cover;background-position:center; height:50em;">
-        <div class="mask bg-dark bg-opacity-50 text-center my-5 ">
+    <header class="py-5 bg-image-full" style="background-image: url('@Model.Mundo.ImgBox'); background-size:cover;background-position:center; height:50rem;">
+        <div class="mask text-center " style="position: absolute;top:50%; left: 50%; transform: translate(-50%, -50%);">
             <h1 class="text-white fs-3 fw-bolder text-uppercase">
                 @Model.Mundo.Nome
                 @if (signInManager.IsSignedIn(User) && User.IsInRole("Admin"))
                 { @*  Admin Action*@
-                <button id="btnEdit" class="btn btn-warning btn-small rounded-circle translate-middle position-absolute mx-4">
+                    <button id="btnEdit" class="btn btn-warning btn-small rounded-circle translate-middle position-absolute mx-4">
                         <a class="" asp-area="" asp-controller="AdminMundos" asp-action="Edit" asp-route-id="@Model.Mundo.Id"><i class="bi bi-wrench-adjustable"></i></a>
-                </button>
+                    </button>
                 }    @*End of Admin Action*@
             </h1>
             <p class="text-white-50 mb-0 text-uppercase">@Model.Mundo.CurtaDescricao</p>
             <p class="text-white-50 mb-0">By: @Model.Mundo.Autor.GetDisplayName()</p>
         </div>
     </header>
+
     <!-- Content section-->
     <section class="py-2">
-        <div class="container my-5">
+        <div class="container my-5 col-md-5">
             <div class="row justify-content-center ">
                 <div class="w-100 col-lg-6">
                     @Html.Raw(Model.Mundo.Descricao)
@@ -37,43 +39,193 @@
             </div>
         </div>
     </section>
-    if (Model.Mundo.Continentes.Any())
-    {
-    <!-- Image element - set the background image for the header in the line below-->
-    <div class="py-2 px-5 bg-image-full mb-3 justify-content-center aling-items-center" style="background-image: url('https://source.unsplash.com/4ulffa6qoKA/1200x800')">
-        
-        <h2 class="text-center text-white-50">Related Continents</h2>
 
-            @foreach (var continente in Model.Mundo.Continentes)
-        {
-            <div class="float-start card text-white m-3 col-12 " style="background-image:url(@continente.ImgCard); background-size:cover; height:250px; width:200px;">
-                <div class="mask bg-dark bg-opacity-75">
-                    <div class="justify-content-center align-items-center">
-                        <h5 class="card-title">@continente.Nome</h5>
-                        <p class="card-text text-black ">@continente.CurtaDescricao</p>
-                        <a class="btn btn-dark" asp-area="" asp-controller="Continentes" asp-action="Index" asp-route-urlHandle="@continente.UrlHandle">Read more</a>
+    @if (Model.Mundo.Contos != null && Model.Mundo.Contos.Any())
+    {
+        <section>
+            <div class="container p-2">
+                <a asp-area="" asp-controller="Contos" asp-action="List" asp-route-urlHandle="@Model.MundoUrlHandle"><h2 class="text-center text-white-50 m-1">Related Stories</h2></a>
+                <div id="carouselContos" class="carousel slide">
+                    <div class="carousel-indicators">
+                        @for (var i = 0; i < Model.Mundo.Contos.Count(); i++)
+                        {
+                            <button type="button" data-bs-target="#carouselContos" data-bs-slide-to="@i" class="@((i == 0) ? "active" : "")" aria-current="@((i == 0) ? "true" : "false")" aria-label="Slide @(i + 1)"></button>
+                        }
                     </div>
+                    <div class="carousel-inner">
+                        @foreach (var conto in Model.Mundo.Contos.OrderBy(co => co.PublishedDate))
+                        {
+                            <div class="carousel-item @((conto == Model.Mundo.Contos.First()) ? "active" : "")" style="max-height:40rem;">
+                                <a asp-area="" asp-controller="Contos" asp-action="Index" asp-route-urlHandle="@conto.UrlHandle">
+                                    <img src="@conto.ImgBox" class="d-block w-100 objcenter " alt="...">
+                                </a>
+                                <div class="carousel-caption d-none d-md-block">
+                                    <h5>@conto.Titulo</h5>
+                                    <p>By @conto.Autor.GetDisplayName()</p>
+                                </div>
+                                <div class="end-0 bottom-0 position-absolute p-3"><p>Published at @conto.PublishedDate</p></div>
+                            </div>
+                        }
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselContos" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carouselContos" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
                 </div>
             </div>
-        }
-        <!-- Put anything you want here! The spacer below with inline CSS is just for demo purposes!-->
-        <div style="height: 20rem"></div>
-    </div>
+
+        </section>
     }
-    <!-- Content section-->
-    <section class="py-5">
-        <div class="container my-5">
-            <div class="row justify-content-center">
-                <div class="col-lg-6">
-                    <h2>Engaging Background Images</h2>
-                    <p class="lead">The background images used in this template are sourced from Unsplash and are open source and free to use.</p>
-                    <p class="mb-0">I can't tell you how many people say they were turned off from science because of a science teacher that completely sucked out all the inspiration and enthusiasm they had for the course.</p>
+
+    <section>
+        <div class="container-fluid mb-2 p-3">
+
+            @if (Model.Mundo.Personagens != null && Model.Mundo.Personagens.Any())
+            {
+                <!-- Image element - set the background image for the header in the line below-->
+                <div class="row py-2 justify-content-center aling-items-center mb-3" style="background-image: url('https://source.unsplash.com/4ulffa6qoKA/1200x800')">
+
+                    <a asp-area="" asp-controller="Personagens" asp-action="List" asp-route-urlHandle="@Model.MundoUrlHandle"><h2 class="text-center text-white-50 m-1">Related Characters</h2></a>
+
+                    @foreach (var personagem in Model.Mundo.Personagens.OrderBy(pe => pe.Nome).Take(6))
+                    {
+                        <div class="card my-auto mx-1 mb-3 p-0" style="height: 15rem; width: 15rem;">
+                            <div class="card_mask p-0 justify-content-between">
+                                <a class="text-white" asp-area="" asp-controller="Personagens" asp-action="Index" asp-route-urlHandle="@personagem.UrlHandle">
+                                    <img src="@personagem.ImgCard" class="card-img-top imgfit h-100 w-100" alt="Image not found!">
+                                </a>
+                            </div>
+                            <div class="mask_text w-100">
+                                <div class="card-body">
+                                    <ul id="listcardbottom" class="list-group list-group-flush">
+                                        <li><h3 class="card-title">@personagem.Nome</h3></li>
+                                        <li><p class="card-text text-nowrap text-secondary" style="font-size:16px;">@personagem.CurtaDescricao</p></li>
+                                        @if (personagem.Regiao != null)
+                                        {
+                                            <li class="list-group-item">@personagem.Regiao?.Nome</li>
+                                        }
+                                        else
+                                        {
+                                            <li class="list-group-item text-secondary">No Type</li>
+                                        }
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    }
                 </div>
-            </div>
+            }
+            @if (Model.Mundo.Regioes != null && Model.Mundo.Regioes.Any())
+            {
+                <a asp-area="" asp-controller="Continentes" asp-action="List" asp-route-urlHandle="@Model.MundoUrlHandle"><h2 class="text-center text-white-50 m-1">Related Regions</h2></a>
+
+                <div id="carouselRegioes" class="carousel slide mb-3">
+                    <div class="carousel-indicators">
+                        @for (var i = 0; i < Model.Mundo.Regioes.Count(); i++)
+                        {
+                            <button type="button" data-bs-target="#carouselRegioes" data-bs-slide-to="@i" class="@((i == 0) ? "active" : "")" aria-current="@((i == 0) ? "true" : "false")" aria-label="Slide @(i + 1)"></button>
+                        }
+                    </div>
+                    <div class="carousel-inner">
+                        @foreach (var regiao in Model.Mundo.Regioes.OrderBy(co => co.PublishedDate))
+                        {
+                            <div class="carousel-item @((regiao == Model.Mundo.Regioes.First()) ? "active" : "")" style="max-height:20rem;">
+                                <a asp-area="" asp-controller="Regioes" asp-action="Index" asp-route-urlHandle="@regiao.UrlHandle">
+                                    <img src="@regiao.ImgBox" class="d-block w-100 objcenter" alt="...">
+                                    <img src="@regiao.Simbolo" class="imground objcenter opacity-25" alt="Responsive Image">
+                                </a>
+                                <div class="carousel-caption d-none d-md-block">
+                                    <h5>@regiao.Nome</h5>
+                                    @if (regiao.Continente != null)
+                                    {
+                                        <a class=" text-black" asp-area="" asp-controller="Continentes" asp-action="Index" asp-route-urlHandle="@regiao.Continente?.UrlHandle"><p>Contient of @regiao.Continente?.Nome</p></a>
+                                    }
+                                    <p>@regiao.CurtaDescricao</p>
+                                </div>
+                                <div class="end-0 bottom-0 position-absolute p-3"><p>Published at @regiao.PublishedDate</p></div>
+                            </div>
+                        }
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselRegioes" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carouselRegioes" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                </div>
+            }
+            @if (Model.Mundo.Criaturas != null && Model.Mundo.Criaturas.Any())
+            {
+                <!-- Image element - set the background image for the header in the line below-->
+                <div class="row py-2 justify-content-center aling-items-center mb-3" style="background-image: url('https://source.unsplash.com/4ulffa6qoKA/1200x800')">
+
+                    <a asp-area="" asp-controller="Criaturas" asp-action="List" asp-route-urlHandle="@Model.MundoUrlHandle"><h2 class="text-center text-white-50">Related Creatures</h2></a>
+
+                    @foreach (var criatura in Model.Mundo.Criaturas.OrderBy(cr => cr.Nome).Take(6))
+                    {
+                        <div class="card my-auto mx-2 mb-3 p-0" style="height: 15rem; width: 15rem;">
+                            <div class="card_mask p-0 justify-content-between">
+                                <a class="text-white" asp-area="" asp-controller="Criaturas" asp-action="Index" asp-route-urlHandle="@criatura.UrlHandle">
+                                    <img src="@criatura.ImgCard" class="card-img-top imgfit h-100 w-100" alt="Image not found!">
+                                </a>
+                            </div>
+                            <div class="mask_text w-100">
+                                <div class="card-body">
+                                    <ul id="listcardbottom" class="list-group list-group-flush">
+                                        <li><h3 class="card-title">@criatura.Nome</h3></li>
+                                        <li><p class="card-text text-nowrap text-secondary" style="font-size:16px;">@criatura.CurtaDescricao</p></li>
+                                        @if (criatura.Tipo != null)
+                                        {
+                                            <li class="list-group-item">@criatura.Tipo?.GetDisplayName()</li>
+                                        }
+                                        else
+                                        {
+                                            <li class="list-group-item text-secondary">No Type</li>
+                                        }
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+            @if (Model.Mundo.Povos != null && Model.Mundo.Povos.Any())
+            {
+                <!-- Image element - set the background image for the header in the line below-->
+                <div class="row py-2 justify-content-center aling-items-center mb-3" style="background-image: url('https://source.unsplash.com/4ulffa6qoKA/1200x800')">
+
+                    <a asp-area="" asp-controller="Povos" asp-action="List" asp-route-urlHandle="@Model.MundoUrlHandle"><h2 class="text-center text-white-50">Related Peoples</h2></a>
+
+                    @foreach (var povo in Model.Mundo.Povos.OrderBy(po => po.Nome).Take(6))
+                    {
+                        <div class="card my-auto mx-2 mb-3 p-0" style="height: 15rem; width: 15rem;">
+                            <div class="card_mask p-0 justify-content-between">
+                                <a class="text-white" asp-area="" asp-controller="Povos" asp-action="Index" asp-route-urlHandle="@povo.UrlHandle">
+                                    <img src="@povo.ImgCard" class="card-img-top imgfit h-100 w-100" alt="Image not found!">
+                                </a>
+                            </div>
+                            <div class="mask_text w-100">
+                                <div class="card-body">
+                                    <ul id="listcardbottom" class="list-group list-group-flush">
+                                        <li><h3 class="card-title">@povo.Nome</h3></li>
+                                        <li><p class="card-text text-nowrap text-secondary" style="font-size:16px;">@povo.CurtaDescricao</p></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
         </div>
     </section>
-    
 }
+
 else
 {
     <p>World not found!</p>

@@ -14,11 +14,13 @@ public class AdminContinentesController : Controller
 {
     private readonly IMundoRepository mundoRepository;
     private readonly IContinenteRepository continenteRepository;
+    private readonly IRegiaoRepository regiaoRepository;
 
-    public AdminContinentesController(IMundoRepository mundoRepository, IContinenteRepository continenteRepository)
+    public AdminContinentesController(IMundoRepository mundoRepository, IContinenteRepository continenteRepository, IRegiaoRepository regiaoRepository)
     {
         this.mundoRepository = mundoRepository;
         this.continenteRepository = continenteRepository;
+        this.regiaoRepository = regiaoRepository;
     }
 
     public async Task<IActionResult> ListContinentesByMundo(Guid id)
@@ -39,9 +41,11 @@ public class AdminContinentesController : Controller
     {
         //get mundos from repository
         var mundos = await mundoRepository.GetAllAsync();
+        var regioes = await regiaoRepository.GetAllAsync();
         var model = new AddContinenteRequest
         {
-            Mundos = mundos.Select(x => new SelectListItem { Text = x.Nome, Value = x.Id.ToString() })
+            Mundos = mundos.Select(x => new SelectListItem { Text = x.Nome, Value = x.Id.ToString() }),
+            Regioes = regioes.Where(r => r.Mundo == null || r.Continente == null).Select(x => new SelectListItem { Text = x.Nome, Value = x.Id.ToString() })
         };
         return View(model);
     }
@@ -49,9 +53,22 @@ public class AdminContinentesController : Controller
     [HttpPost]
     public async Task<IActionResult> Add(AddContinenteRequest addContinenteRequest)
     {
-        
         if (!ModelState.IsValid)
-        { //Pass the view model to the View method
+        {
+            addContinenteRequest.Mundos = (await mundoRepository.GetAllAsync())
+                .Select(x => new SelectListItem
+                {
+                    Text = x.Nome,
+                    Value = x.Id.ToString()
+                }).ToList();
+
+            addContinenteRequest.Regioes = (await regiaoRepository.GetAllAsync()).Where(r => r.Mundo == null || r.Continente == null)
+                .Select(x => new SelectListItem
+                {
+                    Text = x.Nome,
+                    Value = x.Id.ToString()
+                }).ToList();
+
             return View(addContinenteRequest);
         }
 
@@ -66,8 +83,6 @@ public class AdminContinentesController : Controller
             PublishedDate = addContinenteRequest.PublishedDate,
             UrlHandle = addContinenteRequest.UrlHandle,
             Visible = addContinenteRequest.Visible,
-
-
         };
 
         //Maps Mundos from Selected mundo
@@ -84,6 +99,24 @@ public class AdminContinentesController : Controller
                 continente.Mundo = selectedMundo;
             }
         }
+        //Maps Regioes from Selected continent
+        var selectedRegioes = new List<Regiao>();
+
+        foreach (var selectedRegiaoId in addContinenteRequest.SelectedRegioes)
+        {
+            if (!string.IsNullOrEmpty(selectedRegiaoId))
+            {
+                var selectedRegiaoIdAsGuid = Guid.Parse(selectedRegiaoId);
+                var existingRegiao = await regiaoRepository.GetAsync(selectedRegiaoIdAsGuid);
+
+                if (existingRegiao != null)
+                {
+                    selectedRegioes.Add(existingRegiao);
+                }
+            }
+        }
+        //Maping Regioes back to domain modal
+        continente.Regioes = selectedRegioes;
 
         await continenteRepository.AddAsync(continente);
 
@@ -103,11 +136,12 @@ public class AdminContinentesController : Controller
     public async Task<IActionResult> Edit(Guid id)
     {
         //Retrieve Result from repository
-        var continente = await continenteRepository.GetAsync(id);
+        var continente = await continenteRepository.GetAsync(id);     
         var mundosDomainModel = await mundoRepository.GetAllAsync();
+        var regioesDomainModel = await regiaoRepository.GetAllAsync();
 
         if (continente != null)
-        {
+        {          
             var editContinenteRequest = new EditContinenteRequest
             {
                 Id = continente.Id,
@@ -124,8 +158,13 @@ public class AdminContinentesController : Controller
                     Text = x.Nome,
                     Value = x.Id.ToString()
                 }),
-                SelectedMundo = continente.Mundo?.Id.ToString()
-
+                SelectedMundo = continente.Mundo?.Id.ToString(),
+                Regioes = regioesDomainModel.Select(x => new SelectListItem
+                {
+                    Text = x.Nome,
+                    Value = x.Id.ToString()
+                }),
+                SelectedRegioes = continente.Regioes.Select(x => x.Id.ToString()).ToArray(),
             };
             return View(editContinenteRequest);
         }
@@ -135,6 +174,25 @@ public class AdminContinentesController : Controller
     [HttpPost]
     public async Task<IActionResult> Edit(EditContinenteRequest editContinenteRequest)
     {
+        if (!ModelState.IsValid)
+        {
+            editContinenteRequest.Mundos = (await mundoRepository.GetAllAsync())
+                .Select(x => new SelectListItem
+                {
+                    Text = x.Nome,
+                    Value = x.Id.ToString()
+                }).ToList();
+
+            editContinenteRequest.Regioes = (await regiaoRepository.GetAllAsync()).Where(r => r.Mundo == null || r.Continente == null)
+               .Select(x => new SelectListItem
+               {
+                   Text = x.Nome,
+                   Value = x.Id.ToString()
+               }).ToList();
+
+            return View(editContinenteRequest);
+        }
+
         var continente = new Continente
         {
             Id = editContinenteRequest.Id,
@@ -146,7 +204,6 @@ public class AdminContinentesController : Controller
             PublishedDate = editContinenteRequest.PublishedDate,
             UrlHandle = editContinenteRequest.UrlHandle,
             Visible = editContinenteRequest.Visible,
-
         };
 
         //Map Mundo into domain model
@@ -163,6 +220,25 @@ public class AdminContinentesController : Controller
                 continente.Mundo = selectedMundo;
             }
         }
+
+        //Maps Regioes from Selected continent
+        var selectedRegioes = new List<Regiao>();
+
+        foreach (var selectedRegiaoId in editContinenteRequest.SelectedRegioes)
+        {
+            if (!string.IsNullOrEmpty(selectedRegiaoId))
+            {
+                var selectedRegiaoIdAsGuid = Guid.Parse(selectedRegiaoId);
+                var existingRegiao = await regiaoRepository.GetAsync(selectedRegiaoIdAsGuid);
+
+                if (existingRegiao != null)
+                {
+                    selectedRegioes.Add(existingRegiao);
+                }
+            }
+        }
+        //Maping Regioes back to domain modal
+        continente.Regioes = selectedRegioes;
 
         var updatedContinente = await continenteRepository.UpdateAsync(continente);
 

@@ -62,8 +62,44 @@ public class AdminPovosController : Controller
 
         if (!ModelState.IsValid)
         {
+            addPovoRequest.Mundos = (await mundoRepository.GetAllAsync())
+                .Select(x => new SelectListItem
+                {
+                    Text = x.Nome,
+                    Value = x.Id.ToString()
+                }).ToList();
+
+            addPovoRequest.Continentes = (await continenteRepository.GetAllAsync())
+                .Select(x => new SelectListItem
+                {
+                    Text = x.Nome,
+                    Value = x.Id.ToString()
+                }).ToList();
+
+            addPovoRequest.Regioes = (await regiaoRepository.GetAllAsync())
+               .Select(x => new SelectListItem
+               {
+                   Text = x.Nome,
+                   Value = x.Id.ToString()
+               }).ToList();
+
+            addPovoRequest.Personagens = (await personagemRepository.GetAllAsync())
+               .Select(x => new SelectListItem
+               {
+                   Text = x.Nome,
+                   Value = x.Id.ToString()
+               }).ToList();
+
+            addPovoRequest.Criaturas = (await criaturaRepository.GetAllAsync())
+               .Select(x => new SelectListItem
+               {
+                   Text = x.Nome,
+                   Value = x.Id.ToString()
+               }).ToList();
+
             return View(addPovoRequest);
         }
+
 
         //Map view model to domain model
         var povo = new Povo
@@ -76,7 +112,6 @@ public class AdminPovosController : Controller
             PublishedDate = addPovoRequest.PublishedDate,
             UrlHandle = addPovoRequest.UrlHandle,
             Visible = addPovoRequest.Visible,
-
         };
 
         //Maps Mundos from Selected mundo
@@ -93,7 +128,6 @@ public class AdminPovosController : Controller
                 povo.Mundo = selectedMundo;
             }
         }
-
         //Maps Continents from Selected continent
         var selectedContinentes = new List<Continente>();
         foreach (var selectedContinenteId in addPovoRequest.SelectedContinentes)
@@ -264,6 +298,46 @@ public class AdminPovosController : Controller
     [HttpPost]
     public async Task<IActionResult> Edit(EditPovoRequest editPovoRequest)
     {
+        if (!ModelState.IsValid)
+        {
+            editPovoRequest.Mundos = (await mundoRepository.GetAllAsync())
+                .Select(x => new SelectListItem
+                {
+                    Text = x.Nome,
+                    Value = x.Id.ToString()
+                }).ToList();
+
+            editPovoRequest.Continentes = (await continenteRepository.GetAllAsync())
+                .Select(x => new SelectListItem
+                {
+                    Text = x.Nome,
+                    Value = x.Id.ToString()
+                }).ToList();
+
+            editPovoRequest.Regioes = (await regiaoRepository.GetAllAsync())
+               .Select(x => new SelectListItem
+               {
+                   Text = x.Nome,
+                   Value = x.Id.ToString()
+               }).ToList();
+
+            editPovoRequest.Personagens = (await personagemRepository.GetAllAsync())
+               .Select(x => new SelectListItem
+               {
+                   Text = x.Nome,
+                   Value = x.Id.ToString()
+               }).ToList();
+
+            editPovoRequest.Criaturas = (await criaturaRepository.GetAllAsync())
+               .Select(x => new SelectListItem
+               {
+                   Text = x.Nome,
+                   Value = x.Id.ToString()
+               }).ToList();
+
+            return View(editPovoRequest);
+        }
+
         var povo = new Povo
         {
             Id = editPovoRequest.Id,
@@ -276,7 +350,6 @@ public class AdminPovosController : Controller
             UrlHandle = editPovoRequest.UrlHandle,
             Visible = editPovoRequest.Visible,
         };
-
 
         //Maps Mundos from Selected mundo
         var selectedMundoId = editPovoRequest.SelectedMundo;
@@ -292,7 +365,6 @@ public class AdminPovosController : Controller
                 povo.Mundo = selectedMundo;
             }
         }
-
         //Maps Continents from Selected continent
         var selectedContinentes = new List<Continente>();
         foreach (var selectedContinenteId in editPovoRequest.SelectedContinentes)
@@ -395,6 +467,4 @@ public class AdminPovosController : Controller
         //Show an error notification
         return RedirectToAction("Edit", new { Id = editPovoRequest.Id });
     }
-
-
 }

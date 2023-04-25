@@ -42,8 +42,30 @@ public class AdminPersonagensController : Controller
 
         if (!ModelState.IsValid)
         {
+            addPersonagemRequest.Mundos = (await mundoRepository.GetAllAsync())
+                .Select(x => new SelectListItem
+                {
+                    Text = x.Nome,
+                    Value = x.Id.ToString()
+                }).ToList();
+
+            addPersonagemRequest.Continentes = (await continenteRepository.GetAllAsync())
+                .Select(x => new SelectListItem
+                {
+                    Text = x.Nome,
+                    Value = x.Id.ToString()
+                }).ToList();
+
+            addPersonagemRequest.Regioes = (await regiaoRepository.GetAllAsync())
+               .Select(x => new SelectListItem
+               {
+                   Text = x.Nome,
+                   Value = x.Id.ToString()
+               }).ToList();
+
             return View(addPersonagemRequest);
         }
+
 
         //Map view model to domain model
         var personagem = new Personagem
@@ -190,7 +212,6 @@ public class AdminPersonagensController : Controller
                 SelectedRegiao = personagem.Regiao?.Id.ToString(),
 
             };
-
             return View(editPersonagemRequest);
         }
         return View(null);
@@ -199,9 +220,35 @@ public class AdminPersonagensController : Controller
     [HttpPost]
     public async Task<IActionResult> Edit(EditPersonagemRequest editPersonagemRequest)
     {
+
+        if (!ModelState.IsValid)
+        {
+            editPersonagemRequest.Mundos = (await mundoRepository.GetAllAsync())
+                .Select(x => new SelectListItem
+                {
+                    Text = x.Nome,
+                    Value = x.Id.ToString()
+                }).ToList();
+
+            editPersonagemRequest.Continentes = (await continenteRepository.GetAllAsync())
+                .Select(x => new SelectListItem
+                {
+                    Text = x.Nome,
+                    Value = x.Id.ToString()
+                }).ToList();
+
+            editPersonagemRequest.Regioes = (await regiaoRepository.GetAllAsync())
+               .Select(x => new SelectListItem
+               {
+                   Text = x.Nome,
+                   Value = x.Id.ToString()
+               }).ToList();
+
+            return View(editPersonagemRequest);
+        }
+
         var personagem = new Personagem
         {
-
             Id = editPersonagemRequest.Id,
             Nome = editPersonagemRequest.Nome,
             Titulo = editPersonagemRequest.Titulo,
@@ -214,9 +261,7 @@ public class AdminPersonagensController : Controller
             PublishedDate = editPersonagemRequest.PublishedDate,
             UrlHandle = editPersonagemRequest.UrlHandle,
             Visible = editPersonagemRequest.Visible,
-
         };
-
 
         //Maps Mundos from Selected mundo
 
