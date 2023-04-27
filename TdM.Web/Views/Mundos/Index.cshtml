@@ -9,7 +9,7 @@
     <link type="text/css" rel="stylesheet" href="~/css/IndexMundo.css" />
 </head>
 <!-- Include the navbar partial view and pass the Mundo object to it -->
-@await Html.PartialAsync("_Navbar", new TdM.Web.Models.ViewModels.NavbarViewModel { MundoUrlHandle = Model.Mundo.UrlHandle })
+@await Html.PartialAsync("_Navbar", new TdM.Web.Models.ViewModels.NavbarViewModel { MundoUrlHandle = Model.Mundo.UrlHandle, Mundo = Model.Mundo })
 @if (Model != null)
 {
     <!-- Header - set the background image for the header in the line below-->
@@ -89,7 +89,7 @@
                 <!-- Image element - set the background image for the header in the line below-->
                 <div class="row py-2 justify-content-center aling-items-center mb-3" style="background-image: url('https://source.unsplash.com/4ulffa6qoKA/1200x800')">
 
-                    <a asp-area="" asp-controller="Personagens" asp-action="List" asp-route-urlHandle="@Model.MundoUrlHandle"><h2 class="text-center text-white-50 m-1">Related Characters</h2></a>
+                    <a asp-area="" asp-controller="Personagens" asp-action="List" asp-route-urlHandle="@Model.MundoUrlHandle"><h2 class="text-center text-white-50 m-1">Featured Characters</h2></a>
 
                     @foreach (var personagem in Model.Mundo.Personagens.OrderBy(pe => pe.Nome).Take(6))
                     {
@@ -121,7 +121,7 @@
             }
             @if (Model.Mundo.Regioes != null && Model.Mundo.Regioes.Any())
             {
-                <a asp-area="" asp-controller="Continentes" asp-action="List" asp-route-urlHandle="@Model.MundoUrlHandle"><h2 class="text-center text-white-50 m-1">Related Regions</h2></a>
+                <a asp-area="" asp-controller="Continentes" asp-action="List" asp-route-urlHandle="@Model.MundoUrlHandle"><h2 class="text-center text-white-50 m-1">Features Regions</h2></a>
 
                 <div id="carouselRegioes" class="carousel slide mb-3">
                     <div class="carousel-indicators">
@@ -165,7 +165,7 @@
                 <!-- Image element - set the background image for the header in the line below-->
                 <div class="row py-2 justify-content-center aling-items-center mb-3" style="background-image: url('https://source.unsplash.com/4ulffa6qoKA/1200x800')">
 
-                    <a asp-area="" asp-controller="Criaturas" asp-action="List" asp-route-urlHandle="@Model.MundoUrlHandle"><h2 class="text-center text-white-50">Related Creatures</h2></a>
+                    <a asp-area="" asp-controller="Criaturas" asp-action="List" asp-route-urlHandle="@Model.MundoUrlHandle"><h2 class="text-center text-white-50">Featured Creatures</h2></a>
 
                     @foreach (var criatura in Model.Mundo.Criaturas.OrderBy(cr => cr.Nome).Take(6))
                     {
@@ -200,7 +200,7 @@
                 <!-- Image element - set the background image for the header in the line below-->
                 <div class="row py-2 justify-content-center aling-items-center mb-3" style="background-image: url('https://source.unsplash.com/4ulffa6qoKA/1200x800')">
 
-                    <a asp-area="" asp-controller="Povos" asp-action="List" asp-route-urlHandle="@Model.MundoUrlHandle"><h2 class="text-center text-white-50">Related Peoples</h2></a>
+                    <a asp-area="" asp-controller="Povos" asp-action="List" asp-route-urlHandle="@Model.MundoUrlHandle"><h2 class="text-center text-white-50">Featured Peoples</h2></a>
 
                     @foreach (var povo in Model.Mundo.Povos.OrderBy(po => po.Nome).Take(6))
                     {

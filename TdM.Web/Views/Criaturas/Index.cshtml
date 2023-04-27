@@ -9,7 +9,7 @@
     var mundoUrlHandle = Model.Mundo.UrlHandle;
 }
 <!-- Include the navbar partial view and pass the Mundo object to it -->
-@await Html.PartialAsync("_Navbar", new TdM.Web.Models.ViewModels.NavbarViewModel { MundoUrlHandle = mundoUrlHandle})
+@await Html.PartialAsync("_Navbar", new TdM.Web.Models.ViewModels.NavbarViewModel { MundoUrlHandle = mundoUrlHandle, Mundo = Model.Mundo })
 
 @if (Model != null)
 {

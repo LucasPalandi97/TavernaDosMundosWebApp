@@ -6,13 +6,13 @@
     ViewData["Title"] = Model.Titulo;
 
     // Set the value of mundoUrlHandle based on your logic
-    var mundoUrlHandle = Model.Mundo.UrlHandle;
+    var mundoUrlHandle = Model.Mundo?.UrlHandle;
 }
 <head>
     <link type="text/css" rel="stylesheet" href="~/css/IndexConto.css" />
 </head>
 <!-- Include the navbar partial view and pass the Mundo object to it -->
-@await Html.PartialAsync("_Navbar", new TdM.Web.Models.ViewModels.NavbarViewModel { MundoUrlHandle = mundoUrlHandle})
+@await Html.PartialAsync("_Navbar", new TdM.Web.Models.ViewModels.NavbarViewModel { MundoUrlHandle = mundoUrlHandle, Mundo = Model.Mundo })
 
 @if (Model != null)
 {

@@ -3,11 +3,18 @@
 @model TdM.Web.Models.ViewModels.NavbarViewModel
 
 @{
-    var urlHandle = ViewData["urlHandle"] as string; // Receive the URL from the controller
+   
 }
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container-fluid px-5">
+    <div class="container-fluid px-5 align-content-center text-center">
+        <div class="navbar-button px-2 pt-2">
+            <div>
+              W O R L D 
+            </div>            
+            <span class="text-uppercase">@Model.Mundo?.Nome</span>
+           
+        </div>
         <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Taverna dos Mundos</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDarkDropdown" aria-controls="navbarNavDarkDropdown" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>

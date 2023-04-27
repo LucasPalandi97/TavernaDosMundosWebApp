@@ -19,6 +19,10 @@ var editor2 = new FroalaEditor('#biografia', {
     imageUploadURL: '/api/images'
 });
 
+var editor3 = new FroalaEditor('#corpo', {
+    imageUploadURL: '/api/images'
+});
+
 //IMAGE UPLOAD
 
 // Content image 

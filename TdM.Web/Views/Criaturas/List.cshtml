@@ -11,7 +11,7 @@
 }
 else
 {
-    @await Html.PartialAsync("_Navbar", new TdM.Web.Models.ViewModels.NavbarViewModel { MundoUrlHandle = ViewBag.MundoUrlHandle })
+    @await Html.PartialAsync("_Navbar", new TdM.Web.Models.ViewModels.NavbarViewModel { MundoUrlHandle = ViewBag.MundoUrlHandle, Mundo = Model.Mundo  })
 }
 
 <head>

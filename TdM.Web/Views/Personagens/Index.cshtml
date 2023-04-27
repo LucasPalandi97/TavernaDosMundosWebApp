@@ -12,7 +12,7 @@
     <link type="text/css" rel="stylesheet" href="~/css/IndexPersonagem.css" />
 </head>
 <!-- Include the navbar partial view and pass the Mundo object to it -->
-@await Html.PartialAsync("_Navbar", new TdM.Web.Models.ViewModels.NavbarViewModel { MundoUrlHandle = mundoUrlHandle})
+@await Html.PartialAsync("_Navbar", new TdM.Web.Models.ViewModels.NavbarViewModel { MundoUrlHandle = mundoUrlHandle, Mundo = Model.Mundo })
 
 @if (Model != null)
 {
