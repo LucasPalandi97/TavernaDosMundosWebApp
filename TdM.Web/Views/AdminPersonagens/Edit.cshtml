@@ -125,14 +125,12 @@
                     <option value="" class="text-danger">No World</option>
                 </select>
             </div>
-
             <div class="mb-3 col-8">
                 <label class="form-label">Continent</label>
                 <select id="SelectedContinentes" class="form-control" asp-items="@Model.Continentes" asp-for="SelectedContinente" onchange="updateRegioes()" data-single>
                     <option value="" class="text-danger">No Continent</option>
                 </select>
             </div>
-
             <div class="mb-3 col-8">
                 <label class="form-label">Region</label>
                 <select id="SelectedRegioes" class="form-select" asp-items="@Model.Regioes" asp-for="SelectedRegiao" data-single>
@@ -142,12 +140,9 @@
 
             <div class="mb-3">
                 <div class="d-flex">
-
                     <button type="submit" class="btn btn-dark">Update</button>
                     <button type="button" class="btn btn-danger ms-2" data-bs-toggle="modal" data-bs-target="#exampleModal">Delete</button>
-
                 </div>
-
             </div>
 
             <!-- Modal Delete -->
