@@ -1,25 +1,33 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @inject SignInManager<IdentityUser> signInManager
 @model TdM.Web.Models.ViewModels.NavbarViewModel
-
 @{
-   
 }
-
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<nav class="navbar bg-body navbar-expand-lg py-1">
     <div class="container-fluid px-5 align-content-center text-center">
-        <div class="navbar-button px-2 pt-2">
+        <div class="navbar-button bg-body px-2 pt-2 border border-1 border-light-subtle">
             <div>
-              W O R L D 
-            </div>            
-            <span class="text-uppercase">@Model.Mundo?.Nome</span>
-           
+                <span class="text-uppercase">@Model.Mundo?.Nome</span>
+            </div>     
         </div>
         <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Taverna dos Mundos</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDarkDropdown" aria-controls="navbarNavDarkDropdown" aria-expanded="false" aria-label="Toggle navigation">
+        <div id="theme" class="row row-cols-2 g-2 p-0">
+            <div class="">
+                <button class="btn btn-light theme-switch-btn active" id="lightBtn" aria-pressed="true">
+                    <i class="bi bi-sun"></i>
+                </button>
+            </div>
+            <div class="">
+                <button class="btn btn-dark theme-switch-btn" id="darkBtn" aria-pressed="false">
+                    <i class="bi bi-moon"></i>
+                </button>
+            </div>
+        </div>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDarkDropdown2" aria-controls="navbarNavDarkDropdown2" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse" id="navbarNavDarkDropdown">
+        <div class="collapse navbar-collapse bg-body" id="navbarNavDarkDropdown2">
             <ul class="navbar-nav justify-content-between w-100 ms-auto">
                 @*  Admin Action*@
                 @if (signInManager.IsSignedIn(User) && User.IsInRole("Admin"))
@@ -29,7 +37,7 @@
                             <button type="button" class="nav-link dropdown-toggle" id="dropdownMenuReference" data-bs-toggle="dropdown" aria-expanded="false" data-bs-reference="parent">
                                 Worlds &nbsp;
                             </button>
-                            <ul class="dropdown-menu dropdown-menu-dark">
+                            <ul class="dropdown-menu">
                                 <li><a class="dropdown-item" asp-area="" asp-controller="AdminMundos" asp-action="Add">Add World</a></li>
                                 <li><a class="dropdown-item" asp-area="" asp-controller="AdminMundos" asp-action="List">Show All Worlds</a></li>
                             </ul>
@@ -73,7 +81,7 @@
                             <button type="button" class="nav-link dropdown-toggle dropdown-toggle-split" id="dropdownMenuReference" data-bs-toggle="dropdown" aria-expanded="false" data-bs-reference="parent">
                                 <span class="visually-hidden">Toggle Dropdown</span>
                             </button>
-                            <ul class="dropdown-menu dropdown-menu-dark">
+                            <ul class="dropdown-menu">
                                 <li><a class="dropdown-item" asp-area="" asp-controller="AdminContinentes" asp-action="Add">Add Continent</a></li>
                                 <li><a class="dropdown-item" asp-area="" asp-controller="AdminContinentes" asp-action="List">Show Continents</a></li>
                                 <li><hr class="dropdown-divider"></li>
@@ -101,7 +109,7 @@
                             <button type="button" class="nav-link dropdown-toggle dropdown-toggle-split" id="dropdownMenuReference" data-bs-toggle="dropdown" aria-expanded="false" data-bs-reference="parent">
                                 <span class="visually-hidden">Toggle Dropdown</span>
                             </button>
-                            <ul class="dropdown-menu dropdown-menu-dark">
+                            <ul class="dropdown-menu">
                                 <li><a class="dropdown-item" asp-area="" asp-controller="AdminCriaturas" asp-action="Add">Add Creature</a></li>
                                 <li><a class="dropdown-item" asp-area="" asp-controller="AdminCriaturas" asp-action="List">Show Creatures</a></li>
                             </ul>
@@ -126,7 +134,7 @@
                             <button type="button" class="nav-link dropdown-toggle dropdown-toggle-split" id="dropdownMenuReference" data-bs-toggle="dropdown" aria-expanded="false" data-bs-reference="parent">
                                 <span class="visually-hidden">Toggle Dropdown</span>
                             </button>
-                            <ul class="dropdown-menu dropdown-menu-dark">
+                            <ul class="dropdown-menu">
                                 <li><a class="dropdown-item" asp-area="" asp-controller="AdminPovos" asp-action="Add">Add People</a></li>
                                 <li><a class="dropdown-item" asp-area="" asp-controller="AdminPovos" asp-action="List">Show People</a></li>
                             </ul>
@@ -151,7 +159,7 @@
                             <button type="button" class="nav-link dropdown-toggle dropdown-toggle-split" id="dropdownMenuReference" data-bs-toggle="dropdown" aria-expanded="false" data-bs-reference="parent">
                                 <span class="visually-hidden">Toggle Dropdown</span>
                             </button>
-                            <ul class="dropdown-menu dropdown-menu-dark">
+                            <ul class="dropdown-menu">
                                 <li><a class="dropdown-item" asp-area="" asp-controller="AdminContos" asp-action="Add">Add Story</a></li>
                                 <li><a class="dropdown-item" asp-area="" asp-controller="AdminContos" asp-action="List">Show Stories</a></li>
                             </ul>
@@ -171,35 +179,35 @@
             <div class="navbar-nav ml-auto d-flex align-items-center">
                 @if (signInManager.IsSignedIn(User))
                 {
-                    <div class="text-light me-3">
+                    <div class="me-3">
                         <span class="text-secondary text-nowrap" id="userShow">@User?.Identity?.Name!</span>
                     </div>
                     @if (signInManager.IsSignedIn(User) && User.IsInRole("Admin"))
                     {
-                        <div class="nav-item dropdown  mx-auto">
+                        <div class="nav-item dropdown mx-auto">
                             <div class="btn-group dropstart">
                                 <button type="button" class="btn  btn-secondary nav-link dropdown-toggle dropdown-toggle-split " id="dropdownMenuReference" data-bs-toggle="dropdown" aria-expanded="false" data-bs-reference="parent">
                                     <span class="visually-hidden">Toggle Dropdown</span>
                                 </button>
-                                    <a class="btn bg-light text-dark w-100 nav-link" asp-area="" asp-controller="Account" asp-action="Logout">Logout</a>
+                                <a class="btn w-100 nav-link" asp-area="" asp-controller="Account" asp-action="Logout">Logout</a>
 
-                                <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end dropdown-menu-lg-start">
+                                <ul class="dropdown-menu dropdown-menu-end dropdown-menu-lg-start">
                                     <li><a class="dropdown-item" asp-area="" asp-controller="AdminUsers" asp-action="List">Show Users</a></li>
-                                    </ul>
-                                </div>
+                                </ul>
                             </div>
-  
+                        </div>
+
                     }
                     else
                     {
-                        <a class="btn bg-light text-dark w-100 nav-link" asp-area="" asp-controller="Account" asp-action="Logout">Logout</a>
+                        <a class="btn w-100 nav-link" asp-area="" asp-controller="Account" asp-action="Logout">Logout</a>
 
                     }
                 }
                 else
                 {
-                    <a class="btn mx-2 bg-light text-dark w-100" asp-area="" asp-controller="Account" asp-action="Login">Login</a>
-                    <a class="btn mx-2 my-1 bg-light text-dark w-100" asp-area="" asp-controller="Account" asp-action="Register">Register</a>
+                    <a class="btn mx-2 w-100 bg-body" asp-area="" asp-controller="Account" asp-action="Login">Login</a>
+                    <a class="btn mx-2 my-1 w-100 bg-body" asp-area="" asp-controller="Account" asp-action="Register">Register</a>
                 }
             </div>
 

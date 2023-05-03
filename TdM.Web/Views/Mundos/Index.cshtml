@@ -93,7 +93,7 @@
 
                     @foreach (var personagem in Model.Mundo.Personagens.OrderBy(pe => pe.Nome).Take(6))
                     {
-                        <div class="card my-auto mx-1 mb-3 p-0" style="height: 15rem; width: 15rem;">
+                        <div class="card bg-dark my-auto mx-1 mb-3 p-0" style="height: 15rem; width: 15rem;">
                             <div class="card_mask p-0 justify-content-between">
                                 <a class="text-white" asp-area="" asp-controller="Personagens" asp-action="Index" asp-route-urlHandle="@personagem.UrlHandle">
                                     <img src="@personagem.ImgCard" class="card-img-top imgfit h-100 w-100" alt="Image not found!">
@@ -169,7 +169,7 @@
 
                     @foreach (var criatura in Model.Mundo.Criaturas.OrderBy(cr => cr.Nome).Take(6))
                     {
-                        <div class="card my-auto mx-2 mb-3 p-0" style="height: 15rem; width: 15rem;">
+                        <div class="card bg-dark my-auto mx-2 mb-3 p-0" style="height: 15rem; width: 15rem;">
                             <div class="card_mask p-0 justify-content-between">
                                 <a class="text-white" asp-area="" asp-controller="Criaturas" asp-action="Index" asp-route-urlHandle="@criatura.UrlHandle">
                                     <img src="@criatura.ImgCard" class="card-img-top imgfit h-100 w-100" alt="Image not found!">
@@ -204,7 +204,7 @@
 
                     @foreach (var povo in Model.Mundo.Povos.OrderBy(po => po.Nome).Take(6))
                     {
-                        <div class="card my-auto mx-2 mb-3 p-0" style="height: 15rem; width: 15rem;">
+                        <div class="card bg-dark my-auto mx-2 mb-3 p-0" style="height: 15rem; width: 15rem;">
                             <div class="card_mask p-0 justify-content-between">
                                 <a class="text-white" asp-area="" asp-controller="Povos" asp-action="Index" asp-route-urlHandle="@povo.UrlHandle">
                                     <img src="@povo.ImgCard" class="card-img-top imgfit h-100 w-100" alt="Image not found!">

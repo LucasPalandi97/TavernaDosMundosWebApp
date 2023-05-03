@@ -33,7 +33,7 @@ else
         <div class="card-deck my-3 row-cols-lg-4 row-cols-sm-2 justify-content-center align-items-center">
             @foreach (var povo in Model.Povos.OrderBy(p => p.Nome))
             {
-                <div id="povocard" class="card row-cols-lg-4 row-cols-sm-2 my-auto mx-2 mb-3" style="height: 20rem; width: 24rem;">
+                <div id="povocard" class="card bg-dark row-cols-lg-4 row-cols-sm-2 my-auto mx-2 mb-3" style="height: 20rem; width: 24rem;">
                     <div class="card_mask p-0 justify-content-between">
                         <a class="text-white" asp-area="" asp-controller="Povos" asp-action="Index" asp-route-urlHandle="@povo.UrlHandle">
                             <img src="@povo.ImgCard" class="card-img-top imgfit h-100 w-100" alt="Image not found!">

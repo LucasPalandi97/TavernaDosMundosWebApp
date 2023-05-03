@@ -1,7 +1,8 @@
 
-body{
-    transition:all 0.5s ease-in-out
+body {
+
 }
+
 /*Search Menu*/
 #search-box {
     background-color: transparent;
@@ -13,6 +14,7 @@ body{
     width: 200px;
     color: #fff;
 }
+
     #search-box:focus {
         outline: none;
         border-bottom-color: #2196F3;
@@ -75,53 +77,13 @@ descricao_content {
     white-space: nowrap;
 }
 
-.footer {
-    position: fixed;
+footer {
+    margin-top: auto;
     bottom: 0;
     width: 100%;
     height: 7rem;
     z-index: 0; /* set the z-index of the footer to a lower value */
 }
-
-/* Hide the default select arrow 
-    Checkbox for select with multiple items
-*/
-/*select[multiple]::-ms-expand {
-    display: none;
-}
-
-select[multiple] {
-    height: auto;
-    width: 100%;
-    padding: 6px 30px 6px 12px;
-    font-size: 14px;
-    line-height: 1.4;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-}
-
-    select[multiple] option {
-        position: relative;
-        padding-left: 32px;
-    }
-
-        select[multiple] option:before {
-            content: '';
-            position: absolute;
-            top: 5px;
-            left: 7px;
-            width: 18px;
-            height: 18px;
-            border: 1px solid #adb5bd;
-            border-radius: 4px;
-        }
-
-        select[multiple] option:checked:before {
-            content: '\2713';
-            color: #007bff;
-            border-color: #007bff;
-        }*/
 
 /*drodown menus*/
 
@@ -145,46 +107,76 @@ select[multiple] {
     display: block;
 }
 
+.navbar {
+    
+}
+
 .navbar-button {
     position: absolute; /* make the button absolute positioned */
     bottom: -3.5rem; /* move it half of its height below the navbar */
     left: 50%; /* center it horizontally inside the navbar */
     transform: translateX(-50%); /* adjust the horizontal position */
-    background-color: rgba(147,115,65,255);
-    color: #333;
-    border: none;
     padding: 10px;
     cursor: pointer;
     width: 10rem;
     height: 4rem;
     z-index: 2; /* make the button appear on top of the navbar */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
 }
 
     .navbar-button > div {
         text-align: center;
-        align-content: center;
-        height: 65%;
         width: 100%;
-        background-color: rgba(49,30,42,255);
-        border: none;
         z-index: 2;
-        color: white;
     }
+
 body {
     overflow-y: scroll;
 }
 
 ::-webkit-scrollbar {
     width: 0.75rem;
-    background-color: #212529;
 }
 
 ::-webkit-scrollbar-thumb {
-    background-color: rgb(55, 55, 55);
-    border-radius: 5px;
-    border: 3px solid #333;
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
 }
 
 ::-webkit-scrollbar-track {
-    background-color: #212529;
+    background-color: transparent;
 }
+
+body {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
+}
+
+/*Theme buttons*/
+
+.theme-switch-btn {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    transition: background-color 0.2s ease-in-out;
+}
+
+    .theme-switch-btn i {
+        font-size: 1.2rem;
+        transition: opacity 0.2s ease-in-out;
+    }
+
+    .theme-switch-btn.active i {
+        opacity: 1;
+    }
+
+    .theme-switch-btn:not(.active) i {
+        opacity: 0.4;
+    }

@@ -54,7 +54,7 @@
 
                     @foreach (var regiao in Model.Regioes.OrderBy(r => r.Nome).Take(6))
                     {
-                        <div class="card my-auto mx-1 mb-3 p-0" style="height: 15rem; width: 15rem;">
+                        <div class="card bg-dark my-auto mx-1 mb-3 p-0" style="height: 15rem; width: 15rem;">
                             <div class="card_mask p-0 justify-content-between">
                                 <a class="text-white" asp-area="" asp-controller="Regioes" asp-action="Index" asp-route-urlHandle="@regiao.UrlHandle">
                                     <img src="@regiao.ImgCard" class="card-img-top imgfit h-100 w-100" alt="Image not found!">
@@ -89,7 +89,7 @@
 
                     @foreach (var personagem in Model.Personagens.OrderBy(pe => pe.Nome).Take(6))
                     {
-                        <div class="card my-auto mx-1 mb-3 p-0" style="height: 15rem; width: 15rem;">
+                        <div class="card bg-dark my-auto mx-1 mb-3 p-0" style="height: 15rem; width: 15rem;">
                             <div class="card_mask p-0 justify-content-between">
                                 <a class="text-white" asp-area="" asp-controller="Personagens" asp-action="Index" asp-route-urlHandle="@personagem.UrlHandle">
                                     <img src="@personagem.ImgCard" class="card-img-top imgfit h-100 w-100" alt="Image not found!">
@@ -124,7 +124,7 @@
 
                     @foreach (var criatura in Model.Criaturas.OrderBy(cr => cr.Nome).Take(6))
                     {
-                        <div class="card my-auto mx-2 mb-3 p-0" style="height: 15rem; width: 15rem;">
+                        <div class="card bg-dark my-auto mx-2 mb-3 p-0" style="height: 15rem; width: 15rem;">
                             <div class="card_mask p-0 justify-content-between">
                                 <a class="text-white" asp-area="" asp-controller="Criaturas" asp-action="Index" asp-route-urlHandle="@criatura.UrlHandle">
                                     <img src="@criatura.ImgCard" class="card-img-top imgfit h-100 w-100" alt="Image not found!">
@@ -159,7 +159,7 @@
 
                     @foreach (var conto in Model.Contos.OrderBy(co => co.Titulo).Take(6))
                     {
-                        <div class="card my-auto mx-2 mb-3 p-0" style="height: 15rem; width: 15rem;">
+                        <div class="card bg-dark my-auto mx-2 mb-3 p-0" style="height: 15rem; width: 15rem;">
                             <div class="card_mask p-0 justify-content-between">
                                 <a class="text-white" asp-area="" asp-controller="Contos" asp-action="Index" asp-route-urlHandle="@conto.UrlHandle">
                                     <img src="@conto.ImgCard" class="card-img-top imgfit h-100 w-100" alt="Image not found!">

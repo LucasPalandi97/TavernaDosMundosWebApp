@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics;
 using TdM.Database.Models.Domain;
+using TdM.Web.Models;
 using TdM.Web.Models.ViewModels;
 using TdM.Web.Repositories;
 
@@ -27,16 +29,33 @@ public class PovosController : Controller
     {
         if (urlHandle == null)
         {
-            var povos = await povoRepository.GetAllAsync();
-            var viewModel = new NavbarViewModel
+            if (User.IsInRole("Admin"))
             {
-                Povos = povos
-            };
-            return View(viewModel);
+                var povos = await povoRepository.GetAllAsync();
+                var viewModel = new NavbarViewModel
+                {
+                    Povos = povos
+                };
+                return View(viewModel);
+            }
+            return RedirectToAction("Login", "Account");
+           
         }
         else
         {
             var mundo = await mundoRepository.GetByUrlHandleAsync(urlHandle);
+
+            if (mundo == null)
+            {
+                // return a custom error view with an appropriate message             
+                var errorViewModel = new ErrorViewModel
+                {
+                    ErrorMessage = "The specified URL handle does not exist.",
+                    RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier
+                };
+
+                return View("Error", errorViewModel);
+            }
             var povos = await povoRepository.GetAllByMundoAsync(mundo.Id);
             ViewBag.MundoUrlHandle = mundo.UrlHandle; // set the value of ViewBag here
             var viewModel = new NavbarViewModel

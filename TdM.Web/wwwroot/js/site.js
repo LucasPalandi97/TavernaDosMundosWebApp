@@ -1,7 +1,49 @@
-﻿// Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
-// for details on configuring this project to bundle and minify static web assets.
-
-// Write your JavaScript code.
+﻿
+//Popovers
 $(document).ready(function () {
     $('[data-bs-toggle="popover"]').popover();
+});
+
+const themeSwitch = document.getElementById('themeSwitch');
+
+
+//Eliminate padding left when mobile
+if (/Mobi/.test(navigator.userAgent)) {
+    document.querySelector('main[role="main"]').style.paddingLeft = 0;
+}
+
+
+//Color theme
+// Get stored theme or null
+function getTheme() {
+    return localStorage.getItem('theme');
+}
+
+// Set theme and store in local storage
+function setTheme(theme) {
+    if (theme === 'dark') {
+        document.documentElement.setAttribute('data-bs-theme', 'dark');
+        localStorage.setItem('theme', 'dark');
+    } else {
+        document.documentElement.setAttribute('data-bs-theme', 'light');
+        localStorage.setItem('theme', 'light');
+    }
+}
+
+// On page load, set theme if stored
+const storedTheme = getTheme();
+if (storedTheme !== null) {
+    setTheme(storedTheme);
+}
+
+// Add event listener to each theme button
+const lightBtn = document.getElementById('lightBtn');
+const darkBtn = document.getElementById('darkBtn');
+
+lightBtn.addEventListener('click', function () {
+    setTheme('light');
+});
+
+darkBtn.addEventListener('click', function () {
+    setTheme('dark');
 });

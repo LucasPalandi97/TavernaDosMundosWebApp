@@ -34,7 +34,7 @@ else
         <div class="card-deck my-3 row-cols-lg-4 row-cols-sm-2 justify-content-center align-items-center">
             @foreach (var personagem in Model.Personagens.OrderBy(p => p.Nome))
             {
-                <div id="personagemcard" class="card row-cols-lg-4 row-cols-sm-2 my-auto mx-2 mb-3" style="height: 20rem; width: 12rem;">
+                <div id="personagemcard" class="card bg-dark row-cols-lg-4 row-cols-sm-2 my-auto mx-2 mb-3" style="height: 20rem; width: 12rem;">
                     <div class="card_mask p-0 justify-content-between">
                         <a class="text-white" asp-area="" asp-controller="Personagens" asp-action="Index" asp-route-urlHandle="@personagem.UrlHandle">
                             <img src="@personagem.ImgCard" class="card-img-top imgfit h-100 w-100" alt="Image not found!">

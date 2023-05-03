@@ -31,7 +31,7 @@ else
         <div id="continentList" class=" my-3 row row-cols-xxl-1 justify-content-center">
             @foreach (var continente in Model.Continentes.OrderBy(c => c.Nome))
             {
-                <div id="continentcard" class="card px-0 mx-2 mb-5" style="width:100%; height:auto">
+                <div id="continentcard" class="card bg-dark px-0 mx-2 mb-5" style="width:100%; height:auto">
                     <div id="continentmask" class="card_mask p-0 justify-content-between">
                         <a class="text-white" asp-area="" asp-controller="Continentes" asp-action="Index" asp-route-urlHandle="@continente.UrlHandle">
                             <img id="continentimg" src="@continente.ImgCard" class="card-img-top imgfit" style="object-fit:cover; object-position:center;">
@@ -45,7 +45,7 @@ else
                                 <div id="regionList " class="row row-cols-1 row-cols-sm-2 row-cols-md-2 row-cols-xl-4 g-1 justify-content-center align-items-center">
                                     @foreach (var regiao in continente.Regioes.OrderBy(r => r.Nome))
                                     {
-                                        <div id="regioncard" class="card px-0 my-auto mx-2 mb-3" style="width:16rem; height:10rem;">
+                                        <div id="regioncard" class="card bg-dark px-0 my-auto mx-2 mb-3" style="width:16rem; height:10rem;">
                                             <div id="regionmask" class="card_mask position-absolute p-0 justify-content-between">
                                                 <a class="text-white" asp-area="" asp-controller="Regioes" asp-action="Index" asp-route-urlHandle="@regiao.UrlHandle">
                                                     <img id="regionimg" src="@regiao.ImgCard" class="card-img-top imgfit" style="object-fit: cover;" alt="@regiao.Nome">

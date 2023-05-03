@@ -58,6 +58,7 @@
     opacity: 0.4;
     transition: .5s ease;
     background-color: #393839;
+    z-index:2;
 }
 
 .mask_text {

@@ -8,10 +8,10 @@
 <head>
     <link type="text/css" rel="stylesheet" href="~/css/HomePage.css" />
 </head>
-<body class="bg-dark">
+<body>
     <partial name="_Navbar2" />
-  
-    <div class="containter-fluid coll-xxl-8 bg-dark" style="min-height:100vh;">
+  <section>
+    <div class="containter-fluid coll-xxl-8" style="min-height:100vh;">
         <div class="d-block d-lg-flex col-12 justify-content-center h-auto ">
             @if (Model != null && Model.Any())
             {
@@ -32,6 +32,6 @@
             }
         </div>
     </div>
-
+    </section>
 </body>
 

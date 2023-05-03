@@ -9,16 +9,28 @@
         <h1 class="text-center">Add new World - Admin Functionality</h1>
     </div>
     <form method="post">
-        <div class="row mb-3">
-            <div class="col-md-6 mb-3">
-                <label for="nome" class="form-label">World</label>
-                <input type="text" class="form-control" id="nome" placeholder="World Name" asp-for="Nome" required />
-                <span class="text-danger" asp-validation-for="Nome"></span>
-            </div>
-            <div class="col-md-6 mb-3">
-                <label for="descricao" class="form-label">Short Description</label>
-                <input type="text" class="form-control" id="CurtaDescricao" asp-for="CurtaDescricao" placeholder="World Short Description" required />
+
+        <div class="row row-cols-1 row-cols-md-2 ">          
+                <div class="align-self-md-start">
+                    <div class="mb-3">
+                        <label for="nome" class="form-label">World</label>
+                        <input type="text" class="form-control" id="nome" placeholder="World Name" asp-for="Nome" required />
+                        <span class="text-danger" asp-validation-for="Nome"></span>
+                    </div>
+                    <div class="mb-3 form-group">
+                        <label for="autor" class="form-label">Author</label>
+                        <select id="autor" asp-for="Autor" class="form-control" asp-items="Html.GetEnumSelectList<Autor>()" required>
+                            <option value="" selected>Select Author ...</option>
+                        </select>
+                        <span asp-validation-for="Autor" class="text-danger"></span>
+                        <span class="text-danger" asp-validation-for="Autor"></span>
+                    </div>
+                </div>
+            <div class="mb-5">
+                <label for="CurtaDescricao" class="form-label">Short Description</label>
+                <textarea class="form-control h-100" type="" placeholder="Character's Short Description" id="CurtaDescricao" name="CurtaDescricao" asp-for="CurtaDescricao" required>
                 <span class="text-danger" asp-validation-for="CurtaDescricao"></span>
+            </textarea>
             </div>
         </div>
 
@@ -30,7 +42,7 @@
             </div>
         </div>
 
-        <div class="row mb-3  align-items-center justify-content-center">
+        <div class="row mb-3 align-items-center justify-content-center">
             <div class=" mb-5 col-12 col-md-6 align-self-md-start">
                 <div class="mb-3">
                     <label class="form-label">Upload Content Image</label>
@@ -43,8 +55,8 @@
                     </div>
                 </div>
             </div>
-            <div class=" mb-3 col-12 col-md-6 align-self-md-start">
-                <div class=" mb-3 form-group ">
+            <div class="mb-3 col-12 col-md-6 align-self-md-start">
+                <div class="mb-3 form-group">
                     <label for="autor" class="form-label">Author</label>
                     <select id="autor" asp-for="Autor" class="form-control" asp-items="Html.GetEnumSelectList<Autor>()" required>
                         <option value="" selected >Select Author ...</option>
@@ -52,25 +64,26 @@
                     <span asp-validation-for="Autor" class="text-danger"></span>
                     <span class="text-danger" asp-validation-for="Autor"></span>
                 </div>
-                <div class="mb-3 ">
+                <div class="mb-3">
                     <label class="form-label">Published Date</label>
                     <input type="datetime-local" class="form-control" id="publishedDate" asp-for="PublishedDate" required />
                     <span class="text-danger" asp-validation-for="PublishedDate"></span>
                 </div>
 
-                <div class="mb-3 ">
+                <div class="mb-3">
                     <label class="form-label">URL Handle</label>
                     <input type="text" class="form-control" id="urlHandle" asp-for="UrlHandle" required />
                     <span class="text-danger" asp-validation-for="UrlHandle"></span>
                 </div>
+
+                <div class="form-check form-switch mb-3">
+                    <label class="form-check-label" for="visible">Visible?</label>
+                    <input class="form-check-input" type="checkbox" id="visible" asp-for="Visible" checked required>
+                    <span class="text-danger" asp-validation-for="Visible"></span>
+                </div>
             </div>
         </div>
-
-        <div class="form-check form-switch mb-3">
-            <label class="form-check-label" for="visible">Visible?</label>
-            <input class="form-check-input" type="checkbox" id="visible" asp-for="Visible" checked required>
-            <span class="text-danger" asp-validation-for="Visible"></span>
-        </div>
+       
 
         <div class="row justify-content-end">
             <button type="button" class="btn btn-dark position-relative p-0" style="height:2rem; width:3rem;" data-bs-toggle="popover" data-bs-content="Showing entities that have null Worlds"><i class="bi bi-lightbulb"></i></button>
