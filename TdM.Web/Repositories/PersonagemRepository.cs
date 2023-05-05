@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 using TdM.Database.Data;
 using TdM.Database.Models.Domain;
 
@@ -7,10 +8,12 @@ namespace TdM.Web.Repositories;
 public class PersonagemRepository : IPersonagemRepository
 {
     private readonly TavernaDbContext tavernaDbContext;
+    private readonly IMemoryCache cache;
 
-    public PersonagemRepository(TavernaDbContext tavernaDbContext)
+    public PersonagemRepository(TavernaDbContext tavernaDbContext, IMemoryCache cache)
     {
         this.tavernaDbContext = tavernaDbContext;
+        this.cache = cache;
     }
     public async Task<Personagem> AddAsync(Personagem personagem)
     {
@@ -32,79 +35,151 @@ public class PersonagemRepository : IPersonagemRepository
         return null;
     }
 
-    public async Task<IEnumerable<Personagem>> GetAllAsync()
+    public async Task<IEnumerable<Personagem>> GetAllAsync(int page, int pageSize)
     {
-        //return list and include navigation Icollection from model database
-        return await tavernaDbContext.Personagens
+        string cacheKey = $"PersonagemRepository.GetAllAsync_{page}_{pageSize}";
+        if (!cache.TryGetValue(cacheKey, out IEnumerable<Personagem>? result))
+        {
+            result = await tavernaDbContext.Personagens
             .Include(x => x.Continente)
             .Include(x => x.Regiao)
             .Include(x => x.Povos)
             .Include(x => x.Contos)
-            .Include(x => x.Mundo).ToListAsync();
+            .Include(x => x.Mundo)
+            .AsNoTracking()
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync();
+
+            if (result != null && result.Any())
+            {
+                cache.Set(cacheKey, result, TimeSpan.FromMinutes(10));
+            }
+        }
+        return result;
     }
 
-    public async Task<IEnumerable<Personagem>> GetAllByMundoAsync(Guid mundoId)
+    public async Task<IEnumerable<Personagem>> GetAllByMundoAsync(Guid mundoId, int page, int pageSize)
     {
-#pragma warning disable CS8602 // Dereference of a possibly null reference.
-        return await tavernaDbContext.Personagens
+        string cacheKey = $"PersonagemRepository.GetAllByMundoAsync_{page}_{pageSize}";
+        if (!cache.TryGetValue(cacheKey, out IEnumerable<Personagem>? result))
+        {
+            result = await tavernaDbContext.Personagens
             .Include(x => x.Continente)
             .Include(x => x.Regiao)
             .Include(x => x.Povos)
             .Include(x => x.Contos)
             .Include(x => x.Mundo)
             .Where(x => x.Mundo.Id == mundoId)
+            .AsNoTracking()
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
             .ToListAsync();
-#pragma warning restore CS8602 // Dereference of a possibly null reference.
+
+            if (result != null && result.Any())
+            {
+                cache.Set(cacheKey, result, TimeSpan.FromMinutes(10));
+            }
+        }
+        return result;
     }
 
-    public async Task<Personagem?> GetAsync(Guid id)
+    public async Task<Personagem?> GetAsync(Guid id, int page, int pageSize)
     {
-        return await tavernaDbContext.Personagens
+        string cacheKey = $"PersonagemRepository.GetAsync_{id}_{page}_{pageSize}";
+        if (!cache.TryGetValue(cacheKey, out Personagem? result))
+        {
+            result = await tavernaDbContext.Personagens
             .Include(x => x.Continente)
             .Include(x => x.Regiao)
             .Include(x => x.Povos)
             .Include(x => x.Contos)
-            .Include(x => x.Mundo).FirstOrDefaultAsync(x => x.Id == id);
+            .Include(x => x.Mundo)
+            .AsNoTracking()
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .FirstOrDefaultAsync(x => x.Id == id);
+
+            if (result != null)
+            {
+                cache.Set(cacheKey, result, TimeSpan.FromMinutes(10));
+            }
+        }
+        return result;
     }
 
-    public async Task<IEnumerable<Personagem>>? GetPersonagensByRegiaoAsync(object selectedRegiaoIds)
+    public async Task<IEnumerable<Personagem>>? GetPersonagensByRegiaoAsync(object selectedRegiaoIds, int page, int pageSize)
     {
-        if (selectedRegiaoIds is Guid)
+        string cacheKey = $"PersonagemRepository.GetPersonagensByRegiaoAsync_{page}_{pageSize}";
+        if (!cache.TryGetValue(cacheKey, out IEnumerable<Personagem>? result))
         {
-#pragma warning disable CS8602 // Dereference of a possibly null reference.
-            return await tavernaDbContext.Personagens.Where(r => r.Regiao.Id == (Guid)selectedRegiaoIds).ToListAsync();
-#pragma warning restore CS8602 // Dereference of a possibly null reference.
+            if (selectedRegiaoIds is Guid)
+            {
+                result = await tavernaDbContext.Personagens
+                  .Where(r => r.Regiao.Id == (Guid)selectedRegiaoIds)
+                  .AsNoTracking()
+                  .Skip((page - 1) * pageSize)
+                  .Take(pageSize)
+                  .ToListAsync();
+            }
+            else if (selectedRegiaoIds is List<Guid> selectedRegiaoIdsList)
+            {
+                result = await tavernaDbContext.Personagens
+                  .Where(r => selectedRegiaoIdsList
+                  .Contains(r.Regiao.Id))
+                  .AsNoTracking()
+                  .Skip((page - 1) * pageSize)
+                  .Take(pageSize)
+                  .ToListAsync();
+            }
+            else
+            {
+                throw new ArgumentException("Invalid argument type");
+            }
+
+            if (result != null && result.Any())
+            {
+                cache.Set(cacheKey, result, TimeSpan.FromMinutes(10));
+            }
         }
-        else if (selectedRegiaoIds is List<Guid> selectedRegiaoIdsList)
-        {
-#pragma warning disable CS8602 // Dereference of a possibly null reference.
-            return await tavernaDbContext.Personagens.Where(r => selectedRegiaoIdsList.Contains(r.Regiao.Id)).ToListAsync();
-#pragma warning restore CS8602 // Dereference of a possibly null reference.
-        }
-        else
-        {
-            throw new ArgumentException("Invalid argument type");
-        }
+        return result;
     }
 
-    public async Task<Personagem?> GetByUrlHandleAsync(string urlHandle)
+    public async Task<Personagem?> GetByUrlHandleAsync(string urlHandle, int page, int pageSize)
     {
-        return await tavernaDbContext.Personagens
+        string cacheKey = $"PersonagemRepository.GetByUrlHandleAsync_{urlHandle}_{page}_{pageSize}";
+        if (!cache.TryGetValue(cacheKey, out Personagem? result))
+        {
+            result = await tavernaDbContext.Personagens
             .Include(x => x.Continente)
             .Include(x => x.Regiao)
             .Include(x => x.Povos)
             .Include(x => x.Contos)
+            .AsNoTracking()
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
             .Include(x => x.Mundo).FirstOrDefaultAsync(x => x.UrlHandle == urlHandle);
+
+            if (result != null)
+            {
+                cache.Set(cacheKey, result, TimeSpan.FromMinutes(10));
+            }
+        }
+        return result;
     }
 
-    public async Task<Personagem?> UpdateAsync(Personagem personagem)
+    public async Task<Personagem?> UpdateAsync(Personagem personagem, int page, int pageSize)
     {
+        string cacheKey = $"PersonagemRepository.GetByUrlHandleAsync_{personagem.UrlHandle}_{page}_{pageSize}";
+
         var existingPersonagem = await tavernaDbContext.Personagens
             .Include(x => x.Continente)
             .Include(x => x.Regiao)
             .Include(x => x.Povos)
             .Include(x => x.Contos)
             .Include(x => x.Mundo)
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
             .FirstOrDefaultAsync(x => x.Id == personagem.Id);
 
         if (existingPersonagem != null)
@@ -127,9 +202,9 @@ public class PersonagemRepository : IPersonagemRepository
             existingPersonagem.Mundo = personagem.Regiao?.Mundo;
             await tavernaDbContext.SaveChangesAsync();
 
+            cache.Remove(cacheKey);
             return existingPersonagem;
         }
-
         return null;
     }
 }

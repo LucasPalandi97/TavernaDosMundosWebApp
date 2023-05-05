@@ -20,7 +20,7 @@ public class AdminUsersController : Controller
 
     public async Task<IActionResult> List()
     {
-        var users = await userRepository.GetAll();
+        var users = await userRepository.GetAll(1, 10);
 
         var usersViewModel = new UserViewModel();
         usersViewModel.Users = new List<User>();

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Data;
+using System.Drawing.Printing;
 using TdM.Database.Models.Domain;
 using TdM.Web.Models.ViewModels;
 using TdM.Web.Repositories;
@@ -25,7 +26,7 @@ public class AdminContinentesController : Controller
     public async Task<IActionResult> ListContinentesByMundo(Guid id)
     {
         IEnumerable<Continente> continentes;
-        continentes = await continenteRepository.GetContinentesByMundoAsync(id);
+        continentes = await continenteRepository.GetContinentesByMundoAsync(id, 1, 10);
         var selectListItems = continentes.Select(x => new SelectListItem
         {
             Text = x.Nome,
@@ -39,8 +40,8 @@ public class AdminContinentesController : Controller
     public async Task<IActionResult> Add()
     {
         //get mundos from repository
-        var mundos = await mundoRepository.GetAllAsync();
-        var regioes = await regiaoRepository.GetAllAsync();
+        var mundos = await mundoRepository.GetAllAsync(1, 10);
+        var regioes = await regiaoRepository.GetAllAsync(1, 10);
         var model = new AddContinenteRequest
         {
             Mundos = mundos.Select(x => new SelectListItem { Text = x.Nome, Value = x.Id.ToString() }),
@@ -54,14 +55,14 @@ public class AdminContinentesController : Controller
     {
         if (!ModelState.IsValid)
         {
-            addContinenteRequest.Mundos = (await mundoRepository.GetAllAsync())
+            addContinenteRequest.Mundos = (await mundoRepository.GetAllAsync(1, 10))
                 .Select(x => new SelectListItem
                 {
                     Text = x.Nome,
                     Value = x.Id.ToString()
                 }).ToList();
 
-            addContinenteRequest.Regioes = (await regiaoRepository.GetAllAsync()).Where(r => r.Mundo == null || r.Continente == null)
+            addContinenteRequest.Regioes = (await regiaoRepository.GetAllAsync(1, 10)).Where(r => r.Mundo == null || r.Continente == null)
                 .Select(x => new SelectListItem
                 {
                     Text = x.Nome,
@@ -89,7 +90,7 @@ public class AdminContinentesController : Controller
         if (!string.IsNullOrEmpty(selectedMundoId))
         {
             var selectedMundoIdAsGuid = Guid.Parse(selectedMundoId);
-            var existingMundo = await mundoRepository.GetAsync(selectedMundoIdAsGuid);
+            var existingMundo = await mundoRepository.GetAsync(selectedMundoIdAsGuid,1 , 10);
 
             if (existingMundo != null)
             {
@@ -107,7 +108,7 @@ public class AdminContinentesController : Controller
             if (!string.IsNullOrEmpty(selectedRegiaoId))
             {
                 var selectedRegiaoIdAsGuid = Guid.Parse(selectedRegiaoId);
-                var existingRegiao = await regiaoRepository.GetAsync(selectedRegiaoIdAsGuid);
+                var existingRegiao = await regiaoRepository.GetAsync(selectedRegiaoIdAsGuid, 1, 10);
 
                 if (existingRegiao != null)
                 {
@@ -129,7 +130,7 @@ public class AdminContinentesController : Controller
     public async Task<IActionResult> List()
     {
         // Use dbContext to read the continente
-        var continentes = await continenteRepository.GetAllAsync();
+        var continentes = await continenteRepository.GetAllAsync(1, 10);
         return View(continentes);
     }
 
@@ -137,9 +138,9 @@ public class AdminContinentesController : Controller
     public async Task<IActionResult> Edit(Guid id)
     {
         //Retrieve Result from repository
-        var continente = await continenteRepository.GetAsync(id);
-        var mundosDomainModel = await mundoRepository.GetAllAsync();
-        var regioesDomainModel = await regiaoRepository.GetAllAsync();
+        var continente = await continenteRepository.GetAsync(id, 1, 10);
+        var mundosDomainModel = await mundoRepository.GetAllAsync(1, 10);
+        var regioesDomainModel = await regiaoRepository.GetAllAsync(1, 10);
 
         if (continente != null)
         {
@@ -177,14 +178,14 @@ public class AdminContinentesController : Controller
     {
         if (!ModelState.IsValid)
         {
-            editContinenteRequest.Mundos = (await mundoRepository.GetAllAsync())
+            editContinenteRequest.Mundos = (await mundoRepository.GetAllAsync(1, 10))
                 .Select(x => new SelectListItem
                 {
                     Text = x.Nome,
                     Value = x.Id.ToString()
                 }).ToList();
 
-            editContinenteRequest.Regioes = (await regiaoRepository.GetAllAsync()).Where(r => r.Mundo == null || r.Continente == null)
+            editContinenteRequest.Regioes = (await regiaoRepository.GetAllAsync(1, 10)).Where(r => r.Mundo == null || r.Continente == null)
                .Select(x => new SelectListItem
                {
                    Text = x.Nome,
@@ -212,7 +213,7 @@ public class AdminContinentesController : Controller
         if (selectedMundoId != null)
         {
             var selectedMundoIdAsGuid = Guid.Parse(selectedMundoId);
-            var existingMundo = await mundoRepository.GetAsync(selectedMundoIdAsGuid);
+            var existingMundo = await mundoRepository.GetAsync(selectedMundoIdAsGuid, 1, 10);
 
             if (existingMundo != null)
             {
@@ -231,7 +232,7 @@ public class AdminContinentesController : Controller
             if (!string.IsNullOrEmpty(selectedRegiaoId))
             {
                 var selectedRegiaoIdAsGuid = Guid.Parse(selectedRegiaoId);
-                var existingRegiao = await regiaoRepository.GetAsync(selectedRegiaoIdAsGuid);
+                var existingRegiao = await regiaoRepository.GetAsync(selectedRegiaoIdAsGuid, 1, 10);
 
                 if (existingRegiao != null)
                 {
@@ -243,7 +244,7 @@ public class AdminContinentesController : Controller
         //Maping Regioes back to domain modal
         continente.Regioes = selectedRegioes;
 
-        var updatedContinente = await continenteRepository.UpdateAsync(continente);
+        var updatedContinente = await continenteRepository.UpdateAsync(continente, 1, 10);
 
         if (updatedContinente != null)
         {

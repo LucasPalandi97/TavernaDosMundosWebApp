@@ -34,7 +34,7 @@ public class AdminPersonagensController : Controller
     public async Task<IActionResult> Add()
     {
         //get mundos from repository
-        var mundos = await mundoRepository.GetAllAsync();
+        var mundos = await mundoRepository.GetAllAsync(1, 10);
         var model = new AddPersonagemRequest
         {
             Mundos = mundos.Select(x => new SelectListItem { Text = x.Nome, Value = x.Id.ToString() })
@@ -47,35 +47,35 @@ public class AdminPersonagensController : Controller
     {
         if (!ModelState.IsValid)
         {
-            addPersonagemRequest.Mundos = (await mundoRepository.GetAllAsync())
+            addPersonagemRequest.Mundos = (await mundoRepository.GetAllAsync(1, 10))
                 .Select(x => new SelectListItem
                 {
                     Text = x.Nome,
                     Value = x.Id.ToString()
                 }).ToList();
 
-            addPersonagemRequest.Continentes = (await continenteRepository.GetAllAsync())
+            addPersonagemRequest.Continentes = (await continenteRepository.GetAllAsync(1, 10))
                 .Select(x => new SelectListItem
                 {
                     Text = x.Nome,
                     Value = x.Id.ToString()
                 }).ToList();
 
-            addPersonagemRequest.Regioes = (await regiaoRepository.GetAllAsync())
+            addPersonagemRequest.Regioes = (await regiaoRepository.GetAllAsync(1, 10))
                .Select(x => new SelectListItem
                {
                    Text = x.Nome,
                    Value = x.Id.ToString()
                }).ToList();
 
-            addPersonagemRequest.Povos = (await povoRepository.GetAllAsync())
+            addPersonagemRequest.Povos = (await povoRepository.GetAllAsync(1, 10))
                .Select(x => new SelectListItem
                {
                    Text = x.Nome,
                    Value = x.Id.ToString()
                }).ToList();
 
-            addPersonagemRequest.Contos = (await contoRepository.GetAllAsync())
+            addPersonagemRequest.Contos = (await contoRepository.GetAllAsync(1, 10))
                .Select(x => new SelectListItem
                {
                    Text = x.Titulo,
@@ -106,7 +106,7 @@ public class AdminPersonagensController : Controller
         if (selectedMundoId != null)
         {
             var selectedMundoIdAsGuid = Guid.Parse(selectedMundoId);
-            var existingMundo = await mundoRepository.GetAsync(selectedMundoIdAsGuid);
+            var existingMundo = await mundoRepository.GetAsync(selectedMundoIdAsGuid, 1, 10);
 
             if (existingMundo != null)
             {
@@ -121,7 +121,7 @@ public class AdminPersonagensController : Controller
         if (selectedContinenteId != null)
         {
             var selectedContinenteIdAsGuid = Guid.Parse(selectedContinenteId);
-            var existingContinente = await continenteRepository.GetAsync(selectedContinenteIdAsGuid);
+            var existingContinente = await continenteRepository.GetAsync(selectedContinenteIdAsGuid, 1, 10);
 
             if (existingContinente != null)
             {
@@ -136,7 +136,7 @@ public class AdminPersonagensController : Controller
         if (selectedRegiaoId != null)
         {
             var selectedRegiaoIdAsGuid = Guid.Parse(selectedRegiaoId);
-            var existingRegiao = await regiaoRepository.GetAsync(selectedRegiaoIdAsGuid);
+            var existingRegiao = await regiaoRepository.GetAsync(selectedRegiaoIdAsGuid, 1, 10);
 
             if (existingRegiao != null)
             {
@@ -154,7 +154,7 @@ public class AdminPersonagensController : Controller
             if (!string.IsNullOrEmpty(selectedPovoId))
             {
                 var selectedPovoIdAsGuid = Guid.Parse(selectedPovoId);
-                var existingPovo = await povoRepository.GetAsync(selectedPovoIdAsGuid);
+                var existingPovo = await povoRepository.GetAsync(selectedPovoIdAsGuid, 1, 10);
                 if (existingPovo != null)
                 {
                     selectedPovos.Add(existingPovo);
@@ -178,13 +178,13 @@ public class AdminPersonagensController : Controller
         if (selectedRegiaoIds == null)
         {
 #pragma warning disable CS8602 // Dereference of a possibly null reference.
-            personagens = await personagemRepository.GetPersonagensByRegiaoAsync(id);
+            personagens = await personagemRepository.GetPersonagensByRegiaoAsync(id, 1, 10);
 #pragma warning restore CS8602 // Dereference of a possibly null reference.
         }
         else
         {
 #pragma warning disable CS8602 // Dereference of a possibly null reference.
-            personagens = await personagemRepository.GetPersonagensByRegiaoAsync(selectedRegiaoIds);
+            personagens = await personagemRepository.GetPersonagensByRegiaoAsync(selectedRegiaoIds, 1, 10);
 #pragma warning restore CS8602 // Dereference of a possibly null reference.
         }
         var selectListItems = personagens.Select(x => new SelectListItem
@@ -200,7 +200,7 @@ public class AdminPersonagensController : Controller
     public async Task<IActionResult> List()
     {
         // Use dbContext to read the personagem
-        var personagens = await personagemRepository.GetAllAsync();
+        var personagens = await personagemRepository.GetAllAsync(1, 10);
         return View(personagens);
     }
 
@@ -208,12 +208,12 @@ public class AdminPersonagensController : Controller
     public async Task<IActionResult> Edit(Guid id)
     {
         //Retrieve Result from repository
-        var personagem = await personagemRepository.GetAsync(id);
-        var mundosDomainModel = await mundoRepository.GetAllAsync();
-        var continenteDomainModel = await continenteRepository.GetAllAsync();
-        var regiaoDomainModel = await regiaoRepository.GetAllAsync();
-        var povosDomainModel = await povoRepository.GetAllAsync();
-        var contosDomainModel = await continenteRepository.GetAllAsync();
+        var personagem = await personagemRepository.GetAsync(id, 1, 10);
+        var mundosDomainModel = await mundoRepository.GetAllAsync(1, 10);
+        var continenteDomainModel = await continenteRepository.GetAllAsync(1, 10);
+        var regiaoDomainModel = await regiaoRepository.GetAllAsync(1, 10);
+        var povosDomainModel = await povoRepository.GetAllAsync(1, 10);
+        var contosDomainModel = await contoRepository.GetAllAsync(1, 10);
 
         if (personagem != null)
         {
@@ -275,35 +275,35 @@ public class AdminPersonagensController : Controller
 
         if (!ModelState.IsValid)
         {
-            editPersonagemRequest.Mundos = (await mundoRepository.GetAllAsync())
+            editPersonagemRequest.Mundos = (await mundoRepository.GetAllAsync(1, 10))
                 .Select(x => new SelectListItem
                 {
                     Text = x.Nome,
                     Value = x.Id.ToString()
                 }).ToList();
 
-            editPersonagemRequest.Continentes = (await continenteRepository.GetAllAsync())
+            editPersonagemRequest.Continentes = (await continenteRepository.GetAllAsync(1, 10))
                 .Select(x => new SelectListItem
                 {
                     Text = x.Nome,
                     Value = x.Id.ToString()
                 }).ToList();
 
-            editPersonagemRequest.Regioes = (await regiaoRepository.GetAllAsync())
+            editPersonagemRequest.Regioes = (await regiaoRepository.GetAllAsync(1, 10))
                .Select(x => new SelectListItem
                {
                    Text = x.Nome,
                    Value = x.Id.ToString()
                }).ToList();
 
-            editPersonagemRequest.Povos = (await povoRepository.GetAllAsync())
+            editPersonagemRequest.Povos = (await povoRepository.GetAllAsync(1, 10))
              .Select(x => new SelectListItem
              {
                  Text = x.Nome,
                  Value = x.Id.ToString()
              }).ToList();
 
-            editPersonagemRequest.Contos = (await contoRepository.GetAllAsync())
+            editPersonagemRequest.Contos = (await contoRepository.GetAllAsync(1, 10))
              .Select(x => new SelectListItem
              {
                  Text = x.Titulo,
@@ -335,7 +335,7 @@ public class AdminPersonagensController : Controller
         if (selectedMundoId != null)
         {
             var selectedMundoIdAsGuid = Guid.Parse(selectedMundoId);
-            var existingMundo = await mundoRepository.GetAsync(selectedMundoIdAsGuid);
+            var existingMundo = await mundoRepository.GetAsync(selectedMundoIdAsGuid, 1, 10);
 
             if (existingMundo != null)
             {
@@ -351,7 +351,7 @@ public class AdminPersonagensController : Controller
         if (selectedContinenteId != null)
         {
             var selectedContinenteIdAsGuid = Guid.Parse(selectedContinenteId);
-            var existingContinente = await continenteRepository.GetAsync(selectedContinenteIdAsGuid);
+            var existingContinente = await continenteRepository.GetAsync(selectedContinenteIdAsGuid, 1, 10);
 
             if (existingContinente != null)
             {
@@ -367,7 +367,7 @@ public class AdminPersonagensController : Controller
         if (selectedRegiaoId != null)
         {
             var selectedRegiaoIdAsGuid = Guid.Parse(selectedRegiaoId);
-            var existingRegiao = await regiaoRepository.GetAsync(selectedRegiaoIdAsGuid);
+            var existingRegiao = await regiaoRepository.GetAsync(selectedRegiaoIdAsGuid, 1, 10);
 
             if (existingRegiao != null)
             {
@@ -385,7 +385,7 @@ public class AdminPersonagensController : Controller
             if (!string.IsNullOrEmpty(selectedPovoId))
             {
                 var selectedPovoIdAsGuid = Guid.Parse(selectedPovoId);
-                var existingPovo = await povoRepository.GetAsync(selectedPovoIdAsGuid);
+                var existingPovo = await povoRepository.GetAsync(selectedPovoIdAsGuid, 1, 10);
                 if (existingPovo != null)
                 {
                     selectedPovos.Add(existingPovo);
@@ -404,7 +404,7 @@ public class AdminPersonagensController : Controller
             if (!string.IsNullOrEmpty(selectedContoId))
             {
                 var selectedContoIdAsGuid = Guid.Parse(selectedContoId);
-                var existingConto = await contoRepository.GetAsync(selectedContoIdAsGuid);
+                var existingConto = await contoRepository.GetAsync(selectedContoIdAsGuid, 1, 10);
                 if (existingConto != null)
                 {
                     selectedContos.Add(existingConto);
@@ -415,7 +415,7 @@ public class AdminPersonagensController : Controller
         //Maping Povos back to domain modal
         personagem.Contos = selectedContos;
 
-        var updatedPersonagem = await personagemRepository.UpdateAsync(personagem);
+        var updatedPersonagem = await personagemRepository.UpdateAsync(personagem, 1, 10);
 
         if (updatedPersonagem != null)
         {

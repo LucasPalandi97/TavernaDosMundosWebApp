@@ -19,7 +19,7 @@ public class ContosController : Controller
     [HttpGet]
     public async Task<IActionResult> Index(string urlHandle)
     {
-        var conto = await contoRepository.GetByUrlHandleAsync(urlHandle);
+        var conto = await contoRepository.GetByUrlHandleAsync(urlHandle, 1, 10);
         return View(conto);
     }
 
@@ -30,7 +30,7 @@ public class ContosController : Controller
         {
             if (User.IsInRole("Admin"))
             {
-                var contos = await contoRepository.GetAllAsync();
+                var contos = await contoRepository.GetAllAsync(1, 10);
                 var viewModel = new NavbarViewModel
                 {
                     Contos = contos
@@ -42,7 +42,7 @@ public class ContosController : Controller
         }
         else
         {
-            var mundo = await mundoRepository.GetByUrlHandleAsync(urlHandle);
+            var mundo = await mundoRepository.GetByUrlHandleAsync(urlHandle, 1, 10);
 
             if (mundo == null)
             {
@@ -56,7 +56,7 @@ public class ContosController : Controller
                 return View("Error", errorViewModel);
             }
 
-            var contos = await contoRepository.GetAllByMundoAsync(mundo.Id);
+            var contos = await contoRepository.GetAllByMundoAsync(mundo.Id, 1, 10);
             ViewBag.MundoUrlHandle = mundo.UrlHandle; // set the value of ViewBag here
             var viewModel = new NavbarViewModel
             {

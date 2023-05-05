@@ -1,4 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
+using System.Drawing;
 using TdM.Database.Data;
 using TdM.Database.Models.Domain;
 
@@ -8,11 +10,14 @@ public class CriaturaRepository : ICriaturaRepository
 {
 
     private readonly TavernaDbContext tavernaDbContext;
+    private readonly IMemoryCache cache;
 
-    public CriaturaRepository(TavernaDbContext tavernaDbContext)
+    public CriaturaRepository(TavernaDbContext tavernaDbContext, IMemoryCache cache)
     {
         this.tavernaDbContext = tavernaDbContext;
+        this.cache = cache;
     }
+
     public async Task<Criatura> AddAsync(Criatura criatura)
     {
         await tavernaDbContext.AddAsync(criatura);
@@ -22,7 +27,6 @@ public class CriaturaRepository : ICriaturaRepository
 
     public async Task<Criatura?> DeleteAsync(Guid id)
     {
-
         var existingCriatura = await tavernaDbContext.Criaturas.FindAsync(id);
 
         if (existingCriatura != null)
@@ -32,87 +36,149 @@ public class CriaturaRepository : ICriaturaRepository
             return existingCriatura;
         }
         return null;
-
     }
 
-    public async Task<IEnumerable<Criatura>> GetAllAsync()
+    public async Task<IEnumerable<Criatura>> GetAllAsync(int page, int pageSize)
     {
-        //return list and include navigation Icollection from model database
-        return await tavernaDbContext.Criaturas
-            .Include(x => x.Continentes)
+        string cacheKey = $"CriaturaRepository.GetAllAsync_{page}_{pageSize}";
+        if (!cache.TryGetValue(cacheKey, out IEnumerable<Criatura>? result))
+        {
+            result = await tavernaDbContext.Criaturas
+           .Include(x => x.Continentes)
            .Include(x => x.Regioes)
            .Include(x => x.Povos)
            .Include(x => x.Contos)
            .Include(x => x.Mundo)
+           .AsNoTracking()
+           .Skip((page - 1) * pageSize)
+           .Take(pageSize)
            .ToListAsync();
+
+            if (result != null && result.Any())
+            {
+                cache.Set(cacheKey, result, TimeSpan.FromMinutes(10));
+            }
+        }
+        return result;
     }
 
-    public async Task<IEnumerable<Criatura>> GetAllByMundoAsync(Guid mundoId)
+    public async Task<IEnumerable<Criatura>> GetAllByMundoAsync(Guid mundoId, int page, int pageSize)
     {
-#pragma warning disable CS8602 // Dereference of a possibly null reference.
-        return await tavernaDbContext.Criaturas
+        string cacheKey = $"CriaturaRepository.GetAllByMundoAsync_{page}_{pageSize}";
+        if (!cache.TryGetValue(cacheKey, out IEnumerable<Criatura>? result))
+        {
+            result = await tavernaDbContext.Criaturas
            .Include(x => x.Continentes)
            .Include(x => x.Regioes)
            .Include(x => x.Povos)
            .Include(x => x.Contos)
            .Include(x => x.Mundo)
            .Where(x => x.Mundo.Id == mundoId)
+           .AsNoTracking()
+           .Skip((page - 1) * pageSize)
+           .Take(pageSize)
            .ToListAsync();
-#pragma warning restore CS8602 // Dereference of a possibly null reference.
+
+            if (result != null && result.Any())
+            {
+                cache.Set(cacheKey, result, TimeSpan.FromMinutes(10));
+            }
+        }
+        return result;
     }
 
-    public async Task<Criatura?> GetAsync(Guid id)
+    public async Task<Criatura?> GetAsync(Guid id, int page, int pageSize)
     {
-        return await tavernaDbContext.Criaturas
-            .Include(x => x.Continentes)
+        string cacheKey = $"CriaturaRepository.GetAsync_{id}_{page}_{pageSize}";
+        if (!cache.TryGetValue(cacheKey, out Criatura? result))
+        {
+            result = await tavernaDbContext.Criaturas
+           .Include(x => x.Continentes)
            .Include(x => x.Regioes)
            .Include(x => x.Povos)
            .Include(x => x.Contos)
            .Include(x => x.Mundo)
+           .AsNoTracking()
+           .Skip((page - 1) * pageSize)
+           .Take(pageSize)
            .FirstOrDefaultAsync(x => x.Id == id);
+
+            if (result != null)
+            {
+                cache.Set(cacheKey, result, TimeSpan.FromMinutes(10));
+            }
+        }
+        return result;
     }
 
-    public async Task<IEnumerable<Criatura>> GetAllByRegiao(object selectedRegiaoIds)
+    public async Task<IEnumerable<Criatura>> GetAllByRegiao(object selectedRegiaoIds, int page, int pageSize)
     {
-        if (selectedRegiaoIds is Guid)
+        string cacheKey = $"CriaturaRepository.GetAllByRegiao_{page}_{pageSize}";
+        if (!cache.TryGetValue(cacheKey, out IEnumerable<Criatura>? result))
         {
-#pragma warning disable CS8604 // Possible null reference argument.
-            return await tavernaDbContext.Criaturas
-            .Where(p => p.Regioes
-            .Any(pp => pp.Id == (Guid)selectedRegiaoIds))
-            .ToListAsync();
-#pragma warning restore CS8604 // Possible null reference argument.
+            if (selectedRegiaoIds is Guid)
+            {
+                result = await tavernaDbContext.Criaturas
+                .Where(p => p.Regioes
+                .Any(pp => pp.Id == (Guid)selectedRegiaoIds))
+                .AsNoTracking()
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+            }
+            else if (selectedRegiaoIds is List<Guid> selectedRegiaoIdsList)
+            {
+                result = await tavernaDbContext.Criaturas
+                .Where(p => p.Regioes
+                .Any(pp => selectedRegiaoIdsList.Contains(pp.Id)))
+                .AsNoTracking()
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+            }
+            else
+            {
+                throw new ArgumentException("Invalid argument type");
+            }
+
+            if (result != null && result.Any())
+            {
+                cache.Set(cacheKey, result, TimeSpan.FromMinutes(10));
+            }
         }
-        else if (selectedRegiaoIds is List<Guid> selectedRegiaoIdsList)
-        {
-#pragma warning disable CS8604 // Possible null reference argument.
-            return await tavernaDbContext.Criaturas
-            .Where(p => p.Regioes
-            .Any(pp => selectedRegiaoIdsList.Contains(pp.Id)))
-            .ToListAsync();
-#pragma warning restore CS8604 // Possible null reference argument.
-        }
-        else
-        {
-            throw new ArgumentException("Invalid argument type");
-        }
+        return result;
     }
 
-    public async Task<Criatura?> GetByUrlHandleAsync(string urlHandle)
+    public async Task<Criatura?> GetByUrlHandleAsync(string urlHandle, int page, int pageSize)
     {
-        return await tavernaDbContext.Criaturas
-            .Include(x => x.Continentes)
+        string cacheKey = $"CriaturaRepository.GetByUrlHandleAsync_{urlHandle}_{page}_{pageSize}";
+        if (!cache.TryGetValue(cacheKey, out Criatura? result))
+        {
+            result = await tavernaDbContext.Criaturas
+           .Include(x => x.Continentes)
            .Include(x => x.Regioes)
            .Include(x => x.Povos)
            .Include(x => x.Contos)
            .Include(x => x.Mundo)
+           .AsNoTracking()
+           .Skip((page - 1) * pageSize)
+           .Take(pageSize)
            .FirstOrDefaultAsync(x => x.UrlHandle == urlHandle);
+
+            if (result != null)
+            {
+                cache.Set(cacheKey, result, TimeSpan.FromMinutes(10));
+            }
+        }
+        return result;
     }
 
-    public async Task<Criatura?> UpdateAsync(Criatura criatura)
+    public async Task<Criatura?> UpdateAsync(Criatura criatura, int page, int pageSize)
     {
+        string cacheKey = $"CriaturaRepository.GetByUrlHandleAsync_{criatura.UrlHandle}_{page}_{pageSize}";
+
         var existingCriatura = await tavernaDbContext.Criaturas
-            .Include(x => x.Continentes)
+           .Include(x => x.Continentes)
            .Include(x => x.Regioes)
            .Include(x => x.Povos)
            .Include(x => x.Contos)
@@ -135,12 +201,12 @@ public class CriaturaRepository : ICriaturaRepository
             existingCriatura.Regioes = criatura.Regioes;
             existingCriatura.Povos = criatura.Povos;
             existingCriatura.Contos = criatura.Contos;
-
             await tavernaDbContext.SaveChangesAsync();
 
+            cache.Remove(cacheKey);
             return existingCriatura;
-        }
 
+        }
         return null;
     }
 }

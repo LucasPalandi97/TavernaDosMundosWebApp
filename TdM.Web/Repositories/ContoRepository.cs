@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 using TdM.Database.Data;
 using TdM.Database.Models.Domain;
 
@@ -7,10 +8,12 @@ namespace TdM.Web.Repositories;
 public class ContoRepository : IContoRepository
 {
     private readonly TavernaDbContext tavernaDbContext;
+    private readonly IMemoryCache cache;
 
-    public ContoRepository(TavernaDbContext tavernaDbContext)
+    public ContoRepository(TavernaDbContext tavernaDbContext, IMemoryCache cache)
     {
         this.tavernaDbContext = tavernaDbContext;
+        this.cache = cache;
     }
 
     public async Task<Conto> AddAsync(Conto conto)
@@ -34,22 +37,37 @@ public class ContoRepository : IContoRepository
         return null;
     }
 
-    public async Task<IEnumerable<Conto>> GetAllAsync()
+    public async Task<IEnumerable<Conto>> GetAllAsync(int page, int pageSize)
     {
-        //return list and include navigation Icollection from model database
-        return await tavernaDbContext.Contos
+        string cacheKey = $"ContoRepository.GetAllAsync_{page}_{pageSize}";
+        if (!cache.TryGetValue(cacheKey, out IEnumerable<Conto>? result))
+        {
+            result = await tavernaDbContext.Contos
             .Include(x => x.Continentes)
             .Include(x => x.Regioes)
             .Include(x => x.Personagens)
             .Include(x => x.Criaturas)
             .Include(x => x.Povos)
-            .Include(x => x.Mundo).ToListAsync();
+            .Include(x => x.Mundo)
+            .AsNoTracking()
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync();
+
+            if (result != null && result.Any())
+            {
+                cache.Set(cacheKey, result, TimeSpan.FromMinutes(10));
+            }
+        }
+        return result;
     }
 
-    public async Task<IEnumerable<Conto>> GetAllByMundoAsync(Guid mundoId)
+    public async Task<IEnumerable<Conto>> GetAllByMundoAsync(Guid mundoId, int page, int pageSize)
     {
-#pragma warning disable CS8602 // Dereference of a possibly null reference.
-        return await tavernaDbContext.Contos
+        string cacheKey = $"ContoRepository.GetAllByMundoAsync_{page}_{pageSize}";
+        if (!cache.TryGetValue(cacheKey, out IEnumerable<Conto>? result))
+        {
+            result = await tavernaDbContext.Contos
            .Include(x => x.Continentes)
            .Include(x => x.Regioes)
            .Include(x => x.Personagens)
@@ -57,169 +75,264 @@ public class ContoRepository : IContoRepository
            .Include(x => x.Povos)
            .Include(x => x.Mundo)
            .Where(x => x.Mundo.Id == mundoId)
+           .AsNoTracking()
+           .Skip((page - 1) * pageSize)
+           .Take(pageSize)
            .ToListAsync();
-#pragma warning restore CS8602 // Dereference of a possibly null reference.
+
+            if (result != null && result.Any())
+            {
+                cache.Set(cacheKey, result, TimeSpan.FromMinutes(10));
+            }
+        }
+        return result;
+    }
+
+    public async Task<IEnumerable<Conto>> GetAllByContinenteAsync(object selectedContinenteIds, int page, int pageSize)
+    {
+        string cacheKey = $"ContoRepository.GetAllByContinenteAsync_{page}_{pageSize}";
+        if (!cache.TryGetValue(cacheKey, out IEnumerable<Conto>? result))
+        {
+            if (selectedContinenteIds is Guid)
+            {
+                result = await tavernaDbContext.Contos
+                .Where(c => c.Continentes
+                .Any(pp => pp.Id == (Guid)selectedContinenteIds))
+                .AsNoTracking()
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+            }
+            else if (selectedContinenteIds is List<Guid> selectedContinenteIdsList)
+            {
+                result = await tavernaDbContext.Contos
+                .Where(c => c.Continentes
+                .Any(pp => selectedContinenteIdsList.Contains(pp.Id)))
+                .AsNoTracking()
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+            }
+            else
+            {
+                throw new ArgumentException("Invalid argument type");
+            }
+
+            if (result != null && result.Any())
+            {
+                cache.Set(cacheKey, result, TimeSpan.FromMinutes(10));
+            }
+        }
+        return result;
+    }
+
+    public async Task<IEnumerable<Conto>> GetAllByRegionAsync(object selectedRegiaoIds, int page, int pageSize)
+    {
+        string cacheKey = $"ContoRepository.GetAllByRegionAsync_{page}_{pageSize}";
+        if (!cache.TryGetValue(cacheKey, out IEnumerable<Conto>? result))
+        {
+            if (selectedRegiaoIds is Guid)
+            {
+                result = await tavernaDbContext.Contos
+                .Where(r => r.Regioes
+                .Any(pp => pp.Id == (Guid)selectedRegiaoIds))
+                .AsNoTracking()
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+            }
+            else if (selectedRegiaoIds is List<Guid> sselectedRegiaoIdsList)
+            {
+                result = await tavernaDbContext.Contos
+                .Where(r => r.Regioes
+                .Any(pp => sselectedRegiaoIdsList.Contains(pp.Id)))
+                .AsNoTracking()
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+            }
+            else
+            {
+                throw new ArgumentException("Invalid argument type");
+            }
+
+            if (result != null && result.Any())
+            {
+                cache.Set(cacheKey, result, TimeSpan.FromMinutes(10));
+            }
+        }
+        return result;
     }
 
 
-    public async Task<IEnumerable<Conto>> GetAllByContinenteAsync(object selectedContinenteIds)
+    public async Task<IEnumerable<Conto>> GetAllByPersonagemAsync(object selectedPersonagemIds, int page, int pageSize)
     {
-        if (selectedContinenteIds is Guid)
+        string cacheKey = $"ContoRepository.GetAllByPersonagemAsync_{page}_{pageSize}";
+        if (!cache.TryGetValue(cacheKey, out IEnumerable<Conto>? result))
         {
-#pragma warning disable CS8604 // Possible null reference argument.
-            return await tavernaDbContext.Contos
-            .Where(c => c.Continentes
-            .Any(pp => pp.Id == (Guid)selectedContinenteIds))
-            .ToListAsync();
-#pragma warning restore CS8604 // Possible null reference argument.
+            if (selectedPersonagemIds is Guid)
+            {
+                result = await tavernaDbContext.Contos
+                .Where(p => p.Personagens
+                .Any(pp => pp.Id == (Guid)selectedPersonagemIds))
+                .AsNoTracking()
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+            }
+            else if (selectedPersonagemIds is List<Guid> selectedPersonagemIdsList)
+            {
+                result = await tavernaDbContext.Contos
+                .Where(p => p.Personagens
+                .Any(pp => selectedPersonagemIdsList.Contains(pp.Id)))
+                .AsNoTracking()
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+            }
+            else
+            {
+                throw new ArgumentException("Invalid argument type");
+            }
+
+            if (result != null && result.Any())
+            {
+                cache.Set(cacheKey, result, TimeSpan.FromMinutes(10));
+            }
         }
-        else if (selectedContinenteIds is List<Guid> selectedContinenteIdsList)
-        {
-#pragma warning disable CS8604 // Possible null reference argument.
-            return await tavernaDbContext.Contos
-            .Where(c => c.Continentes
-            .Any(pp => selectedContinenteIdsList.Contains(pp.Id)))
-            .ToListAsync();
-#pragma warning restore CS8604 // Possible null reference argument.
-        }
-        else
-        {
-            throw new ArgumentException("Invalid argument type");
-        }
+        return result;
     }
 
-    public async Task<IEnumerable<Conto>> GetAllByRegionAsync(object selectedRegiaoIds)
+    public async Task<IEnumerable<Conto>> GetAllByCriaturaAsync(object selectedCriaturaIds, int page, int pageSize)
     {
+        string cacheKey = $"ContoRepository.GetAllByCriaturaAsync_{page}_{pageSize}";
+        if (!cache.TryGetValue(cacheKey, out IEnumerable<Conto>? result))
+        {
+            if (selectedCriaturaIds is Guid)
+            {
+                result = await tavernaDbContext.Contos
+                .Where(cr => cr.Criaturas
+                .Any(pp => pp.Id == (Guid)selectedCriaturaIds))
+                .AsNoTracking()
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+            }
+            else if (selectedCriaturaIds is List<Guid> selectedCriaturaIdsList)
+            {
+                result = await tavernaDbContext.Contos
+                .Where(cr => cr.Criaturas
+                .Any(pp => selectedCriaturaIdsList.Contains(pp.Id)))
+                .AsNoTracking()
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+            }
+            else
+            {
+                throw new ArgumentException("Invalid argument type");
+            }
 
-        if (selectedRegiaoIds is Guid)
-        {
-#pragma warning disable CS8604 // Possible null reference argument.
-            return await tavernaDbContext.Contos
-            .Where(r => r.Regioes
-            .Any(pp => pp.Id == (Guid)selectedRegiaoIds))
-            .ToListAsync();
-#pragma warning restore CS8604 // Possible null reference argument.
+            if (result != null && result.Any())
+            {
+                cache.Set(cacheKey, result, TimeSpan.FromMinutes(10));
+            }
         }
-        else if (selectedRegiaoIds is List<Guid> sselectedRegiaoIdsList)
-        {
-#pragma warning disable CS8604 // Possible null reference argument.
-            return await tavernaDbContext.Contos
-            .Where(r => r.Regioes
-            .Any(pp => sselectedRegiaoIdsList.Contains(pp.Id)))
-            .ToListAsync();
-#pragma warning restore CS8604 // Possible null reference argument.
-        }
-        else
-        {
-            throw new ArgumentException("Invalid argument type");
-        }
+        return result;
     }
 
-
-    public async Task<IEnumerable<Conto>> GetAllByPersonagemAsync(object selectedPersonagemIds)
+    public async Task<IEnumerable<Conto>> GetAllByPovoAsync(object selectedPovoIds, int page, int pageSize)
     {
-        if (selectedPersonagemIds is Guid)
+        string cacheKey = $"ContoRepository.GetAllByPovoAsync_{page}_{pageSize}";
+        if (!cache.TryGetValue(cacheKey, out IEnumerable<Conto>? result))
         {
-#pragma warning disable CS8604 // Possible null reference argument.
-            return await tavernaDbContext.Contos
-            .Where(p => p.Personagens
-            .Any(pp => pp.Id == (Guid)selectedPersonagemIds))
-            .ToListAsync();
-#pragma warning restore CS8604 // Possible null reference argument.
+            if (selectedPovoIds is Guid)
+            {
+                result = await tavernaDbContext.Contos
+                .Where(po => po.Povos
+                .Any(pp => pp.Id == (Guid)selectedPovoIds))
+                .AsNoTracking()
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+            }
+            else if (selectedPovoIds is List<Guid> selectedPovoIdsList)
+            {
+                result = await tavernaDbContext.Contos
+                .Where(po => po.Povos
+                .Any(pp => selectedPovoIdsList.Contains(pp.Id)))
+                .AsNoTracking()
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+            }
+            else
+            {
+                throw new ArgumentException("Invalid argument type");
+            }
+
+            if (result != null && result.Any())
+            {
+                cache.Set(cacheKey, result, TimeSpan.FromMinutes(10));
+            }
         }
-        else if (selectedPersonagemIds is List<Guid> selectedPersonagemIdsList)
-        {
-#pragma warning disable CS8604 // Possible null reference argument.
-            return await tavernaDbContext.Contos
-            .Where(p => p.Personagens
-            .Any(pp => selectedPersonagemIdsList.Contains(pp.Id)))
-            .ToListAsync();
-#pragma warning restore CS8604 // Possible null reference argument.
-        }
-        else
-        {
-            throw new ArgumentException("Invalid argument type");
-        }
+        return result;
     }
 
-    public async Task<IEnumerable<Conto>> GetAllByCriaturaAsync(object selectedCriaturaIds)
+    public async Task<Conto?> GetAsync(Guid id, int page, int pageSize)
     {
-        if (selectedCriaturaIds is Guid)
+        string cacheKey = $"ContoRepository.GetAsync_{id}_{page}_{pageSize}";
+        if (!cache.TryGetValue(cacheKey, out Conto? result))
         {
-#pragma warning disable CS8604 // Possible null reference argument.
-            return await tavernaDbContext.Contos
-            .Where(cr => cr.Criaturas
-            .Any(pp => pp.Id == (Guid)selectedCriaturaIds))
-            .ToListAsync();
-#pragma warning restore CS8604 // Possible null reference argument.
-        }
-        else if (selectedCriaturaIds is List<Guid> selectedCriaturaIdsList)
-        {
-#pragma warning disable CS8604 // Possible null reference argument.
-            return await tavernaDbContext.Contos
-            .Where(cr => cr.Criaturas
-            .Any(pp => selectedCriaturaIdsList.Contains(pp.Id)))
-            .ToListAsync();
-#pragma warning restore CS8604 // Possible null reference argument.
-        }
-        else
-        {
-            throw new ArgumentException("Invalid argument type");
-        }
-    }
-
-
-    public async Task<IEnumerable<Conto>> GetAllByPovoAsync(object selectedPovoIds)
-    {
-        if (selectedPovoIds is Guid)
-        {
-#pragma warning disable CS8604 // Possible null reference argument.
-            return await tavernaDbContext.Contos
-            .Where(po => po.Povos
-            .Any(pp => pp.Id == (Guid)selectedPovoIds))
-            .ToListAsync();
-#pragma warning restore CS8604 // Possible null reference argument.
-        }
-        else if (selectedPovoIds is List<Guid> selectedPovoIdsList)
-        {
-#pragma warning disable CS8604 // Possible null reference argument.
-            return await tavernaDbContext.Contos
-            .Where(po => po.Povos
-            .Any(pp => selectedPovoIdsList.Contains(pp.Id)))
-            .ToListAsync();
-#pragma warning restore CS8604 // Possible null reference argument.
-        }
-        else
-        {
-            throw new ArgumentException("Invalid argument type");
-        }
-    }
-    public async Task<Conto?> GetAsync(Guid id)
-    {
-        return await tavernaDbContext.Contos
+            result = await tavernaDbContext.Contos
           .Include(x => x.Continentes)
           .Include(x => x.Regioes)
           .Include(x => x.Personagens)
           .Include(x => x.Criaturas)
           .Include(x => x.Povos)
           .Include(x => x.Mundo)
+          .AsNoTracking()
+          .Skip((page - 1) * pageSize)
+          .Take(pageSize)
           .FirstOrDefaultAsync(x => x.Id == id);
+
+            if (result != null)
+            {
+                cache.Set(cacheKey, result, TimeSpan.FromMinutes(10));
+            }
+        }
+        return result;
     }
 
-    public async Task<Conto?> GetByUrlHandleAsync(string urlHandle)
+    public async Task<Conto?> GetByUrlHandleAsync(string urlHandle, int page, int pageSize)
     {
-        return await tavernaDbContext.Contos
+        string cacheKey = $"ContoRepository.GetByUrlHandleAsync_{urlHandle}_{page}_{pageSize}";
+        if (!cache.TryGetValue(cacheKey, out Conto? result))
+        {
+            result = await tavernaDbContext.Contos
             .Include(x => x.Continentes)
             .Include(x => x.Regioes)
             .Include(x => x.Personagens)
             .Include(x => x.Criaturas)
             .Include(x => x.Povos)
             .Include(x => x.Mundo)
+            .AsNoTracking()
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
             .FirstOrDefaultAsync(x => x.UrlHandle == urlHandle);
+
+            if (result != null)
+            {
+                cache.Set(cacheKey, result, TimeSpan.FromMinutes(10));
+            }
+        }
+        return result;
     }
 
-    public async Task<Conto?> UpdateAsync(Conto conto)
+    public async Task<Conto?> UpdateAsync(Conto conto, int page, int pageSize)
     {
+        string cacheKey = $"ContoRepository.GetByUrlHandleAsync_{conto.UrlHandle}_{page}_{pageSize}";
+
         var existingConto = await tavernaDbContext.Contos
             .Include(x => x.Continentes)
             .Include(x => x.Regioes)
@@ -227,6 +340,8 @@ public class ContoRepository : IContoRepository
             .Include(x => x.Criaturas)
             .Include(x => x.Povos)
             .Include(x => x.Mundo)
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
             .FirstOrDefaultAsync(x => x.Id == conto.Id);
 
         if (existingConto != null)
@@ -248,10 +363,11 @@ public class ContoRepository : IContoRepository
             existingConto.Povos = conto.Povos;
             await tavernaDbContext.SaveChangesAsync();
 
+            cache.Remove(cacheKey);
             return existingConto;
         }
-
         return null;
     }
 }
+
 

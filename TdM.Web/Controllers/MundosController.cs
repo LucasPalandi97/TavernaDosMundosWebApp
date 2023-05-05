@@ -17,7 +17,7 @@ public class MundosController : Controller
     [HttpGet]
     public async Task<IActionResult> Index(string urlHandle)
     {
-        var mundo = await mundoRepository.GetByUrlHandleAsync(urlHandle);
+        var mundo = await mundoRepository.GetByUrlHandleAsync(urlHandle, 1, 10);
 
         if (mundo == null)
         {

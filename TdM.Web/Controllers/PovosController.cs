@@ -19,7 +19,7 @@ public class PovosController : Controller
     [HttpGet]
     public async Task<IActionResult> Index(string urlHandle)
     {
-        var povo = await povoRepository.GetByUrlHandleAsync(urlHandle);
+        var povo = await povoRepository.GetByUrlHandleAsync(urlHandle, 1, 10);
         return View(povo);
     }
 
@@ -30,7 +30,7 @@ public class PovosController : Controller
         {
             if (User.IsInRole("Admin"))
             {
-                var povos = await povoRepository.GetAllAsync();
+                var povos = await povoRepository.GetAllAsync(1, 10);
                 var viewModel = new NavbarViewModel
                 {
                     Povos = povos
@@ -42,7 +42,7 @@ public class PovosController : Controller
         }
         else
         {
-            var mundo = await mundoRepository.GetByUrlHandleAsync(urlHandle);
+            var mundo = await mundoRepository.GetByUrlHandleAsync(urlHandle, 1, 10);
 
             if (mundo == null)
             {
@@ -55,7 +55,7 @@ public class PovosController : Controller
 
                 return View("Error", errorViewModel);
             }
-            var povos = await povoRepository.GetAllByMundoAsync(mundo.Id);
+            var povos = await povoRepository.GetAllByMundoAsync(mundo.Id, 1, 10);
             ViewBag.MundoUrlHandle = mundo.UrlHandle; // set the value of ViewBag here
             var viewModel = new NavbarViewModel
             {

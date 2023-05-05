@@ -19,7 +19,7 @@ public class CriaturasController : Controller
     [HttpGet]
     public async Task<IActionResult> Index(string urlHandle)
     {
-        var criatura = await criaturaRepository.GetByUrlHandleAsync(urlHandle);
+        var criatura = await criaturaRepository.GetByUrlHandleAsync(urlHandle, 1, 10);
         return View(criatura);
     }
 
@@ -30,7 +30,7 @@ public class CriaturasController : Controller
         {
             if (User.IsInRole("Admin"))
             {
-                var criaturas = await criaturaRepository.GetAllAsync();
+                var criaturas = await criaturaRepository.GetAllAsync(1, 10);
                 var viewModel = new NavbarViewModel
                 {
                     Criaturas = criaturas
@@ -42,7 +42,7 @@ public class CriaturasController : Controller
         }
         else
         {
-            var mundo = await mundoRepository.GetByUrlHandleAsync(urlHandle);
+            var mundo = await mundoRepository.GetByUrlHandleAsync(urlHandle, 1, 10);
 
             if (mundo == null)
             {
@@ -56,7 +56,7 @@ public class CriaturasController : Controller
                 return View("Error", errorViewModel);
             }
 
-            var criaturas = await criaturaRepository.GetAllByMundoAsync(mundo.Id);
+            var criaturas = await criaturaRepository.GetAllByMundoAsync(mundo.Id, 1, 10);
             ViewBag.MundoUrlHandle = mundo.UrlHandle; // set the value of ViewBag here
             var viewModel = new NavbarViewModel
             {

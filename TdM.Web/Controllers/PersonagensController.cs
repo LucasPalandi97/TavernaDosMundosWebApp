@@ -19,7 +19,7 @@ public class PersonagensController : Controller
     [HttpGet]
     public async Task<IActionResult> Index(string urlHandle)
     {
-        var personagem = await personagemRepository.GetByUrlHandleAsync(urlHandle);
+        var personagem = await personagemRepository.GetByUrlHandleAsync(urlHandle, 1, 10);
         return View(personagem);
     }
 
@@ -30,7 +30,7 @@ public class PersonagensController : Controller
         {
             if (User.IsInRole("Admin"))
             {
-                var personagens = await personagemRepository.GetAllAsync();
+                var personagens = await personagemRepository.GetAllAsync(1, 10);
                 var viewModel = new NavbarViewModel
                 {
                     Personagens = personagens
@@ -41,7 +41,7 @@ public class PersonagensController : Controller
         }
         else
         {
-            var mundo = await mundoRepository.GetByUrlHandleAsync(urlHandle);
+            var mundo = await mundoRepository.GetByUrlHandleAsync(urlHandle, 1, 10);
 
             if (mundo == null)
             {
@@ -55,7 +55,7 @@ public class PersonagensController : Controller
                 return View("Error", errorViewModel);
             }
 
-            var personagens = await personagemRepository.GetAllByMundoAsync(mundo.Id);
+            var personagens = await personagemRepository.GetAllByMundoAsync(mundo.Id, 1, 10);
             ViewBag.MundoUrlHandle = mundo.UrlHandle; // set the value of ViewBag here
             var viewModel = new NavbarViewModel
             {

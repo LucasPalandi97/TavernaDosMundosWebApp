@@ -21,7 +21,7 @@ public class ContinentesController : Controller
     [HttpGet]
     public async Task<IActionResult> Index(string urlHandle)
     {
-        var continente = await continenteRepository.GetByUrlHandleAsync(urlHandle);
+        var continente = await continenteRepository.GetByUrlHandleAsync(urlHandle, 1, 10);
         return View(continente);
     }
 
@@ -32,8 +32,8 @@ public class ContinentesController : Controller
         {
             if (User.IsInRole("Admin"))
             {
-                var continentes = await continenteRepository.GetAllAsync();
-                var regioes = await regiaoRepository.GetAllAsync();
+                var continentes = await continenteRepository.GetAllAsync(1, 10);
+                var regioes = await regiaoRepository.GetAllAsync(1, 10);
                 var viewModel = new NavbarViewModel
                 {
                     Continentes = continentes,
@@ -46,7 +46,7 @@ public class ContinentesController : Controller
         }
         else
         {
-            var mundo = await mundoRepository.GetByUrlHandleAsync(urlHandle);
+            var mundo = await mundoRepository.GetByUrlHandleAsync(urlHandle, 1, 10);
 
             if (mundo == null)
             {
@@ -60,8 +60,8 @@ public class ContinentesController : Controller
                 return View("Error", errorViewModel);
             }
 
-            var continentes = await continenteRepository.GetAllByMundoAsync(mundo.Id);
-            var regioes = await regiaoRepository.GetAllByMundoAsync(mundo.Id);
+            var continentes = await continenteRepository.GetAllByMundoAsync(mundo.Id, 1, 10);
+            var regioes = await regiaoRepository.GetAllByMundoAsync(mundo.Id, 1, 10);
             ViewBag.MundoUrlHandle = mundo.UrlHandle; // set the value of ViewBag here
             var viewModel = new NavbarViewModel
 

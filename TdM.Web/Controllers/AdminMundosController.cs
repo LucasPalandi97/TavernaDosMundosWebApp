@@ -36,12 +36,12 @@ public class AdminMundosController : Controller
     public async Task<IActionResult> Add()
     {
         //get continente from repository
-        var continente = await continenteRepository.GetAllAsync();
-        var regiao = await regiaoRepository.GetAllAsync();
-        var personagem = await personagemRepository.GetAllAsync();
-        var criatura = await criaturaRepository.GetAllAsync();
-        var povo = await povoRepository.GetAllAsync();
-        var conto = await contoRepository.GetAllAsync();
+        var continente = await continenteRepository.GetAllAsync(1, 10);
+        var regiao = await regiaoRepository.GetAllAsync(1, 10);
+        var personagem = await personagemRepository.GetAllAsync(1, 10);
+        var criatura = await criaturaRepository.GetAllAsync(1, 10);
+        var povo = await povoRepository.GetAllAsync(1, 10);
+        var conto = await contoRepository.GetAllAsync(1, 10);
 
         var model = new AddMundoRequest
         {
@@ -59,42 +59,42 @@ public class AdminMundosController : Controller
     {
         if (!ModelState.IsValid)
         {
-            addMundoRequest.Continentes = (await continenteRepository.GetAllAsync()).Where(c => c.Mundo == null)
+            addMundoRequest.Continentes = (await continenteRepository.GetAllAsync(1, 10)).Where(c => c.Mundo == null)
                 .Select(x => new SelectListItem
                 {
                     Text = x.Nome,
                     Value = x.Id.ToString()
                 }).ToList();
 
-            addMundoRequest.Regioes = (await regiaoRepository.GetAllAsync()).Where(r => r.Mundo == null)
+            addMundoRequest.Regioes = (await regiaoRepository.GetAllAsync(1, 10)).Where(r => r.Mundo == null)
                .Select(x => new SelectListItem
                {
                    Text = x.Nome,
                    Value = x.Id.ToString()
                }).ToList();
 
-            addMundoRequest.Personagens = (await personagemRepository.GetAllAsync()).Where(pe => pe.Mundo == null)
+            addMundoRequest.Personagens = (await personagemRepository.GetAllAsync(1, 10)).Where(pe => pe.Mundo == null)
                .Select(x => new SelectListItem
                {
                    Text = x.Nome,
                    Value = x.Id.ToString()
                }).ToList();
 
-            addMundoRequest.Criaturas = (await criaturaRepository.GetAllAsync()).Where(cr => cr.Mundo == null)
+            addMundoRequest.Criaturas = (await criaturaRepository.GetAllAsync(1, 10)).Where(cr => cr.Mundo == null)
                .Select(x => new SelectListItem
                {
                    Text = x.Nome,
                    Value = x.Id.ToString()
                }).ToList();
 
-            addMundoRequest.Povos = (await povoRepository.GetAllAsync()).Where(po => po.Mundo == null)
+            addMundoRequest.Povos = (await povoRepository.GetAllAsync(1, 10)).Where(po => po.Mundo == null)
                .Select(x => new SelectListItem
                {
                    Text = x.Nome,
                    Value = x.Id.ToString()
                }).ToList();
 
-            addMundoRequest.Contos = (await contoRepository.GetAllAsync()).Where(co => co.Mundo == null)
+            addMundoRequest.Contos = (await contoRepository.GetAllAsync(1, 10)).Where(co => co.Mundo == null)
               .Select(x => new SelectListItem
               {
                   Text = x.Titulo,
@@ -125,7 +125,7 @@ public class AdminMundosController : Controller
             if (!string.IsNullOrEmpty(selectedContinenteId))
             {
                 var selectedContinenteIdAsGuid = Guid.Parse(selectedContinenteId);
-                var existingContinente = await continenteRepository.GetAsync(selectedContinenteIdAsGuid);
+                var existingContinente = await continenteRepository.GetAsync(selectedContinenteIdAsGuid, 1, 10);
 
                 if (existingContinente != null)
                 {
@@ -146,7 +146,7 @@ public class AdminMundosController : Controller
             if (!string.IsNullOrEmpty(selectedRegiaoId))
             {
                 var selectedRegiaoIdAsGuid = Guid.Parse(selectedRegiaoId);
-                var existingRegiao = await regiaoRepository.GetAsync(selectedRegiaoIdAsGuid);
+                var existingRegiao = await regiaoRepository.GetAsync(selectedRegiaoIdAsGuid, 1, 10);
 
                 if (existingRegiao != null)
                 {
@@ -167,7 +167,7 @@ public class AdminMundosController : Controller
             if (!string.IsNullOrEmpty(selectedPersonagemId))
             {
                 var selectedPersonagemIdAsGuid = Guid.Parse(selectedPersonagemId);
-                var existingPersonagem = await personagemRepository.GetAsync(selectedPersonagemIdAsGuid);
+                var existingPersonagem = await personagemRepository.GetAsync(selectedPersonagemIdAsGuid, 1, 10);
 
                 if (existingPersonagem != null)
                 {
@@ -188,7 +188,7 @@ public class AdminMundosController : Controller
             if (!string.IsNullOrEmpty(selectedCriaturaId))
             {
                 var selectedCriaturaIdAsGuid = Guid.Parse(selectedCriaturaId);
-                var existingCriatura = await criaturaRepository.GetAsync(selectedCriaturaIdAsGuid);
+                var existingCriatura = await criaturaRepository.GetAsync(selectedCriaturaIdAsGuid, 1, 10);
 
                 if (existingCriatura != null)
                 {
@@ -209,7 +209,7 @@ public class AdminMundosController : Controller
             if (!string.IsNullOrEmpty(selectedPovoId))
             {
                 var selectedPovoIdAsGuid = Guid.Parse(selectedPovoId);
-                var existingPovo = await povoRepository.GetAsync(selectedPovoIdAsGuid);
+                var existingPovo = await povoRepository.GetAsync(selectedPovoIdAsGuid, 1, 10);
 
                 if (existingPovo != null)
                 {
@@ -230,7 +230,7 @@ public class AdminMundosController : Controller
             if (!string.IsNullOrEmpty(selectedContoId))
             {
                 var selectedContoIdAsGuid = Guid.Parse(selectedContoId);
-                var existingConto = await contoRepository.GetAsync(selectedContoIdAsGuid);
+                var existingConto = await contoRepository.GetAsync(selectedContoIdAsGuid, 1, 10);
 
                 if (existingConto != null)
                 {
@@ -251,7 +251,7 @@ public class AdminMundosController : Controller
     public async Task<IActionResult> List()
     {
         // Use dbContext to read the mundos
-        var mundos = await mundoRepository.GetAllAsync();
+        var mundos = await mundoRepository.GetAllAsync(1, 10);
         return View(mundos);
     }
 
@@ -259,13 +259,13 @@ public class AdminMundosController : Controller
     public async Task<IActionResult> Edit(Guid id)
     {
         //Retrieve result from repositoty
-        var mundo = await mundoRepository.GetAsync(id);
-        var continentesDomainModel = await continenteRepository.GetAllAsync();
-        var regioesDomainModel = await regiaoRepository.GetAllAsync();
-        var personagensDomainModel = await personagemRepository.GetAllAsync();
-        var criaturasDomainModel = await criaturaRepository.GetAllAsync();
-        var povosDomainModel = await povoRepository.GetAllAsync();
-        var contosDomainModel = await contoRepository.GetAllAsync();
+        var mundo = await mundoRepository.GetAsync(id, 1, 10);
+        var continentesDomainModel = await continenteRepository.GetAllAsync(1, 10);
+        var regioesDomainModel = await regiaoRepository.GetAllAsync(1, 10);
+        var personagensDomainModel = await personagemRepository.GetAllAsync(1, 10);
+        var criaturasDomainModel = await criaturaRepository.GetAllAsync(1, 10);
+        var povosDomainModel = await povoRepository.GetAllAsync(1, 10);
+        var contosDomainModel = await contoRepository.GetAllAsync(1, 10);
 
         if (mundo != null)
         {
@@ -330,7 +330,7 @@ public class AdminMundosController : Controller
     {
         if (!ModelState.IsValid)
         {
-            editMundoRequest.Continentes = (await continenteRepository.GetAllAsync())
+            editMundoRequest.Continentes = (await continenteRepository.GetAllAsync(1, 10))
              .Where(x => x.Mundo?.Id == editMundoRequest.Id || x.Mundo == null)
              .Select(x => new SelectListItem
                {
@@ -338,7 +338,7 @@ public class AdminMundosController : Controller
                    Value = x.Id.ToString()
                }).ToList();
 
-            editMundoRequest.Regioes = (await regiaoRepository.GetAllAsync())
+            editMundoRequest.Regioes = (await regiaoRepository.GetAllAsync(1, 10))
              .Where(x => x.Mundo?.Id == editMundoRequest.Id || x.Mundo == null)
              .Select(x => new SelectListItem
              {
@@ -346,7 +346,7 @@ public class AdminMundosController : Controller
                  Value = x.Id.ToString()
              }).ToList();
 
-            editMundoRequest.Personagens = (await personagemRepository.GetAllAsync())
+            editMundoRequest.Personagens = (await personagemRepository.GetAllAsync(1, 10))
              .Where(x => x.Mundo?.Id == editMundoRequest.Id || x.Mundo == null)
              .Select(x => new SelectListItem
              {
@@ -354,7 +354,7 @@ public class AdminMundosController : Controller
                  Value = x.Id.ToString()
              }).ToList();
 
-            editMundoRequest.Criaturas = (await criaturaRepository.GetAllAsync())
+            editMundoRequest.Criaturas = (await criaturaRepository.GetAllAsync(1, 10))
              .Where(x => x.Mundo?.Id == editMundoRequest.Id || x.Mundo == null)
              .Select(x => new SelectListItem
              {
@@ -362,7 +362,7 @@ public class AdminMundosController : Controller
                  Value = x.Id.ToString()
              }).ToList();
 
-            editMundoRequest.Povos = (await povoRepository.GetAllAsync())
+            editMundoRequest.Povos = (await povoRepository.GetAllAsync(1, 10))
              .Where(x => x.Mundo?.Id == editMundoRequest.Id || x.Mundo == null)
              .Select(x => new SelectListItem
              {
@@ -370,7 +370,7 @@ public class AdminMundosController : Controller
                  Value = x.Id.ToString()
              }).ToList();
 
-            editMundoRequest.Contos = (await contoRepository.GetAllAsync())
+            editMundoRequest.Contos = (await contoRepository.GetAllAsync(1, 10))
              .Where(x => x.Mundo?.Id == editMundoRequest.Id || x.Mundo == null)
              .Select(x => new SelectListItem
              {
@@ -403,7 +403,7 @@ public class AdminMundosController : Controller
             if (!string.IsNullOrEmpty(selectedContinenteId))
             {
                 var selectedContinenteIdAsGuid = Guid.Parse(selectedContinenteId);
-                var existingContinente = await continenteRepository.GetAsync(selectedContinenteIdAsGuid);
+                var existingContinente = await continenteRepository.GetAsync(selectedContinenteIdAsGuid, 1, 10);
 
                 if (existingContinente != null)
                 {
@@ -424,7 +424,7 @@ public class AdminMundosController : Controller
             if (!string.IsNullOrEmpty(selectedRegiaoId))
             {
                 var selectedRegiaoIdAsGuid = Guid.Parse(selectedRegiaoId);
-                var existingRegiao = await regiaoRepository.GetAsync(selectedRegiaoIdAsGuid);
+                var existingRegiao = await regiaoRepository.GetAsync(selectedRegiaoIdAsGuid, 1, 10);
 
                 if (existingRegiao != null)
                 {
@@ -445,7 +445,7 @@ public class AdminMundosController : Controller
             if (!string.IsNullOrEmpty(selectedPersonagemId))
             {
                 var selectedPersonagemIdAsGuid = Guid.Parse(selectedPersonagemId);
-                var existingPersonagem = await personagemRepository.GetAsync(selectedPersonagemIdAsGuid);
+                var existingPersonagem = await personagemRepository.GetAsync(selectedPersonagemIdAsGuid, 1, 10);
 
                 if (existingPersonagem != null)
                 {
@@ -466,7 +466,7 @@ public class AdminMundosController : Controller
             if (!string.IsNullOrEmpty(selectedCriaturaId))
             {
                 var selectedCriaturaIdAsGuid = Guid.Parse(selectedCriaturaId);
-                var existingCriatura = await criaturaRepository.GetAsync(selectedCriaturaIdAsGuid);
+                var existingCriatura = await criaturaRepository.GetAsync(selectedCriaturaIdAsGuid, 1, 10);
 
                 if (existingCriatura != null)
                 {
@@ -487,7 +487,7 @@ public class AdminMundosController : Controller
             if (!string.IsNullOrEmpty(selectedPovoId))
             {
                 var selectedPovoIdAsGuid = Guid.Parse(selectedPovoId);
-                var existingPovo = await povoRepository.GetAsync(selectedPovoIdAsGuid);
+                var existingPovo = await povoRepository.GetAsync(selectedPovoIdAsGuid, 1, 10);
 
                 if (existingPovo != null)
                 {
@@ -508,7 +508,7 @@ public class AdminMundosController : Controller
             if (!string.IsNullOrEmpty(selectedContoId))
             {
                 var selectedContoIdAsGuid = Guid.Parse(selectedContoId);
-                var existingConto = await contoRepository.GetAsync(selectedContoIdAsGuid);
+                var existingConto = await contoRepository.GetAsync(selectedContoIdAsGuid, 1, 10);
 
                 if (existingConto != null)
                 {
@@ -521,7 +521,7 @@ public class AdminMundosController : Controller
         mundo.Contos = selectedContos;
 
         //Submit information to repository
-        var updatedMundo = await mundoRepository.UpdateAsync(mundo);
+        var updatedMundo = await mundoRepository.UpdateAsync(mundo, 1, 10);
 
         if (updatedMundo != null)
         {

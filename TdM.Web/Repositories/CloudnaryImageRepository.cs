@@ -31,8 +31,6 @@ public class CloudnaryImageRepository : IImageRepository
         {
             return uploadResult.SecureUrl.ToString();
         }
-#pragma warning disable CS8603 // Possible null reference return.
         return null;
-#pragma warning restore CS8603 // Possible null reference return.
     }
 }

@@ -14,14 +14,14 @@ public class RegioesController : Controller
     [HttpGet]
     public async Task<IActionResult> Index(string urlHandle)
     {
-        var regiao = await regiaoRepository.GetByUrlHandleAsync(urlHandle);
+        var regiao = await regiaoRepository.GetByUrlHandleAsync(urlHandle, 1, 10);
         return View(regiao);
     }
 
     [HttpGet]
     public async Task<IActionResult> List()
     {
-        var regioes = await regiaoRepository.GetAllAsync();
+        var regioes = await regiaoRepository.GetAllAsync(1, 10);
         return View(regioes);
     }
 }
