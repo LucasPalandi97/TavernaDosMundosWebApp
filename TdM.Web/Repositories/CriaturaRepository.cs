@@ -49,6 +49,7 @@ public class CriaturaRepository : ICriaturaRepository
 
     public async Task<IEnumerable<Criatura>> GetAllByMundoAsync(Guid mundoId)
     {
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
         return await tavernaDbContext.Criaturas
            .Include(x => x.Continentes)
            .Include(x => x.Regioes)
@@ -57,6 +58,7 @@ public class CriaturaRepository : ICriaturaRepository
            .Include(x => x.Mundo)
            .Where(x => x.Mundo.Id == mundoId)
            .ToListAsync();
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
     }
 
     public async Task<Criatura?> GetAsync(Guid id)
@@ -74,17 +76,21 @@ public class CriaturaRepository : ICriaturaRepository
     {
         if (selectedRegiaoIds is Guid)
         {
+#pragma warning disable CS8604 // Possible null reference argument.
             return await tavernaDbContext.Criaturas
             .Where(p => p.Regioes
             .Any(pp => pp.Id == (Guid)selectedRegiaoIds))
             .ToListAsync();
+#pragma warning restore CS8604 // Possible null reference argument.
         }
         else if (selectedRegiaoIds is List<Guid> selectedRegiaoIdsList)
         {
+#pragma warning disable CS8604 // Possible null reference argument.
             return await tavernaDbContext.Criaturas
             .Where(p => p.Regioes
             .Any(pp => selectedRegiaoIdsList.Contains(pp.Id)))
             .ToListAsync();
+#pragma warning restore CS8604 // Possible null reference argument.
         }
         else
         {
@@ -127,6 +133,8 @@ public class CriaturaRepository : ICriaturaRepository
             existingCriatura.Mundo = criatura.Mundo;
             existingCriatura.Continentes = criatura.Continentes;
             existingCriatura.Regioes = criatura.Regioes;
+            existingCriatura.Povos = criatura.Povos;
+            existingCriatura.Contos = criatura.Contos;
 
             await tavernaDbContext.SaveChangesAsync();
 

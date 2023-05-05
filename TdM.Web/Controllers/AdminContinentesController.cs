@@ -1,11 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Data;
+using TdM.Database.Models.Domain;
 using TdM.Web.Models.ViewModels;
 using TdM.Web.Repositories;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using TdM.Database.Models.Domain;
-using System.Data;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.EntityFrameworkCore;
 
 namespace TdM.Web.Controllers;
 
@@ -102,6 +101,7 @@ public class AdminContinentesController : Controller
         //Maps Regioes from Selected continent
         var selectedRegioes = new List<Regiao>();
 
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
         foreach (var selectedRegiaoId in addContinenteRequest.SelectedRegioes)
         {
             if (!string.IsNullOrEmpty(selectedRegiaoId))
@@ -115,6 +115,7 @@ public class AdminContinentesController : Controller
                 }
             }
         }
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
         //Maping Regioes back to domain modal
         continente.Regioes = selectedRegioes;
 
@@ -136,12 +137,12 @@ public class AdminContinentesController : Controller
     public async Task<IActionResult> Edit(Guid id)
     {
         //Retrieve Result from repository
-        var continente = await continenteRepository.GetAsync(id);     
+        var continente = await continenteRepository.GetAsync(id);
         var mundosDomainModel = await mundoRepository.GetAllAsync();
         var regioesDomainModel = await regiaoRepository.GetAllAsync();
 
         if (continente != null)
-        {          
+        {
             var editContinenteRequest = new EditContinenteRequest
             {
                 Id = continente.Id,
@@ -164,7 +165,7 @@ public class AdminContinentesController : Controller
                     Text = x.Nome,
                     Value = x.Id.ToString()
                 }),
-                SelectedRegioes = continente.Regioes.Select(x => x.Id.ToString()).ToArray(),
+                SelectedRegioes = continente.Regioes?.Select(x => x.Id.ToString()).ToArray(),
             };
             return View(editContinenteRequest);
         }
@@ -224,6 +225,7 @@ public class AdminContinentesController : Controller
         //Maps Regioes from Selected continent
         var selectedRegioes = new List<Regiao>();
 
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
         foreach (var selectedRegiaoId in editContinenteRequest.SelectedRegioes)
         {
             if (!string.IsNullOrEmpty(selectedRegiaoId))
@@ -237,6 +239,7 @@ public class AdminContinentesController : Controller
                 }
             }
         }
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
         //Maping Regioes back to domain modal
         continente.Regioes = selectedRegioes;
 

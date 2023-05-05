@@ -54,7 +54,6 @@ public class AdminMundosController : Controller
         };
         return View(model);
     }
-
     [HttpPost]
     public async Task<IActionResult> Add(AddMundoRequest addMundoRequest)
     {
@@ -120,6 +119,7 @@ public class AdminMundosController : Controller
 
         //Maps Continents from Selected Continents
         var selectedContinentes = new List<Continente>();
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
         foreach (var selectedContinenteId in addMundoRequest.SelectedContinentes)
         {
             if (!string.IsNullOrEmpty(selectedContinenteId))
@@ -133,12 +133,14 @@ public class AdminMundosController : Controller
                 }
             }
         }
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
         //Maping Continentes back to domain modal
         mundo.Continentes = selectedContinentes;
 
         //Maps Regioes from Selected Regioes
         var selectedRegioes = new List<Regiao>();
 
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
         foreach (var selectedRegiaoId in addMundoRequest.SelectedRegioes)
         {
             if (!string.IsNullOrEmpty(selectedRegiaoId))
@@ -152,12 +154,14 @@ public class AdminMundosController : Controller
                 }
             }
         }
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
         //Maping Regioes back to domain modal
         mundo.Regioes = selectedRegioes;
 
         //Maps Personagens from Selected Personagens
         var selectedPersonagens = new List<Personagem>();
 
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
         foreach (var selectedPersonagemId in addMundoRequest.SelectedPersonagens)
         {
             if (!string.IsNullOrEmpty(selectedPersonagemId))
@@ -171,12 +175,14 @@ public class AdminMundosController : Controller
                 }
             }
         }
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
         //Maping Personagens back to domain modal
         mundo.Personagens = selectedPersonagens;
 
         //Maps Criaturas from Selected Criaturas
         var selectedCriaturas = new List<Criatura>();
 
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
         foreach (var selectedCriaturaId in addMundoRequest.SelectedCriaturas)
         {
             if (!string.IsNullOrEmpty(selectedCriaturaId))
@@ -190,12 +196,14 @@ public class AdminMundosController : Controller
                 }
             }
         }
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
         //Maping Criaturas back to domain modal
         mundo.Criaturas = selectedCriaturas;
 
         //Maping Povos from Selected Povos
         var selectedPovos = new List<Povo>();
 
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
         foreach (var selectedPovoId in addMundoRequest.SelectedPovos)
         {
             if (!string.IsNullOrEmpty(selectedPovoId))
@@ -209,12 +217,14 @@ public class AdminMundosController : Controller
                 }
             }
         }
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
         //Maping Povos back to domain modal
         mundo.Povos = selectedPovos;
 
         //Maps Contos from Selected Contos
         var selectedContos = new List<Conto>();
 
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
         foreach (var selectedContoId in addMundoRequest.SelectedContos)
         {
             if (!string.IsNullOrEmpty(selectedContoId))
@@ -228,6 +238,7 @@ public class AdminMundosController : Controller
                 }
             }
         }
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
         //Maping Contos back to domain modal
         mundo.Contos = selectedContos;
 
@@ -253,11 +264,13 @@ public class AdminMundosController : Controller
         var regioesDomainModel = await regiaoRepository.GetAllAsync();
         var personagensDomainModel = await personagemRepository.GetAllAsync();
         var criaturasDomainModel = await criaturaRepository.GetAllAsync();
+        var povosDomainModel = await povoRepository.GetAllAsync();
         var contosDomainModel = await contoRepository.GetAllAsync();
 
         if (mundo != null)
         {
             //Map the domain model into the view model
+#pragma warning disable CS8604 // Possible null reference argument.
             var editMundoRequest = new EditMundoRequest
             {
                 Id = mundo.Id,
@@ -269,37 +282,44 @@ public class AdminMundosController : Controller
                 PublishedDate = mundo.PublishedDate,
                 UrlHandle = mundo.UrlHandle,
                 Visible = mundo.Visible,
-                Continentes = continentesDomainModel.Select(x => new SelectListItem
+                Continentes = continentesDomainModel.Where(x => x.Mundo == mundo || x.Mundo == null).Select(x => new SelectListItem
                 {
                     Text = x.Nome,
                     Value = x.Id.ToString()
                 }),
                 SelectedContinentes = mundo.Continentes.Select(x => x.Id.ToString()).ToArray(),
-                Regioes = regioesDomainModel.Select(x => new SelectListItem
+                Regioes = regioesDomainModel.Where(x => x.Mundo == mundo || x.Mundo == null).Select(x => new SelectListItem
                 {
                     Text = x.Nome,
                     Value = x.Id.ToString()
                 }),
                 SelectedRegioes = mundo.Regioes.Select(x => x.Id.ToString()).ToArray(),
-                Personagens = personagensDomainModel.Select(x => new SelectListItem
+                Personagens = personagensDomainModel.Where(x => x.Mundo == mundo || x.Mundo == null).Select(x => new SelectListItem
                 {
                     Text = x.Nome,
                     Value = x.Id.ToString()
                 }),
                 SelectedPersonagens = mundo.Personagens.Select(x => x.Id.ToString()).ToArray(),
-                Criaturas = criaturasDomainModel.Select(x => new SelectListItem
+                Criaturas = criaturasDomainModel.Where(x => x.Mundo == mundo || x.Mundo == null).Select(x => new SelectListItem
                 {
                     Text = x.Nome,
                     Value = x.Id.ToString()
                 }),
                 SelectedCriaturas = mundo.Criaturas.Select(x => x.Id.ToString()).ToArray(),
-                Contos = contosDomainModel.Select(x => new SelectListItem
+                Povos = povosDomainModel.Where(x => x.Mundo == mundo || x.Mundo == null).Select(x => new SelectListItem
+                {
+                    Text = x.Nome,
+                    Value = x.Id.ToString()
+                }).ToList(),
+                SelectedPovos = mundo.Povos.Where(x => x.Mundo == mundo).Select(x => x.Id.ToString()).ToArray(),
+                Contos = contosDomainModel.Where(x => x.Mundo == mundo || x.Mundo == null).Select(x => new SelectListItem
                 {
                     Text = x.Titulo,
                     Value = x.Id.ToString()
                 }),
-                SelectedContos = mundo.Contos.Select(x => x.Id.ToString()).ToArray(),
+                SelectedContos = mundo.Contos.Where(x => x.Mundo == mundo).Select(x => x.Id.ToString()).ToArray()
             };
+#pragma warning restore CS8604 // Possible null reference argument.
             return View(editMundoRequest);
         }
         return View(null);
@@ -311,46 +331,52 @@ public class AdminMundosController : Controller
         if (!ModelState.IsValid)
         {
             editMundoRequest.Continentes = (await continenteRepository.GetAllAsync())
-                .Select(x => new SelectListItem
-                {
-                    Text = x.Nome,
-                    Value = x.Id.ToString()
-                }).ToList();
+             .Where(x => x.Mundo?.Id == editMundoRequest.Id || x.Mundo == null)
+             .Select(x => new SelectListItem
+               {
+                   Text = x.Nome,
+                   Value = x.Id.ToString()
+               }).ToList();
 
             editMundoRequest.Regioes = (await regiaoRepository.GetAllAsync())
-               .Select(x => new SelectListItem
-               {
-                   Text = x.Nome,
-                   Value = x.Id.ToString()
-               }).ToList();
+             .Where(x => x.Mundo?.Id == editMundoRequest.Id || x.Mundo == null)
+             .Select(x => new SelectListItem
+             {
+                 Text = x.Nome,
+                 Value = x.Id.ToString()
+             }).ToList();
 
             editMundoRequest.Personagens = (await personagemRepository.GetAllAsync())
-               .Select(x => new SelectListItem
-               {
-                   Text = x.Nome,
-                   Value = x.Id.ToString()
-               }).ToList();
+             .Where(x => x.Mundo?.Id == editMundoRequest.Id || x.Mundo == null)
+             .Select(x => new SelectListItem
+             {
+                 Text = x.Nome,
+                 Value = x.Id.ToString()
+             }).ToList();
 
             editMundoRequest.Criaturas = (await criaturaRepository.GetAllAsync())
-               .Select(x => new SelectListItem
-               {
-                   Text = x.Nome,
-                   Value = x.Id.ToString()
-               }).ToList();
+             .Where(x => x.Mundo?.Id == editMundoRequest.Id || x.Mundo == null)
+             .Select(x => new SelectListItem
+             {
+                 Text = x.Nome,
+                 Value = x.Id.ToString()
+             }).ToList();
 
             editMundoRequest.Povos = (await povoRepository.GetAllAsync())
-               .Select(x => new SelectListItem
-               {
-                   Text = x.Nome,
-                   Value = x.Id.ToString()
-               }).ToList();
+             .Where(x => x.Mundo?.Id == editMundoRequest.Id || x.Mundo == null)
+             .Select(x => new SelectListItem
+             {
+                 Text = x.Nome,
+                 Value = x.Id.ToString()
+             }).ToList();
 
             editMundoRequest.Contos = (await contoRepository.GetAllAsync())
-              .Select(x => new SelectListItem
-              {
-                  Text = x.Titulo,
-                  Value = x.Id.ToString()
-              }).ToList();
+             .Where(x => x.Mundo?.Id == editMundoRequest.Id || x.Mundo == null)
+             .Select(x => new SelectListItem
+             {
+                 Text = x.Titulo,
+                 Value = x.Id.ToString()
+             }).ToList();
 
             return View(editMundoRequest);
         }
@@ -371,6 +397,7 @@ public class AdminMundosController : Controller
 
         //Maps Continents from Selected Continents
         var selectedContinentes = new List<Continente>();
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
         foreach (var selectedContinenteId in editMundoRequest.SelectedContinentes)
         {
             if (!string.IsNullOrEmpty(selectedContinenteId))
@@ -384,12 +411,14 @@ public class AdminMundosController : Controller
                 }
             }
         }
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
         //Maping Continentes back to domain modal
         mundo.Continentes = selectedContinentes;
 
         //Maps Regioes from Selected Regioes
         var selectedRegioes = new List<Regiao>();
 
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
         foreach (var selectedRegiaoId in editMundoRequest.SelectedRegioes)
         {
             if (!string.IsNullOrEmpty(selectedRegiaoId))
@@ -403,12 +432,14 @@ public class AdminMundosController : Controller
                 }
             }
         }
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
         //Maping Regioes back to domain modal
         mundo.Regioes = selectedRegioes;
 
         //Maps Personagens from Selected Personagens
         var selectedPersonagens = new List<Personagem>();
 
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
         foreach (var selectedPersonagemId in editMundoRequest.SelectedPersonagens)
         {
             if (!string.IsNullOrEmpty(selectedPersonagemId))
@@ -422,12 +453,14 @@ public class AdminMundosController : Controller
                 }
             }
         }
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
         //Maping Personagens back to domain modal
         mundo.Personagens = selectedPersonagens;
 
         //Maps Criaturas from Selected Criaturas
         var selectedCriaturas = new List<Criatura>();
 
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
         foreach (var selectedCriaturaId in editMundoRequest.SelectedCriaturas)
         {
             if (!string.IsNullOrEmpty(selectedCriaturaId))
@@ -441,12 +474,14 @@ public class AdminMundosController : Controller
                 }
             }
         }
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
         //Maping Criaturas back to domain modal
         mundo.Criaturas = selectedCriaturas;
 
         //Maping Povos from Selected Povos
         var selectedPovos = new List<Povo>();
 
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
         foreach (var selectedPovoId in editMundoRequest.SelectedPovos)
         {
             if (!string.IsNullOrEmpty(selectedPovoId))
@@ -460,12 +495,14 @@ public class AdminMundosController : Controller
                 }
             }
         }
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
         //Maping Povos back to domain modal
         mundo.Povos = selectedPovos;
 
         //Maps Contos from Selected Contos
         var selectedContos = new List<Conto>();
 
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
         foreach (var selectedContoId in editMundoRequest.SelectedContos)
         {
             if (!string.IsNullOrEmpty(selectedContoId))
@@ -479,6 +516,7 @@ public class AdminMundosController : Controller
                 }
             }
         }
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
         //Maping Contos back to domain modal
         mundo.Contos = selectedContos;
 
@@ -508,6 +546,6 @@ public class AdminMundosController : Controller
             return RedirectToAction("List");
         }
         //Show an error notification
-        return RedirectToAction("Edit", new { Id = editMundoRequest.Id });
+        return RedirectToAction("Edit", new { editMundoRequest.Id });
     }
 }

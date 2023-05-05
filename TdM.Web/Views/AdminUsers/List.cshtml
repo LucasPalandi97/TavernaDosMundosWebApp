@@ -2,10 +2,8 @@
 @{
 }
 <partial name="_Navbar2" />
-<div class="bg-secondary bg-opacity-10 py-2">
-    <div class="container" id="rt">
-        <h1>Users List - Admin Funcionality</h1>
-    </div>
+<div class="row mt-4 mb-5">
+    <h1 class="text-center">List Users - Admin Functionality</h1>
 </div>
 
 <div>
@@ -20,7 +18,7 @@
         @if (Model.Users is not null || !Model.Users.Any())
         {
             <table class="table table-responsive" id="table">
-                <thead>
+                <thead class="text-nowrap">
                     <tr>
                         <th>Id</th>
                         <th>Username</th>
@@ -37,9 +35,11 @@
                             <td>@user.EmailAdress</td>
                             <td>
                                 <form method="post" asp-controller="AdminUsers" asp-action="Delete" asp-route-id="@user.Id" id="deleteForm-@user.Id">
-                                    <div class="d-flex">
-                                        <a href="#" class="text-danger mx-1" data-bs-toggle="modal" data-bs-target="#ConfirmDeleteModal-@user.Id">Delete</a>
-                                    </div>
+                                    <ul class="list-inline flex-nowrap m-0">                                     
+                                        <li class="list-inline-item">
+                                            <button class="btn btn-sm rounded-0" type="button" data-bs-toggle="modal" data-bs-target="#ConfirmDeleteModal-@user.Id"><i class="bi bi-trash-fill"></i></button>
+                                        </li>
+                                    </ul>
                                     <!-- Modal Delete -->
                                     <div class="modal fade" id="ConfirmDeleteModal-@user.Id" tabindex="-1" aria-labelledby="ConfirmDeleteModalLabel" aria-hidden="true">
                                         <div class="modal-dialog">

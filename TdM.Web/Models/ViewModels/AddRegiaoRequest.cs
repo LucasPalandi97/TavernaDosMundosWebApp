@@ -37,10 +37,12 @@ public class AddRegiaoRequest
 
     [Required]
     public bool Visible { get; set; }
-  
+
     public IEnumerable<SelectListItem>? Mundos { get; set; }
     public string? SelectedMundo { get; set; }
     public IEnumerable<SelectListItem>? Continentes { get; set; }
     public string? SelectedContinente { get; set; }
+    public IEnumerable<SelectListItem>? Contos { get; set; }
+    public string[]? SelectedContos { get; set; } = Array.Empty<string>();
 
 }

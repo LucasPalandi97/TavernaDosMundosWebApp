@@ -20,7 +20,7 @@ else
 
 <div class="container py-5">
     <div class="hero mb-5">
-        <h1><span class="section-title"></span>Stories</h1>
+        <h1><span class="section-title text-body-secondary">Stories</span></h1>
     </div>
 
     <nav class="navbar navbar-light justify-content-center mt-4">
@@ -30,7 +30,7 @@ else
     {
 
         <div class="card-deck my-3 row-cols-lg-4 row-cols-sm-2 justify-content-center align-items-center">
-            @foreach (var conto in Model.Contos.OrderBy(p => p.Titulo))
+            @foreach (var conto in Model.Contos.Where(co => co.Visible == true).OrderBy(co => co.Titulo))
             {
                 <div id="contocard" class="card bg-dark row-cols-lg-4 row-cols-sm-2 my-auto mx-2 mb-3" style="height: 20rem; width: 24rem;">
                     <div class="card_mask p-0 justify-content-between">
@@ -55,7 +55,9 @@ else
     }
     else
     {
+        <div class="text-center text-body-secondary mt-3">
         <p>No Stories found!</p>
+        </div>
     }
 </div>
 

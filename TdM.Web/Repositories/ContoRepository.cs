@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System.Drawing;
 using TdM.Database.Data;
 using TdM.Database.Models.Domain;
 
@@ -49,6 +48,7 @@ public class ContoRepository : IContoRepository
 
     public async Task<IEnumerable<Conto>> GetAllByMundoAsync(Guid mundoId)
     {
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
         return await tavernaDbContext.Contos
            .Include(x => x.Continentes)
            .Include(x => x.Regioes)
@@ -58,6 +58,7 @@ public class ContoRepository : IContoRepository
            .Include(x => x.Mundo)
            .Where(x => x.Mundo.Id == mundoId)
            .ToListAsync();
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
     }
 
 
@@ -65,17 +66,21 @@ public class ContoRepository : IContoRepository
     {
         if (selectedContinenteIds is Guid)
         {
+#pragma warning disable CS8604 // Possible null reference argument.
             return await tavernaDbContext.Contos
             .Where(c => c.Continentes
             .Any(pp => pp.Id == (Guid)selectedContinenteIds))
             .ToListAsync();
+#pragma warning restore CS8604 // Possible null reference argument.
         }
         else if (selectedContinenteIds is List<Guid> selectedContinenteIdsList)
         {
+#pragma warning disable CS8604 // Possible null reference argument.
             return await tavernaDbContext.Contos
             .Where(c => c.Continentes
             .Any(pp => selectedContinenteIdsList.Contains(pp.Id)))
             .ToListAsync();
+#pragma warning restore CS8604 // Possible null reference argument.
         }
         else
         {
@@ -88,17 +93,21 @@ public class ContoRepository : IContoRepository
 
         if (selectedRegiaoIds is Guid)
         {
+#pragma warning disable CS8604 // Possible null reference argument.
             return await tavernaDbContext.Contos
             .Where(r => r.Regioes
             .Any(pp => pp.Id == (Guid)selectedRegiaoIds))
             .ToListAsync();
+#pragma warning restore CS8604 // Possible null reference argument.
         }
         else if (selectedRegiaoIds is List<Guid> sselectedRegiaoIdsList)
         {
+#pragma warning disable CS8604 // Possible null reference argument.
             return await tavernaDbContext.Contos
             .Where(r => r.Regioes
             .Any(pp => sselectedRegiaoIdsList.Contains(pp.Id)))
             .ToListAsync();
+#pragma warning restore CS8604 // Possible null reference argument.
         }
         else
         {
@@ -111,17 +120,21 @@ public class ContoRepository : IContoRepository
     {
         if (selectedPersonagemIds is Guid)
         {
+#pragma warning disable CS8604 // Possible null reference argument.
             return await tavernaDbContext.Contos
             .Where(p => p.Personagens
             .Any(pp => pp.Id == (Guid)selectedPersonagemIds))
             .ToListAsync();
+#pragma warning restore CS8604 // Possible null reference argument.
         }
         else if (selectedPersonagemIds is List<Guid> selectedPersonagemIdsList)
         {
+#pragma warning disable CS8604 // Possible null reference argument.
             return await tavernaDbContext.Contos
             .Where(p => p.Personagens
             .Any(pp => selectedPersonagemIdsList.Contains(pp.Id)))
             .ToListAsync();
+#pragma warning restore CS8604 // Possible null reference argument.
         }
         else
         {
@@ -133,17 +146,21 @@ public class ContoRepository : IContoRepository
     {
         if (selectedCriaturaIds is Guid)
         {
+#pragma warning disable CS8604 // Possible null reference argument.
             return await tavernaDbContext.Contos
             .Where(cr => cr.Criaturas
             .Any(pp => pp.Id == (Guid)selectedCriaturaIds))
             .ToListAsync();
+#pragma warning restore CS8604 // Possible null reference argument.
         }
         else if (selectedCriaturaIds is List<Guid> selectedCriaturaIdsList)
         {
+#pragma warning disable CS8604 // Possible null reference argument.
             return await tavernaDbContext.Contos
             .Where(cr => cr.Criaturas
             .Any(pp => selectedCriaturaIdsList.Contains(pp.Id)))
             .ToListAsync();
+#pragma warning restore CS8604 // Possible null reference argument.
         }
         else
         {
@@ -151,22 +168,26 @@ public class ContoRepository : IContoRepository
         }
     }
 
-    
+
     public async Task<IEnumerable<Conto>> GetAllByPovoAsync(object selectedPovoIds)
     {
         if (selectedPovoIds is Guid)
         {
+#pragma warning disable CS8604 // Possible null reference argument.
             return await tavernaDbContext.Contos
             .Where(po => po.Povos
             .Any(pp => pp.Id == (Guid)selectedPovoIds))
             .ToListAsync();
+#pragma warning restore CS8604 // Possible null reference argument.
         }
         else if (selectedPovoIds is List<Guid> selectedPovoIdsList)
         {
+#pragma warning disable CS8604 // Possible null reference argument.
             return await tavernaDbContext.Contos
             .Where(po => po.Povos
             .Any(pp => selectedPovoIdsList.Contains(pp.Id)))
             .ToListAsync();
+#pragma warning restore CS8604 // Possible null reference argument.
         }
         else
         {

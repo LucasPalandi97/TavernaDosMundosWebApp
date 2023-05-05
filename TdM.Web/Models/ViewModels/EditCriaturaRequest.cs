@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using System.ComponentModel.DataAnnotations;
-using TdM.Database.Models.Domain;
 using TdM.Database.Models.Domain.Enums;
 
 namespace TdM.Web.Models.ViewModels;
@@ -43,14 +42,15 @@ public class EditCriaturaRequest
     [Required]
     public bool Visible { get; set; }
 
-
     public IEnumerable<SelectListItem>? Mundos { get; set; }
     public string? SelectedMundo { get; set; }
-    public IEnumerable<SelectListItem> Continentes { get; set; }
+    public IEnumerable<SelectListItem>? Continentes { get; set; }
     public string[]? SelectedContinentes { get; set; } = Array.Empty<string>();
-    public IEnumerable<SelectListItem> Regioes { get; set; }
+    public IEnumerable<SelectListItem>? Regioes { get; set; }
     public string[]? SelectedRegioes { get; set; } = Array.Empty<string>();
     public IEnumerable<SelectListItem>? Povos { get; set; }
     public string[]? SelectedPovos { get; set; } = Array.Empty<string>();
+    public IEnumerable<SelectListItem>? Contos { get; set; }
+    public string[]? SelectedContos { get; set; } = Array.Empty<string>();
 }
 

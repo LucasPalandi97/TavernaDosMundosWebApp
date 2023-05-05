@@ -11,7 +11,7 @@ public enum Raca
     Human,
     Dragonborn,
     Gnome,
-    [Display (Name="Half-Elf")]
+    [Display(Name = "Half-Elf")]
     Halfelf,
     [Display(Name = "Half-Orc")]
     Halforc,

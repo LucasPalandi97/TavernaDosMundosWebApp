@@ -21,7 +21,6 @@ public class PersonagemRepository : IPersonagemRepository
 
     public async Task<Personagem?> DeleteAsync(Guid id)
     {
-
         var existingPersonagem = await tavernaDbContext.Personagens.FindAsync(id);
 
         if (existingPersonagem != null)
@@ -31,21 +30,22 @@ public class PersonagemRepository : IPersonagemRepository
             return existingPersonagem;
         }
         return null;
-
     }
 
     public async Task<IEnumerable<Personagem>> GetAllAsync()
     {
         //return list and include navigation Icollection from model database
-        return await tavernaDbContext.Personagens.Include(x => x.Continente)
+        return await tavernaDbContext.Personagens
+            .Include(x => x.Continente)
             .Include(x => x.Regiao)
-            .Include(x => x.Mundo)
-            .Include(x => x.Povos).Include(x => x.Contos)
+            .Include(x => x.Povos)
+            .Include(x => x.Contos)
             .Include(x => x.Mundo).ToListAsync();
     }
 
     public async Task<IEnumerable<Personagem>> GetAllByMundoAsync(Guid mundoId)
     {
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
         return await tavernaDbContext.Personagens
             .Include(x => x.Continente)
             .Include(x => x.Regiao)
@@ -54,6 +54,7 @@ public class PersonagemRepository : IPersonagemRepository
             .Include(x => x.Mundo)
             .Where(x => x.Mundo.Id == mundoId)
             .ToListAsync();
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
     }
 
     public async Task<Personagem?> GetAsync(Guid id)
@@ -70,11 +71,15 @@ public class PersonagemRepository : IPersonagemRepository
     {
         if (selectedRegiaoIds is Guid)
         {
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
             return await tavernaDbContext.Personagens.Where(r => r.Regiao.Id == (Guid)selectedRegiaoIds).ToListAsync();
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
         }
         else if (selectedRegiaoIds is List<Guid> selectedRegiaoIdsList)
         {
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
             return await tavernaDbContext.Personagens.Where(r => selectedRegiaoIdsList.Contains(r.Regiao.Id)).ToListAsync();
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
         }
         else
         {
@@ -94,7 +99,8 @@ public class PersonagemRepository : IPersonagemRepository
 
     public async Task<Personagem?> UpdateAsync(Personagem personagem)
     {
-        var existingPersonagem = await tavernaDbContext.Personagens.Include(x => x.Continente)
+        var existingPersonagem = await tavernaDbContext.Personagens
+            .Include(x => x.Continente)
             .Include(x => x.Regiao)
             .Include(x => x.Povos)
             .Include(x => x.Contos)
@@ -114,8 +120,10 @@ public class PersonagemRepository : IPersonagemRepository
             existingPersonagem.PublishedDate = personagem.PublishedDate;
             existingPersonagem.UrlHandle = personagem.UrlHandle;
             existingPersonagem.Visible = personagem.Visible;
-            existingPersonagem.Regiao = personagem.Regiao;
             existingPersonagem.Continente = personagem.Regiao?.Continente;
+            existingPersonagem.Regiao = personagem.Regiao;
+            existingPersonagem.Povos = personagem.Povos;
+            existingPersonagem.Contos = personagem.Contos;
             existingPersonagem.Mundo = personagem.Regiao?.Mundo;
             await tavernaDbContext.SaveChangesAsync();
 

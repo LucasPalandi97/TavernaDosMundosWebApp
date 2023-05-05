@@ -15,13 +15,19 @@ public class AdminPersonagensController : Controller
     private readonly IMundoRepository mundoRepository;
     private readonly IContinenteRepository continenteRepository;
     private readonly IRegiaoRepository regiaoRepository;
+    private readonly IPovoRepository povoRepository;
+    private readonly IContoRepository contoRepository;
 
-    public AdminPersonagensController(IPersonagemRepository personagemRepository, IMundoRepository mundoRepository, IContinenteRepository continenteRepository, IRegiaoRepository regiaoRepository)
+    public AdminPersonagensController(IPersonagemRepository personagemRepository, IMundoRepository mundoRepository,
+        IContinenteRepository continenteRepository, IRegiaoRepository regiaoRepository,
+        IPovoRepository povoRepository, IContoRepository contoRepository)
     {
         this.personagemRepository = personagemRepository;
         this.mundoRepository = mundoRepository;
         this.continenteRepository = continenteRepository;
         this.regiaoRepository = regiaoRepository;
+        this.povoRepository = povoRepository;
+        this.contoRepository = contoRepository;
     }
 
     [HttpGet]
@@ -39,7 +45,6 @@ public class AdminPersonagensController : Controller
     [HttpPost]
     public async Task<IActionResult> Add(AddPersonagemRequest addPersonagemRequest)
     {
-
         if (!ModelState.IsValid)
         {
             addPersonagemRequest.Mundos = (await mundoRepository.GetAllAsync())
@@ -63,9 +68,22 @@ public class AdminPersonagensController : Controller
                    Value = x.Id.ToString()
                }).ToList();
 
+            addPersonagemRequest.Povos = (await povoRepository.GetAllAsync())
+               .Select(x => new SelectListItem
+               {
+                   Text = x.Nome,
+                   Value = x.Id.ToString()
+               }).ToList();
+
+            addPersonagemRequest.Contos = (await contoRepository.GetAllAsync())
+               .Select(x => new SelectListItem
+               {
+                   Text = x.Titulo,
+                   Value = x.Id.ToString()
+               }).ToList();
+
             return View(addPersonagemRequest);
         }
-
 
         //Map view model to domain model
         var personagem = new Personagem
@@ -75,17 +93,15 @@ public class AdminPersonagensController : Controller
             Classe = addPersonagemRequest.Classe,
             Raca = addPersonagemRequest.Raca,
             CurtaDescricao = addPersonagemRequest.CurtaDescricao,
-            Biografia = addPersonagemRequest.Biografia,       
+            Biografia = addPersonagemRequest.Biografia,
             ImgCard = addPersonagemRequest.ImgCard,
             ImgBox = addPersonagemRequest.ImgBox,
             PublishedDate = addPersonagemRequest.PublishedDate,
             UrlHandle = addPersonagemRequest.UrlHandle,
             Visible = addPersonagemRequest.Visible,
-
         };
 
         //Maps Mundos from Selected mundo
-
         var selectedMundoId = addPersonagemRequest.SelectedMundo;
         if (selectedMundoId != null)
         {
@@ -101,7 +117,6 @@ public class AdminPersonagensController : Controller
         }
 
         //Maps Continentes from Selected Continente
-
         var selectedContinenteId = addPersonagemRequest.SelectedContinente;
         if (selectedContinenteId != null)
         {
@@ -116,9 +131,7 @@ public class AdminPersonagensController : Controller
             }
         }
 
-
         //Maps Regioes from Selected Regiao
-
         var selectedRegiaoId = addPersonagemRequest.SelectedRegiao;
         if (selectedRegiaoId != null)
         {
@@ -133,21 +146,46 @@ public class AdminPersonagensController : Controller
             }
         }
 
+        //Maps Povos from Selected Regiao
+        var selectedPovos = new List<Povo>();
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
+        foreach (var selectedPovoId in addPersonagemRequest.SelectedPovos)
+        {
+            if (!string.IsNullOrEmpty(selectedPovoId))
+            {
+                var selectedPovoIdAsGuid = Guid.Parse(selectedPovoId);
+                var existingPovo = await povoRepository.GetAsync(selectedPovoIdAsGuid);
+                if (existingPovo != null)
+                {
+                    selectedPovos.Add(existingPovo);
+                }
+            }
+        }
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
+        //Maping Povos back to domain modal
+        personagem.Povos = selectedPovos;
+
         await personagemRepository.AddAsync(personagem);
 
         return RedirectToAction("List");
     }
 
+#pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
     public async Task<IActionResult> ListPersonagensByRegiao(Guid id, List<Guid> selectedRegiaoIds = null)
+#pragma warning restore CS8625 // Cannot convert null literal to non-nullable reference type.
     {
         IEnumerable<Personagem> personagens;
         if (selectedRegiaoIds == null)
         {
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
             personagens = await personagemRepository.GetPersonagensByRegiaoAsync(id);
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
         }
         else
         {
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
             personagens = await personagemRepository.GetPersonagensByRegiaoAsync(selectedRegiaoIds);
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
         }
         var selectListItems = personagens.Select(x => new SelectListItem
         {
@@ -174,6 +212,8 @@ public class AdminPersonagensController : Controller
         var mundosDomainModel = await mundoRepository.GetAllAsync();
         var continenteDomainModel = await continenteRepository.GetAllAsync();
         var regiaoDomainModel = await regiaoRepository.GetAllAsync();
+        var povosDomainModel = await povoRepository.GetAllAsync();
+        var contosDomainModel = await continenteRepository.GetAllAsync();
 
         if (personagem != null)
         {
@@ -210,6 +250,18 @@ public class AdminPersonagensController : Controller
                     Value = x.Id.ToString()
                 }),
                 SelectedRegiao = personagem.Regiao?.Id.ToString(),
+                Povos = povosDomainModel.Select(x => new SelectListItem
+                {
+                    Text = x.Nome,
+                    Value = x.Id.ToString()
+                }),
+                SelectedPovos = personagem.Povos?.Select(x => x.Id.ToString()).ToArray(),
+                Contos = povosDomainModel.Select(x => new SelectListItem
+                {
+                    Text = x.Nome,
+                    Value = x.Id.ToString()
+                }),
+                SelectedContos = personagem.Contos?.Select(x => x.Id.ToString()).ToArray()
 
             };
             return View(editPersonagemRequest);
@@ -243,6 +295,20 @@ public class AdminPersonagensController : Controller
                    Text = x.Nome,
                    Value = x.Id.ToString()
                }).ToList();
+
+            editPersonagemRequest.Povos = (await povoRepository.GetAllAsync())
+             .Select(x => new SelectListItem
+             {
+                 Text = x.Nome,
+                 Value = x.Id.ToString()
+             }).ToList();
+
+            editPersonagemRequest.Contos = (await contoRepository.GetAllAsync())
+             .Select(x => new SelectListItem
+             {
+                 Text = x.Titulo,
+                 Value = x.Id.ToString()
+             }).ToList();
 
             return View(editPersonagemRequest);
         }
@@ -310,6 +376,44 @@ public class AdminPersonagensController : Controller
                 personagem.Regiao = selectedRegiao;
             }
         }
+
+        //Maps Povos from Selected Regiao
+        var selectedPovos = new List<Povo>();
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
+        foreach (var selectedPovoId in editPersonagemRequest.SelectedPovos)
+        {
+            if (!string.IsNullOrEmpty(selectedPovoId))
+            {
+                var selectedPovoIdAsGuid = Guid.Parse(selectedPovoId);
+                var existingPovo = await povoRepository.GetAsync(selectedPovoIdAsGuid);
+                if (existingPovo != null)
+                {
+                    selectedPovos.Add(existingPovo);
+                }
+            }
+        }
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
+        //Maping Povos back to domain modal
+        personagem.Povos = selectedPovos;
+
+        //Maps Conto from Selected Mundo
+        var selectedContos = new List<Conto>();
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
+        foreach (var selectedContoId in editPersonagemRequest.SelectedContos)
+        {
+            if (!string.IsNullOrEmpty(selectedContoId))
+            {
+                var selectedContoIdAsGuid = Guid.Parse(selectedContoId);
+                var existingConto = await contoRepository.GetAsync(selectedContoIdAsGuid);
+                if (existingConto != null)
+                {
+                    selectedContos.Add(existingConto);
+                }
+            }
+        }
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
+        //Maping Povos back to domain modal
+        personagem.Contos = selectedContos;
 
         var updatedPersonagem = await personagemRepository.UpdateAsync(personagem);
 

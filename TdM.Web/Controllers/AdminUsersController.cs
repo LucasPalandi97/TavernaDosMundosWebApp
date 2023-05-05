@@ -26,12 +26,16 @@ public class AdminUsersController : Controller
         usersViewModel.Users = new List<User>();
         foreach (var user in users)
         {
+#pragma warning disable CS8601 // Possible null reference assignment.
+#pragma warning disable CS8601 // Possible null reference assignment.
             usersViewModel.Users.Add(new Models.ViewModels.User
             {
                 Id = Guid.Parse(user.Id),
                 Username = user.UserName,
                 EmailAdress = user.Email
             });
+#pragma warning restore CS8601 // Possible null reference assignment.
+#pragma warning restore CS8601 // Possible null reference assignment.
         }
 
         return View(usersViewModel);
@@ -79,13 +83,13 @@ public class AdminUsersController : Controller
     {
         var user = await userManager.FindByIdAsync(id.ToString());
 
-        if (user is not null) 
+        if (user is not null)
         {
             var identitiyResult = await userManager.DeleteAsync(user);
 
-            if(identitiyResult is not null && identitiyResult.Succeeded) 
+            if (identitiyResult is not null && identitiyResult.Succeeded)
             {
-                return RedirectToAction("List", "AdminUsers");          
+                return RedirectToAction("List", "AdminUsers");
             }
         }
         return View();

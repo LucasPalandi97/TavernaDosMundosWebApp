@@ -45,7 +45,7 @@ public class TavernaDbContext : DbContext
                     .HasMany(co => co.Contos)
                     .WithOne(m => m.Mundo)
                     .OnDelete(DeleteBehavior.SetNull);
-   
+
 
         modelBuilder.Entity<Continente>()
                     .HasMany(r => r.Regioes)
@@ -61,6 +61,6 @@ public class TavernaDbContext : DbContext
         modelBuilder.Entity<Regiao>()
                     .HasMany(pe => pe.Personagens)
                     .WithOne(r => r.Regiao)
-                    .OnDelete(DeleteBehavior.SetNull);       
+                    .OnDelete(DeleteBehavior.SetNull);
     }
 }

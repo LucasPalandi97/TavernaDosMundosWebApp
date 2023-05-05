@@ -1,57 +1,62 @@
 ﻿@model TdM.Web.Models.ViewModels.EditPersonagemRequest
 @using TdM.Database.Models.Domain.Enums
 @{
+    var ClassList = Html.GetEnumSelectList<Classe>().OrderBy(x => x.Text);
+    var RaceList = Html.GetEnumSelectList<Raca>().OrderBy(x => x.Text);
 }
 <partial name="_Navbar2" />
-<div class="bg-secondary bg-opacity-10 py-2">
-    <div class="container" id="rt">
-        <h1>Add new Character - Admin Funcionality</h1>
-    </div>
+<div class="row mt-4 mb-5">
+    <h1 class="text-center">Edit Character - Admin Functionality</h1>
 </div>
 
 <div class="container py-5 col-8">
     @if (Model != null)
     {
         <form method="post">
-
-            <div class="mb-3 col-8">
-                <label class="form-label" for="nome">Id</label>
-                <input type="text" class="form-control" id="nome" asp-for="Id" required readonly />
+            <div class="row row-cols-1 row-cols-md-2">
+                <div class="mb-3">
+                    <label class="form-label" for="nome">Id</label>
+                    <input type="text" class="form-control" id="nome" asp-for="Id" required readonly />
+                </div>
             </div>
 
-            <div class="mb-3 col-8">
-                <label class="form-label" for="nome">Name</label>
-                <input type="text" class="form-control" id="nome" asp-for="Nome" required/>
-                <span class="text-danger" asp-validation-for="Nome"></span>
+            <div class="row row-cols-1 row-cols-md-2">
+                <div class="mb-3">
+                    <label class="form-label" for="nome">Character</label>
+                    <input type="text" class="form-control" id="nome" asp-for="Nome" placeholder="Character Name" required />
+                    <span class="text-danger" asp-validation-for="Nome"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label" for="nome">Title</label>
+                    <input type="text" class="form-control" id="nome" asp-for="Titulo" placeholder="Character Title" required />
+                    <span class="text-danger" asp-validation-for="Titulo"></span>
+                </div>
             </div>
 
-            <div class="mb-3 col-8">
-                <label class="form-label" for="nome">Tittle</label>
-                <input type="text" class="form-control" id="nome" asp-for="Titulo" required/>
-                <span class="text-danger" asp-validation-for="Titulo"></span>
-            </div>
-
-
-            <div class=" mb-3 form-group col-8">
-                <label for="class" class="form-label">Class</label>
-                <select id="class" asp-for="Classe" class="form-control" asp-items="Html.GetEnumSelectList<Classe>()">
-                    <option value="" class="text-danger">No Class ...</option>
-                </select>
-                <span asp-validation-for="Classe" class="text-danger"></span>
-            </div>
-
-            <div class=" mb-3 form-group col-8">
-                <label for="raca" class="form-label">Race</label>
-                <select id="raca" asp-for="Raca" class="form-control" asp-items="Html.GetEnumSelectList<Raca>()">
-                    <option value="" class="text-danger">No Race ...</option>
-                </select>
-                <span asp-validation-for="Raca" class="text-danger"></span>
-            </div>
-
-            <div class="mb-3">
-                <label for="descricao" class="form-label">Short Description</label>
-                <input class="form-control" type="text" placeholder="Character's Short Description" id="CurtaDescricao" name="CurtaDescricao" asp-for="CurtaDescricao" required/>
-                <span class="text-danger" asp-validation-for="CurtaDescricao"></span>
+            <div class="row row-cols-1 row-cols-md-2">
+                <div class="align-self-md-start">
+                    <div class="mb-3 form-group">
+                        <label for="class" class="form-label">Class</label>
+                        <select id="class" asp-for="Classe" class="form-control" asp-items="@ClassList">
+                            <option value="" class="text-danger">No Class ...</option>
+                        </select>
+                        <span asp-validation-for="Classe" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3 form-group">
+                        <label for="raca" class="form-label">Race</label>
+                        <select id="raca" asp-for="Raca" class="form-control" asp-items="@RaceList">
+                            <option value="" class="text-danger">No Race ...</option>
+                        </select>
+                        <span asp-validation-for="Raca" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="mb-5">
+                    <label for="CurtaDescricao" class="form-label">Short Description</label>
+                    <textarea class="form-control h-100" type="" placeholder="Character's Short Description" id="CurtaDescricao" name="CurtaDescricao" asp-for="CurtaDescricao" required>
+                    <span class="text-danger" asp-validation-for="CurtaDescricao"></span>
+                            </textarea>
+                </div>
             </div>
 
             <div class="mb-3">
@@ -60,88 +65,104 @@
                 <span class="text-danger" asp-validation-for="Biografia"></span>
             </div>
 
-            <div class="mb-3">
-                <label class="form-label">Upload Display Image</label>
-                <input type="file" id="ImageCardUpload" class="form-control" />
+            <div class="row row-cols-md-2 mb-3">
+                <div class=" mb-5 align-self-md-start">
+                    <div class="mb-3">
+                        <label class="form-label">Upload Display Image</label>
+                        <input type="file" id="ImageCardUpload" class="form-control" />
+                    </div>
+                    <div class="mb-3">
+                        <input type="text" class="form-control" id="ImgCardUrl" placeholder="Image's URL" asp-for="ImgCard" />
+                        @if (Model.ImgCard != null)
+                        {
+                            <img src="@Model.ImgCard" id="ImageCardUploadDisplay" class="w-100" style="width:300px; margin-top:1em;" />
 
-                @if (Model.ImgCard != null)
-                {
-                    <img src="@Model.ImgCard" id="ImageCardUploadDisplay" style="width:300px; margin-top:1em;" />
+                        }
+                        else
+                        {
+                            <img src="" id="ImageCardUploadDisplay" class="w-100" style="width:300px; margin-top:1em;" />
 
-                }
-                else
-                {
-                    <img src="" id="ImageCardUploadDisplay" style="width:300px; margin-top:1em;" />
+                        }
+                    </div>
+                </div>
+                <div class=" mb-5 align-self-md-start">
+                    <div class="mb-3">
+                        <label class="form-label">Upload Content Image</label>
+                        <input type="file" id="ImageBoxUpload" class="form-control" />
+                    </div>
+                    <div class="mb-3">
+                        <input type="text" class="form-control" id="ImgBoxUrl" placeholder="Image's URL" asp-for="ImgBox" />
+                        @if (Model.ImgBox != null)
+                        {
+                            <img src="@Model.ImgBox" id="ImageBoxUploadDisplay" style="width:300px; margin-top:1em;" />
 
-                }
+                        }
+                        else
+                        {
+                            <img src="" id="ImageBoxUploadDisplay" style="width:300px; margin-top:1em;" />
+
+                        }
+                    </div>
+                </div>
             </div>
 
-            <div class="mb-3">
-                <label class="form-label" for="ImgCardUrl">Display Image</label>
-                <input type="text" class="form-control" id="ImgCardUrl" placeholder="Image's URL" asp-for="ImgCard" />
+            <div class="row mb-3 row-cols-1 row-cols-md-2">
+                <div>
+                    <label class="form-label">Published Date</label>
+                    <input type="datetime-local" class="form-control" id="publishedDate" asp-for="PublishedDate" required />
+                    <span class="text-danger" asp-validation-for="PublishedDate"></span>
+                </div>
+                <div>
+                    <label class="form-label">URL Handle</label>
+                    <input type="text" class="form-control" id="urlHandle" asp-for="UrlHandle" required />
+                    <span class="text-danger" asp-validation-for="UrlHandle"></span>
+                </div>
             </div>
 
-            <div class="mb-3">
-                <label class="form-label">Upload Content Image</label>
-                <input type="file" id="ImageBoxUpload" class="form-control" />
-
-                @if (Model.ImgBox != null)
-                {
-                    <img src="@Model.ImgBox" id="ImageBoxUploadDisplay" style="width:300px; margin-top:1em;" />
-
-                }
-                else
-                {
-                    <img src="" id="ImageBoxUploadDisplay" style="width:300px; margin-top:1em;" />
-
-                }
-            </div>
-            <div class="mb-3">
-                <label class="form-label" for="ImgBoxUrl">Content Image</label>
-                <input type="text" class="form-control" id="ImgBoxUrl" placeholder="Image's URL" asp-for="ImgBox" />
-            </div>
-
-            <div class="mb-3 col-2">
-                <label class="form-label">Published Date</label>
-                <input type="datetime-local" class="form-control" id="publishedDate" asp-for="PublishedDate" required/>
-                <span class="text-danger" asp-validation-for="PublishedDate"></span>
-            </div>
-
-            <div class="mb-3">
-                <label class="form-label">URL Handle</label>
-                <input type="text" class="form-control" id="urlHandle" asp-for="UrlHandle" required/>
-                <span class="text-danger" asp-validation-for="UrlHandle"></span>
-            </div>
-
-            <div class="form-check form-switch mb-3">
+            <div class="form-check form-switch mb-5">
                 <label class="form-check-label" for="visible">Visible?</label>
-                <input class="form-check-input" type="checkbox" id="visible" asp-for="Visible" required checked>
+                <input class="form-check-input" type="checkbox" id="visible" asp-for="Visible">
                 <span class="text-danger" asp-validation-for="Visible"></span>
             </div>
 
-            <div class="mb-3 col-8">
-                <label class="form-label">World</label>
-                <select id="SelectedMundo" class="form-select" asp-items="@Model.Mundos" asp-for="SelectedMundo" onchange="updateContinentes() ">
-                    <option value="" class="text-danger">No World</option>
-                </select>
+            <div class="w-100 mb-3 d-flex justify-content-center align-items-center flex-column">
+                <div class="col-md-4 mb-1">
+                    <label class="form-label">World</label>
+                    <select id="SelectedMundo" class="form-select" asp-items="@Model.Mundos" asp-for="SelectedMundo" onchange="updateContinentes(), updatePovos(), updateContos()">
+                        <option value="" class="text-danger">No World</option>
+                    </select>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label class="form-label">Continent</label>
+                    <select id="SelectedContinentes" class="form-select" asp-items="@Model.Continentes" asp-for="SelectedContinente" onchange="updateRegioes()" data-single>
+                        <option value="" class="text-danger">No Continent</option>
+                    </select>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label class="form-label">Region</label>
+                    <select id="SelectedRegioes" class="form-select" asp-items="@Model.Regioes" asp-for="SelectedRegiao" data-single>
+                        <option value="" class="text-danger">No Region</option>
+                    </select>
+                </div>
             </div>
-            <div class="mb-3 col-8">
-                <label class="form-label">Continent</label>
-                <select id="SelectedContinentes" class="form-control" asp-items="@Model.Continentes" asp-for="SelectedContinente" onchange="updateRegioes()" data-single>
-                    <option value="" class="text-danger">No Continent</option>
-                </select>
-            </div>
-            <div class="mb-3 col-8">
-                <label class="form-label">Region</label>
-                <select id="SelectedRegioes" class="form-select" asp-items="@Model.Regioes" asp-for="SelectedRegiao" data-single>
-                    <option value="" class="text-danger">No Region</option>
-                </select>
+
+            <div class="row text-center row-cols-2 row-cols-md-3 justify-content-center">
+                <div class="mb-3">
+                    <label class="form-label">Peoples</label>
+                    <select id="SelectedPovos" class="form-select" style="min-height:12rem" asp-items="@Model.Povos" asp-for="SelectedPovos" multiple>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Stories</label>
+                    <select id="SelectedContos" class="form-select" style="min-height:12rem" asp-items="@Model.Contos" asp-for="SelectedContos" multiple>
+                    </select>
+                </div>
             </div>
 
             <div class="mb-3">
                 <div class="d-flex">
-                    <button type="submit" class="btn btn-dark">Update</button>
-                    <button type="button" class="btn btn-danger ms-2" data-bs-toggle="modal" data-bs-target="#exampleModal">Delete</button>
+                    <button id="submitbtn" type="submit" class="btn btn-dark">Update</button>
+                    <button id="submitbtn" type="button" class="btn btn-danger ms-2" data-bs-toggle="modal" data-bs-target="#exampleModal">Delete</button>
                 </div>
             </div>
 

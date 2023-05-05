@@ -1,12 +1,12 @@
 ﻿@model TdM.Web.Models.ViewModels.AddPersonagemRequest
 @using TdM.Database.Models.Domain.Enums
 @{
+    var ClassList = Html.GetEnumSelectList<Classe>().OrderBy(x => x.Text);
+    var RaceList = Html.GetEnumSelectList<Raca>().OrderBy(x => x.Text);
 }
 <partial name="_Navbar2" />
-<div class="bg-secondary bg-opacity-10 py-2">
-    <div class="container" id="rt">
-        <h1>Add new Character - Admin Funcionality</h1>
-    </div>
+<div class="row mt-4 mb-5">
+    <h1 class="text-center">Add Character - Admin Functionality</h1>
 </div>
 
 <div class="container py-5 col-lg-8">
@@ -26,29 +26,28 @@
         </div>
 
         <div class="row row-cols-1 row-cols-md-2">
-        
-                <div class="align-self-md-start">
-                    <div class="mb-3 form-group">
-                        <label for="class" class="form-label">Class</label>
-                        <select id="class" asp-for="Classe" class="form-control" asp-items="Html.GetEnumSelectList<Classe>()">
-                            <option value="" class="text-danger">No Class ...</option>
-                        </select>
-                        <span asp-validation-for="Classe" class="text-danger"></span>
-                    </div>
-                    <div class="mb-3 form-group">
-                        <label for="raca" class="form-label">Race</label>
-                        <select id="raca" asp-for="Raca" class="form-control" asp-items="Html.GetEnumSelectList<Raca>()">
-                            <option value="" class="text-danger">No Race ...</option>
-                        </select>
-                        <span asp-validation-for="Raca" class="text-danger"></span>
-                    </div>
-                </div>         
+            <div class="align-self-md-start">
+                <div class="mb-3 form-group">
+                    <label for="class" class="form-label">Class</label>
+                    <select id="class" asp-for="Classe" class="form-control" asp-items="@ClassList">
+                        <option value="" class="text-danger">No Class ...</option>
+                    </select>
+                    <span asp-validation-for="Classe" class="text-danger"></span>
+                </div>
+                <div class="mb-3 form-group">
+                    <label for="raca" class="form-label">Race</label>
+                    <select id="raca" asp-for="Raca" class="form-control" asp-items="@RaceList">
+                        <option value="" class="text-danger">No Race ...</option>
+                    </select>
+                    <span asp-validation-for="Raca" class="text-danger"></span>
+                </div>
+            </div>
             <div class="mb-5">
                 <label for="CurtaDescricao" class="form-label">Short Description</label>
                 <textarea class="form-control h-100" type="" placeholder="Character's Short Description" id="CurtaDescricao" name="CurtaDescricao" asp-for="CurtaDescricao" required>
                 <span class="text-danger" asp-validation-for="CurtaDescricao"></span>
             </textarea>
-            </div>         
+            </div>
         </div>
 
         <div class="mb-3">
@@ -64,7 +63,6 @@
                     <input type="file" id="ImageCardUpload" class="form-control" />
                 </div>
                 <div class="mb-3">
-                    <label class="form-label" for="ImgCardUrl">Display Image</label>
                     <input type="text" class="form-control" id="ImgCardUrl" placeholder="Image's URL" asp-for="ImgCard" />
                     <img src="" id="ImageCardUploadDisplay" class="w-100" style="display:none;width:300px; margin-top:1em;" />
                 </div>
@@ -75,7 +73,6 @@
                     <input type="file" id="ImageBoxUpload" class="form-control" />
                 </div>
                 <div class="mb-3">
-                    <label class="form-label" for="ImgBoxUrl">Content Image</label>
                     <input type="text" class="form-control" id="ImgBoxUrl" placeholder="Image's URL" asp-for="ImgBox" />
                     <img src="" id="ImageBoxUploadDisplay" class="w-100" style="display:none;width:300px; margin-top:1em;" />
                 </div>
@@ -95,35 +92,48 @@
             </div>
         </div>
 
-        <div class="form-check form-switch mb-4">
+        <div class="form-check form-switch mb-5">
             <label class="form-check-label" for="visible">Visible?</label>
-            <input class="form-check-input" type="checkbox" id="visible" asp-for="Visible" checked required>
+            <input class="form-check-input" type="checkbox" id="visible" asp-for="Visible" checked >
             <span class="text-danger" asp-validation-for="Visible"></span>
         </div>
 
-        <div class=" justify-content-center align-content-center">      
-            <div class="mb-3">
+        <div class="w-100 mb-3 d-flex justify-content-center align-items-center flex-column">
+            <div class="col-md-4 mb-1">
                 <label class="form-label">World</label>
-                <select id="SelectedMundo" class="form-select" asp-items="@Model.Mundos" asp-for="SelectedMundo" onchange="updateContinentes() ">
+                <select id="SelectedMundo" class="form-select" asp-items="@Model.Mundos" asp-for="SelectedMundo" onchange="updateContinentes(), updatePovos(), updateContos()">
                     <option value="" class="text-danger">No World</option>
                 </select>
             </div>
-            <div class="mb-3">
+            <div class="col-md-4 mb-3">
                 <label class="form-label">Continent</label>
-                <select id="SelectedContinentes" class="form-control" asp-items="@Model.Continentes" asp-for="SelectedContinente" onchange="updateRegioes()" data-single>
+                <select id="SelectedContinentes" class="form-select" asp-items="@Model.Continentes" asp-for="SelectedContinente" onchange="updateRegioes()" data-single>
+                    <option value="" class="text-danger">No Continent</option>
+                </select>
+            </div>
+            <div class="col-md-4 mb-3">
+                <label class="form-label">Region</label>
+                <select id="SelectedRegioes" class="form-select" asp-items="@Model.Regioes" asp-for="SelectedRegiao" data-single>
+                    <option value="" class="text-danger">No Region</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="row text-center row-cols-2 row-cols-md-3 justify-content-center">
+            <div class="mb-3">
+                <label class="form-label">Peoples</label>
+                <select id="SelectedPovos" class="form-select" style="min-height:12rem" asp-items="@Model.Povos" asp-for="SelectedPovos" multiple>
                 </select>
             </div>
             <div class="mb-3">
-                <label class="form-label">Region</label>
-                <select id="SelectedRegioes" class="form-select" asp-items="@Model.Regioes" asp-for="SelectedRegiao" data-single>
+                <label class="form-label">Stories</label>
+                <select id="SelectedContos" class="form-select" style="min-height:12rem" asp-items="@Model.Contos" asp-for="SelectedContos" multiple>
                 </select>
-            </div>          
+            </div>
         </div>
 
-        <div class="mb-3">
-            <button id="submitbtn" type="submit" class="btn btn-light">
-                Save
-            </button>
+        <div class="mb-3 ">
+            <button id="submitbtn" type="submit" class="btn btn-secondary">Submit</button>
         </div>
     </form>
 </div>

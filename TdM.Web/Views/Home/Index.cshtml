@@ -15,7 +15,7 @@
         <div class="d-block d-lg-flex col-12 justify-content-center h-auto ">
             @if (Model != null && Model.Any())
             {
-                foreach (var mundo in Model)
+                    foreach (var mundo in Model.Where(m => m.Visible == true))
                 {
                     <div class="card grow mt-1 bg-dark text-white col border-0 h-100" style="border-radius:1rem; margin-left:0.135rem; margin-right:0.135rem;">
                         <a class="text-white" asp-area="" asp-controller="Mundos" asp-action="Index" asp-route-urlHandle="@mundo.UrlHandle">

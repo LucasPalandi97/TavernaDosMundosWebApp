@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using System.ComponentModel.DataAnnotations;
-using TdM.Database.Models.Domain;
 
 namespace TdM.Web.Models.ViewModels;
 
@@ -45,4 +44,6 @@ public class EditRegiaoRequest
     public string? SelectedMundo { get; set; }
     public IEnumerable<SelectListItem>? Continentes { get; set; }
     public string? SelectedContinente { get; set; }
+    public IEnumerable<SelectListItem>? Contos { get; set; }
+    public string[]? SelectedContos { get; set; } = Array.Empty<string>();
 }

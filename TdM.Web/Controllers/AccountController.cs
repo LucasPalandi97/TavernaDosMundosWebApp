@@ -24,7 +24,7 @@ public class AccountController : Controller
 
 
     [HttpPost]
-    public async Task<IActionResult> Register(RegisterViewModel registerViewModel) 
+    public async Task<IActionResult> Register(RegisterViewModel registerViewModel)
     {
         if (ModelState.IsValid)
         {
@@ -47,20 +47,20 @@ public class AccountController : Controller
                 }
             }
         }
-      
+
         // Show error notification
         return View();
     }
 
     [HttpGet]
-    public IActionResult Login(string ReturnUrl) 
+    public IActionResult Login(string ReturnUrl)
     {
-        var model = new LoginViewModel 
+        var model = new LoginViewModel
         {
-            ReturnUrl = ReturnUrl 
+            ReturnUrl = ReturnUrl
         };
 
-    return View(model);
+        return View(model);
     }
 
     [HttpPost]
@@ -71,12 +71,12 @@ public class AccountController : Controller
             return View();
         }
 
-       var signInResult =  await signInManager.PasswordSignInAsync(loginViewModel.Username
-            ,loginViewModel.Password, false, false);
+        var signInResult = await signInManager.PasswordSignInAsync(loginViewModel.Username
+             , loginViewModel.Password, false, false);
 
         if (signInResult != null && signInResult.Succeeded)
         {
-            if(!string.IsNullOrWhiteSpace(loginViewModel.ReturnUrl))
+            if (!string.IsNullOrWhiteSpace(loginViewModel.ReturnUrl))
             {
                 return Redirect(loginViewModel.ReturnUrl);
             }
@@ -84,12 +84,12 @@ public class AccountController : Controller
         }
         //Show Errors
         return View();
-}
+    }
 
     [HttpGet]
     public async Task<IActionResult> Logout()
     {
-         await signInManager.SignOutAsync();
+        await signInManager.SignOutAsync();
         return RedirectToAction("Index", "Home");
     }
 

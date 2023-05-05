@@ -16,12 +16,11 @@
 
 @if (Model != null)
 {
-
     <!-- Header - set the background image for the header in the line below-->
     <header class="py-5 bg-image-full" style="background-image: url('@Model.ImgBox'); background-size:cover;background-position:center; height:50em;">
         <div class="mask text-center " style="position: absolute;top:50%; left: 50%; transform: translate(-50%, -50%);">
             <h1 class="text-white fs-3 fw-bolder text-uppercase">
-                @Model.Nome
+                @Model.Nome, @Model.Titulo
                 @if (signInManager.IsSignedIn(User) && User.IsInRole("Admin"))
                 { @*  Admin Action*@
                     <button id="btnEdit" class="btn btn-warning btn-small rounded-circle translate-middle position-absolute mx-4">
@@ -30,7 +29,6 @@
                 }    @*End of Admin Action*@
             </h1>
             <p class="text-white-50 mb-0 text-uppercase">@Model.CurtaDescricao</p>
-            <p class="text-white-50 mb-0">By: @Model.Titulo</p>
         </div>
     </header>
 
@@ -47,13 +45,11 @@
 
     <section>
         <div class="container-fluid mb-2 p-3">
-            @if (Model.Regiao != null)
+            @if (Model.Regiao != null && Model.Regiao.Visible == true)
             {
                 <!-- Image element - set the background image for the header in the line below-->
-                <div class="row py-2 justify-content-center aling-items-center mb-3" style="background-image: url('https://source.unsplash.com/4ulffa6qoKA/1200x800')">
-
-                    <h2 class="text-center text-white-50 m-1">Region</h2>
-
+                <div class="row py-2 my-5 my-md-1 justify-content-center aling-items-center border-top border-secondary-subtle border-1">
+                    <h2 class="text-center text-body-secondary">Region</h2>
                     <div class="card bg-dark my-auto mx-1 mb-3 p-0" style="height: 15rem; width: 15rem;">
                         <div class="card_mask p-0 justify-content-between">
                             <a class="text-white" asp-area="" asp-controller="Regioes" asp-action="Index" asp-route-urlHandle="@Model.Regiao.UrlHandle">
@@ -66,68 +62,64 @@
                                 <ul id="listcardbottom" class="list-group list-group-flush">
                                     <li><h3 class="card-title">@Model.Regiao.Nome</h3></li>
                                     <li><p class="card-text text-nowrap text-secondary" style="font-size:16px;">@Model.Regiao.CurtaDescricao</p></li>
-                                    @if (Model.Regiao.Continente != null)
+                                    @if (@Model.Regiao.Continente != null)
                                     {
-                                        <a class=" text-black" asp-area="" asp-controller="Continentes" asp-action="Index" asp-route-urlHandle="@Model.Regiao.Continente?.UrlHandle"><p>Continent of @Model.Regiao.Continente?.Nome</p></a>
+                                        <li class="list-group-item"><a class="link-secondary" asp-area="" asp-controller="Continentes" asp-action="Index" asp-route-urlHandle="@Model.Regiao.Continente?.UrlHandle">@Model.Regiao.Continente?.Nome</a></li>
                                     }
                                 </ul>
                             </div>
                         </div>
                     </div>
-
                 </div>
             }
-          
+
             @if (Model.Povos != null && Model.Povos.Any())
             {
                 <!-- Image element - set the background image for the header in the line below-->
-                <div class="row py-2 justify-content-center aling-items-center mb-3" style="background-image: url('https://source.unsplash.com/4ulffa6qoKA/1200x800')">
-
-                    <h2 class="text-center text-white-50">Related Peoples</h2>
-
-                    @foreach (var povo in Model.Povos.OrderBy(po => po.Nome).Take(6))
+                <div class="row py-2 my-5 my-md-1 justify-content-center aling-items-center border-top border-secondary-subtle border-1">
+                    <h2 class="text-center text-body-secondary">Related Peoples</h2>
+                    @foreach (var povo in Model.Povos.Where(po => po.Visible == true).OrderByDescending(po => po.PublishedDate).Take(6))
                     {
                         <div class="card bg-dark my-auto mx-2 mb-3 p-0" style="height: 15rem; width: 15rem;">
-                            <div class="card_mask p-0 justify-content-between">
-                                <a class="text-white" asp-area="" asp-controller="Povos" asp-action="Index" asp-route-urlHandle="@povo.UrlHandle">
+                            <a class="text-white" asp-area="" asp-controller="Povos" asp-action="Index" asp-route-urlHandle="@povo.UrlHandle">
+                                <div class="card_mask p-0 justify-content-between">
                                     <img src="@povo.ImgCard" class="card-img-top imgfit h-100 w-100" alt="Image not found!">
-                                </a>
-                            </div>
-                            <div class="mask_text w-100">
-                                <div class="card-body">
-                                    <ul id="listcardbottom" class="list-group list-group-flush">
-                                        <li><h3 class="card-title">@povo.Nome</h3></li>
-                                        <li><p class="card-text text-nowrap text-secondary" style="font-size:16px;">@povo.CurtaDescricao</p></li>
-                                    </ul>
                                 </div>
-                            </div>
+                                <div class="mask_text w-100 py-5">
+                                    <div class="card-body">
+                                        <ul id="listcardbottom" class="list-group list-group-flush">
+                                            <li><h3 class="card-title">@povo.Nome</h3></li>
+                                            <li><p class="card-text text-nowrap text-secondary" style="font-size:16px;">@povo.CurtaDescricao</p></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </a>
                         </div>
                     }
                 </div>
             }
+
             @if (Model.Contos != null && Model.Contos.Any())
             {
                 <!-- Image element - set the background image for the header in the line below-->
-                <div class="row py-2 justify-content-center aling-items-center mb-3" style="background-image: url('https://source.unsplash.com/4ulffa6qoKA/1200x800')">
-
-                    <h2 class="text-center text-white-50">Related Stories</h2>
-
-                    @foreach (var conto in Model.Contos.OrderBy(co => co.Titulo).Take(6))
+                <div class="row py-2 my-5 my-md-1 justify-content-center aling-items-center border-top border-secondary-subtle border-1">
+                    <h2 class="text-center text-body-secondary">Related Stories</h2>
+                    @foreach (var conto in Model.Contos.Where(co => co.Visible == true).OrderByDescending(co => co.PublishedDate).Take(6))
                     {
                         <div class="card bg-dark my-auto mx-2 mb-3 p-0" style="height: 15rem; width: 15rem;">
-                            <div class="card_mask p-0 justify-content-between">
-                                <a class="text-white" asp-area="" asp-controller="Contos" asp-action="Index" asp-route-urlHandle="@conto.UrlHandle">
+                            <a class="text-white" asp-area="" asp-controller="Contos" asp-action="Index" asp-route-urlHandle="@conto.UrlHandle">
+                                <div class="card_mask p-0 justify-content-between">
                                     <img src="@conto.ImgCard" class="card-img-top imgfit h-100 w-100" alt="Image not found!">
-                                </a>
-                            </div>
-                            <div class="mask_text w-100">
-                                <div class="card-body">
-                                    <ul id="listcardbottom" class="list-group list-group-flush">
-                                        <li><h3 class="card-title">@conto.Titulo</h3></li>
-                                        <li><p class="card-text text-nowrap text-secondary" style="font-size:16px;">@conto.Autor.GetDisplayName()</p></li>
-                                    </ul>
                                 </div>
-                            </div>
+                                <div class="mask_text w-100 py-5">
+                                    <div class="card-body">
+                                        <ul id="listcardbottom" class="list-group list-group-flush">
+                                            <li><h3 class="card-title">@conto.Titulo</h3></li>
+                                            <li><p class="card-text text-nowrap text-secondary" style="font-size:16px;">@conto.Autor.GetDisplayName()</p></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </a>
                         </div>
                     }
                 </div>

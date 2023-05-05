@@ -27,10 +27,12 @@ public class CloudnaryImageRepository : IImageRepository
         };
         var uploadResult = await client.UploadAsync(uploadParams);
 
-        if(uploadResult != null && uploadResult.StatusCode == System.Net.HttpStatusCode.OK) 
+        if (uploadResult != null && uploadResult.StatusCode == System.Net.HttpStatusCode.OK)
         {
             return uploadResult.SecureUrl.ToString();
         }
+#pragma warning disable CS8603 // Possible null reference return.
         return null;
+#pragma warning restore CS8603 // Possible null reference return.
     }
 }

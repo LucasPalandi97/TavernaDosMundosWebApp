@@ -138,3 +138,18 @@
     object-fit: cover;
     object-position: center;
 }
+
+.imground {
+    transition: all .001s ease-in;
+    height: 80px;
+    width: 80px;
+    border-radius: 50%;
+    left: 0;
+    right: 0;
+    bottom: 30%;
+    top: 0;
+    margin: auto;
+    display: block;
+    position: absolute;
+    z-index: 3;
+}

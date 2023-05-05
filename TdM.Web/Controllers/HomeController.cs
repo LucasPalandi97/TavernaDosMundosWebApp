@@ -25,7 +25,7 @@ namespace TdM.Web.Controllers
 
         public IActionResult testcode()
         {
-           
+
             return View();
         }
 

@@ -4,22 +4,20 @@
 
 }
 <partial name="_Navbar2" />
-<div class="bg-secondary bg-opacity-10 py-2">
-    <div class="containter">
-        <h1>Show all Creatures - Admin Funcionality</h1>
-    </div>
+<div class="row mt-4 mb-5">
+    <h1 class="text-center">List Creatures - Admin Functionality</h1>
 </div>
 
 <div class="container py-5">
     @if (Model != null && Model.Any())
     {
-        <table class="table table-hover  table-responsive-sx" id="table">
-            <thead>
+        <table class="table table-hover table-responsive-sx" id="table">
+            <thead class="text-nowrap">
                 <tr>
                     <th id="idcolumn">Id</th>
                     <th onclick="sortTable(1)">Creature <span class="pointer">&#9660</span></th>
                     <th id="desccolumn">Description</th>
-                    <th onclick="sortTable(4)">Type <span class="pointer">&#9660</span></th>
+                    <th class="dnone" onclick="sortTable(4)">Type <span class="pointer">&#9660</span></th>
                     <th onclick="sortTable(5)">World <span class="pointer">&#9660</span></th>         
                     <th onclick="sortTable(3)">Published <span class="pointer">&#9660</span></th>
                     <th></th>
@@ -32,15 +30,19 @@
                         <td id="tdid">@criatura.Id</td>
                         <td>@criatura.Nome</td>
                         <td id="tddesc">@criatura.CurtaDescricao</td>
-                        <td>@criatura.Tipo.GetValueOrDefault()</td>
+                        <td class="dnone">@criatura.Tipo.GetValueOrDefault()</td>
                         <td>@criatura.Mundo?.Nome</td>
                         <td class="published-date">@criatura.PublishedDate.ToString("yyyy-MM-dd HH:mm")</td>
                         <td>
                             <form method="post" asp-controller="AdminCriaturas" asp-action="Delete" asp-route-id="@criatura.Id" id="deleteForm-@criatura.Id">
-                                <div class="d-flex">
-                                    <a class="mx-1" asp-area="" asp-controller="AdminCriaturas" asp-action="Edit" asp-route-id="@criatura.Id">Edit</a>
-                                    <a href="#" class="text-danger mx-1" data-bs-toggle="modal" data-bs-target="#ConfirmDeleteModal-@criatura.Id">Delete</a>
-                                </div>
+                            <ul class="list-inline text-nowrap m-0">                             
+                                <li class="list-inline-item">
+                                        <a class="btn btn-sm rounded-0" type="button" asp-area="" asp-controller="AdminCriaturas" asp-action="Edit" asp-route-id="@criatura.Id"><i class="bi bi-pencil-square"></i></a>
+                                </li>
+                                <li class="list-inline-item">
+                                        <button class="btn btn-sm rounded-0" type="button" data-bs-toggle="modal" data-bs-target="#ConfirmDeleteModal-@criatura.Id"><i class="bi bi-trash-fill"></i></button>
+                                </li>
+                            </ul>
                                 <!-- Modal Delete -->
                                 <div class="modal fade" id="ConfirmDeleteModal-@criatura.Id" tabindex="-1" aria-labelledby="ConfirmDeleteModalLabel" aria-hidden="true">
                                     <div class="modal-dialog">

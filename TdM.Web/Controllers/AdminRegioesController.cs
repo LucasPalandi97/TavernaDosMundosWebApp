@@ -105,16 +105,22 @@ public class AdminRegioesController : Controller
         return RedirectToAction("List");
     }
 
+#pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
     public async Task<IActionResult> ListRegioesByContinente(Guid id, List<Guid> selectedContinenteIds = null)
+#pragma warning restore CS8625 // Cannot convert null literal to non-nullable reference type.
     {
         IEnumerable<Regiao> regioes;
         if (selectedContinenteIds == null)
         {
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
             regioes = await regiaoRepository.GetRegioesByContinenteAsync(id);
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
         }
         else
         {
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
             regioes = await regiaoRepository.GetRegioesByContinenteAsync(selectedContinenteIds);
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
         }
         var selectListItems = regioes.Select(x => new SelectListItem
         {

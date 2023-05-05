@@ -43,5 +43,7 @@ public class EditContinenteRequest
     public string? SelectedMundo { get; set; }
     public IEnumerable<SelectListItem>? Regioes { get; set; }
     public string[]? SelectedRegioes { get; set; } = Array.Empty<string>();
+    public IEnumerable<SelectListItem>? Contos { get; set; }
+    public string[]? SelectedContos { get; set; } = Array.Empty<string>();
 }
 

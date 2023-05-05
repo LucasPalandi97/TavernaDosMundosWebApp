@@ -1,11 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Data;
+using TdM.Database.Models.Domain;
 using TdM.Web.Models.ViewModels;
 using TdM.Web.Repositories;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using TdM.Database.Models.Domain;
-using System.Data;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.EntityFrameworkCore;
 
 namespace TdM.Web.Controllers;
 
@@ -130,6 +129,7 @@ public class AdminPovosController : Controller
         }
         //Maps Continents from Selected continent
         var selectedContinentes = new List<Continente>();
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
         foreach (var selectedContinenteId in addPovoRequest.SelectedContinentes)
         {
             if (!string.IsNullOrEmpty(selectedContinenteId))
@@ -143,12 +143,14 @@ public class AdminPovosController : Controller
                 }
             }
         }
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
         //Maping Continentes back to domain modal
         povo.Continentes = selectedContinentes;
 
         //Maps Regioes from Selected continent
         var selectedRegioes = new List<Regiao>();
 
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
         foreach (var selectedRegiaoId in addPovoRequest.SelectedRegioes)
         {
             if (!string.IsNullOrEmpty(selectedRegiaoId))
@@ -162,12 +164,14 @@ public class AdminPovosController : Controller
                 }
             }
         }
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
         //Maping Regioes back to domain modal
         povo.Regioes = selectedRegioes;
 
         //Maps Personagens from Selected Regiao
         var selectedPersonagens = new List<Personagem>();
 
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
         foreach (var selectedPersonagemId in addPovoRequest.SelectedPersonagens)
         {
             if (!string.IsNullOrEmpty(selectedPersonagemId))
@@ -181,12 +185,14 @@ public class AdminPovosController : Controller
                 }
             }
         }
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
         //Maping Personagens back to domain modal
         povo.Personagens = selectedPersonagens;
 
         //Maps Criaturas from Selected Regiao
         var selectedCriaturas = new List<Criatura>();
 
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
         foreach (var selectedCriaturaId in addPovoRequest.SelectedCriaturas)
         {
             if (!string.IsNullOrEmpty(selectedCriaturaId))
@@ -200,6 +206,7 @@ public class AdminPovosController : Controller
                 }
             }
         }
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
         //Maping Criaturas back to domain modal
         povo.Criaturas = selectedCriaturas;
 
@@ -207,7 +214,9 @@ public class AdminPovosController : Controller
         return RedirectToAction("List");
     }
 
+#pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
     public async Task<IActionResult> ListPovosByRegiao(Guid id, List<Guid> selectedRegiaoIds = null)
+#pragma warning restore CS8625 // Cannot convert null literal to non-nullable reference type.
     {
         IEnumerable<Povo> povos;
         if (selectedRegiaoIds == null)
@@ -248,6 +257,10 @@ public class AdminPovosController : Controller
         {
             if (povo != null)
             {   //Map the domain model into the view model
+#pragma warning disable CS8604 // Possible null reference argument.
+#pragma warning disable CS8604 // Possible null reference argument.
+#pragma warning disable CS8604 // Possible null reference argument.
+#pragma warning disable CS8604 // Possible null reference argument.
                 var editPovoRequest = new EditPovoRequest
                 {
                     Id = povo.Id,
@@ -290,6 +303,10 @@ public class AdminPovosController : Controller
                     }),
                     SelectedCriaturas = povo.Criaturas.Select(x => x.Id.ToString()).ToArray()
                 };
+#pragma warning restore CS8604 // Possible null reference argument.
+#pragma warning restore CS8604 // Possible null reference argument.
+#pragma warning restore CS8604 // Possible null reference argument.
+#pragma warning restore CS8604 // Possible null reference argument.
                 return View(editPovoRequest);
             }
             return View(null);
@@ -367,6 +384,7 @@ public class AdminPovosController : Controller
         }
         //Maps Continents from Selected continent
         var selectedContinentes = new List<Continente>();
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
         foreach (var selectedContinenteId in editPovoRequest.SelectedContinentes)
         {
             if (!string.IsNullOrEmpty(selectedContinenteId))
@@ -380,12 +398,14 @@ public class AdminPovosController : Controller
                 }
             }
         }
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
         //Maping Continentes back to domain modal
         povo.Continentes = selectedContinentes;
 
         //Maps Regioes from Selected continent
         var selectedRegioes = new List<Regiao>();
 
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
         foreach (var selectedRegiaoId in editPovoRequest.SelectedRegioes)
         {
             if (!string.IsNullOrEmpty(selectedRegiaoId))
@@ -399,12 +419,14 @@ public class AdminPovosController : Controller
                 }
             }
         }
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
         //Maping Regioes back to domain modal
         povo.Regioes = selectedRegioes;
 
         //Maps Personagens from Selected Regiao
         var selectedPersonagens = new List<Personagem>();
 
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
         foreach (var selectedPersonagemId in editPovoRequest.SelectedPersonagens)
         {
             if (!string.IsNullOrEmpty(selectedPersonagemId))
@@ -418,12 +440,14 @@ public class AdminPovosController : Controller
                 }
             }
         }
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
         //Maping Personagens back to domain modal
         povo.Personagens = selectedPersonagens;
 
         //Maps Criaturas from Selected Regiao
         var selectedCriaturas = new List<Criatura>();
 
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
         foreach (var selectedCriaturaId in editPovoRequest.SelectedCriaturas)
         {
             if (!string.IsNullOrEmpty(selectedCriaturaId))
@@ -437,6 +461,7 @@ public class AdminPovosController : Controller
                 }
             }
         }
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
         //Maping Criaturas back to domain modal
         povo.Criaturas = selectedCriaturas;
 

@@ -73,11 +73,15 @@ public class RegiaoRepository : IRegiaoRepository
     {
         if (selectedContinenteIds is Guid)
         {
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
             return await tavernaDbContext.Regioes.Where(r => r.Continente.Id == (Guid)selectedContinenteIds).ToListAsync();
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
         }
         else if (selectedContinenteIds is List<Guid> selectedContinenteIdsList)
         {
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
             return await tavernaDbContext.Regioes.Where(r => selectedContinenteIdsList.Contains(r.Continente.Id)).ToListAsync();
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
         }
         else
         {

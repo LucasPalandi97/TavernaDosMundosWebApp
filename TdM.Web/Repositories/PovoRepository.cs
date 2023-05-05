@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System.Drawing;
 using TdM.Database.Data;
 using TdM.Database.Models.Domain;
 
@@ -51,6 +50,7 @@ public class PovoRepository : IPovoRepository
 
     public async Task<IEnumerable<Povo>> GetAllByMundoAsync(Guid mundoId)
     {
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
         return await tavernaDbContext.Povos
             .Include(x => x.Continentes)
             .Include(x => x.Regioes)
@@ -60,23 +60,28 @@ public class PovoRepository : IPovoRepository
             .Include(x => x.Mundo)
             .Where(x => x.Mundo.Id == mundoId)
             .ToListAsync();
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
     }
 
     public async Task<IEnumerable<Povo>> GetAllByPersonagem(object selectedPersonagemIds)
     {
         if (selectedPersonagemIds is Guid)
         {
+#pragma warning disable CS8604 // Possible null reference argument.
             return await tavernaDbContext.Povos
             .Where(p => p.Personagens
             .Any(pp => pp.Id == (Guid)selectedPersonagemIds))
             .ToListAsync();
+#pragma warning restore CS8604 // Possible null reference argument.
         }
         else if (selectedPersonagemIds is List<Guid> selectedPersonagemIdsList)
         {
+#pragma warning disable CS8604 // Possible null reference argument.
             return await tavernaDbContext.Povos
             .Where(p => p.Personagens
             .Any(pp => selectedPersonagemIdsList.Contains(pp.Id)))
             .ToListAsync();
+#pragma warning restore CS8604 // Possible null reference argument.
         }
         else
         {
@@ -88,17 +93,21 @@ public class PovoRepository : IPovoRepository
     {
         if (selectedRegiaoIds is Guid)
         {
+#pragma warning disable CS8604 // Possible null reference argument.
             return await tavernaDbContext.Povos
             .Where(p => p.Regioes
             .Any(pp => pp.Id == (Guid)selectedRegiaoIds))
             .ToListAsync();
+#pragma warning restore CS8604 // Possible null reference argument.
         }
         else if (selectedRegiaoIds is List<Guid> sselectedRegiaoIdsList)
         {
+#pragma warning disable CS8604 // Possible null reference argument.
             return await tavernaDbContext.Povos
             .Where(p => p.Regioes
             .Any(pp => sselectedRegiaoIdsList.Contains(pp.Id)))
             .ToListAsync();
+#pragma warning restore CS8604 // Possible null reference argument.
         }
         else
         {
@@ -133,14 +142,14 @@ public class PovoRepository : IPovoRepository
 
     public async Task<Povo?> UpdateAsync(Povo povo)
     {
-       var existingPovo = await tavernaDbContext.Povos
-            .Include(x => x.Continentes)
-            .Include(x => x.Regioes)
-            .Include(x => x.Personagens)
-            .Include(x => x.Criaturas)
-            .Include(x => x.Contos)
-            .Include(x => x.Mundo)
-            .FirstOrDefaultAsync(x => x.Id == povo.Id);
+        var existingPovo = await tavernaDbContext.Povos
+             .Include(x => x.Continentes)
+             .Include(x => x.Regioes)
+             .Include(x => x.Personagens)
+             .Include(x => x.Criaturas)
+             .Include(x => x.Contos)
+             .Include(x => x.Mundo)
+             .FirstOrDefaultAsync(x => x.Id == povo.Id);
 
         if (existingPovo != null)
         {
@@ -153,10 +162,10 @@ public class PovoRepository : IPovoRepository
             existingPovo.UrlHandle = povo.UrlHandle;
             existingPovo.Visible = povo.Visible;
             existingPovo.Mundo = povo.Mundo;
-            existingPovo.Continentes= povo.Continentes;
-            existingPovo.Regioes= povo.Regioes;
-            existingPovo.Personagens= povo.Personagens;
-            existingPovo.Criaturas= povo.Criaturas;
+            existingPovo.Continentes = povo.Continentes;
+            existingPovo.Regioes = povo.Regioes;
+            existingPovo.Personagens = povo.Personagens;
+            existingPovo.Criaturas = povo.Criaturas;
             await tavernaDbContext.SaveChangesAsync();
 
             return existingPovo;

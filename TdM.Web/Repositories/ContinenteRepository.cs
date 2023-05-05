@@ -46,6 +46,7 @@ public class ContinenteRepository : IContinenteRepository
 
     public async Task<IEnumerable<Continente>> GetAllByMundoAsync(Guid mundoId)
     {
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
         return await tavernaDbContext.Continentes
             .Include(x => x.Regioes)
             .Include(x => x.Personagens)
@@ -55,6 +56,7 @@ public class ContinenteRepository : IContinenteRepository
             .Include(x => x.Mundo)
             .Where(x => x.Mundo.Id == mundoId)
             .ToListAsync();
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
     }
 
     public async Task<Continente?> GetAsync(Guid id)
@@ -69,6 +71,7 @@ public class ContinenteRepository : IContinenteRepository
     }
     public async Task<IEnumerable<Continente>> GetContinentesByMundoAsync(Guid id)
     {
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
         return await tavernaDbContext.Continentes
             .Include(x => x.Regioes)
             .Include(x => x.Personagens)
@@ -77,6 +80,7 @@ public class ContinenteRepository : IContinenteRepository
             .Include(x => x.Contos)
             .Include(x => x.Mundo)
             .Where(c => c.Mundo.Id == id).ToListAsync();
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
     }
 
     public async Task<Continente?> GetByUrlHandleAsync(string urlHandle)
@@ -113,7 +117,7 @@ public class ContinenteRepository : IContinenteRepository
             existingContinente.UrlHandle = continente.UrlHandle;
             existingContinente.Visible = continente.Visible;
             existingContinente.Mundo = continente.Mundo;
-            existingContinente.Regioes = continente.Regioes;  
+            existingContinente.Regioes = continente.Regioes;
             await tavernaDbContext.SaveChangesAsync();
 
             return existingContinente;

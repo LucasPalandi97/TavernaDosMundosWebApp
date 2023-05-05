@@ -4,22 +4,20 @@
 
 }
 <partial name="_Navbar2" />
-<div class="bg-secondary bg-opacity-10 py-2">
-    <div class="containter">
-        <h1>Show all Stories - Admin Funcionality</h1>
-    </div>
+<div class="row mt-4 mb-5">
+    <h1 class="text-center">List Stories - Admin Functionality</h1>
 </div>
 
 <div class="container py-5">
     @if (Model != null && Model.Any())
     {
         <table class="table table-hover  table-responsive-sx" id="table">
-            <thead>
+            <thead class="text-nowrap">
                 <tr>
                     <th id="idcolumn">Id</th>
                     <th onclick="sortTable(1)">World <span class="pointer">&#9660</span></th>
                     <th onclick="sortTable(2)">Story <span class="pointer">&#9660</span></th>
-                    <th onclick="sortTable(4)">Autor <span class="pointer">&#9660</span></th>
+                    <th class="dnone" onclick="sortTable(4)">Autor <span class="pointer">&#9660</span></th>
                     <th onclick="sortTable(3)">Published <span class="pointer">&#9660</span></th>
                     <th></th>
                 </tr>
@@ -138,15 +136,18 @@
                                 </ul>
                             </div>
                         </td>
-                        <td>@conto.Autor.GetDisplayName()</td>
+                        <td class="dnone">@conto.Autor.GetDisplayName()</td>
                         <td class="published-date">@conto.PublishedDate.ToString("yyyy-MM-dd HH:mm")</td>
                         <td>
                             <form method="post" asp-controller="AdminContos" asp-action="Delete" asp-route-id="@conto.Id" id="deleteForm-@conto.Id">
-                                <div class="d-flex">
-                                    <a class="mx-1" asp-area="" asp-controller="AdminContos" asp-action="Edit" asp-route-id="@conto.Id">Edit</a>
-                                    <a href="#" class="text-danger mx-1" data-bs-toggle="modal" data-bs-target="#ConfirmDeleteModal-@conto.Id">Delete</a>
-                                </div>
-
+                                <ul class="list-inline flex-nowrap m-0">
+                                    <li class="list-inline-item">
+                                        <a class="btn btn-sm rounded-0" type="button" asp-area="" asp-controller="AdminContos" asp-action="Edit" asp-route-id="@conto.Id"><i class="bi bi-pencil-square"></i></a>
+                                    </li>
+                                    <li class="list-inline-item">
+                                        <button class="btn btn-sm rounded-0" type="button" data-bs-toggle="modal" data-bs-target="#ConfirmDeleteModal-@conto.Id"><i class="bi bi-trash-fill"></i></button>
+                                    </li>
+                                </ul>
                                 <!-- Modal Delete -->
                                 <div class="modal fade" id="ConfirmDeleteModal-@conto.Id" tabindex="-1" aria-labelledby="ConfirmDeleteModalLabel" aria-hidden="true">
                                     <div class="modal-dialog">

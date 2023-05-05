@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using TdM.Web.Repositories;
 
@@ -20,14 +19,14 @@ public class ImagesController : ControllerBase
     {
         // Call a repository
         var imageURL = await imageRepository.UploadAsync(file);
-         
-        if(imageURL == null)
+
+        if (imageURL == null)
         {
             return Problem("Something went wrong!", null, (int)HttpStatusCode.InternalServerError);
         }
 
-        return new JsonResult(new { link= imageURL });
+        return new JsonResult(new { link = imageURL });
 
     }
- 
+
 }

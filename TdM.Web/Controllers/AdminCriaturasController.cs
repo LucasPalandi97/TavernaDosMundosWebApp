@@ -1,12 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Data;
+using TdM.Database.Models.Domain;
 using TdM.Web.Models.ViewModels;
 using TdM.Web.Repositories;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using TdM.Database.Models.Domain;
-using System.Data;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.VisualStudio.Web.CodeGenerators.Mvc;
-using Microsoft.Build.Framework;
 
 namespace TdM.Web.Controllers;
 
@@ -17,14 +15,16 @@ public class AdminCriaturasController : Controller
     private readonly IMundoRepository mundoRepository;
     private readonly IContinenteRepository continenteRepository;
     private readonly IRegiaoRepository regiaoRepository;
+    private readonly IPovoRepository povoRepository;
 
     public AdminCriaturasController(ICriaturaRepository criaturaRepository, IMundoRepository mundoRepository
-        , IContinenteRepository continenteRepository, IRegiaoRepository regiaoRepository)
+        , IContinenteRepository continenteRepository, IRegiaoRepository regiaoRepository, IPovoRepository povoRepository)
     {
         this.criaturaRepository = criaturaRepository;
         this.mundoRepository = mundoRepository;
         this.continenteRepository = continenteRepository;
         this.regiaoRepository = regiaoRepository;
+        this.povoRepository = povoRepository;
     }
 
 
@@ -68,6 +68,12 @@ public class AdminCriaturasController : Controller
                    Value = x.Id.ToString()
                }).ToList();
 
+            addCriaturaRequest.Povos = (await povoRepository.GetAllAsync())
+              .Select(x => new SelectListItem
+              {
+                  Text = x.Nome,
+                  Value = x.Id.ToString()
+              }).ToList();
             return View(addCriaturaRequest);
         }
 
@@ -103,6 +109,7 @@ public class AdminCriaturasController : Controller
 
         //Maps Continents from Selected continent
         var selectedContinentes = new List<Continente>();
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
         foreach (var selectedContinenteId in addCriaturaRequest.SelectedContinentes)
         {
             if (!string.IsNullOrEmpty(selectedContinenteId))
@@ -116,12 +123,14 @@ public class AdminCriaturasController : Controller
                 }
             }
         }
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
         //Maping Continentes back to domain modal
         criatura.Continentes = selectedContinentes;
 
         //Maps Regioes from Selected continent
         var selectedRegioes = new List<Regiao>();
 
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
         foreach (var selectedRegiaoId in addCriaturaRequest.SelectedRegioes)
         {
             if (!string.IsNullOrEmpty(selectedRegiaoId))
@@ -134,13 +143,36 @@ public class AdminCriaturasController : Controller
                 }
             }
         }
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
         //Maping Regioes back to domain modal
         criatura.Regioes = selectedRegioes;
+
+        //Maps Povos from Selected Regiao
+        var selectedPovos = new List<Povo>();
+
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
+        foreach (var selectedPovoId in addCriaturaRequest.SelectedPovos)
+        {
+            if (!string.IsNullOrEmpty(selectedPovoId))
+            {
+                var selectedPovoIdAsGuid = Guid.Parse(selectedPovoId);
+                var existingPovo = await povoRepository.GetAsync(selectedPovoIdAsGuid);
+                if (existingPovo != null)
+                {
+                    selectedPovos.Add(existingPovo);
+                }
+            }
+        }
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
+        //Maping Povos back to domain modal
+        criatura.Povos = selectedPovos;
 
         await criaturaRepository.AddAsync(criatura);
         return RedirectToAction("List");
     }
+#pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
     public async Task<IActionResult> ListCriaturasByRegiao(Guid id, List<Guid> selectedRegiaoIds = null)
+#pragma warning restore CS8625 // Cannot convert null literal to non-nullable reference type.
     {
         IEnumerable<Criatura> criaturas;
         if (selectedRegiaoIds == null)
@@ -176,6 +208,7 @@ public class AdminCriaturasController : Controller
         var mundosDomainModel = await mundoRepository.GetAllAsync();
         var continentesDomainModel = await continenteRepository.GetAllAsync();
         var regioesDomainModel = await regiaoRepository.GetAllAsync();
+        var povosDomainModel = await povoRepository.GetAllAsync();
 
         if (criatura != null)
         {   //Map the domain model into the view model
@@ -202,13 +235,19 @@ public class AdminCriaturasController : Controller
                     Text = x.Nome,
                     Value = x.Id.ToString()
                 }),
-                SelectedContinentes = criatura.Continentes.Select(x => x.Id.ToString()).ToArray(),
+                SelectedContinentes = criatura.Continentes?.Select(x => x.Id.ToString()).ToArray(),
                 Regioes = regioesDomainModel.Select(x => new SelectListItem
                 {
                     Text = x.Nome,
                     Value = x.Id.ToString()
                 }),
-                SelectedRegioes = criatura.Regioes.Select(x => x.Id.ToString()).ToArray()
+                SelectedRegioes = criatura.Regioes?.Select(x => x.Id.ToString()).ToArray(),
+                Povos = povosDomainModel.Select(x => new SelectListItem
+                {
+                    Text = x.Nome,
+                    Value = x.Id.ToString()
+                }),
+                SelectedPovos = criatura.Povos?.Select(x => x.Id.ToString()).ToArray()
             };
             return View(editCriaturaRequest);
         }
@@ -241,6 +280,13 @@ public class AdminCriaturasController : Controller
                    Value = x.Id.ToString()
                }).ToList();
 
+            editCriaturaRequest.Povos = (await povoRepository.GetAllAsync())
+              .Select(x => new SelectListItem
+              {
+                  Text = x.Nome,
+                  Value = x.Id.ToString()
+              }).ToList();
+
             return View(editCriaturaRequest);
         }
 
@@ -259,7 +305,6 @@ public class AdminCriaturasController : Controller
         };
 
         //Maps Mundos from Selected mundo
-
         var selectedMundoId = editCriaturaRequest.SelectedMundo;
         if (selectedMundoId != null)
         {
@@ -276,6 +321,7 @@ public class AdminCriaturasController : Controller
 
         //Maps Continents from Selected continent
         var selectedContinentes = new List<Continente>();
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
         foreach (var selectedContinenteId in editCriaturaRequest.SelectedContinentes)
         {
             if (!string.IsNullOrEmpty(selectedContinenteId))
@@ -289,12 +335,13 @@ public class AdminCriaturasController : Controller
                 }
             }
         }
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
         //Maping Continentes back to domain modal
         criatura.Continentes = selectedContinentes;
 
         //Maps Regioes from Selected continent
         var selectedRegioes = new List<Regiao>();
-
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
         foreach (var selectedRegiaoId in editCriaturaRequest.SelectedRegioes)
         {
             if (!string.IsNullOrEmpty(selectedRegiaoId))
@@ -308,9 +355,28 @@ public class AdminCriaturasController : Controller
                 }
             }
         }
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
         //Maping Regioes back to domain modal
         criatura.Regioes = selectedRegioes;
 
+        //Maps Povos from Selected Regiao
+        var selectedPovos = new List<Povo>();
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
+        foreach (var selectedPovoId in editCriaturaRequest.SelectedPovos)
+        {
+            if (!string.IsNullOrEmpty(selectedPovoId))
+            {
+                var selectedPovoIdAsGuid = Guid.Parse(selectedPovoId);
+                var existingPovo = await povoRepository.GetAsync(selectedPovoIdAsGuid);
+                if (existingPovo != null)
+                {
+                    selectedPovos.Add(existingPovo);
+                }
+            }
+        }
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
+        //Maping Povos back to domain modal
+        criatura.Povos = selectedPovos;
 
         //Submit information to repository
         var updatedCriatura = await criaturaRepository.UpdateAsync(criatura);

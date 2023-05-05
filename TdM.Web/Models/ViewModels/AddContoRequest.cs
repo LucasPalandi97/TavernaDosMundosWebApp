@@ -1,5 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
-using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using System.ComponentModel.DataAnnotations;
 using TdM.Database.Models.Domain.Enums;
 
 
@@ -17,11 +17,11 @@ public class AddContoRequest
     public string Corpo { get; set; }
 
     [Required]
-    [Display(Name ="Author")]
+    [Display(Name = "Author")]
     public Autor Autor { get; set; }
 
     [Required]
-    [Display(Name ="Audio Drama")]
+    [Display(Name = "Audio Drama")]
     public bool AudioDrama { get; set; }
 
     public string? ImgCard { get; set; }

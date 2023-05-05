@@ -2,127 +2,129 @@
 @using TdM.Database.Models.Domain.Enums
 
 @{
+    var AutorList = Html.GetEnumSelectList<Autor>().OrderBy(x => x.Text);
 }
 <partial name="_Navbar2" />
-<div class="bg-secondary bg-opacity-10 py-2">
-    <div class="containter">
-        <h1>Add new Conto - Admin Funcionality</h1>
-    </div>
+<div class="row mt-4 mb-5">
+    <h1 class="text-center">Add Story - Admin Functionality</h1>
 </div>
 
 <div class="container py-5 col-12 col-md-8 ">
     <form method="post">
 
-        <div class="mb-3 col-12 col-md-8">
-            <label class="form-label" for="nome">Title</label>
-            <input type="text" class="form-control" id="nome" asp-for="Titulo" required />
-            <span class="text-danger" asp-validation-for="Titulo"></span>
+        <div class="row row-cols-1 row-cols-md-2">
+                <div class="mb-3">
+                    <label for="nome" class="form-label">Title</label>
+                <input type="text" class="form-control" id="nome" placeholder="Story Title" asp-for="Titulo" required />
+                    <span class="text-danger" asp-validation-for="Titulo"></span>
+                </div>
+                <div class="mb-3 form-group">
+                    <label for="autor" class="form-label">Author</label>
+                    <select id="autor" asp-for="Autor" class="form-control" asp-items="@AutorList" required>
+                        <option value="" selected>Select Author...</option>
+                    </select>
+                    <span class="text-danger" asp-validation-for="Autor"></span>
+                </div>
         </div>
 
-        <div class=" mb-3 form-group col-12 col-md-8">
-            <label for="autor" class="form-label">Author</label>
-            <select id="autor" asp-for="Autor" class="form-control" asp-items="Html.GetEnumSelectList<Autor>()" required>
-                <option value="">Select Author ...</option>
-            </select>
-            <span asp-validation-for="Autor" class="text-danger"></span>
-            <span class="text-danger" asp-validation-for="Autor"></span>
-        </div>
-
-        <div class="mb-3 col-12 col-md-8">
+        <div class="mb-3">
             <label for="descricao" class="form-label">Body Text</label>
-            <textarea placeholder="Story's body" id="descricao" name="Corpo" asp-for="Corpo" ></textarea>
+            <textarea placeholder="Story's body" id="descricao" name="Corpo" asp-for="Corpo"></textarea>
             <span class="text-danger" asp-validation-for="Corpo"></span>
         </div>
 
-        <div class="mb-3">
-            <label class="form-label">Upload Display Image</label>
-            <input type="file" id="ImageCardUpload" class="form-control" />
-
-            <img src="" id="ImageCardUploadDisplay" style="display:none;width:300px; margin-top:1em;" />
+        <div class="row row-cols-lg-2 mb-3">
+            <div class="mb-5 align-self-md-start">
+                <div class="mb-3">
+                    <label class="form-label">Upload Display Image</label>
+                    <input type="file" id="ImageCardUpload" class="form-control" />
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="ImgCardUrl">Display Image</label>
+                    <input type="text" class="form-control" id="ImgCardUrl" placeholder="Display image URL" asp-for="ImgCard" />
+                    <img src="" id="ImageCardUploadDisplay" style="display:none;width:300px; margin-top:1em;" />
+                </div>
+            </div>
+            <div class="mb-5 align-self-md-start">
+                <div class="mb-3">
+                    <label class="form-label">Upload Content Image</label>
+                    <input type="file" id="ImageBoxUpload" class="form-control">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="ImgBoxUrl">Content Image</label>
+                    <input type="text" class="form-control" id="ImgBoxUrl" placeholder="Content image URL" asp-for="ImgBox" />
+                    <img src="" id="ImageBoxUploadDisplay" style="display:none;width:300px; margin-top:1em;">
+                </div>
+            </div>
         </div>
 
-        <div class="mb-3">
-            <label class="form-label" for="ImgCardUrl">Display Image</label>
-            <input type="text" class="form-control" id="ImgCardUrl" placeholder="Image's URL" asp-for="ImgCard" />
+        <div class="row mb-3 row-cols-1 row-cols-md-2">
+            <div>
+                <label class="form-label">Published Date</label>
+                <input type="datetime-local" class="form-control" id="publishedDate" asp-for="PublishedDate" required />
+                <span class="text-danger" asp-validation-for="PublishedDate"></span>
+            </div>
+            <div>
+                <label class="form-label">URL Handle</label>
+                <input type="text" class="form-control" id="urlHandle" asp-for="UrlHandle" required />
+                <span class="text-danger" asp-validation-for="UrlHandle"></span>
+            </div>
         </div>
 
-        <div class="mb-3">
-            <label class="form-label">Upload Content Image</label>
-            <input type="file" id="ImageBoxUpload" class="form-control" />
-
-            <img src="" id="ImageBoxUploadDisplay" style="display:none;width:300px; margin-top:1em;" />
-        </div>
-        <div class="mb-3">
-            <label class="form-label" for="ImgBoxUrl">Content Image</label>
-            <input type="text" class="form-control" id="ImgBoxUrl" placeholder="Image's URL" asp-for="ImgBox" />
-        </div>
-
-        <div class="mb-3  col-12 col-md-8">
-            <label class="form-label">Published Date</label>
-            <input type="datetime-local" class="form-control" id="publishedDate" asp-for="PublishedDate" required />
-            <span class="text-danger" asp-validation-for="PublishedDate"></span>
+        <div class="row mb-3 row-cols-1">
+            <div class="form-check form-switch mb-3">
+                <label class="form-check-label" for="visible">Audio Drama?</label>
+                <input class="form-check-input" type="checkbox" id="audiodrama" asp-for="AudioDrama">
+                <span class="text-danger" asp-validation-for="AudioDrama"></span>
+            </div>
+            <div class="form-check form-switch mb-3">
+                <label class="form-check-label" for="visible">Visible?</label>
+                <input class="form-check-input" type="checkbox" id="visible" asp-for="Visible"  checked>
+                <span class="text-danger" asp-validation-for="Visible"></span>
+            </div>
         </div>
 
-        <div class="mb-3">
-            <label class="form-label">URL Handle</label>
-            <input type="text" class="form-control" id="urlHandle" asp-for="UrlHandle" required />
-            <span class="text-danger" asp-validation-for="UrlHandle"></span>
+        <div class="row justify-content-center mb-3">
+            <div class="col-12 col-md-4 mb-1">
+                <label class="form-label">World</label>
+                <select id="SelectedMundo" class="form-select" asp-items="@Model.Mundos" asp-for="SelectedMundo" onchange="updateContinentes(), updatePersonagens(), updateCriaturas(), updatePovos(), updateContos()">
+                    <option value="" class="text-danger">No World</option>
+                </select>
+            </div>
         </div>
 
-        <div class="form-check form-switch mb-3">
-            <label class="form-check-label" for="visible">Audio Drama?</label>
-            <input class="form-check-input" type="checkbox" id="audiodrama" asp-for="AudioDrama" required checked>
-            <span class="text-danger" asp-validation-for="AudioDrama"></span>
+        <div class="row text-center row-cols-2 row-cols-md-3">
+            <div class="mb-3">
+                <label class="form-label">Continents</label>
+                <select id="SelectedContinentes" class="form-control" style="min-height:12rem" asp-items="@Model.Continentes" asp-for="SelectedContinentes" onchange="updateRegioes()" multiple>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Regions</label>
+                <select id="SelectedRegioes" class="form-select" style="min-height:12rem" asp-items="@Model.Regioes" asp-for="SelectedRegioes" multiple>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Characters</label>
+                <select id="SelectedPersonagens" class="form-select" style="min-height:12rem" asp-items="@Model.Personagens" asp-for="SelectedPersonagens" multiple>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Creatures</label>
+                <select id="SelectedCriaturas" class="form-select" style="min-height:12rem" asp-items="@Model.Criaturas" asp-for="SelectedCriaturas" multiple>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">People</label>
+                <select id="SelectedPovos" class="form-select" style="min-height:12rem" asp-items="@Model.Povos" asp-for="SelectedPovos" multiple>
+                </select>
+            </div>        
         </div>
 
-        <div class="form-check form-switch mb-3">
-            <label class="form-check-label" for="visible">Visible?</label>
-            <input class="form-check-input" type="checkbox" id="visible" asp-for="Visible" required checked>
-            <span class="text-danger" asp-validation-for="Visible"></span>
+        <div class="mb-3 ">
+            <button id="submitbtn" type="submit" class="btn btn-secondary">Submit</button>
         </div>
 
-        <div class="mb-3 col-8">
-            <label class="form-label">World</label>
-            <select id="SelectedMundo" class="form-select" asp-items="@Model.Mundos" asp-for="SelectedMundo" onchange="updateContinentes() ">
-                <option value="" class="text-danger">No World</option>
-            </select>
-        </div>
-
-        <div class="mb-3 col-8">
-            <label class="form-label">Continents</label>
-            <select id="SelectedContinentes" class="form-control" asp-items="@Model.Continentes" asp-for="SelectedContinentes" onchange="updateRegioes()" multiple>
-            </select>
-        </div>
-
-        <div class="mb-3 col-8">
-            <label class="form-label">Regions</label>
-            <select id="SelectedRegioes" class="form-select" asp-items="@Model.Regioes" asp-for="SelectedRegioes" onchange="updatePersonagens(), updateCriaturas(),  updatePovos()" multiple>
-            </select>
-        </div>
-
-        <div class="mb-3 col-8">
-            <label class="form-label">Characters</label>
-            <select id="SelectedPersonagens" class="form-select" asp-items="@Model.Personagens" asp-for="SelectedPersonagens" multiple>
-            </select>
-        </div>
-
-        <div class="mb-3 col-8">
-            <label class="form-label">Creatures</label>
-            <select id="SelectedCriaturas" class="form-select" asp-items="@Model.Criaturas" asp-for="SelectedCriaturas" multiple>
-            </select>
-        </div>
-
-        <div class="mb-3 col-8">
-            <label class="form-label">People</label>
-            <select id="SelectedPovos" class="form-select" asp-items="@Model.Povos" asp-for="SelectedPovos" multiple>
-            </select>
-        </div>
-
-        <div class="mb-3">
-            <button type="submit" class="btn btn-dark">
-                Save
-            </button>
-        </div>
     </form>
 </div>
 

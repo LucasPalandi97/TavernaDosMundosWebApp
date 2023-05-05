@@ -19,8 +19,8 @@ else
 </head>
 
 <div class="container py-5">
-    <div class="hero mb-5">
-        <h1><span class="section-title"></span>Regions</h1>
+    <div class="hero mt-4 mb-5">
+        <h1><span class="section-title text-body-secondary">Regions</span></h1>
     </div>
 
     <nav class="navbar navbar-light justify-content-center mt-4">
@@ -29,7 +29,7 @@ else
     @if (Model.Continentes != null && Model.Continentes.Any())
     {
         <div id="continentList" class=" my-3 row row-cols-xxl-1 justify-content-center">
-            @foreach (var continente in Model.Continentes.OrderBy(c => c.Nome))
+            @foreach (var continente in Model.Continentes.Where(co => co.Visible == true).OrderBy(co => co.Nome))
             {
                 <div id="continentcard" class="card bg-dark px-0 mx-2 mb-5" style="width:100%; height:auto">
                     <div id="continentmask" class="card_mask p-0 justify-content-between">
@@ -37,9 +37,9 @@ else
                             <img id="continentimg" src="@continente.ImgCard" class="card-img-top imgfit" style="object-fit:cover; object-position:center;">
                         </a>
                     </div>
-                    <h1 id="nomecontinente" class="card-title text-truncate text-center align-self-center">@continente.Nome<br /><span class="text-secondary" style="font-size:16px">@continente.CurtaDescricao</span></h1>
+                    <h1 id="nomecontinente" class="card-title text-white text-truncate text-center align-self-center">@continente.Nome<br /><span class="text-secondary" style="font-size:16px">@continente.CurtaDescricao</span></h1>
                     <div class="card-img-overlay align-content-between overflow-auto" style="top:38%; padding-top:3rem;">
-                        <div class="card-body h-auto listcardbottom p-0">
+                        <div class="card-body h-auto p-0">
                             @if (Model.Regioes != null && Model.Regioes.Any())
                             {
                                 <div id="regionList " class="row row-cols-1 row-cols-sm-2 row-cols-md-2 row-cols-xl-4 g-1 justify-content-center align-items-center">
@@ -71,10 +71,106 @@ else
     }
     else
     {
-        <p>No Continents found!</p>
+        <div class="text-center text-body-secondary mt-3">
+        <p>No Regions found!</p>
+        </div>
     }
 </div>
 @section Scripts{
-    <script type="text/javascript" src="~/js/SortElements.js"></script>
+    <script>
+        //FILTER CARDS
+        var searchBox = document.getElementById('search-box');
+        var continentCards = document.querySelectorAll('#continentList .card');
+        var initialCardDisplay;
+
+        searchBox.addEventListener('input', function () {
+            var searchText = searchBox.value.trim().toLowerCase();
+
+            continentCards.forEach(function (continentCard) {
+                var continentTitle = continentCard.querySelector('.card-title').textContent.trim().toLowerCase();
+
+                if (continentTitle.includes(searchText)) {
+                    continentCard.style.opacity = '1';
+                    continentCard.style.transform = 'translateY(0)';
+                    continentCard.style.display = 'block';
+
+                    // Show all the regions of the matching continent
+                    var regionCards = continentCard.querySelectorAll('#regionList .card');
+                    regionCards.forEach(function (regionCard) {
+                        regionCard.style.opacity = '1';
+                        regionCard.style.transform = 'translateY(0)';
+                        regionCard.style.display = 'block';
+                    });
+                } else {
+                    continentCard.style.opacity = '0';
+                    continentCard.style.transform = 'translateY(10%)';
+                    continentCard.addEventListener('transitionend', function () {
+                        if (continentCard.style.opacity === '0') {
+                            continentCard.style.display = 'none';
+                        }
+                    }, { once: true });
+
+                    // Hide all the regions of the non-matching continents
+                    var regionCards = continentCard.querySelectorAll('#regionList .card');
+                    regionCards.forEach(function (regionCard) {
+                        regionCard.style.opacity = '0';
+                        regionCard.style.transform = 'translateY(10%)';
+                        regionCard.addEventListener('transitionend', function () {
+                            if (regionCard.style.opacity === '0') {
+                                regionCard.style.display = 'none';
+                            }
+                        }, { once: true });
+                    });
+                }
+
+                // Search for matching region within the matching continent
+                var regionCards = continentCard.querySelectorAll('#regionList .card');
+                regionCards.forEach(function (regionCard) {
+                    var regionTitle = regionCard.querySelector('.card-title').textContent.trim().toLowerCase();
+                    if (regionTitle.includes(searchText)) {
+                        continentCard.style.opacity = '1';
+                        continentCard.style.transform = 'translateY(0)';
+                        continentCard.style.display = 'block';
+
+                        regionCard.style.opacity = '1';
+                        regionCard.style.transform = 'translateY(0)';
+                        regionCard.style.display = 'block';
+                    } else if (!continentTitle.includes(searchText)) {
+                        regionCard.style.opacity = '0';
+                        regionCard.style.transform = 'translateY(10%)';
+                        regionCard.addEventListener('transitionend', function () {
+                            if (regionCard.style.opacity === '0') {
+                                regionCard.style.display = 'none';
+                            }
+                        }, { once: true });
+                    }
+                });
+            });
+        });
+
+        continentCards.forEach(function (continentCard) {
+            continentCard.addEventListener('mouseover', function () {
+                if (continentCard.style.display === 'block') {
+                    // Save the initial display value
+                    initialCardDisplay = continentCard.style.display;
+                }
+            });
+
+            continentCard.addEventListener('mouseout', function () {
+                if (continentCard.style.display === 'block') {
+                    // Set the display back to the initial value
+                    continentCard.style.display = initialCardDisplay;
+
+                    // Set the display of all the regions of the continent back to the initial value
+                    var regionCards = continentCard.querySelectorAll('#regionList .card');
+                    regionCards.forEach(function (regionCard) {
+                        regionCard.style.display = initialCardDisplay;
+                    });
+                }
+            });
+        });
+
+
+    </script>
  }
 

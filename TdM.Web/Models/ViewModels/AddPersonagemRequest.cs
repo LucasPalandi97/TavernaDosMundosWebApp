@@ -1,5 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
-using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using System.ComponentModel.DataAnnotations;
 using TdM.Database.Models.Domain.Enums;
 
 namespace TdM.Web.Models.ViewModels;
@@ -15,8 +15,8 @@ public class AddPersonagemRequest
     [Display(Name = "Title")]
     public string Titulo { get; set; }
 
-    [Display(Name ="Class")]
-    public Classe?  Classe { get; set; }
+    [Display(Name = "Class")]
+    public Classe? Classe { get; set; }
 
     [Display(Name = "Race")]
     public Raca? Raca { get; set; }
@@ -27,7 +27,7 @@ public class AddPersonagemRequest
     public string CurtaDescricao { get; set; }
 
     [Required]
-    [Display(Name ="Biography")]
+    [Display(Name = "Biography")]
     public string Biografia { get; set; }
 
     public string? ImgCard { get; set; }
@@ -54,5 +54,9 @@ public class AddPersonagemRequest
     public string? SelectedContinente { get; set; }
     public IEnumerable<SelectListItem>? Regioes { get; set; }
     public string? SelectedRegiao { get; set; }
+    public IEnumerable<SelectListItem>? Povos { get; set; }
+    public string[]? SelectedPovos { get; set; } = Array.Empty<string>();
+    public IEnumerable<SelectListItem>? Contos { get; set; }
+    public string[]? SelectedContos { get; set; } = Array.Empty<string>();
 
 }

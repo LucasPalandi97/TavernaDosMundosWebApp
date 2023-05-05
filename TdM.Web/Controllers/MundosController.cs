@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using TdM.Database.Models.Domain;
+using System.Diagnostics;
+using TdM.Web.Models;
 using TdM.Web.Models.ViewModels;
 using TdM.Web.Repositories;
 
@@ -15,13 +16,25 @@ public class MundosController : Controller
     }
     [HttpGet]
     public async Task<IActionResult> Index(string urlHandle)
-    {    
+    {
         var mundo = await mundoRepository.GetByUrlHandleAsync(urlHandle);
 
-        var navbarViewModel = new NavbarViewModel 
+        if (mundo == null)
+        {
+            // return a custom error view with an appropriate message             
+            var errorViewModel = new ErrorViewModel
+            {
+                ErrorMessage = "The specified URL handle does not exist.",
+                RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier
+            };
+
+            return View("Error", errorViewModel);
+        }
+
+        var navbarViewModel = new NavbarViewModel
         {
             Mundo = mundo,
-            MundoUrlHandle = mundo.UrlHandle,       
+            MundoUrlHandle = mundo.UrlHandle,
         };
 
         return View(navbarViewModel);

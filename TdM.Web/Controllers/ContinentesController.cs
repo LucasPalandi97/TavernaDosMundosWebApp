@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
-using TdM.Database.Models.Domain;
 using TdM.Web.Models;
 using TdM.Web.Models.ViewModels;
 using TdM.Web.Repositories;

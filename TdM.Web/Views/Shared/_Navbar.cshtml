@@ -4,44 +4,39 @@
 @{
 }
 <nav class="navbar bg-body navbar-expand-lg py-1">
-    <div class="container-fluid px-5 align-content-center text-center">
+    <div class="container-fluid px-2 px-xl-5 align-content-center text-center">
         <div class="navbar-button bg-body px-2 pt-2 border border-1 border-light-subtle">
             <div>
                 <span class="text-uppercase">@Model.Mundo?.Nome</span>
-            </div>     
-        </div>
-        <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Taverna dos Mundos</a>
-        <div id="theme" class="row row-cols-2 g-2 p-0">
-            <div class="">
-                <button class="btn btn-light theme-switch-btn active" id="lightBtn" aria-pressed="true">
-                    <i class="bi bi-sun"></i>
-                </button>
-            </div>
-            <div class="">
-                <button class="btn btn-dark theme-switch-btn" id="darkBtn" aria-pressed="false">
-                    <i class="bi bi-moon"></i>
-                </button>
             </div>
         </div>
-
+        <a class="navbar-brand mx-0 me-3" asp-area="" asp-controller="Home" asp-action="Index">Taverna dos Mundos</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDarkDropdown2" aria-controls="navbarNavDarkDropdown2" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse bg-body" id="navbarNavDarkDropdown2">
+            <div id="theme" class="d-flex justify-content-start">
+                <div class="d-flex justify-content-start">
+                    <button class="btn btn-light theme-switch-btn mx-2" id="lightBtn" aria-pressed="false">
+                        <i class="bi bi-sun"></i>
+                    </button>
+                    <button class="btn btn-dark theme-switch-btn mx-2" id="darkBtn" aria-pressed="false">
+                        <i class="bi bi-moon"></i>
+                    </button>
+                </div>
+            </div>
             <ul class="navbar-nav justify-content-between w-100 ms-auto">
                 @*  Admin Action*@
                 @if (signInManager.IsSignedIn(User) && User.IsInRole("Admin"))
                 {
                     <li class="nav-item dropdown mx-auto">
-                        <div class="btn-group">
-                            <button type="button" class="nav-link dropdown-toggle" id="dropdownMenuReference" data-bs-toggle="dropdown" aria-expanded="false" data-bs-reference="parent">
-                                Worlds &nbsp;
-                            </button>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" asp-area="" asp-controller="AdminMundos" asp-action="Add">Add World</a></li>
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" data-bs-reference="parent">
+                            Worlds
+                        </a>
+                        <ul id="admmenu" class="dropdown-menu dropdown-menu-start position-absolute">
+                            <li><a class="dropdown-item" asp-area="" asp-controller="AdminMundos" asp-action="Add">Add World</a></li>
                                 <li><a class="dropdown-item" asp-area="" asp-controller="AdminMundos" asp-action="List">Show All Worlds</a></li>
                             </ul>
-                        </div>
                     </li>
                 }
                 @*End of Admin Action*@
@@ -49,18 +44,15 @@
                 @if (signInManager.IsSignedIn(User) && User.IsInRole("Admin"))
                 {
                     <li class="nav-item dropdown mx-auto">
-                        <div class="btn-group">
-                            <a type="submit" asp-area="" asp-controller="Personagens" asp-action="List" class="nav-link" asp-route-urlHandle="@Model.MundoUrlHandle">
-                                Characters
-                            </a>
-                            <button type="button" class="nav-link dropdown-toggle dropdown-toggle-split" id="dropdownMenuReference" data-bs-toggle="dropdown" aria-expanded="false" data-bs-reference="parent">
-                                <span class="visually-hidden">Toggle Dropdown</span>
-                            </button>
-                            <ul class="dropdown-menu dropdown-menu-dark">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" data-bs-reference="parent">
+                            Characters
+                        </a>
+                        <ul id="admmenu" class="dropdown-menu dropdown-menu-start position-absolute">
+                            <li><a class="dropdown-item" type="submit" asp-area="" asp-controller="Personagens" asp-action="List" asp-route-urlHandle="@Model.MundoUrlHandle">Characters</a></li>
+                                <li class="dropdown-divider"></li>
                                 <li><a class="dropdown-item" asp-area="" asp-controller="AdminPersonagens" asp-action="Add">Add Character</a></li>
                                 <li><a class="dropdown-item" asp-area="" asp-controller="AdminPersonagens" asp-action="List">Show Characters</a></li>
                             </ul>
-                        </div>
                     </li>
                 }
                 @*End of Admin Action*@
@@ -74,21 +66,18 @@
                 @if (signInManager.IsSignedIn(User) && User.IsInRole("Admin"))
                 {
                     <li class="nav-item dropdown mx-auto">
-                        <div class="btn-group">
-                            <a type="submit" asp-area="" asp-controller="Continentes" asp-action="List" class="nav-link" asp-route-urlHandle="@Model.MundoUrlHandle">
-                                Regions
-                            </a>
-                            <button type="button" class="nav-link dropdown-toggle dropdown-toggle-split" id="dropdownMenuReference" data-bs-toggle="dropdown" aria-expanded="false" data-bs-reference="parent">
-                                <span class="visually-hidden">Toggle Dropdown</span>
-                            </button>
-                            <ul class="dropdown-menu">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" data-bs-reference="parent">
+                            Regions
+                        </a>
+                        <ul id="admmenu" class="dropdown-menu dropdown-menu-start position-absolute">
+                            <li><a class="dropdown-item" type="submit" asp-area="" asp-controller="Continentes" asp-action="List" asp-route-urlHandle="@Model.MundoUrlHandle">Regions</a></li>
+                                <li class="dropdown-divider"></li>
                                 <li><a class="dropdown-item" asp-area="" asp-controller="AdminContinentes" asp-action="Add">Add Continent</a></li>
                                 <li><a class="dropdown-item" asp-area="" asp-controller="AdminContinentes" asp-action="List">Show Continents</a></li>
                                 <li><hr class="dropdown-divider"></li>
                                 <li><a class="dropdown-item" asp-area="" asp-controller="AdminRegioes" asp-action="Add">Add Region</a></li>
                                 <li><a class="dropdown-item" asp-area="" asp-controller="AdminRegioes" asp-action="List">Show Regions</a></li>
                             </ul>
-                        </div>
                     </li>
                 }
                 @*End of Admin Action*@
@@ -102,18 +91,15 @@
                 @if (signInManager.IsSignedIn(User) && User.IsInRole("Admin"))
                 {
                     <li class="nav-item dropdown mx-auto">
-                        <div class="btn-group">
-                            <a type="submit" asp-area="" asp-controller="Criaturas" asp-action="List" class="nav-link" asp-route-urlHandle="@Model.MundoUrlHandle">
-                                Creatures
-                            </a>
-                            <button type="button" class="nav-link dropdown-toggle dropdown-toggle-split" id="dropdownMenuReference" data-bs-toggle="dropdown" aria-expanded="false" data-bs-reference="parent">
-                                <span class="visually-hidden">Toggle Dropdown</span>
-                            </button>
-                            <ul class="dropdown-menu">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" data-bs-reference="parent">
+                            Creatures
+                        </a>
+                        <ul id="admmenu" class="dropdown-menu dropdown-menu-start position-absolute">
+                            <li><a class="dropdown-item" type="submit" asp-area="" asp-controller="Criaturas" asp-action="List" asp-route-urlHandle="@Model.MundoUrlHandle">Creatures</a></li>
+                                <li class="dropdown-divider"></li>
                                 <li><a class="dropdown-item" asp-area="" asp-controller="AdminCriaturas" asp-action="Add">Add Creature</a></li>
                                 <li><a class="dropdown-item" asp-area="" asp-controller="AdminCriaturas" asp-action="List">Show Creatures</a></li>
                             </ul>
-                        </div>
                     </li>
                 }
                 @*End of Admin Action*@
@@ -127,18 +113,15 @@
                 @if (signInManager.IsSignedIn(User) && User.IsInRole("Admin"))
                 {
                     <li class="nav-item dropdown mx-auto">
-                        <div class="btn-group">
-                            <a type="submit" asp-area="" asp-controller="Povos" asp-action="List" class="nav-link" asp-route-urlHandle="@Model.MundoUrlHandle">
-                                People
-                            </a>
-                            <button type="button" class="nav-link dropdown-toggle dropdown-toggle-split" id="dropdownMenuReference" data-bs-toggle="dropdown" aria-expanded="false" data-bs-reference="parent">
-                                <span class="visually-hidden">Toggle Dropdown</span>
-                            </button>
-                            <ul class="dropdown-menu">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" data-bs-reference="parent">
+                            Peoples
+                        </a>
+                        <ul id="admmenu" class="dropdown-menu dropdown-menu-start position-absolute">
+                            <li><a class="dropdown-item" type="submit" asp-area="" asp-controller="Povos" asp-action="List" asp-route-urlHandle="@Model.MundoUrlHandle">Peoples</a></li>
+                                <li class="dropdown-divider"></li>
                                 <li><a class="dropdown-item" asp-area="" asp-controller="AdminPovos" asp-action="Add">Add People</a></li>
                                 <li><a class="dropdown-item" asp-area="" asp-controller="AdminPovos" asp-action="List">Show People</a></li>
                             </ul>
-                        </div>
                     </li>
                 }
                 @*End of Admin Action*@
@@ -152,19 +135,17 @@
                 @if (signInManager.IsSignedIn(User) && User.IsInRole("Admin"))
                 {
                     <li class="nav-item dropdown mx-auto">
-                        <div class="btn-group">
-                            <a type="submit" asp-area="" asp-controller="Contos" asp-action="List" class="nav-link" asp-route-urlHandle="@Model.MundoUrlHandle">
-                                Stories
-                            </a>
-                            <button type="button" class="nav-link dropdown-toggle dropdown-toggle-split" id="dropdownMenuReference" data-bs-toggle="dropdown" aria-expanded="false" data-bs-reference="parent">
-                                <span class="visually-hidden">Toggle Dropdown</span>
-                            </button>
-                            <ul class="dropdown-menu">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" data-bs-reference="parent">
+                            Stories
+                        </a>
+                        <ul id="admmenu" class="dropdown-menu dropdown-menu-start position-absolute">
+                            <li><a class="dropdown-item" type="submit" asp-area="" asp-controller="Contos" asp-action="List" asp-route-urlHandle="@Model.MundoUrlHandle">Stories</a></li>
+                                <li class="dropdown-divider"></li>
                                 <li><a class="dropdown-item" asp-area="" asp-controller="AdminContos" asp-action="Add">Add Story</a></li>
                                 <li><a class="dropdown-item" asp-area="" asp-controller="AdminContos" asp-action="List">Show Stories</a></li>
                             </ul>
-                        </div>
                     </li>
+
                 }
                 @*End of Admin Action*@
                 else
@@ -174,43 +155,47 @@
                     </li>
                 }
 
-            </ul>
-
-            <div class="navbar-nav ml-auto d-flex align-items-center">
-                @if (signInManager.IsSignedIn(User))
-                {
-                    <div class="me-3">
-                        <span class="text-secondary text-nowrap" id="userShow">@User?.Identity?.Name!</span>
-                    </div>
-                    @if (signInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+                <li class="nav-item align-items-center d-flex flex-column flex-lg-row p-0">
+                    @if (signInManager.IsSignedIn(User))
                     {
-                        <div class="nav-item dropdown mx-auto">
-                            <div class="btn-group dropstart">
-                                <button type="button" class="btn  btn-secondary nav-link dropdown-toggle dropdown-toggle-split " id="dropdownMenuReference" data-bs-toggle="dropdown" aria-expanded="false" data-bs-reference="parent">
-                                    <span class="visually-hidden">Toggle Dropdown</span>
-                                </button>
-                                <a class="btn w-100 nav-link" asp-area="" asp-controller="Account" asp-action="Logout">Logout</a>
 
-                                <ul class="dropdown-menu dropdown-menu-end dropdown-menu-lg-start">
-                                    <li><a class="dropdown-item" asp-area="" asp-controller="AdminUsers" asp-action="List">Show Users</a></li>
+                        @if (signInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+                        {
+                            <div class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle text-secondary" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    @User.Identity?.Name
+                                </a>
+                                <ul id="admmenu" class="dropdown-menu dropdown-menu-start position-absolute">
+                                    <li>
+                                        <a class="dropdown-item" asp-area="" asp-controller="AdminUsers" asp-action="List">Users View</a>
+                                    </li>
+                                    <li>
+                                        <a type="submit" class="dropdown-item" asp-area="" asp-controller="Account" asp-action="Logout">Logout</a>
+                                    </li>
                                 </ul>
                             </div>
-                        </div>
-
+                        }
+                        else
+                        {
+                            <div class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle text-secondary" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    @User.Identity?.Name
+                                </a>
+                                <ul id="admmenu" class="dropdown-menu dropdown-menu-start position-absolute">
+                                    <li>
+                                        <a type="submit" class="dropdown-item" asp-area="" asp-controller="Account" asp-action="Logout">Logout</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        }
                     }
                     else
                     {
-                        <a class="btn w-100 nav-link" asp-area="" asp-controller="Account" asp-action="Logout">Logout</a>
-
+                        <a class="btn mx-1 my-1 my-lg-0 w-100 bg-body border border-secondary-subtle border-1" asp-area="" asp-controller="Account" asp-action="Login">Login</a>
+                        <a class="btn mx-1 my-1 my-lg-0 w-100 bg-body border border-secondary-subtle border-1" asp-area="" asp-controller="Account" asp-action="Register">Register</a>
                     }
-                }
-                else
-                {
-                    <a class="btn mx-2 w-100 bg-body" asp-area="" asp-controller="Account" asp-action="Login">Login</a>
-                    <a class="btn mx-2 my-1 w-100 bg-body" asp-area="" asp-controller="Account" asp-action="Register">Register</a>
-                }
-            </div>
-
+                </li>
+            </ul>
         </div>
     </div>
 </nav>

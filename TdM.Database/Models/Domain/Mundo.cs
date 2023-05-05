@@ -13,7 +13,7 @@ public class Mundo
     public DateTime PublishedDate { get; set; }
     public string UrlHandle { get; set; }
     public bool Visible { get; set; }
- 
+
 
     public ICollection<Continente>? Continentes { get; set; }
     public ICollection<Regiao>? Regioes { get; set; }
@@ -22,7 +22,7 @@ public class Mundo
     public ICollection<Criatura>? Criaturas { get; set; }
     public ICollection<Conto>? Contos { get; set; }
 
-   
+
 }
 
 
