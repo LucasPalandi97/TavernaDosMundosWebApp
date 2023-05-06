@@ -1,6 +1,7 @@
 ﻿namespace TdM.Database.Models.Domain;
 using TdM.Database.Models.Domain.Enums;
 
+
 public class Mundo
 {
 

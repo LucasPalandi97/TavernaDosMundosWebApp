@@ -15,10 +15,21 @@ public class ContinenteRepository : IContinenteRepository
         this.tavernaDbContext = tavernaDbContext;
         this.cache = cache;
     }
+    private void InvalidateCache(Guid id)
+    {
+        string cacheKey = $"ContinenteRepository.GetAsync_{id}_1_10";
+        cache.Remove(cacheKey);
+        cache.Remove("ContinenteRepository.GetAllAsync_1_10");
+        cache.Remove("ContinenteRepository.GetAllByMundoAsync_mundoId_1_10");
+        cache.Remove("ContinenteRepository.GetAsync_id_1_10");
+        cache.Remove("ContinenteRepository.GetByUrlHandleAsync_urlHandle_1_10");
+    }
     public async Task<Continente> AddAsync(Continente continente)
     {
         await tavernaDbContext.AddAsync(continente);
         await tavernaDbContext.SaveChangesAsync();
+
+        InvalidateCache(continente.Id);
         return continente;
     }
 
@@ -30,6 +41,8 @@ public class ContinenteRepository : IContinenteRepository
         {
             tavernaDbContext.Continentes.Remove(existingContinente);
             await tavernaDbContext.SaveChangesAsync();
+
+            InvalidateCache(existingContinente.Id);
             return existingContinente;
         }
         return null;
@@ -41,13 +54,13 @@ public class ContinenteRepository : IContinenteRepository
         if (!cache.TryGetValue(cacheKey, out IEnumerable<Continente>? result))
         {
             result = await tavernaDbContext.Continentes
+                
                 .Include(x => x.Regioes)
                 .Include(x => x.Personagens)
                 .Include(x => x.Criaturas)
                 .Include(x => x.Povos)
                 .Include(x => x.Contos)
                 .Include(x => x.Mundo)
-                .AsNoTracking()
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
                 .ToListAsync();
@@ -62,10 +75,11 @@ public class ContinenteRepository : IContinenteRepository
 
     public async Task<IEnumerable<Continente>> GetAllByMundoAsync(Guid mundoId, int page, int pageSize)
     {
-        string cacheKey = $"ContinenteRepository.GetAllByMundoAsync_{page}_{pageSize}";
+        string cacheKey = $"ContinenteRepository.GetAllByMundoAsync_{mundoId}_{page}_{pageSize}";
         if (!cache.TryGetValue(cacheKey, out IEnumerable<Continente>? result))
         {
             result = await tavernaDbContext.Continentes
+            
             .Include(x => x.Regioes)
             .Include(x => x.Personagens)
             .Include(x => x.Criaturas)
@@ -73,7 +87,6 @@ public class ContinenteRepository : IContinenteRepository
             .Include(x => x.Contos)
             .Include(x => x.Mundo)
             .Where(x => x.Mundo.Id == mundoId)
-            .AsNoTracking()
             .Skip((page - 1) * pageSize)
             .Take(pageSize)
             .ToListAsync();
@@ -92,16 +105,17 @@ public class ContinenteRepository : IContinenteRepository
         if (!cache.TryGetValue(cacheKey, out Continente? result))
         {
             result = await tavernaDbContext.Continentes
+                
                 .Include(x => x.Regioes)
                 .Include(x => x.Personagens)
                 .Include(x => x.Criaturas)
                 .Include(x => x.Povos)
                 .Include(x => x.Contos)
                 .Include(x => x.Mundo)
-                .AsNoTracking()
+                .Where(x => x.Id == id)
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
-                .FirstOrDefaultAsync(x => x.Id == id);
+                .FirstOrDefaultAsync();
 
             if (result != null)
             {
@@ -109,32 +123,7 @@ public class ContinenteRepository : IContinenteRepository
             }
         }
         return result;
-    }
-
-    public async Task<IEnumerable<Continente>> GetContinentesByMundoAsync(Guid id, int page, int pageSize)
-    {
-        string cacheKey = $"ContinenteRepository.GetContinentesByMundoAsync_{page}_{pageSize}";
-        if (!cache.TryGetValue(cacheKey, out IEnumerable<Continente>? result))
-        {
-            result = await tavernaDbContext.Continentes
-            .Include(x => x.Regioes)
-            .Include(x => x.Personagens)
-            .Include(x => x.Criaturas)
-            .Include(x => x.Povos)
-            .Include(x => x.Contos)
-            .Include(x => x.Mundo)
-            .AsNoTracking()
-            .Where(c => c.Mundo.Id == id)
-            .Skip((page - 1) * pageSize)
-            .Take(pageSize)
-            .ToListAsync();
-            if (result != null && result.Any())
-            {
-                cache.Set(cacheKey, result, TimeSpan.FromMinutes(10));
-            }
-        }
-        return result;
-    }
+    }  
 
     public async Task<Continente?> GetByUrlHandleAsync(string urlHandle, int page, int pageSize)
     {
@@ -142,16 +131,17 @@ public class ContinenteRepository : IContinenteRepository
         if (!cache.TryGetValue(cacheKey, out Continente? result))
         {
             result = await tavernaDbContext.Continentes
+                
                 .Include(x => x.Regioes)
                 .Include(x => x.Personagens)
                 .Include(x => x.Criaturas)
                 .Include(x => x.Povos)
                 .Include(x => x.Contos)
                 .Include(x => x.Mundo)
-                .AsNoTracking()
+                .Where(x => x.UrlHandle == urlHandle)
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
-                .FirstOrDefaultAsync(x => x.UrlHandle == urlHandle);
+                .FirstOrDefaultAsync();
 
             if (result != null)
             {
@@ -163,8 +153,6 @@ public class ContinenteRepository : IContinenteRepository
 
     public async Task<Continente?> UpdateAsync(Continente continente, int page, int pageSize)
     {
-        string cacheKey = $"ContinenteRepository.GetByUrlHandleAsync_{continente.UrlHandle}_{page}_{pageSize}";
-
         var existingContinente = await tavernaDbContext.Continentes
             .Include(x => x.Regioes)
             .Include(x => x.Personagens)
@@ -172,9 +160,10 @@ public class ContinenteRepository : IContinenteRepository
             .Include(x => x.Povos)
             .Include(x => x.Contos)
             .Include(x => x.Mundo)
+            .Where(x => x.Id == continente.Id)
             .Skip((page - 1) * pageSize)
             .Take(pageSize)
-            .FirstOrDefaultAsync(x => x.Id == continente.Id);
+            .FirstOrDefaultAsync();
 
         if (existingContinente != null)
         {
@@ -190,10 +179,10 @@ public class ContinenteRepository : IContinenteRepository
             existingContinente.Regioes = continente.Regioes;
             await tavernaDbContext.SaveChangesAsync();
 
-            cache.Remove(cacheKey);
+            InvalidateCache(continente.Id);
+            InvalidateCache(existingContinente.Id);
             return existingContinente;
         }
         return null;
     }
-
 }

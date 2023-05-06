@@ -4,12 +4,15 @@
     z-index: 1000;
 }
 
-
-@media  (min-width: 992px) {
-    html {
-        overflow: hidden;
-    }
+.card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(calc(25% - 1rem), 1fr));
+    gap: 1rem;
+    justify-content: center; /* aligns the grid to the center of the container */
+    align-content: center;
+    align-items:center;
 }
+
 
 .grow {
     transition: all .2s ease-in-out;
@@ -20,9 +23,15 @@
         transform: scale(1.025);
     }
 
-  @media (max-width: 992px){
+@media (max-width: 992px) {
     .grow:hover {
-        transform:none;
+        transform: none;
     }
 
-  }
+    .card-grid {
+       
+        grid-template-columns: repeat(auto-fit, minmax(calc(100% - 1rem), 1fr));
+           
+    }
+
+}

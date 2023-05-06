@@ -26,7 +26,7 @@ public class AdminContinentesController : Controller
     public async Task<IActionResult> ListContinentesByMundo(Guid id)
     {
         IEnumerable<Continente> continentes;
-        continentes = await continenteRepository.GetContinentesByMundoAsync(id, 1, 10);
+        continentes = await continenteRepository.GetAllByMundoAsync(id, 1, 10);
         var selectListItems = continentes.Select(x => new SelectListItem
         {
             Text = x.Nome,

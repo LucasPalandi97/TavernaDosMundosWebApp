@@ -146,9 +146,8 @@ public class AdminPersonagensController : Controller
             }
         }
 
-        //Maps Povos from Selected Regiao
+        //Maps Povos from Selected Povo
         var selectedPovos = new List<Povo>();
-#pragma warning disable CS8602 // Dereference of a possibly null reference.
         foreach (var selectedPovoId in addPersonagemRequest.SelectedPovos)
         {
             if (!string.IsNullOrEmpty(selectedPovoId))
@@ -161,7 +160,6 @@ public class AdminPersonagensController : Controller
                 }
             }
         }
-#pragma warning restore CS8602 // Dereference of a possibly null reference.
         //Maping Povos back to domain modal
         personagem.Povos = selectedPovos;
 
@@ -170,22 +168,16 @@ public class AdminPersonagensController : Controller
         return RedirectToAction("List");
     }
 
-#pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
     public async Task<IActionResult> ListPersonagensByRegiao(Guid id, List<Guid> selectedRegiaoIds = null)
-#pragma warning restore CS8625 // Cannot convert null literal to non-nullable reference type.
     {
         IEnumerable<Personagem> personagens;
         if (selectedRegiaoIds == null)
         {
-#pragma warning disable CS8602 // Dereference of a possibly null reference.
             personagens = await personagemRepository.GetPersonagensByRegiaoAsync(id, 1, 10);
-#pragma warning restore CS8602 // Dereference of a possibly null reference.
         }
         else
         {
-#pragma warning disable CS8602 // Dereference of a possibly null reference.
             personagens = await personagemRepository.GetPersonagensByRegiaoAsync(selectedRegiaoIds, 1, 10);
-#pragma warning restore CS8602 // Dereference of a possibly null reference.
         }
         var selectListItems = personagens.Select(x => new SelectListItem
         {

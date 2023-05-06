@@ -221,11 +221,11 @@ public class AdminPovosController : Controller
         IEnumerable<Povo> povos;
         if (selectedRegiaoIds == null)
         {
-            povos = await povoRepository.GetAllByRegiao(id, 1, 10);
+            povos = await povoRepository.GetAllByRegiaoAsync(id, 1, 10);
         }
         else
         {
-            povos = await povoRepository.GetAllByRegiao(selectedRegiaoIds, 1, 10);
+            povos = await povoRepository.GetAllByRegiaoAsync(selectedRegiaoIds, 1, 10);
         }
         var selectListItems = povos.Select(x => new SelectListItem
         {

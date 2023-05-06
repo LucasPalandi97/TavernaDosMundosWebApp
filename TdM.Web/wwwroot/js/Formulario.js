@@ -96,21 +96,27 @@ function updateContinentes() {
                 $.each(data, function (index, value) {
                     $("#SelectedContinentes").append('<option value="' + value.value + '">' + value.text + '</option>');
                 });
-                // Clear selected region, character and creature if a different mundo is selected
+                // Clear selected region, character, creature, people and story if a different mundo is selected
                 if ($("#SelectedMundo").data("selected") != selectedmundoId) {
                     $("#SelectedRegioes").empty().append('<option value="" class="text-danger" selected>No Region</option>');
                     $("#SelectedPersonagens").empty().append('<option value="" class="text-danger" selected>No Character</option>'); // add empty default option
                     $("#SelectedCriaturas").empty().append('<option value="" class="text-danger" selected>No Creature</option>'); // add empty default option
+                    $("#SelectedPovos").empty().append('<option value="" class="text-danger" selected>No People</option>'); // add empty default option     
+                    $("#SelectedContos").empty().append('<option value="" class="text-danger" selected>No Story</option>'); // add empty default option
+
+
                 }
                 $("#SelectedMundo").data("selected", selectedmundoId);
             }
         });
     } else {
-        // Clear contient, region, character and creature if no world is selected
+        // Clear contient, region, character, creature, people and story if no world is selected
         $("#SelectedContinentes").empty().append('<option value="" class="text-danger" selected>No Continent</option>'); // add empty default option
         $("#SelectedRegioes").empty().append('<option value="" class="text-danger" selected>No Region</option>'); // add empty default option
         $("#SelectedPersonagens").empty().append('<option value="" class="text-danger" selected>No Character</option>'); // add empty default option
         $("#SelectedCriaturas").empty().append('<option value="" class="text-danger" selected>No Creature</option>'); // add empty default option
+        $("#SelectedPovos").empty().append('<option value="" class="text-danger" selected>No People</option>'); // add empty default option     
+        $("#SelectedContos").empty().append('<option value="" class="text-danger" selected>No Story</option>'); // add empty default option
     }
 }
 
@@ -189,25 +195,50 @@ function updateCriaturas() {
     }
 }
 
-//GET LIST<POVOS> BY LIST<REGIOES> IDs (ALLOW MULTIPLE ITEMS)
+//GET LIST<POVOS> BY MUNDOID (ALLOW MULTIPLE ITEMS)
 function updatePovos() {
-    const selectedRegiaoIds = $("#SelectedRegioes").val();
-    if (selectedRegiaoIds != null && selectedRegiaoIds.length > 0 ) {
+    const selectedmundoId = $("#SelectedMundo").val();
+    if (selectedmundoId != null && selectedmundoId.length > 0) {
         $.ajax({
-            url: "/AdminPovos/ListPovosByRegiao",
+            url: "/AdminPovos/ListPovosByMundo",
             type: "POST",
             dataType: "json",
-            data: { selectedRegiaoIds: selectedRegiaoIds },
+            data: { id: selectedmundoId },
             success: function (data) {
                 $("#SelectedPovos").empty();
                 $("#SelectedPovos").append('<option value="" class="text-danger" selected>No People</option>'); // add empty default option
                 $.each(data, function (index, value) {
                     $("#SelectedPovos").append('<option value="' + value.value + '">' + value.text + '</option>');
                 });
+               
             }
         });
     } else {
-        // Reset the creature dropdown
-        $("#SelectedPovos").empty().append('<option value="" class="text-danger" selected>No People</option>'); // add empty default option
+        // Reset the Povo dropdown
+        $("#SelectedPovos").empty().append('<option value="" class="text-danger" selected>No People</option>'); // add empty default option     
+    }
+}
+
+//GET LIST<CONTOS> BY MUNDOID (ALLOW MULTIPLE ITEMS)
+function updateContos() {
+    const selectedmundoId = $("#SelectedMundo").val();
+    if (selectedmundoId != null && selectedmundoId.length > 0) {
+        $.ajax({
+            url: "/AdminContos/ListContosByMundo",
+            type: "POST",
+            dataType: "json",
+            data: { id: selectedmundoId },
+            success: function (data) {
+                $("#SelectedContos").empty();
+                $("#SelectedContos").append('<option value="" class="text-danger" selected>No Story</option>'); // add empty default option
+                $.each(data, function (index, value) {
+                    $("#SelectedContos").append('<option value="' + value.value + '">' + value.text + '</option>');
+                });
+
+            }
+        });
+    } else {
+        // Reset the Conto dropdown
+        $("#SelectedContos").empty().append('<option value="" class="text-danger" selected>No Story</option>'); // add empty default option
     }
 }

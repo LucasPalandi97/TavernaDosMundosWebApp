@@ -6,7 +6,6 @@ public interface IContinenteRepository
 {
     Task<IEnumerable<Continente>> GetAllAsync(int page, int pageSize);
     Task<IEnumerable<Continente>> GetAllByMundoAsync(Guid mundoId, int page, int pageSize);
-    Task<IEnumerable<Continente>> GetContinentesByMundoAsync(Guid id, int page, int pageSize);
     Task<Continente?> GetAsync(Guid id, int page, int pageSize);
     Task<Continente?> GetByUrlHandleAsync(string urlHandle, int page, int pageSize);
     Task<Continente> AddAsync(Continente continente);

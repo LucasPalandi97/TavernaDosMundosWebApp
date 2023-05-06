@@ -15,11 +15,24 @@ public class PovoRepository : IPovoRepository
         this.tavernaDbContext = tavernaDbContext;
         this.cache = cache;
     }
+    private void InvalidateCache(Guid id)
+    {
+        string cacheKey = $"PovoRepository.GetAsync_{id}_1_10";
+        cache.Remove(cacheKey);
+        cache.Remove("PovoRepository.GetAllAsync_1_10");
+        cache.Remove("PovoRepository.GetAllByMundoAsync_mundoId_1_10");
+        cache.Remove("PovoRepository.GetAllByRegionAsync_selectedRegiaoIds_1_10");
+        cache.Remove("PovoRepository.GetAllByPersonagemAsync_selectedPersonagemIds_1_10");
+        cache.Remove("PovoRepository.GetAsync_id_1_10");
+        cache.Remove("PovoRepository.GetByUrlHandleAsync_urlHandle_1_10");
+    }
 
     public async Task<Povo> AddAsync(Povo povo)
     {
         await tavernaDbContext.AddAsync(povo);
         await tavernaDbContext.SaveChangesAsync();
+
+        InvalidateCache(povo.Id);
         return povo;
     }
 
@@ -32,6 +45,8 @@ public class PovoRepository : IPovoRepository
         {
             tavernaDbContext.Povos.Remove(existingPovo);
             await tavernaDbContext.SaveChangesAsync();
+
+            InvalidateCache(existingPovo.Id);
             return existingPovo;
         }
         return null;
@@ -43,13 +58,13 @@ public class PovoRepository : IPovoRepository
         if (!cache.TryGetValue(cacheKey, out IEnumerable<Povo>? result))
         {
             result = await tavernaDbContext.Povos
+            
             .Include(x => x.Continentes)
             .Include(x => x.Regioes)
             .Include(x => x.Personagens)
             .Include(x => x.Criaturas)
             .Include(x => x.Contos)
             .Include(x => x.Mundo)
-            .AsNoTracking()
             .Skip((page - 1) * pageSize)
             .Take(pageSize)
             .ToListAsync();
@@ -64,10 +79,11 @@ public class PovoRepository : IPovoRepository
 
     public async Task<IEnumerable<Povo>> GetAllByMundoAsync(Guid mundoId, int page, int pageSize)
     {
-        string cacheKey = $"PovoRepository.GetAllByMundoAsync_{page}_{pageSize}";
+        string cacheKey = $"PovoRepository.GetAllByMundoAsync_mundoId_{page}_{pageSize}";
         if (!cache.TryGetValue(cacheKey, out IEnumerable<Povo>? result))
         {
             result = await tavernaDbContext.Povos
+            
             .Include(x => x.Continentes)
             .Include(x => x.Regioes)
             .Include(x => x.Personagens)
@@ -75,10 +91,10 @@ public class PovoRepository : IPovoRepository
             .Include(x => x.Contos)
             .Include(x => x.Mundo)
             .Where(x => x.Mundo.Id == mundoId)
-            .AsNoTracking()
             .Skip((page - 1) * pageSize)
             .Take(pageSize)
             .ToListAsync();
+
             if (result != null && result.Any())
             {
                 cache.Set(cacheKey, result, TimeSpan.FromMinutes(10));
@@ -87,17 +103,17 @@ public class PovoRepository : IPovoRepository
         return result;
     }
 
-    public async Task<IEnumerable<Povo>> GetAllByPersonagem(object selectedPersonagemIds, int page, int pageSize)
+    public async Task<IEnumerable<Povo>> GetAllByPersonagemAsync(object selectedPersonagemIds, int page, int pageSize)
     {
-        string cacheKey = $"PovoRepository.GetAllByPersonagem_{page}_{pageSize}";
+        string cacheKey = $"PovoRepository.GetAllByPersonagemAsync_{string.Join("-", selectedPersonagemIds)}_{page}_{pageSize}";
         if (!cache.TryGetValue(cacheKey, out IEnumerable<Povo>? result))
         {
             if (selectedPersonagemIds is Guid)
             {
                 result = await tavernaDbContext.Povos
+                
                 .Where(p => p.Personagens
                 .Any(pp => pp.Id == (Guid)selectedPersonagemIds))
-                .AsNoTracking()
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
                 .ToListAsync();
@@ -105,9 +121,9 @@ public class PovoRepository : IPovoRepository
             else if (selectedPersonagemIds is List<Guid> selectedPersonagemIdsList)
             {
                 result = await tavernaDbContext.Povos
+                
                 .Where(p => p.Personagens
-                .Any(pp => selectedPersonagemIdsList.Contains(pp.Id)))
-                .AsNoTracking()
+                .Any(pp => selectedPersonagemIdsList.Contains(pp.Id)))                
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
                 .ToListAsync();
@@ -124,17 +140,17 @@ public class PovoRepository : IPovoRepository
         return result;
     }
 
-    public async Task<IEnumerable<Povo>> GetAllByRegiao(object selectedRegiaoIds, int page, int pageSize)
+    public async Task<IEnumerable<Povo>> GetAllByRegiaoAsync(object selectedRegiaoIds, int page, int pageSize)
     {
-        string cacheKey = $"PovoRepository.GetAllByRegiao_{page}_{pageSize}";
+        string cacheKey = $"PovoRepository.GetAllByRegiaoAsync_{string.Join("-", selectedRegiaoIds)}_{page}_{pageSize}";
         if (!cache.TryGetValue(cacheKey, out IEnumerable<Povo>? result))
         {
             if (selectedRegiaoIds is Guid)
             {
                 result = await tavernaDbContext.Povos
+                
                 .Where(p => p.Regioes
                 .Any(pp => pp.Id == (Guid)selectedRegiaoIds))
-                .AsNoTracking()
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
                 .ToListAsync();
@@ -142,9 +158,9 @@ public class PovoRepository : IPovoRepository
             else if (selectedRegiaoIds is List<Guid> sselectedRegiaoIdsList)
             {
                 result = await tavernaDbContext.Povos
+                
                 .Where(p => p.Regioes
-                .Any(pp => sselectedRegiaoIdsList.Contains(pp.Id)))
-                .AsNoTracking()
+                .Any(pp => sselectedRegiaoIdsList.Contains(pp.Id)))              
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
                 .ToListAsync();
@@ -167,16 +183,17 @@ public class PovoRepository : IPovoRepository
         if (!cache.TryGetValue(cacheKey, out Povo? result))
         {
             result = await tavernaDbContext.Povos
+             
              .Include(x => x.Continentes)
              .Include(x => x.Regioes)
              .Include(x => x.Personagens)
              .Include(x => x.Criaturas)
              .Include(x => x.Contos)
              .Include(x => x.Mundo)
-             .AsNoTracking()
+             .Where(x => x.Id == id)            
              .Skip((page - 1) * pageSize)
              .Take(pageSize)
-             .FirstOrDefaultAsync(x => x.Id == id);
+             .FirstOrDefaultAsync();
 
             if (result != null)
             {
@@ -192,16 +209,17 @@ public class PovoRepository : IPovoRepository
         if (!cache.TryGetValue(cacheKey, out Povo? result))
         {
             result = await tavernaDbContext.Povos
-            .Include(x => x.Continentes)
-            .Include(x => x.Regioes)
-            .Include(x => x.Personagens)
-            .Include(x => x.Criaturas)
-            .Include(x => x.Contos)
-            .Include(x => x.Mundo)
-            .AsNoTracking()
-            .Skip((page - 1) * pageSize)
-            .Take(pageSize)
-            .FirstOrDefaultAsync(x => x.UrlHandle == urlHandle);
+                
+                .Include(x => x.Continentes)
+                .Include(x => x.Regioes)
+                .Include(x => x.Personagens)
+                .Include(x => x.Criaturas)
+                .Include(x => x.Contos)
+                .Include(x => x.Mundo)
+                .Where(x => x.UrlHandle == urlHandle)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .FirstOrDefaultAsync();
 
             if (result != null)
             {
@@ -211,11 +229,8 @@ public class PovoRepository : IPovoRepository
         return result;
     }
 
-
     public async Task<Povo?> UpdateAsync(Povo povo, int page, int pageSize)
     {
-        string cacheKey = $"PovoRepository.GetByUrlHandleAsync_{povo.UrlHandle}_{page}_{pageSize}";
-
         var existingPovo = await tavernaDbContext.Povos
              .Include(x => x.Continentes)
              .Include(x => x.Regioes)
@@ -223,9 +238,10 @@ public class PovoRepository : IPovoRepository
              .Include(x => x.Criaturas)
              .Include(x => x.Contos)
              .Include(x => x.Mundo)
+             .Where(x => x.Id == povo.Id)
              .Skip((page - 1) * pageSize)
              .Take(pageSize)
-             .FirstOrDefaultAsync(x => x.Id == povo.Id);
+             .FirstOrDefaultAsync();
 
         if (existingPovo != null)
         {
@@ -244,7 +260,8 @@ public class PovoRepository : IPovoRepository
             existingPovo.Criaturas = povo.Criaturas;
             await tavernaDbContext.SaveChangesAsync();
 
-            cache.Remove(cacheKey);
+            InvalidateCache(povo.Id);
+            InvalidateCache(existingPovo.Id);
             return existingPovo;
         }
         return null;

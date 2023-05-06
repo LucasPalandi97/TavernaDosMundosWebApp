@@ -15,10 +15,27 @@ public class PersonagemRepository : IPersonagemRepository
         this.tavernaDbContext = tavernaDbContext;
         this.cache = cache;
     }
-    public async Task<Personagem> AddAsync(Personagem personagem)
+    private void InvalidateCache()
+    {
+        cache.Remove("PersonagemRepository.GetAllAsync_1_10");
+        cache.Remove("PersonagemRepository.GetAllByMundoAsync_mundoId_1_10");
+        cache.Remove("PersonagemRepository.GetPersonagensByRegiaoAsync_selectedRegiaoIds_1_10");       
+        cache.Remove("PersonagemRepository.GetByUrlHandleAsync_urlHandle_1_10");
+        cache.Remove("PersonagemRepository.GetAsync_id_1_10");
+
+    }
+    private void InvalidateCache(Guid id)
+    {
+        string cacheKey = $"PersonagemRepository.GetAsync_{id}_1_10";
+        cache.Remove(cacheKey);
+    }
+
+        public async Task<Personagem> AddAsync(Personagem personagem)
     {
         await tavernaDbContext.AddAsync(personagem);
         await tavernaDbContext.SaveChangesAsync();
+
+        InvalidateCache();
         return personagem;
     }
 
@@ -30,6 +47,8 @@ public class PersonagemRepository : IPersonagemRepository
         {
             tavernaDbContext.Personagens.Remove(existingPersonagem);
             await tavernaDbContext.SaveChangesAsync();
+
+            InvalidateCache();
             return existingPersonagem;
         }
         return null;
@@ -41,15 +60,14 @@ public class PersonagemRepository : IPersonagemRepository
         if (!cache.TryGetValue(cacheKey, out IEnumerable<Personagem>? result))
         {
             result = await tavernaDbContext.Personagens
-            .Include(x => x.Continente)
-            .Include(x => x.Regiao)
-            .Include(x => x.Povos)
-            .Include(x => x.Contos)
-            .Include(x => x.Mundo)
-            .AsNoTracking()
-            .Skip((page - 1) * pageSize)
-            .Take(pageSize)
-            .ToListAsync();
+                .Include(x => x.Continente)
+                .Include(x => x.Regiao)
+                .Include(x => x.Povos)
+                .Include(x => x.Contos)
+                .Include(x => x.Mundo)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
 
             if (result != null && result.Any())
             {
@@ -61,17 +79,17 @@ public class PersonagemRepository : IPersonagemRepository
 
     public async Task<IEnumerable<Personagem>> GetAllByMundoAsync(Guid mundoId, int page, int pageSize)
     {
-        string cacheKey = $"PersonagemRepository.GetAllByMundoAsync_{page}_{pageSize}";
+        string cacheKey = $"PersonagemRepository.GetAllByMundoAsync_{mundoId}_{page}_{pageSize}";
         if (!cache.TryGetValue(cacheKey, out IEnumerable<Personagem>? result))
         {
             result = await tavernaDbContext.Personagens
+
             .Include(x => x.Continente)
             .Include(x => x.Regiao)
             .Include(x => x.Povos)
             .Include(x => x.Contos)
             .Include(x => x.Mundo)
             .Where(x => x.Mundo.Id == mundoId)
-            .AsNoTracking()
             .Skip((page - 1) * pageSize)
             .Take(pageSize)
             .ToListAsync();
@@ -90,15 +108,16 @@ public class PersonagemRepository : IPersonagemRepository
         if (!cache.TryGetValue(cacheKey, out Personagem? result))
         {
             result = await tavernaDbContext.Personagens
+
             .Include(x => x.Continente)
             .Include(x => x.Regiao)
             .Include(x => x.Povos)
             .Include(x => x.Contos)
             .Include(x => x.Mundo)
-            .AsNoTracking()
+            .Where(x => x.Id == id)
             .Skip((page - 1) * pageSize)
             .Take(pageSize)
-            .FirstOrDefaultAsync(x => x.Id == id);
+            .FirstOrDefaultAsync();
 
             if (result != null)
             {
@@ -110,14 +129,14 @@ public class PersonagemRepository : IPersonagemRepository
 
     public async Task<IEnumerable<Personagem>>? GetPersonagensByRegiaoAsync(object selectedRegiaoIds, int page, int pageSize)
     {
-        string cacheKey = $"PersonagemRepository.GetPersonagensByRegiaoAsync_{page}_{pageSize}";
+        string cacheKey = $"PersonagemRepository.GetPersonagensByRegiaoAsync_{string.Join("-", selectedRegiaoIds)}_{page}_{pageSize}";
         if (!cache.TryGetValue(cacheKey, out IEnumerable<Personagem>? result))
         {
             if (selectedRegiaoIds is Guid)
             {
                 result = await tavernaDbContext.Personagens
+
                   .Where(r => r.Regiao.Id == (Guid)selectedRegiaoIds)
-                  .AsNoTracking()
                   .Skip((page - 1) * pageSize)
                   .Take(pageSize)
                   .ToListAsync();
@@ -125,9 +144,9 @@ public class PersonagemRepository : IPersonagemRepository
             else if (selectedRegiaoIds is List<Guid> selectedRegiaoIdsList)
             {
                 result = await tavernaDbContext.Personagens
+
                   .Where(r => selectedRegiaoIdsList
                   .Contains(r.Regiao.Id))
-                  .AsNoTracking()
                   .Skip((page - 1) * pageSize)
                   .Take(pageSize)
                   .ToListAsync();
@@ -151,14 +170,16 @@ public class PersonagemRepository : IPersonagemRepository
         if (!cache.TryGetValue(cacheKey, out Personagem? result))
         {
             result = await tavernaDbContext.Personagens
+
             .Include(x => x.Continente)
             .Include(x => x.Regiao)
             .Include(x => x.Povos)
             .Include(x => x.Contos)
-            .AsNoTracking()
+            .Where(x => x.UrlHandle == urlHandle)
             .Skip((page - 1) * pageSize)
             .Take(pageSize)
-            .Include(x => x.Mundo).FirstOrDefaultAsync(x => x.UrlHandle == urlHandle);
+            .Include(x => x.Mundo)
+            .FirstOrDefaultAsync();
 
             if (result != null)
             {
@@ -170,20 +191,47 @@ public class PersonagemRepository : IPersonagemRepository
 
     public async Task<Personagem?> UpdateAsync(Personagem personagem, int page, int pageSize)
     {
-        string cacheKey = $"PersonagemRepository.GetByUrlHandleAsync_{personagem.UrlHandle}_{page}_{pageSize}";
-
         var existingPersonagem = await tavernaDbContext.Personagens
             .Include(x => x.Continente)
             .Include(x => x.Regiao)
             .Include(x => x.Povos)
             .Include(x => x.Contos)
             .Include(x => x.Mundo)
+            .Where(x => x.Id == personagem.Id)
             .Skip((page - 1) * pageSize)
             .Take(pageSize)
-            .FirstOrDefaultAsync(x => x.Id == personagem.Id);
+            .FirstOrDefaultAsync();
 
         if (existingPersonagem != null)
         {
+            // Detach related entities
+            if (existingPersonagem.Continente != null)
+            {
+                tavernaDbContext.Entry(existingPersonagem.Continente).State = EntityState.Detached;
+            }
+            if (existingPersonagem.Regiao != null)
+            {
+                tavernaDbContext.Entry(existingPersonagem.Regiao).State = EntityState.Detached;
+            }
+            if (existingPersonagem.Povos != null)
+            {
+                foreach (var p in existingPersonagem.Povos)
+                {
+                    tavernaDbContext.Entry(p).State = EntityState.Detached;
+                }
+            }
+            if (existingPersonagem.Contos != null)
+            {
+                foreach (var c in existingPersonagem.Contos)
+                {
+                    tavernaDbContext.Entry(c).State = EntityState.Detached;
+                }
+            }
+            if (existingPersonagem.Mundo != null)
+            {
+                tavernaDbContext.Entry(existingPersonagem.Mundo).State = EntityState.Detached;
+            }
+
             existingPersonagem.Nome = personagem.Nome;
             existingPersonagem.Titulo = personagem.Titulo;
             existingPersonagem.Classe = personagem.Classe;
@@ -200,9 +248,15 @@ public class PersonagemRepository : IPersonagemRepository
             existingPersonagem.Povos = personagem.Povos;
             existingPersonagem.Contos = personagem.Contos;
             existingPersonagem.Mundo = personagem.Regiao?.Mundo;
+
+            if (existingPersonagem.Continente != null)
+            {
+                tavernaDbContext.Entry(existingPersonagem.Continente).State = EntityState.Detached;
+            }
+
             await tavernaDbContext.SaveChangesAsync();
 
-            cache.Remove(cacheKey);
+            InvalidateCache(personagem.Id);
             return existingPersonagem;
         }
         return null;

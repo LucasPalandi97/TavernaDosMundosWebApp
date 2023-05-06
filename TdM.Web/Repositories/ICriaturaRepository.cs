@@ -6,7 +6,7 @@ public interface ICriaturaRepository
 {
     Task<IEnumerable<Criatura>> GetAllAsync(int page, int pageSize);
     Task<IEnumerable<Criatura>> GetAllByMundoAsync(Guid mundoId, int page, int pageSize);
-    Task<IEnumerable<Criatura>> GetAllByRegiao(object selectedRegiaoIds, int page, int pageSize);
+    Task<IEnumerable<Criatura>> GetAllByRegiaoAsync(object selectedRegiaoIds, int page, int pageSize);
     Task<Criatura?> GetAsync(Guid id, int page, int pageSize);
     Task<Criatura?> GetByUrlHandleAsync(string urlHandle, int page, int pageSize);
     Task<Criatura> AddAsync(Criatura criatura);

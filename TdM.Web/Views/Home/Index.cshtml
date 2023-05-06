@@ -11,27 +11,27 @@
 <body>
     <partial name="_Navbar2" />
   <section>
-    <div class="containter-fluid coll-xxl-8" style="min-height:100vh;">
-        <div class="d-block d-lg-flex col-12 justify-content-center h-auto ">
-            @if (Model != null && Model.Any())
-            {
-                    foreach (var mundo in Model.Where(m => m.Visible == true))
+        <div class="container-fluid" style="min-height:100vh;">
+            <div class="card-grid p-5">
+                @if (Model != null && Model.Any())
                 {
-                    <div class="card grow mt-1 bg-dark text-white col border-0 h-100" style="border-radius:1rem; margin-left:0.135rem; margin-right:0.135rem;">
-                        <a class="text-white" asp-area="" asp-controller="Mundos" asp-action="Index" asp-route-urlHandle="@mundo.UrlHandle">
-                            <img src="@mundo.ImgBox" class="card-img" style="object-fit:cover; height: calc(100vh - 5rem);" alt="...">
-                            <div class="py-5 card-img-overlay">
-                                <h2 class="mb-2">@mundo.Nome </h2>
-                                <p class="mb-2">By: @mundo.Autor.GetDisplayName()</p>
-                                <p class="mb-2">@mundo.PublishedDate</p>
-                                <p class="mb-2">@mundo.CurtaDescricao</p>
-                            </div>
-                        </a>
-                    </div>
+                    foreach (var mundo in Model.Where(m => m.Visible == true))
+                    {
+                        <div class="card grow mt-1 bg-dark text-white border-0" style="border-radius:1rem;">
+                            <a class="text-white" asp-area="" asp-controller="Mundos" asp-action="Index" asp-route-urlHandle="@mundo.UrlHandle">
+                                <img src="@mundo.ImgBox" class="card-img" style="object-fit:cover; height: calc(75vh - 5rem);" alt="...">
+                                <div class="py-5 card-img-overlay">
+                                    <h2 class="mb-2">@mundo.Nome</h2>
+                                    <p class="mb-2">By: @mundo.Autor.GetDisplayName()</p>
+                                    <p class="mb-2">@mundo.PublishedDate</p>
+                                    <p class="mb-2">@mundo.CurtaDescricao</p>
+                                </div>
+                            </a>
+                        </div>
+                    }
                 }
-            }
+            </div>
         </div>
-    </div>
     </section>
 </body>
 

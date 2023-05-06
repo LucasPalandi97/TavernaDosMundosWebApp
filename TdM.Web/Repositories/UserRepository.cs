@@ -2,7 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 using TdM.Database.Data;
-using TdM.Database.Models.Domain;
 
 namespace TdM.Web.Repositories;
 
@@ -16,20 +15,20 @@ public class UserRepository : IUserRepository
         this.authDbContext = authDbContext;
         this.cache = cache;
     }
-
+ 
     public async Task<IEnumerable<IdentityUser>> GetAll(int page, int pageSize)
     {
         string cacheKey = $"UserRepository.GetAllAsync_{page}_{pageSize}";
         if (!cache.TryGetValue(cacheKey, out IEnumerable<IdentityUser>? result))
         {
             var users = await authDbContext.Users
-                .AsNoTracking()
+  
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
                 .ToListAsync();
 
             var superAdminUser = await authDbContext.Users
-                .AsNoTracking()
+ 
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
                 .FirstOrDefaultAsync(x => x.Email == "superadmin@taverna.com");

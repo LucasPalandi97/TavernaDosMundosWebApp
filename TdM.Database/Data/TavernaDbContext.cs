@@ -1,9 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 using TdM.Database.Models.Domain;
+
 namespace TdM.Database.Data;
 
 public class TavernaDbContext : DbContext
-{
+{    
     public DbSet<Mundo> Mundos { get; set; }
     public DbSet<Continente> Continentes { get; set; }
     public DbSet<Regiao> Regioes { get; set; }
@@ -12,8 +14,12 @@ public class TavernaDbContext : DbContext
     public DbSet<Criatura> Criaturas { get; set; }
     public DbSet<Conto> Contos { get; set; }
 
-    public TavernaDbContext(DbContextOptions<TavernaDbContext> options) : base(options) { }
+    private readonly IMemoryCache _cache;
 
+    public TavernaDbContext(DbContextOptions<TavernaDbContext> options, IMemoryCache cache) : base(options)
+    {
+        _cache = cache;
+    }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Mundo>()
@@ -62,5 +68,17 @@ public class TavernaDbContext : DbContext
                     .HasMany(pe => pe.Personagens)
                     .WithOne(r => r.Regiao)
                     .OnDelete(DeleteBehavior.SetNull);
+
+     
     }
+
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        base.OnConfiguring(optionsBuilder);
+
+        optionsBuilder.UseMemoryCache(_cache);
+
+        optionsBuilder.EnableSensitiveDataLogging();
+    }
+
 }

@@ -17,11 +17,22 @@ public class CriaturaRepository : ICriaturaRepository
         this.tavernaDbContext = tavernaDbContext;
         this.cache = cache;
     }
-
+    private void InvalidateCache(Guid id)
+    {
+        string cacheKey = $"CriaturaRepository.GetAsync_{id}_1_10";
+        cache.Remove(cacheKey);
+        cache.Remove("CriaturaRepository.GetAllAsync_1_10");
+        cache.Remove("CriaturaRepository.GetAllByMundoAsync_mundoId_1_10");
+        cache.Remove("CriaturaRepository.GetAllByRegiaoAsync_selectedRegiaoIds_1_10");
+        cache.Remove("CriaturaRepository.GetAsync_id_1_10");
+        cache.Remove("CriaturaRepository.GetByUrlHandleAsync_urlHandle_1_10");
+    }
     public async Task<Criatura> AddAsync(Criatura criatura)
     {
         await tavernaDbContext.AddAsync(criatura);
         await tavernaDbContext.SaveChangesAsync();
+
+        InvalidateCache(criatura.Id);
         return criatura;
     }
 
@@ -33,6 +44,8 @@ public class CriaturaRepository : ICriaturaRepository
         {
             tavernaDbContext.Criaturas.Remove(existingCriatura);
             await tavernaDbContext.SaveChangesAsync();
+
+            InvalidateCache(existingCriatura.Id);
             return existingCriatura;
         }
         return null;
@@ -44,12 +57,12 @@ public class CriaturaRepository : ICriaturaRepository
         if (!cache.TryGetValue(cacheKey, out IEnumerable<Criatura>? result))
         {
             result = await tavernaDbContext.Criaturas
+           
            .Include(x => x.Continentes)
            .Include(x => x.Regioes)
            .Include(x => x.Povos)
            .Include(x => x.Contos)
            .Include(x => x.Mundo)
-           .AsNoTracking()
            .Skip((page - 1) * pageSize)
            .Take(pageSize)
            .ToListAsync();
@@ -64,17 +77,17 @@ public class CriaturaRepository : ICriaturaRepository
 
     public async Task<IEnumerable<Criatura>> GetAllByMundoAsync(Guid mundoId, int page, int pageSize)
     {
-        string cacheKey = $"CriaturaRepository.GetAllByMundoAsync_{page}_{pageSize}";
+        string cacheKey = $"CriaturaRepository.GetAllByMundoAsync_{mundoId}_{page}_{pageSize}";
         if (!cache.TryGetValue(cacheKey, out IEnumerable<Criatura>? result))
         {
             result = await tavernaDbContext.Criaturas
+           
            .Include(x => x.Continentes)
            .Include(x => x.Regioes)
            .Include(x => x.Povos)
            .Include(x => x.Contos)
            .Include(x => x.Mundo)
-           .Where(x => x.Mundo.Id == mundoId)
-           .AsNoTracking()
+           .Where(x => x.Mundo.Id == mundoId)          
            .Skip((page - 1) * pageSize)
            .Take(pageSize)
            .ToListAsync();
@@ -93,15 +106,16 @@ public class CriaturaRepository : ICriaturaRepository
         if (!cache.TryGetValue(cacheKey, out Criatura? result))
         {
             result = await tavernaDbContext.Criaturas
+           
            .Include(x => x.Continentes)
            .Include(x => x.Regioes)
            .Include(x => x.Povos)
            .Include(x => x.Contos)
-           .Include(x => x.Mundo)
-           .AsNoTracking()
+           .Include(x => x.Mundo) 
+           .Where(x => x.Id == id)
            .Skip((page - 1) * pageSize)
            .Take(pageSize)
-           .FirstOrDefaultAsync(x => x.Id == id);
+           .FirstOrDefaultAsync();
 
             if (result != null)
             {
@@ -111,17 +125,17 @@ public class CriaturaRepository : ICriaturaRepository
         return result;
     }
 
-    public async Task<IEnumerable<Criatura>> GetAllByRegiao(object selectedRegiaoIds, int page, int pageSize)
+    public async Task<IEnumerable<Criatura>> GetAllByRegiaoAsync(object selectedRegiaoIds, int page, int pageSize)
     {
-        string cacheKey = $"CriaturaRepository.GetAllByRegiao_{page}_{pageSize}";
+        string cacheKey = $"CriaturaRepository.GetAllByRegiaoAsync_{string.Join("-", selectedRegiaoIds)}_{page}_{pageSize}";
         if (!cache.TryGetValue(cacheKey, out IEnumerable<Criatura>? result))
         {
             if (selectedRegiaoIds is Guid)
             {
                 result = await tavernaDbContext.Criaturas
+                
                 .Where(p => p.Regioes
                 .Any(pp => pp.Id == (Guid)selectedRegiaoIds))
-                .AsNoTracking()
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
                 .ToListAsync();
@@ -129,9 +143,9 @@ public class CriaturaRepository : ICriaturaRepository
             else if (selectedRegiaoIds is List<Guid> selectedRegiaoIdsList)
             {
                 result = await tavernaDbContext.Criaturas
+                
                 .Where(p => p.Regioes
                 .Any(pp => selectedRegiaoIdsList.Contains(pp.Id)))
-                .AsNoTracking()
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
                 .ToListAsync();
@@ -155,15 +169,16 @@ public class CriaturaRepository : ICriaturaRepository
         if (!cache.TryGetValue(cacheKey, out Criatura? result))
         {
             result = await tavernaDbContext.Criaturas
+           
            .Include(x => x.Continentes)
            .Include(x => x.Regioes)
            .Include(x => x.Povos)
            .Include(x => x.Contos)
            .Include(x => x.Mundo)
-           .AsNoTracking()
+           .Where(x => x.UrlHandle == urlHandle)
            .Skip((page - 1) * pageSize)
            .Take(pageSize)
-           .FirstOrDefaultAsync(x => x.UrlHandle == urlHandle);
+           .FirstOrDefaultAsync();
 
             if (result != null)
             {
@@ -174,16 +189,17 @@ public class CriaturaRepository : ICriaturaRepository
     }
 
     public async Task<Criatura?> UpdateAsync(Criatura criatura, int page, int pageSize)
-    {
-        string cacheKey = $"CriaturaRepository.GetByUrlHandleAsync_{criatura.UrlHandle}_{page}_{pageSize}";
-
+    {       
         var existingCriatura = await tavernaDbContext.Criaturas
            .Include(x => x.Continentes)
            .Include(x => x.Regioes)
            .Include(x => x.Povos)
            .Include(x => x.Contos)
            .Include(x => x.Mundo)
-           .FirstOrDefaultAsync(x => x.Id == criatura.Id);
+           .Where(x => x.Id == criatura.Id)
+           .Skip((page - 1) * pageSize)
+           .Take(pageSize)
+           .FirstOrDefaultAsync();
 
         if (existingCriatura != null)
         {
@@ -203,7 +219,9 @@ public class CriaturaRepository : ICriaturaRepository
             existingCriatura.Contos = criatura.Contos;
             await tavernaDbContext.SaveChangesAsync();
 
-            cache.Remove(cacheKey);
+            InvalidateCache(criatura.Id);
+            InvalidateCache(existingCriatura.Id);
+
             return existingCriatura;
 
         }

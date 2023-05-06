@@ -3,13 +3,8 @@
 @model TdM.Web.Models.ViewModels.NavbarViewModel
 @{
 }
-<nav class="navbar bg-body navbar-expand-lg py-1">
+<nav class="navbar bg-body navbar-expand-lg py-1 pt-3">
     <div class="container-fluid px-2 px-xl-5 align-content-center text-center">
-        <div class="navbar-button bg-body px-2 pt-2 border border-1 border-light-subtle">
-            <div>
-                <span class="text-uppercase">@Model.Mundo?.Nome</span>
-            </div>
-        </div>
         <a class="navbar-brand mx-0 me-3" asp-area="" asp-controller="Home" asp-action="Index">Taverna dos Mundos</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDarkDropdown2" aria-controls="navbarNavDarkDropdown2" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>

@@ -15,10 +15,21 @@ public class MundoRepository : IMundoRepository
         this.tavernaDbContext = tavernaDbContext;
         this.cache = cache;
     }
+    private void InvalidateCache(Guid id)
+    {
+        string cacheKey = $"MundoRepository.GetAsync_{id}_1_10";
+        cache.Remove(cacheKey);
+        cache.Remove("MundoRepository.GetAllAsync_1_10");
+        cache.Remove("MundoRepository.GetAsync_id_1_10");
+        cache.Remove("MundoRepository.GetByUrlHandleAsync_urlHandle_1_10");
+    }
+
     public async Task<Mundo> AddAsync(Mundo mundo)
     {
         await tavernaDbContext.Mundos.AddAsync(mundo);
         await tavernaDbContext.SaveChangesAsync();
+
+        InvalidateCache(mundo.Id);
         return mundo;
     }
 
@@ -30,6 +41,8 @@ public class MundoRepository : IMundoRepository
         {
             tavernaDbContext.Mundos.Remove(existingMundo);
             await tavernaDbContext.SaveChangesAsync();
+
+            InvalidateCache(existingMundo.Id);
             return existingMundo;
         }
         return null;
@@ -41,13 +54,13 @@ public class MundoRepository : IMundoRepository
         if (!cache.TryGetValue(cacheKey, out IEnumerable<Mundo>? result))
         {
             result = await tavernaDbContext.Mundos
+            
             .Include(x => x.Personagens)
             .Include(x => x.Continentes)
             .Include(x => x.Regioes)
             .Include(x => x.Criaturas)
             .Include(x => x.Povos)
             .Include(x => x.Contos)
-            .AsNoTracking()
             .Skip((page - 1) * pageSize)
             .Take(pageSize)
             .ToListAsync();
@@ -66,16 +79,17 @@ public class MundoRepository : IMundoRepository
         if (!cache.TryGetValue(cacheKey, out Mundo? result))
         {
             result = await tavernaDbContext.Mundos
+            
             .Include(x => x.Personagens)
             .Include(x => x.Continentes)
             .Include(x => x.Regioes)
             .Include(x => x.Criaturas)
             .Include(x => x.Povos)
             .Include(x => x.Contos)
-            .AsNoTracking()
+            .Where(x => x.Id == id)
             .Skip((page - 1) * pageSize)
             .Take(pageSize)
-            .FirstOrDefaultAsync(x => x.Id == id);
+            .FirstOrDefaultAsync();
 
             if (result != null)
             {
@@ -91,16 +105,17 @@ public class MundoRepository : IMundoRepository
         if (!cache.TryGetValue(cacheKey, out Mundo? result))
         {
             result = await tavernaDbContext.Mundos
+            
             .Include(x => x.Personagens)
             .Include(x => x.Continentes)
             .Include(x => x.Regioes)
             .Include(x => x.Criaturas)
             .Include(x => x.Povos)
             .Include(x => x.Contos)
-            .AsNoTracking()
+            .Where(x => x.UrlHandle == urlHandle)
             .Skip((page - 1) * pageSize)
             .Take(pageSize)
-            .FirstOrDefaultAsync(x => x.UrlHandle == urlHandle);
+            .FirstOrDefaultAsync();
 
             if (result != null)
             {
@@ -112,8 +127,6 @@ public class MundoRepository : IMundoRepository
 
     public async Task<Mundo?> UpdateAsync(Mundo mundo, int page, int pageSize)
     {
-        string cacheKey = $"MundoRepository.GetByUrlHandleAsync_{mundo.UrlHandle}_{page}_{pageSize}";
-
         var existingMundo = await tavernaDbContext.Mundos
             .Include(x => x.Personagens)
             .Include(x => x.Continentes)
@@ -121,7 +134,10 @@ public class MundoRepository : IMundoRepository
             .Include(x => x.Criaturas)
             .Include(x => x.Povos)
             .Include(x => x.Contos)
-            .FirstOrDefaultAsync(x => x.Id == mundo.Id);
+            .Where(x => x.Id == mundo.Id)
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .FirstOrDefaultAsync();
 
         if (existingMundo != null)
         {
@@ -141,7 +157,8 @@ public class MundoRepository : IMundoRepository
             existingMundo.Contos = mundo.Contos;
             await tavernaDbContext.SaveChangesAsync();
 
-            cache.Remove(cacheKey);
+            InvalidateCache(mundo.Id);
+            InvalidateCache(existingMundo.Id);
             return existingMundo;
         }
         return null;

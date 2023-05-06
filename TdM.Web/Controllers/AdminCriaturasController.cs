@@ -177,11 +177,11 @@ public class AdminCriaturasController : Controller
         IEnumerable<Criatura> criaturas;
         if (selectedRegiaoIds == null)
         {
-            criaturas = await criaturaRepository.GetAllByRegiao(id, 1, 10);
+            criaturas = await criaturaRepository.GetAllByRegiaoAsync(id, 1, 10);
         }
         else
         {
-            criaturas = await criaturaRepository.GetAllByRegiao(selectedRegiaoIds, 1, 10);
+            criaturas = await criaturaRepository.GetAllByRegiaoAsync(selectedRegiaoIds, 1, 10);
         }
         var selectListItems = criaturas.Select(x => new SelectListItem
         {
