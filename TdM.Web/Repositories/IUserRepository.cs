@@ -4,5 +4,5 @@ namespace TdM.Web.Repositories;
 
 public interface IUserRepository
 {
-    Task<IEnumerable<IdentityUser>> GetAll(int page, int pageSize);
+    Task<IEnumerable<IdentityUser>> GetAllAsync(int page, int pageSize);
 }

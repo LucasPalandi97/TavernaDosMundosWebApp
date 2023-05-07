@@ -113,13 +113,13 @@ public class AdminRegioesController : Controller
         if (selectedContinenteIds == null)
         {
 #pragma warning disable CS8602 // Dereference of a possibly null reference.
-            regioes = await regiaoRepository.GetRegioesByContinenteAsync(id, 1, 10);
+            regioes = await regiaoRepository.GetAllByContinenteAsync(id, 1, 10);
 #pragma warning restore CS8602 // Dereference of a possibly null reference.
         }
         else
         {
 #pragma warning disable CS8602 // Dereference of a possibly null reference.
-            regioes = await regiaoRepository.GetRegioesByContinenteAsync(selectedContinenteIds, 1, 10);
+            regioes = await regiaoRepository.GetAllByContinenteAsync(selectedContinenteIds, 1, 10);
 #pragma warning restore CS8602 // Dereference of a possibly null reference.
         }
         var selectListItems = regioes.Select(x => new SelectListItem

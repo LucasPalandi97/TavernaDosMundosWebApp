@@ -20,22 +20,18 @@ public class AdminUsersController : Controller
 
     public async Task<IActionResult> List()
     {
-        var users = await userRepository.GetAll(1, 10);
+        var users = await userRepository.GetAllAsync(1, 10);
 
         var usersViewModel = new UserViewModel();
         usersViewModel.Users = new List<User>();
         foreach (var user in users)
         {
-#pragma warning disable CS8601 // Possible null reference assignment.
-#pragma warning disable CS8601 // Possible null reference assignment.
             usersViewModel.Users.Add(new Models.ViewModels.User
             {
                 Id = Guid.Parse(user.Id),
                 Username = user.UserName,
                 EmailAdress = user.Email
             });
-#pragma warning restore CS8601 // Possible null reference assignment.
-#pragma warning restore CS8601 // Possible null reference assignment.
         }
 
         return View(usersViewModel);

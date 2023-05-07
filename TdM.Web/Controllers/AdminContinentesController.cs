@@ -102,7 +102,6 @@ public class AdminContinentesController : Controller
         //Maps Regioes from Selected continent
         var selectedRegioes = new List<Regiao>();
 
-#pragma warning disable CS8602 // Dereference of a possibly null reference.
         foreach (var selectedRegiaoId in addContinenteRequest.SelectedRegioes)
         {
             if (!string.IsNullOrEmpty(selectedRegiaoId))
@@ -116,7 +115,6 @@ public class AdminContinentesController : Controller
                 }
             }
         }
-#pragma warning restore CS8602 // Dereference of a possibly null reference.
         //Maping Regioes back to domain modal
         continente.Regioes = selectedRegioes;
 
@@ -226,7 +224,6 @@ public class AdminContinentesController : Controller
         //Maps Regioes from Selected continent
         var selectedRegioes = new List<Regiao>();
 
-#pragma warning disable CS8602 // Dereference of a possibly null reference.
         foreach (var selectedRegiaoId in editContinenteRequest.SelectedRegioes)
         {
             if (!string.IsNullOrEmpty(selectedRegiaoId))
@@ -240,7 +237,6 @@ public class AdminContinentesController : Controller
                 }
             }
         }
-#pragma warning restore CS8602 // Dereference of a possibly null reference.
         //Maping Regioes back to domain modal
         continente.Regioes = selectedRegioes;
 
@@ -271,6 +267,5 @@ public class AdminContinentesController : Controller
         //Show an error notification
         return RedirectToAction("Edit", new { Id = editContinenteRequest.Id });
     }
-
 
 }

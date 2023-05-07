@@ -109,7 +109,6 @@ public class AdminCriaturasController : Controller
 
         //Maps Continents from Selected continent
         var selectedContinentes = new List<Continente>();
-#pragma warning disable CS8602 // Dereference of a possibly null reference.
         foreach (var selectedContinenteId in addCriaturaRequest.SelectedContinentes)
         {
             if (!string.IsNullOrEmpty(selectedContinenteId))
@@ -123,14 +122,12 @@ public class AdminCriaturasController : Controller
                 }
             }
         }
-#pragma warning restore CS8602 // Dereference of a possibly null reference.
         //Maping Continentes back to domain modal
         criatura.Continentes = selectedContinentes;
 
         //Maps Regioes from Selected continent
         var selectedRegioes = new List<Regiao>();
 
-#pragma warning disable CS8602 // Dereference of a possibly null reference.
         foreach (var selectedRegiaoId in addCriaturaRequest.SelectedRegioes)
         {
             if (!string.IsNullOrEmpty(selectedRegiaoId))
@@ -143,14 +140,12 @@ public class AdminCriaturasController : Controller
                 }
             }
         }
-#pragma warning restore CS8602 // Dereference of a possibly null reference.
         //Maping Regioes back to domain modal
         criatura.Regioes = selectedRegioes;
 
         //Maps Povos from Selected Regiao
         var selectedPovos = new List<Povo>();
 
-#pragma warning disable CS8602 // Dereference of a possibly null reference.
         foreach (var selectedPovoId in addCriaturaRequest.SelectedPovos)
         {
             if (!string.IsNullOrEmpty(selectedPovoId))
@@ -163,16 +158,13 @@ public class AdminCriaturasController : Controller
                 }
             }
         }
-#pragma warning restore CS8602 // Dereference of a possibly null reference.
         //Maping Povos back to domain modal
         criatura.Povos = selectedPovos;
 
         await criaturaRepository.AddAsync(criatura);
         return RedirectToAction("List");
     }
-#pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
     public async Task<IActionResult> ListCriaturasByRegiao(Guid id, List<Guid> selectedRegiaoIds = null)
-#pragma warning restore CS8625 // Cannot convert null literal to non-nullable reference type.
     {
         IEnumerable<Criatura> criaturas;
         if (selectedRegiaoIds == null)
@@ -321,7 +313,6 @@ public class AdminCriaturasController : Controller
 
         //Maps Continents from Selected continent
         var selectedContinentes = new List<Continente>();
-#pragma warning disable CS8602 // Dereference of a possibly null reference.
         foreach (var selectedContinenteId in editCriaturaRequest.SelectedContinentes)
         {
             if (!string.IsNullOrEmpty(selectedContinenteId))
@@ -335,13 +326,11 @@ public class AdminCriaturasController : Controller
                 }
             }
         }
-#pragma warning restore CS8602 // Dereference of a possibly null reference.
         //Maping Continentes back to domain modal
         criatura.Continentes = selectedContinentes;
 
         //Maps Regioes from Selected continent
         var selectedRegioes = new List<Regiao>();
-#pragma warning disable CS8602 // Dereference of a possibly null reference.
         foreach (var selectedRegiaoId in editCriaturaRequest.SelectedRegioes)
         {
             if (!string.IsNullOrEmpty(selectedRegiaoId))
@@ -355,13 +344,11 @@ public class AdminCriaturasController : Controller
                 }
             }
         }
-#pragma warning restore CS8602 // Dereference of a possibly null reference.
         //Maping Regioes back to domain modal
         criatura.Regioes = selectedRegioes;
 
         //Maps Povos from Selected Regiao
         var selectedPovos = new List<Povo>();
-#pragma warning disable CS8602 // Dereference of a possibly null reference.
         foreach (var selectedPovoId in editCriaturaRequest.SelectedPovos)
         {
             if (!string.IsNullOrEmpty(selectedPovoId))
@@ -374,7 +361,6 @@ public class AdminCriaturasController : Controller
                 }
             }
         }
-#pragma warning restore CS8602 // Dereference of a possibly null reference.
         //Maping Povos back to domain modal
         criatura.Povos = selectedPovos;
 

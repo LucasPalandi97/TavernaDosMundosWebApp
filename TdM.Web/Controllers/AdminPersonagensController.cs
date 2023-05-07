@@ -173,11 +173,11 @@ public class AdminPersonagensController : Controller
         IEnumerable<Personagem> personagens;
         if (selectedRegiaoIds == null)
         {
-            personagens = await personagemRepository.GetPersonagensByRegiaoAsync(id, 1, 10);
+            personagens = await personagemRepository.GetAllByRegiaoAsync(id, 1, 10);
         }
         else
         {
-            personagens = await personagemRepository.GetPersonagensByRegiaoAsync(selectedRegiaoIds, 1, 10);
+            personagens = await personagemRepository.GetAllByRegiaoAsync(selectedRegiaoIds, 1, 10);
         }
         var selectListItems = personagens.Select(x => new SelectListItem
         {
@@ -371,7 +371,6 @@ public class AdminPersonagensController : Controller
 
         //Maps Povos from Selected Regiao
         var selectedPovos = new List<Povo>();
-#pragma warning disable CS8602 // Dereference of a possibly null reference.
         foreach (var selectedPovoId in editPersonagemRequest.SelectedPovos)
         {
             if (!string.IsNullOrEmpty(selectedPovoId))
@@ -384,13 +383,11 @@ public class AdminPersonagensController : Controller
                 }
             }
         }
-#pragma warning restore CS8602 // Dereference of a possibly null reference.
         //Maping Povos back to domain modal
         personagem.Povos = selectedPovos;
 
         //Maps Conto from Selected Mundo
         var selectedContos = new List<Conto>();
-#pragma warning disable CS8602 // Dereference of a possibly null reference.
         foreach (var selectedContoId in editPersonagemRequest.SelectedContos)
         {
             if (!string.IsNullOrEmpty(selectedContoId))
@@ -403,7 +400,6 @@ public class AdminPersonagensController : Controller
                 }
             }
         }
-#pragma warning restore CS8602 // Dereference of a possibly null reference.
         //Maping Povos back to domain modal
         personagem.Contos = selectedContos;
 

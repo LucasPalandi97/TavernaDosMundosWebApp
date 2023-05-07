@@ -13,14 +13,11 @@ namespace TdM.Database.Migrations
 {
     [DbContext(typeof(TavernaDbContext))]
     [Migration("20230406170113_inicial")]
-#pragma warning disable CS8981 // The type name only contains lower-cased ascii characters. Such names may become reserved for the language.
     partial class inicial
-#pragma warning restore CS8981 // The type name only contains lower-cased ascii characters. Such names may become reserved for the language.
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
-#pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "7.0.4")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
@@ -742,7 +739,6 @@ namespace TdM.Database.Migrations
                 {
                     b.Navigation("Personagens");
                 });
-#pragma warning restore 612, 618
         }
     }
 }
