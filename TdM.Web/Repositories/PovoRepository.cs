@@ -96,7 +96,6 @@ public class PovoRepository : IPovoRepository
         if (selectedRegiaoIds is Guid)
         {
             return await tavernaDbContext.Povos
-
             .Where(p => p.Regioes
             .Any(pp => pp.Id == (Guid)selectedRegiaoIds))
             .Skip((page - 1) * pageSize)
@@ -106,7 +105,6 @@ public class PovoRepository : IPovoRepository
         else if (selectedRegiaoIds is List<Guid> selectedRegiaoIdsList)
         {
             return await tavernaDbContext.Povos
-
             .Where(p => p.Regioes
             .Any(pp => selectedRegiaoIdsList.Contains(pp.Id)))
             .Skip((page - 1) * pageSize)

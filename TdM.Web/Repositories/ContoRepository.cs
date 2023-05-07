@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Caching.Memory;
 using TdM.Database.Data;
 using TdM.Database.Models.Domain;
 

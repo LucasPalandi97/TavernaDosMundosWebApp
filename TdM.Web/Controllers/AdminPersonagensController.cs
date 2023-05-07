@@ -5,7 +5,6 @@ using TdM.Database.Models.Domain;
 using TdM.Web.Models.ViewModels;
 using TdM.Web.Repositories;
 
-
 namespace TdM.Web.Controllers;
 
 [Authorize(Roles = "Admin")]
@@ -147,7 +146,7 @@ public class AdminPersonagensController : Controller
         }
 
         //Maps Povos from Selected Povo
-        var selectedPovos = new List<Povo>();
+        var selectedPovosId = new List<Povo>();
         foreach (var selectedPovoId in addPersonagemRequest.SelectedPovos)
         {
             if (!string.IsNullOrEmpty(selectedPovoId))
@@ -156,12 +155,29 @@ public class AdminPersonagensController : Controller
                 var existingPovo = await povoRepository.GetAsync(selectedPovoIdAsGuid, 1, 10);
                 if (existingPovo != null)
                 {
-                    selectedPovos.Add(existingPovo);
+                    selectedPovosId.Add(existingPovo);
                 }
             }
         }
         //Maping Povos back to domain modal
-        personagem.Povos = selectedPovos;
+        personagem.Povos = selectedPovosId;
+
+        //Maps Contos from Selected Conto
+        var selectedContosId = new List<Conto>();
+        foreach (var selectedContoId in addPersonagemRequest.SelectedContos)
+        {
+            if (!string.IsNullOrEmpty(selectedContoId))
+            {
+                var selectedContoIdAsGuid = Guid.Parse(selectedContoId);
+                var existingConto = await contoRepository.GetAsync(selectedContoIdAsGuid, 1, 10);
+                if (existingConto != null)
+                {
+                    selectedContosId.Add(existingConto);
+                }
+            }
+        }
+        //Maping Contos back to domain modal
+        personagem.Contos = selectedContosId;
 
         await personagemRepository.AddAsync(personagem);
 
@@ -386,7 +402,7 @@ public class AdminPersonagensController : Controller
         //Maping Povos back to domain modal
         personagem.Povos = selectedPovos;
 
-        //Maps Conto from Selected Mundo
+        //Maps Contos from Selected Mundo
         var selectedContos = new List<Conto>();
         foreach (var selectedContoId in editPersonagemRequest.SelectedContos)
         {
@@ -400,7 +416,7 @@ public class AdminPersonagensController : Controller
                 }
             }
         }
-        //Maping Povos back to domain modal
+        //Maping Contos back to domain modal
         personagem.Contos = selectedContos;
 
         var updatedPersonagem = await personagemRepository.UpdateAsync(personagem, 1, 10);

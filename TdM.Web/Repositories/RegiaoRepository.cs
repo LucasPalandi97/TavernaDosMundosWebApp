@@ -137,8 +137,8 @@ public class RegiaoRepository : IRegiaoRepository
             existingRegiao.PublishedDate = regiao.PublishedDate;
             existingRegiao.UrlHandle = regiao.UrlHandle;
             existingRegiao.Visible = regiao.Visible;
-            existingRegiao.Continente = regiao.Continente;
-            existingRegiao.Mundo = regiao.Continente?.Mundo;
+            existingRegiao.Mundo = regiao.Mundo;
+            existingRegiao.Continente = regiao.Continente;       
             await tavernaDbContext.SaveChangesAsync();
 
             return existingRegiao;

@@ -144,11 +144,12 @@ public class PersonagemRepository : IPersonagemRepository
             existingPersonagem.PublishedDate = personagem.PublishedDate;
             existingPersonagem.UrlHandle = personagem.UrlHandle;
             existingPersonagem.Visible = personagem.Visible;
-            existingPersonagem.Continente = personagem.Regiao?.Continente;
+            existingPersonagem.Mundo = personagem.Mundo;
+            existingPersonagem.Continente = personagem.Continente;
             existingPersonagem.Regiao = personagem.Regiao;
             existingPersonagem.Povos = personagem.Povos;
             existingPersonagem.Contos = personagem.Contos;
-            existingPersonagem.Mundo = personagem.Regiao?.Mundo;
+           
             await tavernaDbContext.SaveChangesAsync();
 
             return existingPersonagem;
