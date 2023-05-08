@@ -113,7 +113,7 @@
             <div class="row justify-content-center mb-3">
                 <div class="col-12 col-md-4 mb-1">
                     <label class="form-label">World</label>
-                    <select id="SelectedMundo" class="form-select" asp-items="@Model.Mundos" asp-for="SelectedMundo" onchange="updateContinentes(), updatePersonagens(), updateCriaturas(), updatePovos(), updateContos()">
+                    <select id="SelectedMundo" class="form-select" asp-items="@Model.Mundos" asp-for="SelectedMundo" onchange="contoContinentes(), contoPersonagens(), contoCriaturas(), contoPovos(), contoContos()">
                         <option value="" class="text-danger">No World</option>
                     </select>
                 </div>
@@ -122,7 +122,7 @@
             <div class="row text-center row-cols-2 row-cols-md-3">
                 <div class="mb-3">
                     <label class="form-label">Continents</label>
-                    <select id="SelectedContinentes" class="form-control" style="min-height:12rem" asp-items="@Model.Continentes" asp-for="SelectedContinentes" onchange="updateRegioes()" multiple>
+                    <select id="SelectedContinentes" class="form-control" style="min-height:12rem" asp-items="@Model.Continentes" asp-for="SelectedContinentes" onchange="contoRegioes()" multiple>
                     </select>
                 </div>
                 <div class="mb-3">
@@ -182,4 +182,5 @@
 @section Scripts
     {
     <script type="text/javascript" src="~/js/Formulario.js"></script>
+    <script type="text/javascript" src="~/js/ContoSelects.js"></script>
 }

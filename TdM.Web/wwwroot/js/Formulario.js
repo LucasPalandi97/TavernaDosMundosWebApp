@@ -80,7 +80,6 @@ if (SymbolUploadElement != null) {
 }
 
 //SELECT MENUS
-
 //GET LIST<CONTINENTES> BY MUNDOID (ALLOW MULTIPLE ITEMS)
 function updateContinentes() {
     const selectedmundoId = $("#SelectedMundo").val();
@@ -96,15 +95,11 @@ function updateContinentes() {
                 $.each(data, function (index, value) {
                     $("#SelectedContinentes").append('<option value="' + value.value + '">' + value.text + '</option>');
                 });
-                // Clear selected region, character, creature, people and story if a different mundo is selected
+                // Clear selected region, character, creature if a different mundo is selected
                 if ($("#SelectedMundo").data("selected") != selectedmundoId) {
                     $("#SelectedRegioes").empty().append('<option value="" class="text-danger" selected>No Region</option>');
                     $("#SelectedPersonagens").empty().append('<option value="" class="text-danger" selected>No Character</option>'); // add empty default option
                     $("#SelectedCriaturas").empty().append('<option value="" class="text-danger" selected>No Creature</option>'); // add empty default option
-                    $("#SelectedPovos").empty().append('<option value="" class="text-danger" selected>No People</option>'); // add empty default option     
-                    $("#SelectedContos").empty().append('<option value="" class="text-danger" selected>No Story</option>'); // add empty default option
-
-
                 }
                 $("#SelectedMundo").data("selected", selectedmundoId);
             }
@@ -152,7 +147,7 @@ function updateRegioes() {
 //GET LIST<PERSONAGENS> BY LIST<REGIOES> IDs (ALLOW MULTIPLE ITEMS)
 function updatePersonagens() {
     const selectedRegiaoIds = $("#SelectedRegioes").val();
-    if (selectedRegiaoIds != null && selectedRegiaoIds.length > 0) {
+    if (selectedRegiaoIds != null && selectedRegiaoIds.length > 0 ) {
         $.ajax({
             url: "/AdminPersonagens/ListPersonagensByRegiao",
             type: "POST",
@@ -167,7 +162,7 @@ function updatePersonagens() {
             }
         });
     } else {
-        // Reset the character dropdown
+        // Clear character if no world is selected 
         $("#SelectedPersonagens").empty().append('<option value="" class="text-danger" selected>No Character</option>'); // add empty default option
     }
 }
@@ -210,12 +205,11 @@ function updatePovos() {
                 $.each(data, function (index, value) {
                     $("#SelectedPovos").append('<option value="' + value.value + '">' + value.text + '</option>');
                 });
-               
             }
         });
     } else {
-        // Reset the Povo dropdown
-        $("#SelectedPovos").empty().append('<option value="" class="text-danger" selected>No People</option>'); // add empty default option     
+        // Clear people if no world is selected        
+        $("#SelectedPovos").empty().append('<option value="" class="text-danger" selected>No People</option>'); // add empty default option
     }
 }
 
@@ -234,11 +228,32 @@ function updateContos() {
                 $.each(data, function (index, value) {
                     $("#SelectedContos").append('<option value="' + value.value + '">' + value.text + '</option>');
                 });
-
             }
         });
     } else {
-        // Reset the Conto dropdown
+        // Clear story if no world is selected        
         $("#SelectedContos").empty().append('<option value="" class="text-danger" selected>No Story</option>'); // add empty default option
     }
 }
+
+//Prevents SelectedMenus to select both null and an appended item
+function preventNullAndAppendedSelection(element) {
+    $(element).on("change", function () {
+        const selectedValues = $(this).val();
+        const hasNullValue = selectedValues && selectedValues.includes("");
+        const hasAppendedValue = $(`${element} option:selected[data-appended]`).length > 0;
+        if (hasNullValue && selectedValues.length > 1) {
+            $(this).val(selectedValues.filter(value => value !== ""));
+        } else if (hasAppendedValue && hasNullValue) {
+            $(this).val(selectedValues.filter(value => $(`#${element} option[value='${value}']`).data("appended")));
+        }
+    });
+}
+
+// Call the function for the SelectedContinentes element
+preventNullAndAppendedSelection("#SelectedContinentes");
+preventNullAndAppendedSelection("#SelectedRegioes");
+preventNullAndAppendedSelection("#SelectedPersonagens");
+preventNullAndAppendedSelection("#SelectedCriaturas");
+preventNullAndAppendedSelection("#SelectedPovos");
+preventNullAndAppendedSelection("#SelectedContos");

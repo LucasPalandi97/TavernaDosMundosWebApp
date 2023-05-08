@@ -27,7 +27,8 @@ public class AdminContinentesController : Controller
     {
         IEnumerable<Continente> continentes;
         continentes = await continenteRepository.GetAllByMundoAsync(id, 1, 10);
-        var selectListItems = continentes.Select(x => new SelectListItem
+        var orderedContinentes = continentes.OrderBy(x => x.Nome);
+        var selectListItems = orderedContinentes.Select(x => new SelectListItem
         {
             Text = x.Nome,
             Value = x.Id.ToString()

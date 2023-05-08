@@ -183,6 +183,19 @@ public class AdminPersonagensController : Controller
 
         return RedirectToAction("List");
     }
+    public async Task<IActionResult> ListPersonagensByMundo(Guid id)
+    {
+        IEnumerable<Personagem> personagens = await personagemRepository.GetAllByMundoAsync(id, 1, 10);
+        var sortedPersonagens = personagens.OrderBy(p => p.Nome);
+        var selectListItems = sortedPersonagens.Select(x => new SelectListItem
+        {
+            Text = x.Nome,
+            Value = x.Id.ToString()
+        });
+
+        return Json(selectListItems);
+    }
+
 
     public async Task<IActionResult> ListPersonagensByRegiao(Guid id, List<Guid> selectedRegiaoIds = null)
     {
@@ -195,7 +208,9 @@ public class AdminPersonagensController : Controller
         {
             personagens = await personagemRepository.GetAllByRegiaoAsync(selectedRegiaoIds, 1, 10);
         }
-        var selectListItems = personagens.Select(x => new SelectListItem
+
+        var orderedPersonagens = personagens.OrderBy(x => x.Nome);
+        var selectListItems = orderedPersonagens.Select(x => new SelectListItem
         {
             Text = x.Nome,
             Value = x.Id.ToString()
@@ -203,6 +218,7 @@ public class AdminPersonagensController : Controller
 
         return Json(selectListItems);
     }
+
 
     [HttpGet]
     public async Task<IActionResult> List()
@@ -264,9 +280,9 @@ public class AdminPersonagensController : Controller
                     Value = x.Id.ToString()
                 }),
                 SelectedPovos = personagem.Povos?.Select(x => x.Id.ToString()).ToArray(),
-                Contos = povosDomainModel.Select(x => new SelectListItem
+                Contos = contosDomainModel.Select(x => new SelectListItem
                 {
-                    Text = x.Nome,
+                    Text = x.Titulo,
                     Value = x.Id.ToString()
                 }),
                 SelectedContos = personagem.Contos?.Select(x => x.Id.ToString()).ToArray()
@@ -386,7 +402,7 @@ public class AdminPersonagensController : Controller
         }
 
         //Maps Povos from Selected Regiao
-        var selectedPovos = new List<Povo>();
+        var selectedPovosId = new List<Povo>();
         foreach (var selectedPovoId in editPersonagemRequest.SelectedPovos)
         {
             if (!string.IsNullOrEmpty(selectedPovoId))
@@ -395,15 +411,15 @@ public class AdminPersonagensController : Controller
                 var existingPovo = await povoRepository.GetAsync(selectedPovoIdAsGuid, 1, 10);
                 if (existingPovo != null)
                 {
-                    selectedPovos.Add(existingPovo);
+                    selectedPovosId.Add(existingPovo);
                 }
             }
         }
         //Maping Povos back to domain modal
-        personagem.Povos = selectedPovos;
+        personagem.Povos = selectedPovosId;
 
         //Maps Contos from Selected Mundo
-        var selectedContos = new List<Conto>();
+        var selectedContosId = new List<Conto>();
         foreach (var selectedContoId in editPersonagemRequest.SelectedContos)
         {
             if (!string.IsNullOrEmpty(selectedContoId))
@@ -412,12 +428,12 @@ public class AdminPersonagensController : Controller
                 var existingConto = await contoRepository.GetAsync(selectedContoIdAsGuid, 1, 10);
                 if (existingConto != null)
                 {
-                    selectedContos.Add(existingConto);
+                    selectedContosId.Add(existingConto);
                 }
             }
         }
         //Maping Contos back to domain modal
-        personagem.Contos = selectedContos;
+        personagem.Contos = selectedContosId;
 
         var updatedPersonagem = await personagemRepository.UpdateAsync(personagem, 1, 10);
 

@@ -102,7 +102,7 @@
             <div class="row justify-content-center mb-3">
                 <div class="col-12 col-md-4 mb-1">
                     <label class="form-label">World</label>
-                    <select id="SelectedMundo" class="form-select" asp-items="@Model.Mundos" asp-for="SelectedMundo" onchange="updateContinentes() ">
+                    <select id="SelectedMundo" class="form-select" asp-items="@Model.Mundos" asp-for="SelectedMundo" onchange="updateContinentes(), updatePovos(), updateContos()">
                         <option value="" class="text-danger">No World</option>
                     </select>
                 </div>
@@ -116,7 +116,7 @@
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Regions</label>
-                    <select id="SelectedRegioes" class="form-select" style="min-height:12rem" asp-items="@Model.Regioes" asp-for="SelectedRegioes" onchange="updatePovos()" multiple>
+                    <select id="SelectedRegioes" class="form-select" style="min-height:12rem" asp-items="@Model.Regioes" asp-for="SelectedRegioes" multiple>
                     </select>
                 </div>
                 <div class="mb-3">

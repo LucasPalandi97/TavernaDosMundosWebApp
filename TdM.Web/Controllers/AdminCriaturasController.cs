@@ -164,6 +164,20 @@ public class AdminCriaturasController : Controller
         await criaturaRepository.AddAsync(criatura);
         return RedirectToAction("List");
     }
+    public async Task<IActionResult> ListCriaturasByMundo(Guid id)
+    {
+        IEnumerable<Criatura> criaturas;
+        criaturas = await criaturaRepository.GetAllByMundoAsync(id, 1, 10);
+        var orderedCriaturas = criaturas.OrderBy(x => x.Nome);
+        var selectListItems = orderedCriaturas.Select(x => new SelectListItem
+        {
+            Text = x.Nome,
+            Value = x.Id.ToString()
+        });
+
+        return Json(selectListItems);
+    }
+
     public async Task<IActionResult> ListCriaturasByRegiao(Guid id, List<Guid> selectedRegiaoIds = null)
     {
         IEnumerable<Criatura> criaturas;

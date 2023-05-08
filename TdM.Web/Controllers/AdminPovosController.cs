@@ -34,7 +34,8 @@ public class AdminPovosController : Controller
     {
         IEnumerable<Povo> povos;
         povos = await povoRepository.GetAllByMundoAsync(id, 1, 10);
-        var selectListItems = povos.Select(x => new SelectListItem
+        var orderedPovos = povos.OrderBy(x => x.Nome);
+        var selectListItems = orderedPovos.Select(x => new SelectListItem
         {
             Text = x.Nome,
             Value = x.Id.ToString()
@@ -217,7 +218,8 @@ public class AdminPovosController : Controller
         {
             povos = await povoRepository.GetAllByRegiaoAsync(selectedRegiaoIds, 1, 10);
         }
-        var selectListItems = povos.Select(x => new SelectListItem
+        var orderedPovos = povos.OrderBy(x => x.Nome);
+        var selectListItems = orderedPovos.Select(x => new SelectListItem
         {
             Text = x.Nome,
             Value = x.Id.ToString()

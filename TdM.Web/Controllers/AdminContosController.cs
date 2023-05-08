@@ -35,7 +35,8 @@ public class AdminContosController : Controller
     public async Task<IActionResult> ListContosByMundo(Guid id)
     {
         IEnumerable<Conto> contos = await contoRepository.GetAllByMundoAsync(id, 1, 10);
-        var selectListItems = contos.Select(x => new SelectListItem
+        var orderedContos = contos.OrderBy(x => x.Titulo);
+        var selectListItems = orderedContos.Select(x => new SelectListItem
         {
             Text = x.Titulo,
             Value = x.Id.ToString()

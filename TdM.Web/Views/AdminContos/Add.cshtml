@@ -13,18 +13,18 @@
     <form method="post">
 
         <div class="row row-cols-1 row-cols-md-2">
-                <div class="mb-3">
-                    <label for="nome" class="form-label">Title</label>
+            <div class="mb-3">
+                <label for="nome" class="form-label">Title</label>
                 <input type="text" class="form-control" id="nome" placeholder="Story Title" asp-for="Titulo" required />
-                    <span class="text-danger" asp-validation-for="Titulo"></span>
-                </div>
-                <div class="mb-3 form-group">
-                    <label for="autor" class="form-label">Author</label>
-                    <select id="autor" asp-for="Autor" class="form-control" asp-items="@AutorList" required>
-                        <option value="" selected>Select Author...</option>
-                    </select>
-                    <span class="text-danger" asp-validation-for="Autor"></span>
-                </div>
+                <span class="text-danger" asp-validation-for="Titulo"></span>
+            </div>
+            <div class="mb-3 form-group">
+                <label for="autor" class="form-label">Author</label>
+                <select id="autor" asp-for="Autor" class="form-control" asp-items="@AutorList" required>
+                    <option value="" selected>Select Author...</option>
+                </select>
+                <span class="text-danger" asp-validation-for="Autor"></span>
+            </div>
         </div>
 
         <div class="mb-3">
@@ -79,24 +79,28 @@
             </div>
             <div class="form-check form-switch mb-3">
                 <label class="form-check-label" for="visible">Visible?</label>
-                <input class="form-check-input" type="checkbox" id="visible" asp-for="Visible"  checked>
+                <input class="form-check-input" type="checkbox" id="visible" asp-for="Visible" checked>
                 <span class="text-danger" asp-validation-for="Visible"></span>
             </div>
-        </div>
+        </div>     
 
         <div class="row justify-content-center mb-3">
             <div class="col-12 col-md-4 mb-1">
                 <label class="form-label">World</label>
-                <select id="SelectedMundo" class="form-select" asp-items="@Model.Mundos" asp-for="SelectedMundo" onchange="updateContinentes(), updatePersonagens(), updateCriaturas(), updatePovos(), updateContos()">
+                <select id="SelectedMundo" class="form-select" asp-items="@Model.Mundos" asp-for="SelectedMundo" onchange="contoContinentes(), contoRegioes(), contoPersonagens(), contoCriaturas(), contoPovos(), contoContos()">
                     <option value="" class="text-danger">No World</option>
                 </select>
             </div>
         </div>
 
+        <div class="row justify-content-start">
+            <button type="button" class="btn btn-secondary p-0" style="height:2rem; width:3rem;" data-bs-toggle="popover" data-bs-content="Select wich Entities has your Story"><i class="bi bi-lightbulb"></i></button>
+        </div>
+
         <div class="row text-center row-cols-2 row-cols-md-3">
             <div class="mb-3">
                 <label class="form-label">Continents</label>
-                <select id="SelectedContinentes" class="form-control" style="min-height:12rem" asp-items="@Model.Continentes" asp-for="SelectedContinentes" onchange="updateRegioes()" multiple>
+                <select id="SelectedContinentes" class="form-control" style="min-height:12rem" asp-items="@Model.Continentes" asp-for="SelectedContinentes" multiple>
                 </select>
             </div>
             <div class="mb-3">
@@ -118,7 +122,7 @@
                 <label class="form-label">People</label>
                 <select id="SelectedPovos" class="form-select" style="min-height:12rem" asp-items="@Model.Povos" asp-for="SelectedPovos" multiple>
                 </select>
-            </div>        
+            </div>
         </div>
 
         <div class="mb-3 ">
@@ -130,5 +134,6 @@
 
 @section Scripts
     {
+    <script type="text/javascript" src="~/js/ContoSelects.js"></script>
     <script type="text/javascript" src="~/js/Formulario.js"></script>
 }
