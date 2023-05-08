@@ -45,12 +45,12 @@ public class AdminMundosController : Controller
 
         var model = new AddMundoRequest
         {
-            Continentes = continente.Where(c => c.Mundo == null).Select(x => new SelectListItem { Text = x.Nome, Value = x.Id.ToString(), }),
-            Regioes = regiao.Where(r => r.Mundo == null).Select(x => new SelectListItem { Text = x.Nome, Value = x.Id.ToString() }),
-            Personagens = personagem.Where(pe => pe.Mundo == null).Select(x => new SelectListItem { Text = x.Nome, Value = x.Id.ToString() }),
-            Criaturas = criatura.Where(cr => cr.Mundo == null).Select(x => new SelectListItem { Text = x.Nome, Value = x.Id.ToString() }),
-            Povos = povo.Where(po => po.Mundo == null).Select(x => new SelectListItem { Text = x.Nome, Value = x.Id.ToString() }),
-            Contos = conto.Where(co => co.Mundo == null).Select(x => new SelectListItem { Text = x.Titulo, Value = x.Id.ToString() }),
+            Continentes = continente.Where(c => c.Mundo == null).OrderBy(x => x.Nome).Select(x => new SelectListItem { Text = x.Nome, Value = x.Id.ToString(), }),
+            Regioes = regiao.Where(r => r.Mundo == null).OrderBy(x => x.Nome).Select(x => new SelectListItem { Text = x.Nome, Value = x.Id.ToString() }),
+            Personagens = personagem.Where(pe => pe.Mundo == null).OrderBy(x => x.Nome).Select(x => new SelectListItem { Text = x.Nome, Value = x.Id.ToString() }),
+            Criaturas = criatura.Where(cr => cr.Mundo == null).OrderBy(x => x.Nome).Select(x => new SelectListItem { Text = x.Nome, Value = x.Id.ToString() }),
+            Povos = povo.Where(po => po.Mundo == null).OrderBy(x => x.Nome).Select(x => new SelectListItem { Text = x.Nome, Value = x.Id.ToString() }),
+            Contos = conto.Where(co => co.Mundo == null).OrderBy(x => x.Titulo).Select(x => new SelectListItem { Text = x.Titulo, Value = x.Id.ToString() }),
         };
         return View(model);
     }
@@ -274,37 +274,37 @@ public class AdminMundosController : Controller
                     Text = x.Nome,
                     Value = x.Id.ToString()
                 }),
-                SelectedContinentes = mundo.Continentes.Select(x => x.Id.ToString()).ToArray(),
+                SelectedContinentes = mundo.Continentes?.Select(x => x.Id.ToString()).ToArray(),
                 Regioes = regioesDomainModel.Where(x => x.Mundo == mundo || x.Mundo == null).Select(x => new SelectListItem
                 {
                     Text = x.Nome,
                     Value = x.Id.ToString()
                 }),
-                SelectedRegioes = mundo.Regioes.Select(x => x.Id.ToString()).ToArray(),
+                SelectedRegioes = mundo.Regioes?.Select(x => x.Id.ToString()).ToArray(),
                 Personagens = personagensDomainModel.Where(x => x.Mundo == mundo || x.Mundo == null).Select(x => new SelectListItem
                 {
                     Text = x.Nome,
                     Value = x.Id.ToString()
                 }),
-                SelectedPersonagens = mundo.Personagens.Select(x => x.Id.ToString()).ToArray(),
+                SelectedPersonagens = mundo.Personagens?.Select(x => x.Id.ToString()).ToArray(),
                 Criaturas = criaturasDomainModel.Where(x => x.Mundo == mundo || x.Mundo == null).Select(x => new SelectListItem
                 {
                     Text = x.Nome,
                     Value = x.Id.ToString()
                 }),
-                SelectedCriaturas = mundo.Criaturas.Select(x => x.Id.ToString()).ToArray(),
+                SelectedCriaturas = mundo.Criaturas?.Select(x => x.Id.ToString()).ToArray(),
                 Povos = povosDomainModel.Where(x => x.Mundo == mundo || x.Mundo == null).Select(x => new SelectListItem
                 {
                     Text = x.Nome,
                     Value = x.Id.ToString()
                 }).ToList(),
-                SelectedPovos = mundo.Povos.Where(x => x.Mundo == mundo).Select(x => x.Id.ToString()).ToArray(),
+                SelectedPovos = mundo.Povos?.Where(x => x.Mundo == mundo).Select(x => x.Id.ToString()).ToArray(),
                 Contos = contosDomainModel.Where(x => x.Mundo == mundo || x.Mundo == null).Select(x => new SelectListItem
                 {
                     Text = x.Titulo,
                     Value = x.Id.ToString()
                 }),
-                SelectedContos = mundo.Contos.Where(x => x.Mundo == mundo).Select(x => x.Id.ToString()).ToArray()
+                SelectedContos = mundo.Contos?.Where(x => x.Mundo == mundo).Select(x => x.Id.ToString()).ToArray()
             };
             return View(editMundoRequest);
         }

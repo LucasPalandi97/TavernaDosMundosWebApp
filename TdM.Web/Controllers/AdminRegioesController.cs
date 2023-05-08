@@ -35,6 +35,22 @@ public class AdminRegioesController : Controller
         return Json(selectListItems);
     }
 
+    public async Task<IActionResult> ListRegioesSemContinenteByMundo(Guid id)
+    {
+        IEnumerable<Regiao> regioes;
+        regioes = await regiaoRepository.GetAllWithoutContinenteAndMundoAsync(id, 1, 10);
+        var orderedRegioes = regioes.Where(x => x.Continente == null || x.Mundo == null).OrderBy(x => x.Nome);
+        var selectListItems = orderedRegioes.Select(x => new SelectListItem
+        {
+            Text = x.Nome,
+            Value = x.Id.ToString()
+        });
+
+        return Json(selectListItems);
+    }
+
+
+
     [HttpGet]
     public async Task<IActionResult> Add()
     {
@@ -52,7 +68,7 @@ public class AdminRegioesController : Controller
     {
 
         if (!ModelState.IsValid)
-        {   
+        {
             addRegiaoRequest.Mundos = (await mundoRepository.GetAllAsync(1, 10))
                .Select(x => new SelectListItem
                {
@@ -192,7 +208,7 @@ public class AdminRegioesController : Controller
     public async Task<IActionResult> Edit(EditRegiaoRequest editRegiaoRequest)
     {
         if (!ModelState.IsValid)
-        {   
+        {
             editRegiaoRequest.Mundos = (await mundoRepository.GetAllAsync(1, 10))
                .Select(x => new SelectListItem
                {

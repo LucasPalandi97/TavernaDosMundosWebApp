@@ -20,7 +20,7 @@
                 </div>
             </div>
 
-            <div class="row row-cols-1 row-cols-md-2 ">               
+            <div class="row row-cols-1 row-cols-md-2 ">
                 <div class="mb-3">
                     <label for="nome" class="form-label">Title</label>
                     <input type="text" class="form-control" id="nome" placeholder="Story Title" asp-for="Titulo" required />
@@ -113,16 +113,20 @@
             <div class="row justify-content-center mb-3">
                 <div class="col-12 col-md-4 mb-1">
                     <label class="form-label">World</label>
-                    <select id="SelectedMundo" class="form-select" asp-items="@Model.Mundos" asp-for="SelectedMundo" onchange="contoContinentes(), contoPersonagens(), contoCriaturas(), contoPovos(), contoContos()">
+                    <select id="SelectedMundo" class="form-select" asp-items="@Model.Mundos" asp-for="SelectedMundo" onchange="contoContinentes(), contoRegioes(), contoPersonagens(), contoCriaturas(), contoPovos(), contoContos()">
                         <option value="" class="text-danger">No World</option>
                     </select>
                 </div>
             </div>
 
+            <div class="justify-content-start">
+                <button type="button" class="btn btn-secondary p-0" style="height:2rem; width:3rem;" data-bs-toggle="popover" data-bs-content="Select wich Entities has your Story"><i class="bi bi-lightbulb"></i></button>
+            </div>
+
             <div class="row text-center row-cols-2 row-cols-md-3">
                 <div class="mb-3">
                     <label class="form-label">Continents</label>
-                    <select id="SelectedContinentes" class="form-control" style="min-height:12rem" asp-items="@Model.Continentes" asp-for="SelectedContinentes" onchange="contoRegioes()" multiple>
+                    <select id="SelectedContinentes" class="form-control" style="min-height:12rem" asp-items="@Model.Continentes" asp-for="SelectedContinentes" multiple>
                     </select>
                 </div>
                 <div class="mb-3">

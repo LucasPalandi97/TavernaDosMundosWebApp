@@ -62,6 +62,18 @@ public class RegiaoRepository : IRegiaoRepository
             .ToListAsync();
     }
 
+    public async Task<IEnumerable<Regiao>> GetAllWithoutContinenteAndMundoAsync(Guid mundoId, int page, int pageSize)
+    {
+        return await tavernaDbContext.Regioes          
+            .Include(x => x.Continente)
+            .Include(x => x.Mundo)
+            .Where(x => x.Mundo.Id == mundoId || x.Mundo == null)
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync();
+    }
+
+
     public async Task<Regiao?> GetAsync(Guid id, int page, int pageSize)
     {
         return await tavernaDbContext.Regioes
@@ -145,4 +157,6 @@ public class RegiaoRepository : IRegiaoRepository
         }
         return null;
     }
+
+   
 }

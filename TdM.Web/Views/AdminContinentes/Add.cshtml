@@ -76,16 +76,30 @@
         <div class="row justify-content-center mb-3">
             <div class="col-12 col-md-4 mb-1">
                 <label class="form-label">World</label>
-                <select id="SelectedMundo" class="form-select" asp-items="@Model.Mundos" asp-for="SelectedMundo" onchange="updateContos()">
+                <select id="SelectedMundo" class="form-select" asp-items="@Model.Mundos" asp-for="SelectedMundo" onchange="updateRegioesNoContinentByMundo(), updatePovosByMundo(), updateCriaturasByMundo(), updateContosByMundo()">
                     <option value="" class="text-danger">No World</option>
                 </select>
             </div>
+        </div>
+
+        <div class="justify-content-start">
+            <button type="button" class="btn btn-secondary p-0" style="height:2rem; width:3rem;" data-bs-toggle="popover" data-bs-content="Showing World Regions that have no Continent appended and Entities from World"><i class="bi bi-lightbulb"></i></button>
         </div>
 
         <div class="row text-center row-cols-2 row-cols-md-3 justify-content-center">
             <div class="mb-3">
                 <label class="form-label">Regions</label>
                 <select id="SelectedRegioes" class="form-select" style="min-height:12rem" asp-items="@Model.Regioes" asp-for="SelectedRegioes"multiple>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Creatures</label>
+                <select id="SelectedCriaturas" class="form-select" style="min-height:12rem" asp-items="@Model.Criaturas" asp-for="SelectedCriaturas" multiple>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">People</label>
+                <select id="SelectedPovos" class="form-select" style="min-height:12rem" asp-items="@Model.Povos" asp-for="SelectedPovos" multiple>
                 </select>
             </div>
             <div class="mb-3">
@@ -103,5 +117,6 @@
 
 @section Scripts
     {
+    <script type="text/javascript" src="~/js/ByMundoSelects.js"></script>
     <script type="text/javascript" src="~/js/Formulario.js"></script>
 }

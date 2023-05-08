@@ -45,13 +45,13 @@ else
                             <ul id="listcardbottom" class="list-group list-group-flush">
                                 <li><h3 class="card-title">@personagem.Nome</h3></li>
                                 <li><p class="card-text text-nowrap text-secondary" style="font-size:16px;">@personagem.CurtaDescricao</p></li>
-                                @if (personagem.Classe != null)
+                                @if (personagem.Regiao != null)
                                 {
                                     <li class="list-group-item">@personagem.Regiao?.Nome</li>
                                 }
                                 else
                                 {
-                                    <li class="list-group-item text-secondary">No Region</li>
+                                    <li class="list-group-item text-secondary">&nbsp</li>
                                 }
                             </ul>
                         </div>

@@ -94,12 +94,12 @@
                         <input type="text" class="form-control" id="ImgBoxUrl" placeholder="Image's URL" asp-for="ImgBox" />
                         @if (Model.ImgBox != null)
                         {
-                            <img src="@Model.ImgBox" id="ImageBoxUploadDisplay" style="width:300px; margin-top:1em;" />
+                            <img src="@Model.ImgBox" id="ImageBoxUploadDisplay" class="w-100" style="width:300px; margin-top:1em;" />
 
                         }
                         else
                         {
-                            <img src="" id="ImageBoxUploadDisplay" style="width:300px; margin-top:1em;" />
+                            <img src="" id="ImageBoxUploadDisplay" class="w-100" style="width:300px; margin-top:1em;" />
 
                         }
                     </div>
@@ -146,6 +146,10 @@
                 </div>
             </div>
 
+            <div class="justify-content-start">
+                <button type="button" class="btn btn-secondary p-0" style="height:2rem; width:3rem;" data-bs-toggle="popover" data-bs-content="Select wich Entities has your Character"><i class="bi bi-lightbulb"></i></button>
+            </div>
+
             <div class="row text-center row-cols-2 row-cols-md-3 justify-content-center">
                 <div class="mb-3">
                     <label class="form-label">Peoples</label>
@@ -161,7 +165,7 @@
 
             <div class="mb-3">
                 <div class="d-flex">
-                    <button id="submitbtn" type="submit" class="btn btn-dark">Update</button>
+                    <button id="submitbtn" type="submit" class="btn btn-secondary">Update</button>
                     <button id="submitbtn" type="button" class="btn btn-danger ms-2" data-bs-toggle="modal" data-bs-target="#exampleModal">Delete</button>
                 </div>
             </div>

@@ -87,13 +87,13 @@
         <div class="row justify-content-center mb-3">
             <div class="col-12 col-md-4 mb-1">
                 <label class="form-label">World</label>
-                <select id="SelectedMundo" class="form-select" asp-items="@Model.Mundos" asp-for="SelectedMundo" onchange="contoContinentes(), contoRegioes(), contoPersonagens(), contoCriaturas(), contoPovos(), contoContos()">
+                <select id="SelectedMundo" class="form-select" asp-items="@Model.Mundos" asp-for="SelectedMundo" onchange="updateContinentes(), updateRegioes(), updatePersonagens(), updateCriaturas(), updatePovos()">
                     <option value="" class="text-danger">No World</option>
                 </select>
             </div>
         </div>
 
-        <div class="row justify-content-start">
+        <div class="justify-content-start">
             <button type="button" class="btn btn-secondary p-0" style="height:2rem; width:3rem;" data-bs-toggle="popover" data-bs-content="Select wich Entities has your Story"><i class="bi bi-lightbulb"></i></button>
         </div>
 
@@ -134,6 +134,6 @@
 
 @section Scripts
     {
-    <script type="text/javascript" src="~/js/ContoSelects.js"></script>
+    <script type="text/javascript" src="~/js/ByMundoSelects.js"></script>
     <script type="text/javascript" src="~/js/Formulario.js"></script>
 }

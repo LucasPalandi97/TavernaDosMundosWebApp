@@ -257,3 +257,4 @@ preventNullAndAppendedSelection("#SelectedPersonagens");
 preventNullAndAppendedSelection("#SelectedCriaturas");
 preventNullAndAppendedSelection("#SelectedPovos");
 preventNullAndAppendedSelection("#SelectedContos");
+

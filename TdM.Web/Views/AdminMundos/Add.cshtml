@@ -74,8 +74,8 @@
             </div>
         </div>
 
-        <div class="row justify-content-end">
-            <button type="button" class="btn btn-secondary position-relative p-0" style="height:2rem; width:3rem;" data-bs-toggle="popover" data-bs-content="Showing entities that have null Worlds"><i class="bi bi-lightbulb"></i></button>
+        <div class="justify-content-end">
+            <button type="button" class="btn btn-secondary p-0" style="height:2rem; width:3rem;" data-bs-toggle="popover" data-bs-content="Showing Entities that have no World appended"><i class="bi bi-lightbulb"></i></button>
         </div>
 
         <div class="row text-center justify-content-center mb-3 row-cols-2 row-cols-md-3">
@@ -86,7 +86,7 @@
             </div>
             <div class="mb-3">
                 <label class="form-label">Regions</label>
-                <select id="SelectedNullRegioes" class="form-select" style="min-height:12rem" asp-items="@Model.Regioes" asp-for="SelectedRegioes" onchange="updatePersonagens(), updateCriaturas()" multiple>
+                <select id="SelectedNullRegioes" class="form-select" style="min-height:12rem" asp-items="@Model.Regioes" asp-for="SelectedRegioes" onchange="updatePersonagens(), updateCriaturas()" multiple >
                 </select>
             </div>
             <div class="mb-3">

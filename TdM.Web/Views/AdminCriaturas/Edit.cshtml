@@ -68,12 +68,12 @@
                         <input type="text" class="form-control" id="ImgBoxUrl" placeholder="Image's URL" asp-for="ImgBox" />
                         @if (Model.ImgBox != null)
                         {
-                            <img src="@Model.ImgBox" id="ImageBoxUploadDisplay" style="width:300px; margin-top:1em;" />
+                            <img src="@Model.ImgBox" id="ImageBoxUploadDisplay" class="w-100" style="width:300px; margin-top:1em;" />
 
                         }
                         else
                         {
-                            <img src="" id="ImageBoxUploadDisplay" style="width:300px; margin-top:1em;" />
+                            <img src="" id="ImageBoxUploadDisplay" class="w-100" style="width:300px; margin-top:1em;" />
 
                         }
                     </div>
@@ -106,6 +106,10 @@
                         <option value="" class="text-danger">No World</option>
                     </select>
                 </div>
+            </div>
+
+            <div class="justify-content-start">
+                <button type="button" class="btn btn-secondary p-0" style="height:2rem; width:3rem;" data-bs-toggle="popover" data-bs-content="Select wich Entities has your Creature"><i class="bi bi-lightbulb"></i></button>
             </div>
 
             <div class="row text-center row-cols-2 row-cols-md-3">

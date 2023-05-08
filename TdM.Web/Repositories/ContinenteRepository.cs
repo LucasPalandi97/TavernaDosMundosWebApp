@@ -124,6 +124,9 @@ public class ContinenteRepository : IContinenteRepository
             existingContinente.Visible = continente.Visible;
             existingContinente.Mundo = continente.Mundo;
             existingContinente.Regioes = continente.Regioes;
+            existingContinente.Criaturas = continente.Criaturas;
+            existingContinente.Povos = continente.Povos;
+            existingContinente.Contos = continente.Contos;
             await tavernaDbContext.SaveChangesAsync();
 
             return existingContinente;
