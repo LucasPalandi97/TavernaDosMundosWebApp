@@ -66,6 +66,8 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
         options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
     });
 
+builder.Services.AddSession();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -81,6 +83,8 @@ app.UseHttpsRedirection();
 app.UseResponseCompression();
 
 app.UseStaticFiles();
+
+app.UseSession();
 
 app.UseRouting();
 

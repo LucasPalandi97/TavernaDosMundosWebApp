@@ -21,7 +21,7 @@ function updateContinentesByMundo() {
     } else {
         // Clear contient if no world is selected
         $("#SelectedContinentes").empty().append('<option value="" class="text-danger" selected>No Continent</option>'); // add empty default option
-
+        $("#SelectedRegioes").empty().append('<option value="" class="text-danger" selected>No Region</option>'); // add empty default option
     }
 }
 
@@ -44,6 +44,33 @@ function updateRegioesByMundo() {
         });
     } else {
         // Clear character if no world is selected        
+        $("#SelectedRegioes").empty().append('<option value="" class="text-danger" selected>No Region</option>'); // add empty default option
+    }
+}
+
+//GET LIST<REGIOES> BY LIST<CONTINENTES> IDs (ALLOW MULTIPLE ITEMS)
+function updateByContinenteRegioesByMundo() {
+    const selectedContinenteIds = $("#SelectedContinentes").val();
+    if (selectedContinenteIds != null && selectedContinenteIds.length > 0) {
+        $.ajax({
+            url: "/AdminRegioes/ListRegioesByContinente",
+            type: "POST",
+            dataType: "json",
+            data: { selectedContinenteIds: selectedContinenteIds },
+            success: function (data) {
+                $("#SelectedRegioes").empty();
+                $("#SelectedRegioes").append('<option value="" class="text-danger" selected>No Region</option>'); // add empty default option
+                $.each(data, function (index, value) {
+                    $("#SelectedRegioes").append('<option value="' + value.value + '">' + value.text + '</option>');
+                });
+                // Clear selected character and creature if a diferent continente is selected
+                if ($("#SelectedContinentes").data("selected") != selectedContinenteIds) {                   
+                }
+                $("#SelectedContinentes").data("selected", selectedContinenteIds);
+            }
+        });
+    } else {
+        // Reset the region dropdown
         $("#SelectedRegioes").empty().append('<option value="" class="text-danger" selected>No Region</option>'); // add empty default option
     }
 }
@@ -71,13 +98,35 @@ function updateRegioesNoContinentByMundo() {
     }
 }
 
-
 //GET LIST<PERSONAGENS> BY MUNDOID (ALLOW MULTIPLE ITEMS)
 function updatePersonagensByMundo() {
     const selectedmundoId = $("#SelectedMundo").val();
     if (selectedmundoId != null && selectedmundoId.length > 0) {
         $.ajax({
             url: "/AdminPersonagens/ListPersonagensByMundo",
+            type: "POST",
+            dataType: "json",
+            data: { id: selectedmundoId },
+            success: function (data) {
+                $("#SelectedPersonagens").empty();
+                $("#SelectedPersonagens").append('<option value="" class="text-danger" selected>No Character</option>'); // add empty default option
+                $.each(data, function (index, value) {
+                    $("#SelectedPersonagens").append('<option value="' + value.value + '">' + value.text + '</option>');
+                });
+            }
+        });
+    } else {
+        // Clear character if no world is selected        
+        $("#SelectedPersonagens").empty().append('<option value="" class="text-danger" selected>No Character</option>'); // add empty default option
+    }
+}
+
+//GET LIST<PERSONAGENS> WITH NO REGIAO BY MUNDOID (ALLOW MULTIPLE ITEMS)
+function updatePersonagensSemRegiaoByMundo() {
+    const selectedmundoId = $("#SelectedMundo").val();
+    if (selectedmundoId != null && selectedmundoId.length > 0) {
+        $.ajax({
+            url: "/AdminPersonagens/ListPersonagensSemRegiaoByMundo",
             type: "POST",
             dataType: "json",
             data: { id: selectedmundoId },

@@ -176,6 +176,8 @@ public class PovoRepository : IPovoRepository
             existingPovo.Regioes = povo.Regioes;
             existingPovo.Personagens = povo.Personagens;
             existingPovo.Criaturas = povo.Criaturas;
+            existingPovo.Contos = povo.Contos;
+
             await tavernaDbContext.SaveChangesAsync();
 
             return existingPovo;

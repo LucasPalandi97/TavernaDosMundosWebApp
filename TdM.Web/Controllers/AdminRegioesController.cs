@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Drawing;
 using TdM.Database.Models.Domain;
 using TdM.Web.Models.ViewModels;
 using TdM.Web.Repositories;
@@ -13,18 +14,27 @@ public class AdminRegioesController : Controller
     private readonly IRegiaoRepository regiaoRepository;
     private readonly IMundoRepository mundoRepository;
     private readonly IContinenteRepository continenteRepository;
+    private readonly IPersonagemRepository personagemRepository;
+    private readonly ICriaturaRepository criaturaRepository;
+    private readonly IPovoRepository povoRepository;
+    private readonly IContoRepository contoRepository;
 
-    public AdminRegioesController(IRegiaoRepository regiaoRepository, IMundoRepository mundoRepository, IContinenteRepository continenteRepository)
+    public AdminRegioesController(IRegiaoRepository regiaoRepository, IMundoRepository mundoRepository, IContinenteRepository continenteRepository,
+       IPersonagemRepository personagemRepository, ICriaturaRepository criaturaRepository, IPovoRepository povoRepository, IContoRepository contoRepository)
     {
         this.regiaoRepository = regiaoRepository;
         this.mundoRepository = mundoRepository;
         this.continenteRepository = continenteRepository;
+        this.personagemRepository = personagemRepository;
+        this.criaturaRepository = criaturaRepository;
+        this.povoRepository = povoRepository;
+        this.contoRepository = contoRepository;
     }
 
     public async Task<IActionResult> ListRegioesByMundo(Guid id)
     {
         IEnumerable<Regiao> regioes;
-        regioes = await regiaoRepository.GetAllByMundoAsync(id, 1, 10);
+        regioes = await regiaoRepository.GetAllByMundoAsync(id, 1, 100);
         var orderedRegioes = regioes.OrderBy(x => x.Nome);
         var selectListItems = orderedRegioes.Select(x => new SelectListItem
         {
@@ -38,8 +48,8 @@ public class AdminRegioesController : Controller
     public async Task<IActionResult> ListRegioesSemContinenteByMundo(Guid id)
     {
         IEnumerable<Regiao> regioes;
-        regioes = await regiaoRepository.GetAllWithoutContinenteAndMundoAsync(id, 1, 10);
-        var orderedRegioes = regioes.Where(x => x.Continente == null || x.Mundo == null).OrderBy(x => x.Nome);
+        regioes = await regiaoRepository.GetAllWithoutContinenteAsync(id, 1, 100);
+        var orderedRegioes = regioes.Where(x => x.Continente == null).OrderBy(x => x.Nome);
         var selectListItems = orderedRegioes.Select(x => new SelectListItem
         {
             Text = x.Nome,
@@ -55,10 +65,10 @@ public class AdminRegioesController : Controller
     public async Task<IActionResult> Add()
     {
         //get mundos from repository
-        var mundos = await mundoRepository.GetAllAsync(1, 10);
+        var mundos = await mundoRepository.GetAllAsync(1, 100);
         var model = new AddRegiaoRequest
         {
-            Mundos = mundos.Select(x => new SelectListItem { Text = x.Nome, Value = x.Id.ToString() })
+            Mundos = mundos.OrderBy(x => x.Nome).Select(x => new SelectListItem { Text = x.Nome, Value = x.Id.ToString() })
         };
         return View(model);
     }
@@ -66,22 +76,49 @@ public class AdminRegioesController : Controller
     [HttpPost]
     public async Task<IActionResult> Add(AddRegiaoRequest addRegiaoRequest)
     {
-
         if (!ModelState.IsValid)
         {
-            addRegiaoRequest.Mundos = (await mundoRepository.GetAllAsync(1, 10))
-               .Select(x => new SelectListItem
-               {
-                   Text = x.Nome,
-                   Value = x.Id.ToString()
-               }).ToList();
+            addRegiaoRequest.Mundos = (await mundoRepository.GetAllAsync(1, 100)).OrderBy(x => x.Nome)
+           .Select(x => new SelectListItem
+           {
+               Text = x.Nome,
+               Value = x.Id.ToString()
+           }).ToList();
 
-            addRegiaoRequest.Continentes = (await continenteRepository.GetAllAsync(1, 10))
-                .Select(x => new SelectListItem
-                {
-                    Text = x.Nome,
-                    Value = x.Id.ToString()
-                }).ToList();
+            addRegiaoRequest.Continentes = (await continenteRepository.GetAllAsync(1, 100)).Where(x => x.Mundo?.Id.ToString() == addRegiaoRequest.SelectedMundo).OrderBy(x => x.Nome)
+           .Select(x => new SelectListItem
+           {
+               Text = x.Nome,
+               Value = x.Id.ToString()
+           }).ToList();
+
+            addRegiaoRequest.Personagens = (await personagemRepository.GetAllAsync(1, 100)).Where(x => x.Mundo?.Id.ToString() == addRegiaoRequest.SelectedMundo && x.Regiao?.Id == null).OrderBy(x => x.Nome)
+           .Select(x => new SelectListItem
+           {
+               Text = x.Nome,
+               Value = x.Id.ToString()
+           }).ToList();
+
+            addRegiaoRequest.Criaturas = (await criaturaRepository.GetAllAsync(1, 100)).Where(x => x.Mundo?.Id.ToString() == addRegiaoRequest.SelectedMundo).OrderBy(x => x.Nome)
+           .Select(x => new SelectListItem
+           {
+               Text = x.Nome,
+               Value = x.Id.ToString()
+           }).ToList();
+
+            addRegiaoRequest.Povos = (await povoRepository.GetAllAsync(1, 100)).Where(x => x.Mundo?.Id.ToString() == addRegiaoRequest.SelectedMundo).OrderBy(x => x.Nome)
+           .Select(x => new SelectListItem
+           {
+               Text = x.Nome,
+               Value = x.Id.ToString()
+           }).ToList();
+
+            addRegiaoRequest.Contos = (await contoRepository.GetAllAsync(1, 100)).Where(x => x.Mundo?.Id.ToString() == addRegiaoRequest.SelectedMundo).OrderBy(x => x.Titulo)
+           .Select(x => new SelectListItem
+           {
+               Text = x.Titulo,
+               Value = x.Id.ToString()
+           }).ToList();
 
             return View(addRegiaoRequest);
         }
@@ -100,8 +137,7 @@ public class AdminRegioesController : Controller
             Visible = addRegiaoRequest.Visible,
         };
 
-        //Maps Mundos from Selected mundo
-
+        //Maps Mundo from Selected Mundo
         var selectedMundoId = addRegiaoRequest.SelectedMundo;
         if (selectedMundoId != null)
         {
@@ -115,8 +151,7 @@ public class AdminRegioesController : Controller
                 regiao.Mundo = selectedMundo;
             }
         }
-        //Maps Continentes from Selected Continente
-
+        //Maps Continente from Selected Continente
         var selectedContinenteId = addRegiaoRequest.SelectedContinente;
         if (selectedContinenteId != null)
         {
@@ -130,6 +165,86 @@ public class AdminRegioesController : Controller
                 regiao.Continente = selectedContinente;
             }
         }
+
+        //Maps Personagens from Selected Personagens and set their Continent
+        var selectedPersonagens = new List<Personagem>();
+
+        foreach (var selectedPersonagemId in addRegiaoRequest.SelectedPersonagens)
+        {
+            if (!string.IsNullOrEmpty(selectedPersonagemId))
+            {
+                var selectedPersonagemIdAsGuid = Guid.Parse(selectedPersonagemId);
+                var existingPersonagem = await personagemRepository.GetAsync(selectedPersonagemIdAsGuid, 1, 10);
+
+                if (existingPersonagem != null)
+                {
+                    existingPersonagem.Continente.Id = regiao.Continente.Id;
+                    await personagemRepository.UpdateAsync(existingPersonagem, 1, 10);
+                    selectedPersonagens.Add(existingPersonagem);
+                }
+            }
+        }
+        //Maping Personagens back to domain modal
+        regiao.Personagens = selectedPersonagens;
+
+        //Maps Criaturas from Selected Criaturas
+        var selectedCriaturas = new List<Criatura>();
+
+        foreach (var selectedCriaturaId in addRegiaoRequest.SelectedCriaturas)
+        {
+            if (!string.IsNullOrEmpty(selectedCriaturaId))
+            {
+                var selectedCriaturaIdAsGuid = Guid.Parse(selectedCriaturaId);
+                var existingCriatura = await criaturaRepository.GetAsync(selectedCriaturaIdAsGuid, 1, 10);
+
+                if (existingCriatura != null)
+                {
+                    selectedCriaturas.Add(existingCriatura);
+                }
+            }
+        }
+        //Maping Criaturas back to domain modal
+        regiao.Criaturas = selectedCriaturas;
+
+
+        //Maps Povos from Selected Povos
+        var selectedPovos = new List<Povo>();
+
+        foreach (var selectedPovoId in addRegiaoRequest.SelectedPovos)
+        {
+            if (!string.IsNullOrEmpty(selectedPovoId))
+            {
+                var selectedPovoIdAsGuid = Guid.Parse(selectedPovoId);
+                var existingPovo = await povoRepository.GetAsync(selectedPovoIdAsGuid, 1, 10);
+
+                if (existingPovo != null)
+                {
+                    selectedPovos.Add(existingPovo);
+                }
+            }
+        }
+        //Maping Povos back to domain modal
+        regiao.Povos = selectedPovos;
+
+        //Maps Contos from Selected Contos
+        var selectedContos = new List<Conto>();
+
+        foreach (var selectedContoId in addRegiaoRequest.SelectedContos)
+        {
+            if (!string.IsNullOrEmpty(selectedContoId))
+            {
+                var selectedContoIdAsGuid = Guid.Parse(selectedContoId);
+                var existingConto = await contoRepository.GetAsync(selectedContoIdAsGuid, 1, 10);
+
+                if (existingConto != null)
+                {
+                    selectedContos.Add(existingConto);
+                }
+            }
+        }
+        //Maping Contos back to domain modal
+        regiao.Contos = selectedContos;
+
         await regiaoRepository.AddAsync(regiao);
 
         return RedirectToAction("List");
@@ -160,7 +275,7 @@ public class AdminRegioesController : Controller
     public async Task<IActionResult> List()
     {
         // Use dbContext to read the regiao
-        var regioes = await regiaoRepository.GetAllAsync(1, 10);
+        var regioes = await regiaoRepository.GetAllAsync(1, 100);
         return View(regioes);
     }
 
@@ -168,10 +283,13 @@ public class AdminRegioesController : Controller
     public async Task<IActionResult> Edit(Guid id)
     {
         //Retrieve Result from repository
-        var regiao = await regiaoRepository.GetAsync(id, 1, 10);
-        var mundosDomainModel = await mundoRepository.GetAllAsync(1, 10);
-        var continenteDomainModel = await continenteRepository.GetAllAsync(1, 10);
-
+        var regiao = await regiaoRepository.GetAsync(id, 1, 100);
+        var mundosDomainModel = await mundoRepository.GetAllAsync(1, 100);
+        var continenteDomainModel = await continenteRepository.GetAllAsync(1, 100);
+        var personagensDomainModel = await personagemRepository.GetAllAsync(1, 100);
+        var criaturasDomainModel = await criaturaRepository.GetAllAsync(1, 100);
+        var povosDomainModel = await povoRepository.GetAllAsync(1, 100);
+        var contosDomainModel = await contoRepository.GetAllAsync(1, 100);
         if (regiao != null)
         {
             var editRegiaoRequest = new EditRegiaoRequest
@@ -186,18 +304,49 @@ public class AdminRegioesController : Controller
                 PublishedDate = regiao.PublishedDate,
                 UrlHandle = regiao.UrlHandle,
                 Visible = regiao.Visible,
-                Mundos = mundosDomainModel.Select(x => new SelectListItem
+
+                Mundos = mundosDomainModel.OrderBy(x => x.Nome)
+                .Select(x => new SelectListItem
                 {
                     Text = x.Nome,
                     Value = x.Id.ToString()
                 }),
                 SelectedMundo = regiao.Mundo?.Id.ToString(),
-                Continentes = continenteDomainModel.Select(x => new SelectListItem
+                Continentes = regiao.Mundo?.Continentes?.OrderBy(x => x.Nome)
+                .Select(x => new SelectListItem
                 {
                     Text = x.Nome,
                     Value = x.Id.ToString()
                 }),
-                SelectedContinente = regiao.Continente?.Id.ToString()
+                SelectedContinente = regiao.Continente?.Id.ToString(),
+                Personagens = personagensDomainModel.Where(x => x.Mundo == regiao.Mundo).OrderBy(x => x.Nome)
+                .Select(c => new SelectListItem
+                {
+                    Text = c.Nome,
+                    Value = c.Id.ToString()
+                }),
+                SelectedPersonagens = regiao.Personagens?.Select(c => c.Id.ToString()).ToArray(),
+                Criaturas = criaturasDomainModel.Where(x => x.Mundo == regiao.Mundo).OrderBy(x => x.Nome)
+                .Select(c => new SelectListItem
+                {
+                    Text = c.Nome,
+                    Value = c.Id.ToString()
+                }),
+                SelectedCriaturas = regiao.Criaturas?.Select(c => c.Id.ToString()).ToArray(),
+                Povos = povosDomainModel.Where(x => x.Mundo == regiao.Mundo).OrderBy(x => x.Nome)
+                .Select(x => new SelectListItem
+                {
+                    Text = x.Nome,
+                    Value = x.Id.ToString()
+                }),
+                SelectedPovos = regiao.Povos?.Select(x => x.Id.ToString()).ToArray(),
+                Contos = contosDomainModel.Where(x => x.Mundo == regiao.Mundo).OrderBy(x => x.Titulo)
+                .Select(x => new SelectListItem
+                {
+                    Text = x.Titulo,
+                    Value = x.Id.ToString()
+                }),
+                SelectedContos = regiao.Contos?.Select(x => x.Id.ToString()).ToArray()
             };
             return View(editRegiaoRequest);
         }
@@ -209,19 +358,47 @@ public class AdminRegioesController : Controller
     {
         if (!ModelState.IsValid)
         {
-            editRegiaoRequest.Mundos = (await mundoRepository.GetAllAsync(1, 10))
-               .Select(x => new SelectListItem
-               {
-                   Text = x.Nome,
-                   Value = x.Id.ToString()
-               }).ToList();
+            editRegiaoRequest.Mundos = (await mundoRepository.GetAllAsync(1, 100)).OrderBy(x => x.Nome)
+           .Select(x => new SelectListItem
+           {
+               Text = x.Nome,
+               Value = x.Id.ToString()
+           }).ToList();
 
-            editRegiaoRequest.Continentes = (await continenteRepository.GetAllAsync(1, 10))
-                .Select(x => new SelectListItem
-                {
-                    Text = x.Nome,
-                    Value = x.Id.ToString()
-                }).ToList();
+            editRegiaoRequest.Continentes = (await continenteRepository.GetAllAsync(1, 100)).Where(x => x.Mundo?.Id.ToString() == editRegiaoRequest.SelectedMundo).OrderBy(x => x.Nome)
+           .Select(x => new SelectListItem
+           {
+               Text = x.Nome,
+               Value = x.Id.ToString()
+           }).ToList();
+
+            editRegiaoRequest.Personagens = (await personagemRepository.GetAllAsync(1, 100)).Where(x => x.Mundo?.Id.ToString() == editRegiaoRequest.SelectedMundo).OrderBy(x => x.Nome)
+           .Select(x => new SelectListItem
+           {
+               Text = x.Nome,
+               Value = x.Id.ToString()
+           }).ToList();
+
+            editRegiaoRequest.Criaturas = (await criaturaRepository.GetAllAsync(1, 100)).Where(x => x.Mundo?.Id.ToString() == editRegiaoRequest.SelectedMundo).OrderBy(x => x.Nome)
+           .Select(x => new SelectListItem
+           {
+               Text = x.Nome,
+               Value = x.Id.ToString()
+           }).ToList();
+
+            editRegiaoRequest.Povos = (await povoRepository.GetAllAsync(1, 100)).Where(x => x.Mundo?.Id.ToString() == editRegiaoRequest.SelectedMundo).OrderBy(x => x.Nome)
+           .Select(x => new SelectListItem
+           {
+               Text = x.Nome,
+               Value = x.Id.ToString()
+           }).ToList();
+
+            editRegiaoRequest.Contos = (await contoRepository.GetAllAsync(1, 100)).Where(x => x.Mundo?.Id.ToString() == editRegiaoRequest.SelectedMundo).OrderBy(x => x.Titulo)
+           .Select(x => new SelectListItem
+           {
+               Text = x.Titulo,
+               Value = x.Id.ToString()
+           }).ToList();
 
             return View(editRegiaoRequest);
         }
@@ -240,7 +417,7 @@ public class AdminRegioesController : Controller
             Visible = editRegiaoRequest.Visible,
         };
 
-        //Maps Mundos from Selected mundo
+        //Maps Mundo from Selected Mundo
         var selectedMundoId = editRegiaoRequest.SelectedMundo;
         if (selectedMundoId != null)
         {
@@ -255,7 +432,7 @@ public class AdminRegioesController : Controller
             }
         }
 
-        //Map Continente into domain model
+        //Map Continente from Selected Continente
         var selectedContinenteId = editRegiaoRequest.SelectedContinente;
         if (selectedContinenteId != null)
         {
@@ -268,8 +445,105 @@ public class AdminRegioesController : Controller
                 //Maping Regioes back to domain modal
                 regiao.Continente = selectedContinente;
             }
-
         }
+
+        //Maps Personagens from Selected Personagens and set their Continent
+        var selectedPersonagens = new List<Personagem>();
+
+        foreach (var selectedPersonagemId in editRegiaoRequest.SelectedPersonagens)
+        {
+            if (!string.IsNullOrEmpty(selectedPersonagemId))
+            {
+                var selectedPersonagemIdAsGuid = Guid.Parse(selectedPersonagemId);
+                var existingPersonagem = await personagemRepository.GetAsync(selectedPersonagemIdAsGuid, 1, 10);
+
+                if (existingPersonagem != null)
+                {
+                    existingPersonagem.Continente = regiao.Continente;
+                    await personagemRepository.UpdateAsync(existingPersonagem, 1, 10);
+                    selectedPersonagens.Add(existingPersonagem);
+                }
+            }
+        }
+
+        //Maping Personagens back to domain modal
+        regiao.Personagens = selectedPersonagens;
+
+        //Maps Criaturas from Selected Criaturas
+        var selectedCriaturas = new List<Criatura>();
+
+        foreach (var selectedCriaturaId in editRegiaoRequest.SelectedCriaturas)
+        {
+            if (!string.IsNullOrEmpty(selectedCriaturaId))
+            {
+                var selectedCriaturaIdAsGuid = Guid.Parse(selectedCriaturaId);
+                var existingCriatura = await criaturaRepository.GetAsync(selectedCriaturaIdAsGuid, 1, 10);
+
+                if (existingCriatura != null)
+                {
+                    if (existingCriatura.Continentes == null)
+                    {
+                        existingCriatura.Continentes = new List<Continente>();
+                    }
+                    existingCriatura.Continentes?.Add(regiao.Continente);
+                    await criaturaRepository.UpdateAsync(existingCriatura, 1, 10);
+                    selectedCriaturas.Add(existingCriatura);
+                }
+            }
+        }
+        //Maping Criaturas back to domain modal
+        regiao.Criaturas = selectedCriaturas;
+
+
+        //Maps Povos from Selected Povos
+        var selectedPovos = new List<Povo>();
+
+        foreach (var selectedPovoId in editRegiaoRequest.SelectedPovos)
+        {
+            if (!string.IsNullOrEmpty(selectedPovoId))
+            {
+                var selectedPovoIdAsGuid = Guid.Parse(selectedPovoId);
+                var existingPovo = await povoRepository.GetAsync(selectedPovoIdAsGuid, 1, 10);
+
+                if (existingPovo != null)
+                {
+                    if (existingPovo.Continentes == null)
+                    {
+                        existingPovo.Continentes = new List<Continente>();
+                    }
+                    existingPovo.Continentes?.Add(regiao.Continente);
+                    await povoRepository.UpdateAsync(existingPovo, 1, 10);
+                    selectedPovos.Add(existingPovo);
+                }
+            }
+        }
+        //Maping Povos back to domain modal
+        regiao.Povos = selectedPovos;
+
+        //Maps Contos from Selected Contos
+        var selectedContos = new List<Conto>();
+
+        foreach (var selectedContoId in editRegiaoRequest.SelectedContos)
+        {
+            if (!string.IsNullOrEmpty(selectedContoId))
+            {
+                var selectedContoIdAsGuid = Guid.Parse(selectedContoId);
+                var existingConto = await contoRepository.GetAsync(selectedContoIdAsGuid, 1, 10);
+
+                if (existingConto != null)
+                {
+                    if (existingConto.Continentes == null)
+                    {
+                        existingConto.Continentes = new List<Continente>();
+                    }
+                    existingConto.Continentes?.Add(regiao.Continente);
+                    await contoRepository.UpdateAsync(existingConto, 1, 10);
+                    selectedContos.Add(existingConto);
+                }
+            }
+        }
+        //Maping Contos back to domain modal
+        regiao.Contos = selectedContos;
 
         var updatedRegiao = await regiaoRepository.UpdateAsync(regiao, 1, 10);
 

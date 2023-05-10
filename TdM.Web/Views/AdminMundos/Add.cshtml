@@ -28,7 +28,7 @@
             </div>
             <div class="mb-5">
                 <label for="CurtaDescricao" class="form-label">Short Description</label>
-                <textarea class="form-control h-100" type="" placeholder="Character's Short Description" id="CurtaDescricao" name="CurtaDescricao" asp-for="CurtaDescricao" required>
+                <textarea class="form-control h-100" type="" placeholder="World Short Description" id="CurtaDescricao" name="CurtaDescricao" asp-for="CurtaDescricao" required>
                 <span class="text-danger" asp-validation-for="CurtaDescricao"></span>
             </textarea>
             </div>
@@ -51,7 +51,7 @@
                 <div class="mb-3">
                     <input type="text" class="form-control" id="ImgBoxUrl" placeholder="Content image URL" asp-for="ImgBox" />
                     <div class="border-3 border-black">
-                        <img src="" id="ImageBoxUploadDisplay" class="col-12" style="display:none; margin-top:1em;">
+                        <img src="" id="ImageBoxUploadDisplay" class="w-100" style="display:none; margin-top:1em;">
                     </div>
                 </div>
             </div>
@@ -120,5 +120,6 @@
 </div>
 
 @section Scripts {
+    <script type="text/javascript" src="~/js/ByMundoSelects.js"></script>
     <script type="text/javascript" src="~/js/Formulario.js"></script>
 }

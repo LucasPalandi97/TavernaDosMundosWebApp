@@ -42,6 +42,12 @@ public class AddRegiaoRequest
     public string? SelectedMundo { get; set; }
     public IEnumerable<SelectListItem>? Continentes { get; set; }
     public string? SelectedContinente { get; set; }
+    public IEnumerable<SelectListItem>? Personagens { get; set; }
+    public string[]? SelectedPersonagens { get; set; } = Array.Empty<string>();
+    public IEnumerable<SelectListItem>? Criaturas { get; set; }
+    public string[]? SelectedCriaturas { get; set; } = Array.Empty<string>();
+    public IEnumerable<SelectListItem>? Povos { get; set; }
+    public string[]? SelectedPovos { get; set; } = Array.Empty<string>();
     public IEnumerable<SelectListItem>? Contos { get; set; }
     public string[]? SelectedContos { get; set; } = Array.Empty<string>();
 

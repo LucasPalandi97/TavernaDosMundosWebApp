@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using System.Drawing;
 using TdM.Database.Models.Domain;
 using TdM.Web.Models.ViewModels;
 using TdM.Web.Repositories;
@@ -33,10 +35,10 @@ public class AdminPersonagensController : Controller
     public async Task<IActionResult> Add()
     {
         //get mundos from repository
-        var mundos = await mundoRepository.GetAllAsync(1, 10);
+        var mundos = await mundoRepository.GetAllAsync(1, 100);
         var model = new AddPersonagemRequest
         {
-            Mundos = mundos.Select(x => new SelectListItem { Text = x.Nome, Value = x.Id.ToString() })
+            Mundos = mundos.OrderBy(x => x.Nome).Select(x => new SelectListItem { Text = x.Nome, Value = x.Id.ToString() })
         };
         return View(model);
     }
@@ -46,40 +48,40 @@ public class AdminPersonagensController : Controller
     {
         if (!ModelState.IsValid)
         {
-            addPersonagemRequest.Mundos = (await mundoRepository.GetAllAsync(1, 10))
-                .Select(x => new SelectListItem
-                {
-                    Text = x.Nome,
-                    Value = x.Id.ToString()
-                }).ToList();
+            addPersonagemRequest.Mundos = (await mundoRepository.GetAllAsync(1, 100)).OrderBy(x => x.Nome)
+            .Select(x => new SelectListItem
+            {
+                Text = x.Nome,
+                Value = x.Id.ToString()
+            }).ToList();
 
-            addPersonagemRequest.Continentes = (await continenteRepository.GetAllAsync(1, 10))
-                .Select(x => new SelectListItem
-                {
-                    Text = x.Nome,
-                    Value = x.Id.ToString()
-                }).ToList();
+            addPersonagemRequest.Continentes = (await continenteRepository.GetAllAsync(1, 100)).Where(x => x.Mundo?.Id.ToString() == addPersonagemRequest.SelectedMundo).OrderBy(x => x.Nome)
+            .Select(x => new SelectListItem
+            {
+                Text = x.Nome,
+                Value = x.Id.ToString()
+            }).ToList();
 
-            addPersonagemRequest.Regioes = (await regiaoRepository.GetAllAsync(1, 10))
-               .Select(x => new SelectListItem
-               {
-                   Text = x.Nome,
-                   Value = x.Id.ToString()
-               }).ToList();
+            addPersonagemRequest.Regioes = (await regiaoRepository.GetAllAsync(1, 100)).Where(x => x.Continente?.Id.ToString() == addPersonagemRequest.SelectedContinente).OrderBy(x => x.Nome)
+            .Select(x => new SelectListItem
+            {
+                Text = x.Nome,
+                Value = x.Id.ToString()
+            }).ToList();
 
-            addPersonagemRequest.Povos = (await povoRepository.GetAllAsync(1, 10))
-               .Select(x => new SelectListItem
-               {
-                   Text = x.Nome,
-                   Value = x.Id.ToString()
-               }).ToList();
+            addPersonagemRequest.Povos = (await povoRepository.GetAllAsync(1, 100)).Where(x => x.Mundo?.Id.ToString() == addPersonagemRequest.SelectedMundo).OrderBy(x => x.Nome)
+            .Select(x => new SelectListItem
+            {
+                Text = x.Nome,
+                Value = x.Id.ToString()
+            }).ToList();
 
-            addPersonagemRequest.Contos = (await contoRepository.GetAllAsync(1, 10))
-               .Select(x => new SelectListItem
-               {
-                   Text = x.Titulo,
-                   Value = x.Id.ToString()
-               }).ToList();
+            addPersonagemRequest.Contos = (await contoRepository.GetAllAsync(1, 100)).Where(x => x.Mundo?.Id.ToString() == addPersonagemRequest.SelectedMundo).OrderBy(x => x.Titulo)
+            .Select(x => new SelectListItem
+            {
+                Text = x.Titulo,
+                Value = x.Id.ToString()
+            }).ToList();
 
             return View(addPersonagemRequest);
         }
@@ -185,7 +187,7 @@ public class AdminPersonagensController : Controller
     }
     public async Task<IActionResult> ListPersonagensByMundo(Guid id)
     {
-        IEnumerable<Personagem> personagens = await personagemRepository.GetAllByMundoAsync(id, 1, 10);
+        IEnumerable<Personagem> personagens = await personagemRepository.GetAllByMundoAsync(id, 1, 100);
         var sortedPersonagens = personagens.OrderBy(p => p.Nome);
         var selectListItems = sortedPersonagens.Select(x => new SelectListItem
         {
@@ -196,17 +198,29 @@ public class AdminPersonagensController : Controller
         return Json(selectListItems);
     }
 
+    public async Task<IActionResult> ListPersonagensSemRegiaoByMundo(Guid id)
+    {
+        IEnumerable<Personagem> personagens = await personagemRepository.GetAllByMundoAsync(id, 1, 100);
+        var sortedPersonagens = personagens.Where(x => x.Regiao == null).OrderBy(p => p.Nome);
+        var selectListItems = sortedPersonagens.Select(x => new SelectListItem
+        {
+            Text = x.Nome,
+            Value = x.Id.ToString()
+        });
+
+        return Json(selectListItems);
+    }
 
     public async Task<IActionResult> ListPersonagensByRegiao(Guid id, List<Guid> selectedRegiaoIds = null)
     {
         IEnumerable<Personagem> personagens;
         if (selectedRegiaoIds == null)
         {
-            personagens = await personagemRepository.GetAllByRegiaoAsync(id, 1, 10);
+            personagens = await personagemRepository.GetAllByRegiaoAsync(id, 1, 100);
         }
         else
         {
-            personagens = await personagemRepository.GetAllByRegiaoAsync(selectedRegiaoIds, 1, 10);
+            personagens = await personagemRepository.GetAllByRegiaoAsync(selectedRegiaoIds, 1, 100);
         }
 
         var orderedPersonagens = personagens.OrderBy(x => x.Nome);
@@ -224,7 +238,7 @@ public class AdminPersonagensController : Controller
     public async Task<IActionResult> List()
     {
         // Use dbContext to read the personagem
-        var personagens = await personagemRepository.GetAllAsync(1, 10);
+        var personagens = await personagemRepository.GetAllAsync(1, 100);
         return View(personagens);
     }
 
@@ -232,12 +246,12 @@ public class AdminPersonagensController : Controller
     public async Task<IActionResult> Edit(Guid id)
     {
         //Retrieve Result from repository
-        var personagem = await personagemRepository.GetAsync(id, 1, 10);
-        var mundosDomainModel = await mundoRepository.GetAllAsync(1, 10);
-        var continenteDomainModel = await continenteRepository.GetAllAsync(1, 10);
-        var regiaoDomainModel = await regiaoRepository.GetAllAsync(1, 10);
-        var povosDomainModel = await povoRepository.GetAllAsync(1, 10);
-        var contosDomainModel = await contoRepository.GetAllAsync(1, 10);
+        var personagem = await personagemRepository.GetAsync(id, 1, 100);
+        var mundosDomainModel = await mundoRepository.GetAllAsync(1, 100);
+        var continenteDomainModel = await continenteRepository.GetAllAsync(1, 100);
+        var regiaoDomainModel = await regiaoRepository.GetAllAsync(1, 100);
+        var povosDomainModel = await povoRepository.GetAllAsync(1, 100);
+        var contosDomainModel = await contoRepository.GetAllAsync(1, 100);
 
         if (personagem != null)
         {
@@ -256,31 +270,37 @@ public class AdminPersonagensController : Controller
                 PublishedDate = personagem.PublishedDate,
                 UrlHandle = personagem.UrlHandle,
                 Visible = personagem.Visible,
-                Mundos = mundosDomainModel.Select(x => new SelectListItem
+
+                Mundos = mundosDomainModel.OrderBy(x => x.Nome)
+                .Select(x => new SelectListItem
                 {
                     Text = x.Nome,
                     Value = x.Id.ToString()
                 }),
                 SelectedMundo = personagem.Mundo?.Id.ToString(),
-                Continentes = continenteDomainModel.Select(x => new SelectListItem
+                Continentes = personagem.Mundo?.Continentes?.OrderBy(x => x.Nome)
+                .Select(x => new SelectListItem
                 {
                     Text = x.Nome,
                     Value = x.Id.ToString()
                 }),
                 SelectedContinente = personagem.Continente?.Id.ToString(),
-                Regioes = regiaoDomainModel.Select(x => new SelectListItem
+                Regioes = personagem.Continente?.Regioes?.OrderBy(x => x.Nome)
+                .Select(x => new SelectListItem
                 {
                     Text = x.Nome,
                     Value = x.Id.ToString()
                 }),
                 SelectedRegiao = personagem.Regiao?.Id.ToString(),
-                Povos = povosDomainModel.Select(x => new SelectListItem
+                Povos = povosDomainModel.Where(x => x.Mundo == personagem.Mundo).OrderBy(x => x.Nome)
+                .Select(x => new SelectListItem
                 {
                     Text = x.Nome,
                     Value = x.Id.ToString()
                 }),
                 SelectedPovos = personagem.Povos?.Select(x => x.Id.ToString()).ToArray(),
-                Contos = contosDomainModel.Select(x => new SelectListItem
+                Contos = contosDomainModel.Where(x => x.Mundo == personagem.Mundo).OrderBy(x => x.Titulo)
+                .Select(x => new SelectListItem
                 {
                     Text = x.Titulo,
                     Value = x.Id.ToString()
@@ -288,6 +308,7 @@ public class AdminPersonagensController : Controller
                 SelectedContos = personagem.Contos?.Select(x => x.Id.ToString()).ToArray()
 
             };
+
             return View(editPersonagemRequest);
         }
         return View(null);
@@ -299,43 +320,44 @@ public class AdminPersonagensController : Controller
 
         if (!ModelState.IsValid)
         {
-            editPersonagemRequest.Mundos = (await mundoRepository.GetAllAsync(1, 10))
-                .Select(x => new SelectListItem
-                {
-                    Text = x.Nome,
-                    Value = x.Id.ToString()
-                }).ToList();
+            editPersonagemRequest.Mundos = (await mundoRepository.GetAllAsync(1, 100)).OrderBy(x => x.Nome)
+            .Select(x => new SelectListItem
+            {
+                Text = x.Nome,
+                Value = x.Id.ToString()
+            }).ToList();
 
-            editPersonagemRequest.Continentes = (await continenteRepository.GetAllAsync(1, 10))
-                .Select(x => new SelectListItem
-                {
-                    Text = x.Nome,
-                    Value = x.Id.ToString()
-                }).ToList();
+            editPersonagemRequest.Continentes = (await continenteRepository.GetAllAsync(1, 100)).Where(x => x.Mundo?.Id.ToString() == editPersonagemRequest.SelectedMundo).OrderBy(x => x.Nome)
+            .Select(x => new SelectListItem
+            {
+                Text = x.Nome,
+                Value = x.Id.ToString()
+            }).ToList();
 
-            editPersonagemRequest.Regioes = (await regiaoRepository.GetAllAsync(1, 10))
-               .Select(x => new SelectListItem
-               {
-                   Text = x.Nome,
-                   Value = x.Id.ToString()
-               }).ToList();
+            editPersonagemRequest.Regioes = (await regiaoRepository.GetAllAsync(1, 100)).Where(x => x.Continente?.Id.ToString() == editPersonagemRequest.SelectedContinente).OrderBy(x => x.Nome)
+            .Select(x => new SelectListItem
+            {
+                Text = x.Nome,
+                Value = x.Id.ToString()
+            }).ToList();
 
-            editPersonagemRequest.Povos = (await povoRepository.GetAllAsync(1, 10))
-             .Select(x => new SelectListItem
-             {
-                 Text = x.Nome,
-                 Value = x.Id.ToString()
-             }).ToList();
+            editPersonagemRequest.Povos = (await povoRepository.GetAllAsync(1, 100)).Where(x => x.Mundo?.Id.ToString() == editPersonagemRequest.SelectedMundo).OrderBy(x => x.Nome)
+            .Select(x => new SelectListItem
+            {
+                Text = x.Nome,
+                Value = x.Id.ToString()
+            }).ToList();
 
-            editPersonagemRequest.Contos = (await contoRepository.GetAllAsync(1, 10))
-             .Select(x => new SelectListItem
-             {
-                 Text = x.Titulo,
-                 Value = x.Id.ToString()
-             }).ToList();
+            editPersonagemRequest.Contos = (await contoRepository.GetAllAsync(1, 100)).Where(x => x.Mundo?.Id.ToString() == editPersonagemRequest.SelectedMundo).OrderBy(x => x.Titulo)
+            .Select(x => new SelectListItem
+            {
+                Text = x.Titulo,
+                Value = x.Id.ToString()
+            }).ToList();
 
             return View(editPersonagemRequest);
         }
+
 
         var personagem = new Personagem
         {

@@ -16,11 +16,12 @@ public class AdminPovosController : Controller
     private readonly IRegiaoRepository regiaoRepository;
     private readonly IPersonagemRepository personagemRepository;
     private readonly ICriaturaRepository criaturaRepository;
+    private readonly IContoRepository contoRepository;
     private readonly IPovoRepository povoRepository;
 
     public AdminPovosController(IPovoRepository povoRepository, IMundoRepository mundoRepository
         , IContinenteRepository continenteRepository, IRegiaoRepository regiaoRepository
-        , IPersonagemRepository personagemRepository, ICriaturaRepository criaturaRepository)
+        , IPersonagemRepository personagemRepository, ICriaturaRepository criaturaRepository, IContoRepository contoRepository)
     {
         this.povoRepository = povoRepository;
         this.mundoRepository = mundoRepository;
@@ -28,6 +29,7 @@ public class AdminPovosController : Controller
         this.regiaoRepository = regiaoRepository;
         this.personagemRepository = personagemRepository;
         this.criaturaRepository = criaturaRepository;
+        this.contoRepository = contoRepository;
     }
 
     public async Task<IActionResult> ListPovosByMundo(Guid id)
@@ -94,6 +96,13 @@ public class AdminPovosController : Controller
                .Select(x => new SelectListItem
                {
                    Text = x.Nome,
+                   Value = x.Id.ToString()
+               }).ToList();
+
+            addPovoRequest.Contos = (await contoRepository.GetAllAsync(1, 10))
+               .Select(x => new SelectListItem
+               {
+                   Text = x.Titulo,
                    Value = x.Id.ToString()
                }).ToList();
 
@@ -204,6 +213,26 @@ public class AdminPovosController : Controller
         povo.Criaturas = selectedCriaturas;
 
         await povoRepository.AddAsync(povo);
+
+        //Maps Contos from Selected Contos
+        var selectedContos = new List<Conto>();
+
+        foreach (var selectedContoId in addPovoRequest.SelectedContos)
+        {
+            if (!string.IsNullOrEmpty(selectedContoId))
+            {
+                var selectedContoIdAsGuid = Guid.Parse(selectedContoId);
+                var existingConto = await contoRepository.GetAsync(selectedContoIdAsGuid, 1, 10);
+
+                if (existingConto != null)
+                {
+                    selectedContos.Add(existingConto);
+                }
+            }
+        }
+        //Maping Contos back to domain modal
+        povo.Contos = selectedContos;
+
         return RedirectToAction("List");
     }
 
@@ -246,6 +275,7 @@ public class AdminPovosController : Controller
         var regioesDomainModel = await regiaoRepository.GetAllAsync(1, 10);
         var personagensDomainModel = await personagemRepository.GetAllAsync(1, 10);
         var criaturasDomainModel = await criaturaRepository.GetAllAsync(1, 10);
+        var contosDomainModel = await contoRepository.GetAllAsync(1, 10);
         {
             if (povo != null)
             {   //Map the domain model into the view model
@@ -271,25 +301,31 @@ public class AdminPovosController : Controller
                         Text = x.Nome,
                         Value = x.Id.ToString()
                     }),
-                    SelectedContinentes = povo.Continentes.Select(x => x.Id.ToString()).ToArray(),
+                    SelectedContinentes = povo.Continentes?.Select(x => x.Id.ToString()).ToArray(),
                     Regioes = regioesDomainModel.Select(x => new SelectListItem
                     {
                         Text = x.Nome,
                         Value = x.Id.ToString()
                     }),
-                    SelectedRegioes = povo.Regioes.Select(x => x.Id.ToString()).ToArray(),
+                    SelectedRegioes = povo.Regioes?.Select(x => x.Id.ToString()).ToArray(),
                     Personagens = personagensDomainModel.Select(x => new SelectListItem
                     {
                         Text = x.Nome,
                         Value = x.Id.ToString()
                     }),
-                    SelectedPersonagens = povo.Personagens.Select(x => x.Id.ToString()).ToArray(),
+                    SelectedPersonagens = povo.Personagens?.Select(x => x.Id.ToString()).ToArray(),
                     Criaturas = criaturasDomainModel.Select(x => new SelectListItem
                     {
                         Text = x.Nome,
                         Value = x.Id.ToString()
                     }),
-                    SelectedCriaturas = povo.Criaturas.Select(x => x.Id.ToString()).ToArray()
+                    SelectedCriaturas = povo.Criaturas?.Select(x => x.Id.ToString()).ToArray(),
+                    Contos = contosDomainModel.Where(x => x.Mundo == povo.Mundo).Select(x => new SelectListItem
+                    {
+                        Text = x.Titulo,
+                        Value = x.Id.ToString()
+                    }),
+                    SelectedContos = povo.Contos?.Select(x => x.Id.ToString()).ToArray()
                 };
                 return View(editPovoRequest);
             }
@@ -302,39 +338,46 @@ public class AdminPovosController : Controller
         if (!ModelState.IsValid)
         {
             editPovoRequest.Mundos = (await mundoRepository.GetAllAsync(1, 10))
-                .Select(x => new SelectListItem
-                {
-                    Text = x.Nome,
-                    Value = x.Id.ToString()
-                }).ToList();
+          .Select(x => new SelectListItem
+          {
+              Text = x.Nome,
+              Value = x.Id.ToString()
+          }).ToList();
 
-            editPovoRequest.Continentes = (await continenteRepository.GetAllAsync(1, 10))
-                .Select(x => new SelectListItem
-                {
-                    Text = x.Nome,
-                    Value = x.Id.ToString()
-                }).ToList();
+            editPovoRequest.Continentes = (await continenteRepository.GetAllAsync(1, 10)).Where(x => x.Mundo?.Id.ToString() == editPovoRequest.SelectedMundo)
+            .Select(x => new SelectListItem
+            {
+                Text = x.Nome,
+                Value = x.Id.ToString()
+            }).ToList();
 
-            editPovoRequest.Regioes = (await regiaoRepository.GetAllAsync(1, 10))
-               .Select(x => new SelectListItem
-               {
-                   Text = x.Nome,
-                   Value = x.Id.ToString()
-               }).ToList();
+            editPovoRequest.Regioes = (await regiaoRepository.GetAllAsync(1, 10)).Where(x => x.Mundo?.Id.ToString() == editPovoRequest.SelectedMundo)
+            .Select(x => new SelectListItem
+            {
+                Text = x.Nome,
+                Value = x.Id.ToString()
+            }).ToList();
 
-            editPovoRequest.Personagens = (await personagemRepository.GetAllAsync(1, 10))
-               .Select(x => new SelectListItem
-               {
-                   Text = x.Nome,
-                   Value = x.Id.ToString()
-               }).ToList();
+            editPovoRequest.Personagens = (await personagemRepository.GetAllAsync(1, 10)).Where(x => x.Mundo?.Id.ToString() == editPovoRequest.SelectedMundo)
+           .Select(x => new SelectListItem
+           {
+               Text = x.Nome,
+               Value = x.Id.ToString()
+           }).ToList();
 
-            editPovoRequest.Criaturas = (await criaturaRepository.GetAllAsync(1, 10))
-               .Select(x => new SelectListItem
-               {
-                   Text = x.Nome,
-                   Value = x.Id.ToString()
-               }).ToList();
+            editPovoRequest.Criaturas = (await criaturaRepository.GetAllAsync(1, 10)).Where(x => x.Mundo?.Id.ToString() == editPovoRequest.SelectedMundo)
+           .Select(x => new SelectListItem
+           {
+               Text = x.Nome,
+               Value = x.Id.ToString()
+           }).ToList();
+
+            editPovoRequest.Contos = (await contoRepository.GetAllAsync(1, 10)).Where(x => x.Mundo?.Id.ToString() == editPovoRequest.SelectedMundo)
+          .Select(x => new SelectListItem
+          {
+              Text = x.Titulo,
+              Value = x.Id.ToString()
+          }).ToList();
 
             return View(editPovoRequest);
         }
@@ -440,6 +483,25 @@ public class AdminPovosController : Controller
         }
         //Maping Criaturas back to domain modal
         povo.Criaturas = selectedCriaturas;
+
+        //Maps Contos from Selected Contos
+        var selectedContos = new List<Conto>();
+
+        foreach (var selectedContoId in editPovoRequest.SelectedContos)
+        {
+            if (!string.IsNullOrEmpty(selectedContoId))
+            {
+                var selectedContoIdAsGuid = Guid.Parse(selectedContoId);
+                var existingConto = await contoRepository.GetAsync(selectedContoIdAsGuid, 1, 10);
+
+                if (existingConto != null)
+                {
+                    selectedContos.Add(existingConto);
+                }
+            }
+        }
+        //Maping Contos back to domain modal
+        povo.Contos = selectedContos;
 
         var updatedPovo = await povoRepository.UpdateAsync(povo, 1, 10);
 

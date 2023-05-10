@@ -62,12 +62,12 @@ public class RegiaoRepository : IRegiaoRepository
             .ToListAsync();
     }
 
-    public async Task<IEnumerable<Regiao>> GetAllWithoutContinenteAndMundoAsync(Guid mundoId, int page, int pageSize)
+    public async Task<IEnumerable<Regiao>> GetAllWithoutContinenteAsync(Guid mundoId, int page, int pageSize)
     {
         return await tavernaDbContext.Regioes          
             .Include(x => x.Continente)
             .Include(x => x.Mundo)
-            .Where(x => x.Mundo.Id == mundoId || x.Mundo == null)
+            .Where(x => x.Mundo.Id == mundoId && x.Continente == null)
             .Skip((page - 1) * pageSize)
             .Take(pageSize)
             .ToListAsync();
@@ -150,7 +150,11 @@ public class RegiaoRepository : IRegiaoRepository
             existingRegiao.UrlHandle = regiao.UrlHandle;
             existingRegiao.Visible = regiao.Visible;
             existingRegiao.Mundo = regiao.Mundo;
-            existingRegiao.Continente = regiao.Continente;       
+            existingRegiao.Continente = regiao.Continente; 
+            existingRegiao.Personagens = regiao.Personagens;
+            existingRegiao.Criaturas = regiao.Criaturas;
+            existingRegiao.Povos = regiao.Povos;
+            existingRegiao.Contos = regiao.Contos;
             await tavernaDbContext.SaveChangesAsync();
 
             return existingRegiao;

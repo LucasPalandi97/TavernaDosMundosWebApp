@@ -13,14 +13,14 @@
         <div class="row row-cols-1 row-cols-md-2 ">
             <div class="align-self-md-start">
                 <div class="mb-3">
-                    <label for="nome" class="form-label">Continent</label>
-                    <input type="text" class="form-control" id="nome" placeholder="Continent Name" asp-for="Nome" required />
+                    <label for="nome" class="form-label">Region</label>
+                    <input type="text" class="form-control" id="nome" placeholder="Region Name" asp-for="Nome" required />
                     <span class="text-danger" asp-validation-for="Nome"></span>
                 </div>
             </div>
             <div class="mb-5">
                 <label for="CurtaDescricao" class="form-label">Short Description</label>
-                <textarea class="form-control h-100" type="" placeholder="Character's Short Description" id="CurtaDescricao" name="CurtaDescricao" asp-for="CurtaDescricao" required>
+                <textarea class="form-control h-100" type="" placeholder="Region Short Description" id="CurtaDescricao" name="CurtaDescricao" asp-for="CurtaDescricao" required>
                 <span class="text-danger" asp-validation-for="CurtaDescricao"></span>
             </textarea>
             </div>
@@ -87,19 +87,38 @@
         <div class="w-100 mb-3 d-flex justify-content-center align-items-center flex-column">
             <div class="col-md-4 mb-1">
                 <label class="form-label">World</label>
-                <select id="SelectedMundo" class="form-select" asp-items="@Model.Mundos" asp-for="SelectedMundo" onchange="updateContinentes(), updateContos() ">
+                <select id="SelectedMundo" class="form-select" asp-items="@Model.Mundos" asp-for="SelectedMundo" onchange="updateContinentesByMundo(), updatePersonagensSemRegiaoByMundo(), updateCriaturasByMundo(), updatePovosByMundo(),updateContosByMundo() ">
                     <option value="" class="text-danger">No World</option>
                 </select>
             </div>
             <div class="col-md-4 mb-1">
                 <label class="form-label">Continent</label>
-                <select id="SelectedContinentes" class="form-control" asp-items="@Model.Continentes" asp-for="SelectedContinente" onchange="updateRegioes()" data-single>
+                <select id="SelectedContinentes" class="form-control" asp-items="@Model.Continentes" asp-for="SelectedContinente" data-single>
                     <option value="" class="text-danger">No Continent</option>
                 </select>
             </div>
         </div>
 
+        <div class="justify-content-start">
+            <button type="button" class="btn btn-secondary p-0" style="height:2rem; width:3rem;" data-bs-toggle="popover" data-bs-content="Showing Characters from selected World that have no Region appended."><i class="bi bi-lightbulb"></i></button>
+        </div>
+
         <div class="row text-center row-cols-2 row-cols-md-3 justify-content-center">
+            <div class="mb-3">
+                <label class="form-label">Characters</label>
+                <select id="SelectedPersonagens" class="form-select" style="min-height:12rem" asp-items="@Model.Personagens" asp-for="SelectedPersonagens" multiple>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Creatures</label>
+                <select id="SelectedCriaturas" class="form-select" style="min-height:12rem" asp-items="@Model.Criaturas" asp-for="SelectedCriaturas" multiple>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Peoples</label>
+                <select id="SelectedPovos" class="form-select" style="min-height:12rem" asp-items="@Model.Povos" asp-for="SelectedPovos" multiple>
+                </select>
+            </div>
             <div class="mb-3">
                 <label class="form-label">Stories</label>
                 <select id="SelectedContos" class="form-select" style="min-height:12rem" asp-items="@Model.Contos" asp-for="SelectedContos" multiple>
@@ -116,5 +135,6 @@
 
 @section Scripts
     {
+    <script type="text/javascript" src="~/js/ByMundoSelects.js"></script>
     <script type="text/javascript" src="~/js/Formulario.js"></script>
 }

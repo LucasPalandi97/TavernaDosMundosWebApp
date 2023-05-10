@@ -1,8 +1,6 @@
 ﻿@using TdM.Database.Models.Domain.Enums;
 @model TdM.Web.Models.ViewModels.EditContinenteRequest;
 @{
-    string popoverContent = "Showing:\nRegions that have no World appended\nRegions from World that have no Continent appended\nEntities from World";
-
 }
 <partial name="_Navbar2" />
 <div class="row mt-4 mb-5">
@@ -14,7 +12,7 @@
     @if (Model != null)
     {
         <form method="post">
-            
+
             <div class="row row-cols-1 row-cols-md-2 ">
                 <div class="align-self-md-start">
                     <div class="mb-3 ">
@@ -29,9 +27,9 @@
                 </div>
                 <div class="mb-5">
                     <label for="CurtaDescricao" class="form-label">Short Description</label>
-                    <textarea class="form-control h-100" type="" placeholder="Continent's Short Description" id="CurtaDescricao" name="CurtaDescricao" asp-for="CurtaDescricao" required>
+                    <textarea class="form-control h-100" type="" placeholder="Continent Short Description" id="CurtaDescricao" name="CurtaDescricao" asp-for="CurtaDescricao" required>
                     <span class="text-danger" asp-validation-for="CurtaDescricao"></span>
-                </textarea>
+                    </textarea>
                 </div>
             </div>
 
