@@ -22,15 +22,15 @@
                     <label class="form-label">Email</label>
                     <input type="email" id="mail" class="form-control" asp-for="Email" required />
                     <span class="text-danger" asp-validation-for="Email"></span>
-
                 </div>
 
                 <div class="mb-3">
                     <label class="form-label">Password</label>
                     <input type="password" id="password" class="form-control" asp-for="Password" required minlength="6"/>
                     <span class="text-danger" asp-validation-for="Password"></span>
-
                 </div>
+
+                <p>When creating an account, you agree with our <a asp-action="TermsOfUse" asp-controller="Account">terms of use</a></p>
 
                 <div class="mb-3">
                     <button type="submit" class="btn btn-dark">Register</button>

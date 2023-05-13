@@ -98,4 +98,10 @@ public class AccountController : Controller
     {
         return View();
     }
+
+    [HttpGet]
+    public ActionResult TermsOfUse()
+    {
+        return View();
+    }
 }
