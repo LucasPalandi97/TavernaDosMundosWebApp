@@ -125,21 +125,25 @@
                 <div class="mb-3">
                     <label class="form-label">Continents</label>
                     <select id="SelectedContinentes" class="form-control" style="min-height:12rem" asp-items="@Model.Continentes" asp-for="SelectedContinentes" onchange="updateRegioes()" multiple>
+                        <option class="text-danger" value="">No Continent</option>
                     </select>
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Regions</label>
                     <select id="SelectedRegioes" class="form-select" style="min-height:12rem" asp-items="@Model.Regioes" asp-for="SelectedRegioes" multiple>
+                        <option class="text-danger" value="">No Region</option>
                     </select>
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Peoples</label>
                     <select id="SelectedPovos" class="form-select" style="min-height:12rem" asp-items="@Model.Povos" asp-for="SelectedPovos" multiple>
+                        <option class="text-danger" value="">No People</option>
                     </select>
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Stories</label>
                     <select id="SelectedContos" class="form-select" style="min-height:12rem" asp-items="@Model.Contos" asp-for="SelectedContos" multiple>
+                        <option class="text-danger" value="">No Story</option>
                     </select>
                 </div>
             </div>

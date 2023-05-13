@@ -5,8 +5,8 @@
 @{
     ViewData["Title"] = Model.Nome + ", " + Model.CurtaDescricao;
 
-    // Set the value of mundoUrlHandle based on your logic
-    var mundoUrlHandle = Model.Mundo.UrlHandle;
+    // Set the value of mundoUrlHandle
+    var mundoUrlHandle = Model.Mundo?.UrlHandle;
 }
 <head>
     <link type="text/css" rel="stylesheet" href="~/css/IndexContinente.css" />

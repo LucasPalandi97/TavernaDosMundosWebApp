@@ -80,8 +80,6 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseResponseCompression();
-
 app.UseStaticFiles();
 
 app.UseSession();

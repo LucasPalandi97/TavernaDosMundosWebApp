@@ -8,7 +8,7 @@ public class AuthDbContext : IdentityDbContext
 {
     public AuthDbContext(DbContextOptions<AuthDbContext> options) : base(options)
     {
-
+        Database.EnsureCreated();
     }
 
     protected override void OnModelCreating(ModelBuilder builder)

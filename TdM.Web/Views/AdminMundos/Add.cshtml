@@ -68,13 +68,13 @@
                 </div>
                 <div class="form-check form-switch mb-3">
                     <label class="form-check-label" for="visible">Visible?</label>
-                    <input class="form-check-input" type="checkbox" id="visible" asp-for="Visible" checked >
+                    <input class="form-check-input" type="checkbox" id="visible" asp-for="Visible" checked>
                     <span class="text-danger" asp-validation-for="Visible"></span>
                 </div>
             </div>
         </div>
 
-        <div class="justify-content-end">
+        <div class="justify-content-start">
             <button type="button" class="btn btn-secondary p-0" style="height:2rem; width:3rem;" data-bs-toggle="popover" data-bs-content="Showing Entities that have no World appended"><i class="bi bi-lightbulb"></i></button>
         </div>
 
@@ -82,32 +82,38 @@
             <div class="mb-3">
                 <label class="form-label">Continents</label>
                 <select id="SelectedNullContinentes" class="form-control" style="min-height:12rem" asp-items="@Model.Continentes" asp-for="SelectedContinentes" onchange="updateRegioes()" multiple>
+                    <option class="text-danger" value="">No Continent</option>
                 </select>
             </div>
             <div class="mb-3">
                 <label class="form-label">Regions</label>
-                <select id="SelectedNullRegioes" class="form-select" style="min-height:12rem" asp-items="@Model.Regioes" asp-for="SelectedRegioes" onchange="updatePersonagens(), updateCriaturas()" multiple >
+                <select id="SelectedNullRegioes" class="form-select" style="min-height:12rem" asp-items="@Model.Regioes" asp-for="SelectedRegioes" onchange="updatePersonagens(), updateCriaturas()" multiple>
+                    <option class="text-danger" value="">No Region</option>
                 </select>
             </div>
             <div class="mb-3">
                 <label class="form-label">Characters</label>
                 <select id="SelectedNullPersonagens" class="form-select" style="min-height:12rem" asp-items="@Model.Personagens" asp-for="SelectedPersonagens" multiple>
+                    <option class="text-danger" value="">No Character</option>
                 </select>
             </div>
             <div class="mb-3">
                 <label class="form-label">Creatures</label>
                 <select id="SelectedNullCriaturas" class="form-select" style="min-height:12rem" asp-items="@Model.Criaturas" asp-for="SelectedCriaturas" multiple>
+                    <option class="text-danger" value="">No Creature</option>
                 </select>
             </div>
-
             <div class="mb-3">
                 <label class="form-label">Peoples</label>
                 <select id="SelectedNullPovos" class="form-select" style="min-height:12rem" asp-items="@Model.Povos" asp-for="SelectedPovos" multiple>
+                    <option class="text-danger" value="">No People</option>
+
                 </select>
             </div>
             <div class="mb-3">
                 <label class="form-label">Stories</label>
                 <select id="SelectedNullContos" class="form-select" style="min-height:12rem" asp-items="@Model.Contos" asp-for="SelectedContos" multiple>
+                    <option class="text-danger" value="">No Story</option>
                 </select>
             </div>
         </div>

@@ -38,7 +38,6 @@
                     <input type="file" id="ImageCardUpload" class="form-control" />
                 </div>
                 <div class="mb-3">
-                    <label class="form-label" for="ImgCardUrl">Display Image</label>
                     <input type="text" class="form-control" id="ImgCardUrl" placeholder="Display image URL" asp-for="ImgCard" />
                     <img src="" id="ImageCardUploadDisplay" class="w-100" style="display:none;width:300px; margin-top:1em;" />
                 </div>
@@ -49,7 +48,6 @@
                     <input type="file" id="ImageBoxUpload" class="form-control">
                 </div>
                 <div class="mb-3">
-                    <label class="form-label" for="ImgBoxUrl">Content Image</label>
                     <input type="text" class="form-control" id="ImgBoxUrl" placeholder="Content image URL" asp-for="ImgBox" />
                     <img src="" id="ImageBoxUploadDisplay" class="w-100" style="display:none;width:300px; margin-top:1em;">
                 </div>
@@ -78,7 +76,7 @@
         <div class="row justify-content-center mb-3">
             <div class="col-12 col-md-4 mb-1">
                 <label class="form-label">World</label>
-                <select id="SelectedMundo" class="form-select" asp-items="@Model.Mundos" asp-for="SelectedMundo" onchange="updateContinentesByMundo(), updatePersonagensByMundo(), updateCriaturasByMundo(), updateContosByMundo() ">
+                <select id="SelectedMundo" class="form-select" asp-items="@Model.Mundos" asp-for="SelectedMundo" onchange="updateContinentesByMundo(), updatePersonagensByMundo(), updateCriaturasByMundo(), updateContosByMundo()">
                     <option value="" class="text-danger">No World</option>
                 </select>
             </div>
@@ -88,26 +86,31 @@
             <div class="mb-3">
                 <label class="form-label">Continents</label>
                 <select id="SelectedContinentes" class="form-control" style="min-height:12rem" asp-items="@Model.Continentes" asp-for="SelectedContinentes" onchange="updateByContinenteRegioesByMundo()" multiple>
+                    <option class="text-danger" value="">No Continent</option>
                 </select>
             </div>
             <div class="mb-3">
                 <label class="form-label">Regions</label>
-                <select id="SelectedRegioes" class="form-select" style="min-height:12rem" asp-items="@Model.Regioes" asp-for="SelectedRegioes" onchange="" multiple>
+                <select id="SelectedRegioes" class="form-select" style="min-height:12rem" asp-items="@Model.Regioes" asp-for="SelectedRegioes" multiple>
+                    <option class="text-danger" value="">No Region</option>
                 </select>
             </div>
             <div class="mb-3">
                 <label class="form-label">Characters</label>
                 <select id="SelectedPersonagens" class="form-select" style="min-height:12rem" asp-items="@Model.Personagens" asp-for="SelectedPersonagens" multiple>
+                    <option class="text-danger" value="">No Character</option>
                 </select>
             </div>
             <div class="mb- ">
                 <label class="form-label">Creatures</label>
                 <select id="SelectedCriaturas" class="form-select" style="min-height:12rem" asp-items="@Model.Criaturas" asp-for="SelectedCriaturas" multiple>
+                    <option class="text-danger" value="">No Creature</option>
                 </select>
             </div>
             <div class="mb-3">
                 <label class="form-label">Stories</label>
                 <select id="SelectedContos" class="form-select" style="min-height:12rem" asp-items="@Model.Contos" asp-for="SelectedContos" multiple>
+                    <option class="text-danger" value="">No Story</option>
                 </select>
             </div>
         </div>

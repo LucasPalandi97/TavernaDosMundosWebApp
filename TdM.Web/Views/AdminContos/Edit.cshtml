@@ -48,7 +48,6 @@
                         <input type="file" id="ImageCardUpload" class="form-control" />
                     </div>
                     <div class="mb-3">
-                        <label class="form-label" for="ImgCardUrl">Display Image</label>
                         <input type="text" class="form-control" id="ImgCardUrl" placeholder="Display image URL" asp-for="ImgCard" />
                         @if (Model.ImgCard != null)
                         {
@@ -68,7 +67,6 @@
                         <input type="file" id="ImageBoxUpload" class="form-control">
                     </div>
                     <div class="mb-3">
-                        <label class="form-label" for="ImgBoxUrl">Content Image</label>
                         <input type="text" class="form-control" id="ImgBoxUrl" placeholder="Content image URL" asp-for="ImgBox" />
                         @if (Model.ImgBox != null)
                         {
@@ -113,7 +111,7 @@
             <div class="row justify-content-center mb-3">
                 <div class="col-12 col-md-4 mb-1">
                     <label class="form-label">World</label>
-                    <select id="SelectedMundo" class="form-select" asp-items="@Model.Mundos" asp-for="SelectedMundo" onchange="contoContinentes(), contoRegioes(), contoPersonagens(), contoCriaturas(), contoPovos(), contoContos()">
+                    <select id="SelectedMundo" class="form-select" asp-items="@Model.Mundos" asp-for="SelectedMundo" onchange="updateContinentesByMundo(), updatePersonagensByMundo(), updateCriaturasByMundo(), updatePovosByMundo()">
                         <option value="" class="text-danger">No World</option>
                     </select>
                 </div>
@@ -126,27 +124,33 @@
             <div class="row text-center row-cols-2 row-cols-md-3">
                 <div class="mb-3">
                     <label class="form-label">Continents</label>
-                    <select id="SelectedContinentes" class="form-control" style="min-height:12rem" asp-items="@Model.Continentes" asp-for="SelectedContinentes" multiple>
+                    <select id="SelectedContinentes" class="form-control" style="min-height:12rem" asp-items="@Model.Continentes" asp-for="SelectedContinentes" onchange="updateByContinenteRegioesByMundo()" ultiple>
+                        <option class="text-danger" value="">No Continent</option>
                     </select>
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Regions</label>
                     <select id="SelectedRegioes" class="form-select" style="min-height:12rem" asp-items="@Model.Regioes" asp-for="SelectedRegioes" multiple>
+                        <option class="text-danger" value="">No Region</option>
                     </select>
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Characters</label>
                     <select id="SelectedPersonagens" class="form-select" style="min-height:12rem" asp-items="@Model.Personagens" asp-for="SelectedPersonagens" multiple>
+                        <option class="text-danger" value="">No Character</option>
                     </select>
                 </div>
-                <div class="mb- ">
+                <div class="mb-3">
                     <label class="form-label">Creatures</label>
                     <select id="SelectedCriaturas" class="form-select" style="min-height:12rem" asp-items="@Model.Criaturas" asp-for="SelectedCriaturas" multiple>
+                        <option class="text-danger" value="">No Creature</option>
+
                     </select>
                 </div>
                 <div class="mb-3">
                     <label class="form-label">People</label>
                     <select id="SelectedPovos" class="form-select" style="min-height:12rem" asp-items="@Model.Povos" asp-for="SelectedPovos" multiple>
+                        <option class="text-danger" value="">No People</option>
                     </select>
                 </div>
             </div>
@@ -185,6 +189,6 @@
 
 @section Scripts
     {
+    <script type="text/javascript" src="~/js/ByMundoSelects.js"></script>
     <script type="text/javascript" src="~/js/Formulario.js"></script>
-    <script type="text/javascript" src="~/js/ContoSelects.js"></script>
 }

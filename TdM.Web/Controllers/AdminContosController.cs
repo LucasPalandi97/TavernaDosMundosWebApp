@@ -34,7 +34,7 @@ public class AdminContosController : Controller
 
     public async Task<IActionResult> ListContosByMundo(Guid id)
     {
-        IEnumerable<Conto> contos = await contoRepository.GetAllByMundoAsync(id, 1, 10);
+        IEnumerable<Conto> contos = await contoRepository.GetAllByMundoAsync(id, 1, 100);
         var orderedContos = contos.OrderBy(x => x.Titulo);
         var selectListItems = orderedContos.Select(x => new SelectListItem
         {
@@ -48,10 +48,10 @@ public class AdminContosController : Controller
     public async Task<IActionResult> Add()
     {
         //get mundos from repository
-        var mundos = await mundoRepository.GetAllAsync(1, 10);
+        var mundos = await mundoRepository.GetAllAsync(1, 100);
         var model = new AddContoRequest
         {
-            Mundos = mundos.Select(x => new SelectListItem { Text = x.Nome, Value = x.Id.ToString() })
+            Mundos = mundos.OrderBy(x => x.Nome).Select(x => new SelectListItem { Text = x.Nome, Value = x.Id.ToString() })
         };
         return View(model);
     }
@@ -62,42 +62,42 @@ public class AdminContosController : Controller
 
         if (!ModelState.IsValid)
         {
-            addContoRequest.Mundos = (await mundoRepository.GetAllAsync(1, 10))
+            addContoRequest.Mundos = (await mundoRepository.GetAllAsync(1, 100))
                 .Select(x => new SelectListItem
                 {
                     Text = x.Nome,
                     Value = x.Id.ToString()
                 }).ToList();
 
-            addContoRequest.Continentes = (await continenteRepository.GetAllAsync(1, 10))
+            addContoRequest.Continentes = (await continenteRepository.GetAllAsync(1, 100)).Where(x => x.Mundo?.Id.ToString() == addContoRequest.SelectedMundo && x.Mundo != null).OrderBy(x => x.Nome)
                 .Select(x => new SelectListItem
                 {
                     Text = x.Nome,
                     Value = x.Id.ToString()
                 }).ToList();
 
-            addContoRequest.Regioes = (await regiaoRepository.GetAllAsync(1, 10))
+            addContoRequest.Regioes = (await regiaoRepository.GetAllAsync(1, 100)).Where(x => x.Mundo?.Id.ToString() == addContoRequest.SelectedMundo && x.Mundo != null).OrderBy(x => x.Nome)
                .Select(x => new SelectListItem
                {
                    Text = x.Nome,
                    Value = x.Id.ToString()
                }).ToList();
 
-            addContoRequest.Personagens = (await personagemRepository.GetAllAsync(1, 10))
+            addContoRequest.Personagens = (await personagemRepository.GetAllAsync(1, 100)).Where(x => x.Mundo?.Id.ToString() == addContoRequest.SelectedMundo && x.Mundo != null).OrderBy(x => x.Nome)
                .Select(x => new SelectListItem
                {
                    Text = x.Nome,
                    Value = x.Id.ToString()
                }).ToList();
 
-            addContoRequest.Criaturas = (await criaturaRepository.GetAllAsync(1, 10))
+            addContoRequest.Criaturas = (await criaturaRepository.GetAllAsync(1, 100)).Where(x => x.Mundo?.Id.ToString() == addContoRequest.SelectedMundo && x.Mundo != null).OrderBy(x => x.Nome)
                .Select(x => new SelectListItem
                {
                    Text = x.Nome,
                    Value = x.Id.ToString()
                }).ToList();
 
-            addContoRequest.Povos = (await povoRepository.GetAllAsync(1, 10))
+            addContoRequest.Povos = (await povoRepository.GetAllAsync(1, 100)).Where(x => x.Mundo?.Id.ToString() == addContoRequest.SelectedMundo && x.Mundo != null).OrderBy(x => x.Nome)
                .Select(x => new SelectListItem
                {
                    Text = x.Nome,
@@ -239,7 +239,7 @@ public class AdminContosController : Controller
     public async Task<IActionResult> List()
     {
         // Use dbContext to read the conto
-        var contos = await contoRepository.GetAllAsync(1, 10);
+        var contos = await contoRepository.GetAllAsync(1, 100);
         return View(contos);
     }
 
@@ -248,12 +248,12 @@ public class AdminContosController : Controller
     {
         //Retrieve Result from repository
         var conto = await contoRepository.GetAsync(id, 1, 10);
-        var mundosDomainModel = await mundoRepository.GetAllAsync(1, 10);
-        var continentesDomainModel = await continenteRepository.GetAllAsync(1, 10);
-        var regioesDomainModel = await regiaoRepository.GetAllAsync(1, 10);
-        var personagensDomainModel = await personagemRepository.GetAllAsync(1, 10);
-        var criaturasDomainModel = await criaturaRepository.GetAllAsync(1, 10);
-        var povosDomainModel = await povoRepository.GetAllAsync(1, 10);
+        var mundosDomainModel = await mundoRepository.GetAllAsync(1, 100);
+        var continentesDomainModel = await continenteRepository.GetAllAsync(1, 100);
+        var regioesDomainModel = await regiaoRepository.GetAllAsync(1, 100);
+        var personagensDomainModel = await personagemRepository.GetAllAsync(1, 100);
+        var criaturasDomainModel = await criaturaRepository.GetAllAsync(1, 100);
+        var povosDomainModel = await povoRepository.GetAllAsync(1, 100);
         {
             if (conto != null)
             {   //Map the domain model into the view model
@@ -269,42 +269,49 @@ public class AdminContosController : Controller
                     PublishedDate = conto.PublishedDate,
                     UrlHandle = conto.UrlHandle,
                     Visible = conto.Visible,
-                    Mundos = mundosDomainModel.Select(x => new SelectListItem
+
+                    Mundos = mundosDomainModel.OrderBy(x => x.Nome)
+                    .Select(x => new SelectListItem
                     {
                         Text = x.Nome,
                         Value = x.Id.ToString()
                     }),
                     SelectedMundo = conto.Mundo?.Id.ToString(),
-                    Continentes = continentesDomainModel.Select(x => new SelectListItem
+                    Continentes = continentesDomainModel.Where(x => x.Mundo == conto.Mundo && x.Mundo != null).OrderBy(x => x.Nome)
+                    .Select(x => new SelectListItem
                     {
                         Text = x.Nome,
                         Value = x.Id.ToString()
                     }),
-                    SelectedContinentes = conto.Continentes.Select(x => x.Id.ToString()).ToArray(),
-                    Regioes = regioesDomainModel.Select(x => new SelectListItem
+                    SelectedContinentes = conto.Continentes?.Select(x => x.Id.ToString()).ToArray(),
+                    Regioes = regioesDomainModel.Where(x => conto.Continentes.SelectMany(c => c.Regioes).Contains(x)).OrderBy(x => x.Nome)
+                    .Select(x => new SelectListItem
                     {
                         Text = x.Nome,
                         Value = x.Id.ToString()
                     }),
-                    SelectedRegioes = conto.Regioes.Select(x => x.Id.ToString()).ToArray(),
-                    Personagens = personagensDomainModel.Select(x => new SelectListItem
+                    SelectedRegioes = conto.Regioes?.Select(x => x.Id.ToString()).ToArray(),
+                    Personagens = personagensDomainModel.Where(x => x.Mundo == conto.Mundo && x.Mundo != null).OrderBy(x => x.Nome)
+                    .Select(x => new SelectListItem
                     {
                         Text = x.Nome,
                         Value = x.Id.ToString()
                     }),
-                    SelectedPersonagens = conto.Personagens.Select(x => x.Id.ToString()).ToArray(),
-                    Criaturas = criaturasDomainModel.Select(x => new SelectListItem
+                    SelectedPersonagens = conto.Personagens?.Select(x => x.Id.ToString()).ToArray(),
+                    Criaturas = criaturasDomainModel.Where(x => x.Mundo == conto.Mundo && x.Mundo != null).OrderBy(x => x.Nome)
+                    .Select(x => new SelectListItem
                     {
                         Text = x.Nome,
                         Value = x.Id.ToString()
                     }),
-                    SelectedCriaturas = conto.Criaturas.Select(x => x.Id.ToString()).ToArray(),
-                    Povos = povosDomainModel.Select(x => new SelectListItem
+                    SelectedCriaturas = conto.Criaturas?.Select(x => x.Id.ToString()).ToArray(),
+                    Povos = povosDomainModel.Where(x => x.Mundo == conto.Mundo && x.Mundo != null).OrderBy(x => x.Nome)
+                    .Select(x => new SelectListItem
                     {
                         Text = x.Nome,
                         Value = x.Id.ToString()
                     }),
-                    SelectedPovos = conto.Povos.Select(x => x.Id.ToString()).ToArray()
+                    SelectedPovos = conto.Povos?.Select(x => x.Id.ToString()).ToArray()
                 };
                 return View(editContoRequest);
             }
@@ -316,42 +323,42 @@ public class AdminContosController : Controller
     {
         if (!ModelState.IsValid)
         {
-            editContoRequest.Mundos = (await mundoRepository.GetAllAsync(1, 10))
+            editContoRequest.Mundos = (await mundoRepository.GetAllAsync(1, 100)).OrderBy(x => x.Nome)
                 .Select(x => new SelectListItem
                 {
                     Text = x.Nome,
                     Value = x.Id.ToString()
                 }).ToList();
 
-            editContoRequest.Continentes = (await continenteRepository.GetAllAsync(1, 10))
+            editContoRequest.Continentes = (await continenteRepository.GetAllAsync(1, 100)).Where(x => x.Mundo?.Id.ToString() == editContoRequest.SelectedMundo && x.Mundo != null).OrderBy(x => x.Nome)
                 .Select(x => new SelectListItem
                 {
                     Text = x.Nome,
                     Value = x.Id.ToString()
                 }).ToList();
 
-            editContoRequest.Regioes = (await regiaoRepository.GetAllAsync(1, 10))
+            editContoRequest.Regioes = (await regiaoRepository.GetAllAsync(1, 100)).Where(x => editContoRequest.SelectedContinentes.Contains(x.Continente?.Id.ToString()) && x.Continente != null).OrderBy(x => x.Nome)
                .Select(x => new SelectListItem
                {
                    Text = x.Nome,
                    Value = x.Id.ToString()
                }).ToList();
 
-            editContoRequest.Personagens = (await personagemRepository.GetAllAsync(1, 10))
+            editContoRequest.Personagens = (await personagemRepository.GetAllAsync(1, 100)).Where(x => x.Mundo?.Id.ToString() == editContoRequest.SelectedMundo && x.Mundo != null).OrderBy(x => x.Nome)
                .Select(x => new SelectListItem
                {
                    Text = x.Nome,
                    Value = x.Id.ToString()
                }).ToList();
 
-            editContoRequest.Criaturas = (await criaturaRepository.GetAllAsync(1, 10))
+            editContoRequest.Criaturas = (await criaturaRepository.GetAllAsync(1, 100)).Where(x => x.Mundo?.Id.ToString() == editContoRequest.SelectedMundo && x.Mundo != null).OrderBy(x => x.Nome)
                .Select(x => new SelectListItem
                {
                    Text = x.Nome,
                    Value = x.Id.ToString()
                }).ToList();
 
-            editContoRequest.Povos = (await povoRepository.GetAllAsync(1, 10))
+            editContoRequest.Povos = (await povoRepository.GetAllAsync(1, 100)).Where(x => x.Mundo?.Id.ToString() == editContoRequest.SelectedMundo && x.Mundo != null).OrderBy(x => x.Nome)
                .Select(x => new SelectListItem
                {
                    Text = x.Nome,

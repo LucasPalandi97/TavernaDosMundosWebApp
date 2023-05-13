@@ -40,7 +40,6 @@
                     <input type="file" id="ImageCardUpload" class="form-control" />
                 </div>
                 <div class="mb-3">
-                    <label class="form-label" for="ImgCardUrl">Display Image</label>
                     <input type="text" class="form-control" id="ImgCardUrl" placeholder="Display image URL" asp-for="ImgCard" />
                     <img src="" id="ImageCardUploadDisplay" style="display:none;width:300px; margin-top:1em;" />
                 </div>
@@ -51,7 +50,6 @@
                     <input type="file" id="ImageBoxUpload" class="form-control">
                 </div>
                 <div class="mb-3">
-                    <label class="form-label" for="ImgBoxUrl">Content Image</label>
                     <input type="text" class="form-control" id="ImgBoxUrl" placeholder="Content image URL" asp-for="ImgBox" />
                     <img src="" id="ImageBoxUploadDisplay" style="display:none;width:300px; margin-top:1em;">
                 </div>
@@ -82,12 +80,12 @@
                 <input class="form-check-input" type="checkbox" id="visible" asp-for="Visible" checked>
                 <span class="text-danger" asp-validation-for="Visible"></span>
             </div>
-        </div>     
+        </div>
 
         <div class="row justify-content-center mb-3">
             <div class="col-12 col-md-4 mb-1">
                 <label class="form-label">World</label>
-                <select id="SelectedMundo" class="form-select" asp-items="@Model.Mundos" asp-for="SelectedMundo" onchange="updateContinentes(), updateRegioes(), updatePersonagens(), updateCriaturas(), updatePovos()">
+                <select id="SelectedMundo" class="form-select" asp-items="@Model.Mundos" asp-for="SelectedMundo" onchange="updateContinentesByMundo(), updatePersonagensByMundo(), updateCriaturasByMundo(), updatePovosByMundo()">
                     <option value="" class="text-danger">No World</option>
                 </select>
             </div>
@@ -100,27 +98,33 @@
         <div class="row text-center row-cols-2 row-cols-md-3">
             <div class="mb-3">
                 <label class="form-label">Continents</label>
-                <select id="SelectedContinentes" class="form-control" style="min-height:12rem" asp-items="@Model.Continentes" asp-for="SelectedContinentes" multiple>
+                <select id="SelectedContinentes" class="form-control" style="min-height:12rem" asp-items="@Model.Continentes" asp-for="SelectedContinentes" onchange="updateByContinenteRegioesByMundo()" multiple>
+                    <option class="text-danger" value="">No Continent</option>
                 </select>
             </div>
             <div class="mb-3">
                 <label class="form-label">Regions</label>
                 <select id="SelectedRegioes" class="form-select" style="min-height:12rem" asp-items="@Model.Regioes" asp-for="SelectedRegioes" multiple>
+                    <option class="text-danger" value="">No Region</option>
                 </select>
             </div>
             <div class="mb-3">
                 <label class="form-label">Characters</label>
                 <select id="SelectedPersonagens" class="form-select" style="min-height:12rem" asp-items="@Model.Personagens" asp-for="SelectedPersonagens" multiple>
+                    <option class="text-danger" value="">No Character</option>
                 </select>
             </div>
             <div class="mb-3">
                 <label class="form-label">Creatures</label>
                 <select id="SelectedCriaturas" class="form-select" style="min-height:12rem" asp-items="@Model.Criaturas" asp-for="SelectedCriaturas" multiple>
+                    <option class="text-danger" value="">No Creature</option>
+
                 </select>
             </div>
             <div class="mb-3">
                 <label class="form-label">People</label>
                 <select id="SelectedPovos" class="form-select" style="min-height:12rem" asp-items="@Model.Povos" asp-for="SelectedPovos" multiple>
+                    <option class="text-danger" value="">No People</option>
                 </select>
             </div>
         </div>
