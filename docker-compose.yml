@@ -1,5 +1,4 @@
-
-version: '3.4'
+version: '3.8'
 
 services:
   tdm.web:
@@ -9,35 +8,24 @@ services:
       dockerfile: TdM.Web/Dockerfile
     container_name: TavernaDosMundos.Web
     depends_on:
-      - TavernaDb
-      - TavernaAuthDb
+      - taverna-db
     environment:
-      ConnectionStrings__TavernaConnection: "Server=TavernaDb;Database=TavernaDb;User Id=sa;Password=PastelDosMundos@123;TrustServerCertificate=True"
-      ConnectionStrings__TavernaAuthDbConnectionString: "Server=TavernaAuthDb;Database=TavernaAuthDb;User Id=sa;Password=PastelDosMundos@123;TrustServerCertificate=True"    
+      ConnectionStrings__TavernaConnection: "Server=taverna-db;Database=Content;User Id=sa;Password=PastelDosMundos@123;TrustServerCertificate=True"
+      ConnectionStrings__TavernaAuthDbConnectionString: "Server=taverna-db;Database=Authentication;User Id=sa;Password=PastelDosMundos@123;TrustServerCertificate=True"    
     ports:
       - "8000:80"
-  TavernaDb:
+  taverna-db:
     image: "mcr.microsoft.com/mssql/server:2022-latest"
-    container_name: TavernaDb
+    container_name: taverna-db
     environment:
       SA_PASSWORD: "PastelDosMundos@123"
       ACCEPT_EULA: "Y"
-      MSSQL_DATABASE: "TavernaDb"
+      MSSQL_DATABASE: "Content"
+      MSSQL_ENCRYPT: "false"
     ports:
       - "1433:1433"
     volumes:
-      - ./TavernaDbdata:/var/opt/mssql/data
-  TavernaAuthDb:
-    image: "mcr.microsoft.com/mssql/server:2022-latest"
-    container_name: AuthDb
-    environment:
-      SA_PASSWORD: "PastelDosMundos@123"
-      ACCEPT_EULA: "Y"
-      MSSQL_DATABASE: "TavernaAuthDb"
-    ports:
-      - "1435:1433"
-    volumes:
-      - ./TavernaAuthDbdata:/var/opt/mssql/data
+      - ./db-data:/var/opt/mssql/data
+
 volumes:
-  TavernaDbdata:
-  TavernaAuthDbdata:
+  db-data:

@@ -5,8 +5,7 @@
       "commandVersion": "1.0",
       "serviceActions": {
         "tdm.web": "StartDebugging",
-        "TavernaAuthDb": "StartWithoutDebugging",
-        "TavernaDb": "StartWithoutDebugging"
+        "taverna-db": "StartWithoutDebugging"
       }
     }
   }
