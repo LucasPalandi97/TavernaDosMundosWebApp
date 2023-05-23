@@ -1,0 +1,194 @@
+﻿@model TdM.Web.Models.ViewModels.EditContoRequest
+@using TdM.Database.Models.Domain.Enums
+@{
+    var AutorList = Html.GetEnumSelectList<Autor>().OrderBy(x => x.Text);
+}
+<partial name="_Navbar2" />
+<div class="row mt-4 mb-5">
+    <h1 class="text-center">Edit Story - Admin Functionality</h1>
+</div>
+
+<div class="container py-5 col-8">
+    @if (Model != null)
+    {
+        <form method="post">
+
+            <div class="row row-cols-1">
+                <div class="mb-3 col-md-6">
+                    <label class="form-label">Id</label>
+                    <input type="text" id="id" class="form-control" asp-for="Id" readonly required />
+                </div>
+            </div>
+
+            <div class="row row-cols-1 row-cols-md-2 ">
+                <div class="mb-3">
+                    <label for="nome" class="form-label">Title</label>
+                    <input type="text" class="form-control" id="nome" placeholder="Story Title" asp-for="Titulo" required />
+                    <span class="text-danger" asp-validation-for="Titulo"></span>
+                </div>
+                <div class="mb-3 form-group">
+                    <label for="autor" class="form-label">Author</label>
+                    <select id="autor" asp-for="Autor" class="form-control" asp-items="@AutorList" required>
+                        <option value="" selected>Select Author...</option>
+                    </select>
+                    <span class="text-danger" asp-validation-for="Autor"></span>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label for="descricao" class="form-label">Body Text</label>
+                <textarea placeholder="Story's body" id="descricao" name="Corpo" asp-for="Corpo"></textarea>
+                <span class="text-danger" asp-validation-for="Corpo"></span>
+            </div>
+
+            <div class="row row-cols-lg-2 mb-3">
+                <div class="mb-5 align-self-md-start">
+                    <div class="mb-3">
+                        <label class="form-label">Upload Display Image</label>
+                        <input type="file" id="ImageCardUpload" class="form-control" />
+                    </div>
+                    <div class="mb-3">
+                        <input type="text" class="form-control" id="ImgCardUrl" placeholder="Display image URL" asp-for="ImgCard" />
+                        @if (Model.ImgCard != null)
+                        {
+                            <img src="@Model.ImgCard" id="ImageCardUploadDisplay" class="w-100" style="width:300px; margin-top:1em;" />
+
+                        }
+                        else
+                        {
+                            <img src="" id="ImageCardUploadDisplay" class="w-100" style="width:300px; margin-top:1em;" />
+
+                        }
+                    </div>
+                </div>
+                <div class="mb-5 align-self-md-start">
+                    <div class="mb-3">
+                        <label class="form-label">Upload Content Image</label>
+                        <input type="file" id="ImageBoxUpload" class="form-control">
+                    </div>
+                    <div class="mb-3">
+                        <input type="text" class="form-control" id="ImgBoxUrl" placeholder="Content image URL" asp-for="ImgBox" />
+                        @if (Model.ImgBox != null)
+                        {
+                            <img src="@Model.ImgBox" id="ImageBoxUploadDisplay" class="w-100" style="width:300px; margin-top:1em;" />
+
+                        }
+                        else
+                        {
+                            <img src="" id="ImageBoxUploadDisplay" class="w-100" style="width:300px; margin-top:1em;" />
+
+                        }
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mb-3 row-cols-1 row-cols-md-2">
+                <div>
+                    <label class="form-label">Published Date</label>
+                    <input type="datetime-local" class="form-control" id="publishedDate" asp-for="PublishedDate" required />
+                    <span class="text-danger" asp-validation-for="PublishedDate"></span>
+                </div>
+                <div>
+                    <label class="form-label">URL Handle</label>
+                    <input type="text" class="form-control" id="urlHandle" asp-for="UrlHandle" required />
+                    <span class="text-danger" asp-validation-for="UrlHandle"></span>
+                </div>
+            </div>
+
+            <div class="row mb-3 row-cols-1">
+                <div class="form-check form-switch mb-3">
+                    <label class="form-check-label" for="visible">Audio Drama?</label>
+                    <input class="form-check-input" type="checkbox" id="audiodrama" asp-for="AudioDrama">
+                    <span class="text-danger" asp-validation-for="AudioDrama"></span>
+                </div>
+                <div class="form-check form-switch mb-3">
+                    <label class="form-check-label" for="visible">Visible?</label>
+                    <input class="form-check-input" type="checkbox" id="visible" asp-for="Visible">
+                    <span class="text-danger" asp-validation-for="Visible"></span>
+                </div>
+            </div>
+
+            <div class="row justify-content-center mb-3">
+                <div class="col-12 col-md-4 mb-1">
+                    <label class="form-label">World</label>
+                    <select id="SelectedMundo" class="form-select" asp-items="@Model.Mundos" asp-for="SelectedMundo" onchange="updateContinentesByMundo(), updatePersonagensByMundo(), updateCriaturasByMundo(), updatePovosByMundo()">
+                        <option value="" class="text-danger">No World</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="justify-content-start">
+                <button type="button" class="btn btn-secondary p-0" style="height:2rem; width:3rem;" data-bs-toggle="popover" data-bs-content="Select wich Entities has your Story"><i class="bi bi-lightbulb"></i></button>
+            </div>
+
+            <div class="row text-center row-cols-2 row-cols-md-3">
+                <div class="mb-3">
+                    <label class="form-label">Continents</label>
+                    <select id="SelectedContinentes" class="form-control" style="min-height:12rem" asp-items="@Model.Continentes" asp-for="SelectedContinentes" onchange="updateByContinenteRegioesByMundo()" ultiple>
+                        <option class="text-danger" value="">No Continent</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Regions</label>
+                    <select id="SelectedRegioes" class="form-select" style="min-height:12rem" asp-items="@Model.Regioes" asp-for="SelectedRegioes" multiple>
+                        <option class="text-danger" value="">No Region</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Characters</label>
+                    <select id="SelectedPersonagens" class="form-select" style="min-height:12rem" asp-items="@Model.Personagens" asp-for="SelectedPersonagens" multiple>
+                        <option class="text-danger" value="">No Character</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Creatures</label>
+                    <select id="SelectedCriaturas" class="form-select" style="min-height:12rem" asp-items="@Model.Criaturas" asp-for="SelectedCriaturas" multiple>
+                        <option class="text-danger" value="">No Creature</option>
+
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">People</label>
+                    <select id="SelectedPovos" class="form-select" style="min-height:12rem" asp-items="@Model.Povos" asp-for="SelectedPovos" multiple>
+                        <option class="text-danger" value="">No People</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <div class="d-flex">
+                    <button id="submitbtn" type="submit" class="btn btn-secondary">Update</button>
+                    <button id="submitbtn" type="button" class="btn btn-danger ms-2" data-bs-toggle="modal" data-bs-target="#confirmDelete">
+                        Delete
+                    </button>
+                </div>
+            </div>
+
+            <!-- Modal Delete -->
+            <div class="modal fade " id="confirmDelete" tabindex="-1" aria-labelledby="confirmDeleteLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <p>Are you sure you want to delete this story?</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                            <button class="btn btn-danger ms-2" type="submit" asp-area="" asp-controller="AdminContos" asp-action="Delete">Delete</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </form>
+    }
+    else
+    {
+        <p>Story not found!</p>
+    }
+</div>
+
+@section Scripts
+    {
+    <script type="text/javascript" src="~/js/ByMundoSelects.js"></script>
+    <script type="text/javascript" src="~/js/Formulario.js"></script>
+}
