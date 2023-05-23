@@ -178,7 +178,7 @@ public class AdminRegioesController : Controller
 
                 if (existingPersonagem != null)
                 {
-                    existingPersonagem.Continente.Id = regiao.Continente.Id;
+                    existingPersonagem.Continente = regiao.Continente;
                     await personagemRepository.UpdateAsync(existingPersonagem, 1, 10);
                     selectedPersonagens.Add(existingPersonagem);
                 }
@@ -199,6 +199,7 @@ public class AdminRegioesController : Controller
 
                 if (existingCriatura != null)
                 {
+                    existingCriatura.Continentes?.Add(regiao.Continente);
                     selectedCriaturas.Add(existingCriatura);
                 }
             }
@@ -219,6 +220,7 @@ public class AdminRegioesController : Controller
 
                 if (existingPovo != null)
                 {
+                    existingPovo.Continentes?.Add(regiao.Continente);
                     selectedPovos.Add(existingPovo);
                 }
             }
@@ -238,6 +240,7 @@ public class AdminRegioesController : Controller
 
                 if (existingConto != null)
                 {
+                    existingConto.Continentes?.Add(regiao.Continente);
                     selectedContos.Add(existingConto);
                 }
             }

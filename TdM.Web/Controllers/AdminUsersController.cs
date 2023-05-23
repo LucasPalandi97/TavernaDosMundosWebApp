@@ -38,9 +38,15 @@ public class AdminUsersController : Controller
     }
 
     [HttpPost]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> List(UserViewModel request)
     {
-        var identityUser = new IdentityUser
+        if (!ModelState.IsValid)
+        {
+            return View();
+        }
+
+            var identityUser = new IdentityUser
         {
             UserName = request.UserName,
             Email = request.Email

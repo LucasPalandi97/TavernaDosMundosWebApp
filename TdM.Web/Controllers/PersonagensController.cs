@@ -30,7 +30,7 @@ public class PersonagensController : Controller
         {
             if (User.IsInRole("Admin"))
             {
-                var personagens = await personagemRepository.GetAllAsync(1, 10);
+                var personagens = await personagemRepository.GetAllAsync(1, 100);
                 var viewModel = new NavbarViewModel
                 {
                     Personagens = personagens
@@ -55,7 +55,7 @@ public class PersonagensController : Controller
                 return View("Error", errorViewModel);
             }
 
-            var personagens = await personagemRepository.GetAllByMundoAsync(mundo.Id, 1, 10);
+            var personagens = await personagemRepository.GetAllByMundoAsync(mundo.Id, 1, 100);
             ViewBag.MundoUrlHandle = mundo.UrlHandle; // set the value of ViewBag here
             var viewModel = new NavbarViewModel
             {

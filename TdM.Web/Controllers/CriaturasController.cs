@@ -30,7 +30,7 @@ public class CriaturasController : Controller
         {
             if (User.IsInRole("Admin"))
             {
-                var criaturas = await criaturaRepository.GetAllAsync(1, 10);
+                var criaturas = await criaturaRepository.GetAllAsync(1, 100);
                 var viewModel = new NavbarViewModel
                 {
                     Criaturas = criaturas
@@ -56,7 +56,7 @@ public class CriaturasController : Controller
                 return View("Error", errorViewModel);
             }
 
-            var criaturas = await criaturaRepository.GetAllByMundoAsync(mundo.Id, 1, 10);
+            var criaturas = await criaturaRepository.GetAllByMundoAsync(mundo.Id, 1, 100);
             ViewBag.MundoUrlHandle = mundo.UrlHandle; // set the value of ViewBag here
             var viewModel = new NavbarViewModel
             {

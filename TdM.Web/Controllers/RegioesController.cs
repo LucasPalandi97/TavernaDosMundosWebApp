@@ -21,7 +21,7 @@ public class RegioesController : Controller
     [HttpGet]
     public async Task<IActionResult> List()
     {
-        var regioes = await regiaoRepository.GetAllAsync(1, 10);
+        var regioes = await regiaoRepository.GetAllAsync(1, 100);
         return View(regioes);
     }
 }

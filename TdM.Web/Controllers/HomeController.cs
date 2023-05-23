@@ -18,7 +18,7 @@ namespace TdM.Web.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var mundo = await MundoRepository.GetAllAsync(1, 10);
+            var mundo = await MundoRepository.GetAllAsync(1, 100);
 
             return View(mundo);
         }

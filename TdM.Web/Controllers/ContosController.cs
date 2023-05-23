@@ -30,7 +30,7 @@ public class ContosController : Controller
         {
             if (User.IsInRole("Admin"))
             {
-                var contos = await contoRepository.GetAllAsync(1, 10);
+                var contos = await contoRepository.GetAllAsync(1, 100);
                 var viewModel = new NavbarViewModel
                 {
                     Contos = contos
@@ -56,7 +56,7 @@ public class ContosController : Controller
                 return View("Error", errorViewModel);
             }
 
-            var contos = await contoRepository.GetAllByMundoAsync(mundo.Id, 1, 10);
+            var contos = await contoRepository.GetAllByMundoAsync(mundo.Id, 1, 100);
             ViewBag.MundoUrlHandle = mundo.UrlHandle; // set the value of ViewBag here
             var viewModel = new NavbarViewModel
             {

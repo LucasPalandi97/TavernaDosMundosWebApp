@@ -12,6 +12,6 @@ public class RegisterViewModel
     public string Email { get; set; }
 
     [Required]
-    [MinLength(6, ErrorMessage = "Password has to be at least 6 characters")]
+    [PasswordValidation(ErrorMessage = "Invalid Password")]
     public string Password { get; set; }
 }

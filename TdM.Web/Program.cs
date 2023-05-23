@@ -13,13 +13,14 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddDbContext<TavernaDbContext>(options =>
-options.UseSqlServer(builder.Configuration.GetConnectionString("TavernaConnection")));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("TavernaConnection")));
 
 builder.Services.AddDbContext<AuthDbContext>(options =>
-options.UseSqlServer(builder.Configuration.GetConnectionString("TavernaAuthDbConnectionString")));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("TavernaAuthDbConnectionString")));
 
 builder.Services.AddIdentity<IdentityUser, IdentityRole>()
-    .AddEntityFrameworkStores<AuthDbContext>();
+    .AddEntityFrameworkStores<AuthDbContext>()
+    .AddDefaultTokenProviders();
 
 builder.Services.Configure<IdentityOptions>(options =>
 {
@@ -29,7 +30,6 @@ builder.Services.Configure<IdentityOptions>(options =>
     options.Password.RequireLowercase = true;
     options.Password.RequireNonAlphanumeric = true;
     options.Password.RequireUppercase = true;
-    options.Password.RequiredUniqueChars = 1;
 });
 
 //Repositories
@@ -101,13 +101,4 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
-app.UseEndpoints(endpoints =>
-{
-    endpoints.MapControllerRoute(
-        name: "default",
-        pattern: "{controller=Home}/{action=Index}/{id?}");
-});
-
 app.Run();
-
-

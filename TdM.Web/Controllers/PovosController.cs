@@ -30,7 +30,7 @@ public class PovosController : Controller
         {
             if (User.IsInRole("Admin"))
             {
-                var povos = await povoRepository.GetAllAsync(1, 10);
+                var povos = await povoRepository.GetAllAsync(1, 100);
                 var viewModel = new NavbarViewModel
                 {
                     Povos = povos
@@ -55,7 +55,7 @@ public class PovosController : Controller
 
                 return View("Error", errorViewModel);
             }
-            var povos = await povoRepository.GetAllByMundoAsync(mundo.Id, 1, 10);
+            var povos = await povoRepository.GetAllByMundoAsync(mundo.Id, 1, 100);
             ViewBag.MundoUrlHandle = mundo.UrlHandle; // set the value of ViewBag here
             var viewModel = new NavbarViewModel
             {
