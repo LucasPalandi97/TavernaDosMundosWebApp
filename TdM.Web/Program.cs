@@ -24,7 +24,7 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>()
 
 builder.Services.Configure<IdentityOptions>(options =>
 {
-    //Default Settings
+    // Default Settings
     options.Password.RequiredLength = 6;
     options.Password.RequireDigit = true;
     options.Password.RequireLowercase = true;
@@ -32,7 +32,7 @@ builder.Services.Configure<IdentityOptions>(options =>
     options.Password.RequireUppercase = true;
 });
 
-//Repositories
+// Repositories
 builder.Services.AddScoped<IMundoRepository, MundoRepository>();
 builder.Services.AddScoped<IContinenteRepository, ContinenteRepository>();
 builder.Services.AddScoped<IRegiaoRepository, RegiaoRepository>();
@@ -100,5 +100,18 @@ app.UseCookiePolicy(new CookiePolicyOptions
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+app.Use(async (context, next) =>
+{
+    // Redirect HTTP requests to HTTPS
+    if (!context.Request.IsHttps)
+    {
+        var httpsUrl = $"https://{context.Request.Host}{context.Request.Path}{context.Request.QueryString}";
+        context.Response.Redirect(httpsUrl);
+        return;
+    }
+
+    await next.Invoke();
+});
 
 app.Run();

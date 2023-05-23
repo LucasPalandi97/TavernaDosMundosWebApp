@@ -11,10 +11,14 @@ services:
       - taverna-db
     environment:
       ConnectionStrings__TavernaConnection: "Server=taverna-db;Database=Content;User Id=sa;Password=PastelDosMundos@123;TrustServerCertificate=True"
-      ConnectionStrings__TavernaAuthDbConnectionString: "Server=taverna-db;Database=Authentication;User Id=sa;Password=PastelDosMundos@123;TrustServerCertificate=True"   
+      ConnectionStrings__TavernaAuthDbConnectionString: "Server=taverna-db;Database=Authentication;User Id=sa;Password=PastelDosMundos@123;TrustServerCertificate=True"  
     ports:
       - "80:80"
       - "443:443"
+    command: bash -c "openssl req -newkey rsa:2048 -nodes -keyout /certs/private.key -x509 -days 365 -out /certs/certificate.crt && dotnet TdM.Web.dll"
+    volumes:
+      - ./certs:/certs
+
   taverna-db:
     image: "mcr.microsoft.com/mssql/server:2022-latest"
     container_name: taverna-db
@@ -30,3 +34,4 @@ services:
 
 volumes:
   db-data:
+  certs:
