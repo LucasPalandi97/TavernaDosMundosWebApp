@@ -3,7 +3,7 @@
   <PropertyGroup Label="Globals">
     <ProjectVersion>2.1</ProjectVersion>
     <DockerTargetOS>Linux</DockerTargetOS>
-    <ProjectGuid>970986c8-015a-4e7f-a6fe-18a2a735de1a</ProjectGuid>
+    <ProjectGuid>b11e602d-6106-4f1a-b5a5-d85c9a53f7f0</ProjectGuid>
     <DockerLaunchAction>LaunchBrowser</DockerLaunchAction>
     <DockerServiceUrl>{Scheme}://localhost:{ServicePort}</DockerServiceUrl>
     <DockerServiceName>tdm.web</DockerServiceName>

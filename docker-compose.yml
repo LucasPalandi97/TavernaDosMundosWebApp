@@ -15,10 +15,6 @@ services:
     ports:
       - "80:80"
       - "443:443"
-    command: bash -c "openssl req -newkey rsa:2048 -nodes -keyout /certs/private.key -x509 -days 365 -out /certs/certificate.crt && dotnet TdM.Web.dll"
-    volumes:
-      - ./certs:/certs
-
   taverna-db:
     image: "mcr.microsoft.com/mssql/server:2022-latest"
     container_name: taverna-db
@@ -31,7 +27,5 @@ services:
       - "1433:1433"
     volumes:
       - ./db-data:/var/opt/mssql/data
-
 volumes:
   db-data:
-  certs:

@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TdM.Web", "TdM.Web\TdM.Web.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TdM.Database", "TdM.Database\TdM.Database.csproj", "{A17A732D-EE62-46B2-832B-9FCA4A47DC49}"
 EndProject
-Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{970986C8-015A-4E7F-A6FE-18A2A735DE1A}"
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{B11E602D-6106-4F1A-B5A5-D85C9A53F7F0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -28,12 +28,12 @@ Global
 		{A17A732D-EE62-46B2-832B-9FCA4A47DC49}.Docker|Any CPU.Build.0 = Docker|Any CPU
 		{A17A732D-EE62-46B2-832B-9FCA4A47DC49}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A17A732D-EE62-46B2-832B-9FCA4A47DC49}.Release|Any CPU.Build.0 = Release|Any CPU
-		{970986C8-015A-4E7F-A6FE-18A2A735DE1A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{970986C8-015A-4E7F-A6FE-18A2A735DE1A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{970986C8-015A-4E7F-A6FE-18A2A735DE1A}.Docker|Any CPU.ActiveCfg = Debug|Any CPU
-		{970986C8-015A-4E7F-A6FE-18A2A735DE1A}.Docker|Any CPU.Build.0 = Debug|Any CPU
-		{970986C8-015A-4E7F-A6FE-18A2A735DE1A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{970986C8-015A-4E7F-A6FE-18A2A735DE1A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B11E602D-6106-4F1A-B5A5-D85C9A53F7F0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B11E602D-6106-4F1A-B5A5-D85C9A53F7F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B11E602D-6106-4F1A-B5A5-D85C9A53F7F0}.Docker|Any CPU.ActiveCfg = Debug|Any CPU
+		{B11E602D-6106-4F1A-B5A5-D85C9A53F7F0}.Docker|Any CPU.Build.0 = Debug|Any CPU
+		{B11E602D-6106-4F1A-B5A5-D85C9A53F7F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B11E602D-6106-4F1A-B5A5-D85C9A53F7F0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
