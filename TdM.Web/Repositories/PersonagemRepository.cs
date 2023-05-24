@@ -39,8 +39,6 @@ public class PersonagemRepository : IPersonagemRepository
     {
         return await tavernaDbContext.Personagens
             .Include(x => x.Regiao)
-            .Include(x => x.Povos)
-            .Include(x => x.Contos)
             .Include(x => x.Mundo)
             .Skip((page - 1) * pageSize)
             .Take(pageSize)
@@ -50,11 +48,6 @@ public class PersonagemRepository : IPersonagemRepository
     public async Task<IEnumerable<Personagem>> GetAllByMundoAsync(Guid mundoId, int page, int pageSize)
     {
         return await tavernaDbContext.Personagens
-
-         .Include(x => x.Continente)
-         .Include(x => x.Regiao)
-         .Include(x => x.Povos)
-         .Include(x => x.Contos)
          .Include(x => x.Mundo)
          .Where(x => x.Mundo.Id == mundoId)
          .Skip((page - 1) * pageSize)
@@ -65,7 +58,6 @@ public class PersonagemRepository : IPersonagemRepository
     public async Task<Personagem?> GetAsync(Guid id, int page, int pageSize)
     {
         return await tavernaDbContext.Personagens
-
         .Include(x => x.Continente)
         .Include(x => x.Regiao)
         .Include(x => x.Povos)
@@ -82,7 +74,6 @@ public class PersonagemRepository : IPersonagemRepository
         if (selectedRegiaoIds is Guid)
         {
             return await tavernaDbContext.Personagens
-
                .Where(r => r.Regiao.Id == (Guid)selectedRegiaoIds)
                .Skip((page - 1) * pageSize)
                .Take(pageSize)
@@ -91,7 +82,6 @@ public class PersonagemRepository : IPersonagemRepository
         else if (selectedRegiaoIds is List<Guid> selectedRegiaoIdsList)
         {
             return await tavernaDbContext.Personagens
-
               .Where(r => selectedRegiaoIdsList
               .Contains(r.Regiao.Id))
               .Skip((page - 1) * pageSize)
@@ -107,15 +97,15 @@ public class PersonagemRepository : IPersonagemRepository
     public async Task<Personagem?> GetByUrlHandleAsync(string urlHandle, int page, int pageSize)
     {
         return await tavernaDbContext.Personagens
-        .Include(x => x.Continente)
-        .Include(x => x.Regiao)
-        .Include(x => x.Povos)
-        .Include(x => x.Contos)
-        .Where(x => x.UrlHandle == urlHandle)
-        .Skip((page - 1) * pageSize)
-        .Take(pageSize)
-        .Include(x => x.Mundo)
-        .FirstOrDefaultAsync();
+            .Include(x => x.Continente)
+            .Include(x => x.Regiao)
+            .Include(x => x.Povos)
+            .Include(x => x.Contos)
+            .Where(x => x.UrlHandle == urlHandle)
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .Include(x => x.Mundo)
+            .FirstOrDefaultAsync();
     }
 
     public async Task<Personagem?> UpdateAsync(Personagem personagem, int page, int pageSize)
@@ -125,7 +115,6 @@ public class PersonagemRepository : IPersonagemRepository
             .Include(x => x.Regiao)
             .Include(x => x.Povos)
             .Include(x => x.Contos)
-            .Include(x => x.Mundo)
             .Where(x => x.Id == personagem.Id)
             .Skip((page - 1) * pageSize)
             .Take(pageSize)
@@ -149,7 +138,7 @@ public class PersonagemRepository : IPersonagemRepository
             existingPersonagem.Regiao = personagem.Regiao;
             existingPersonagem.Povos = personagem.Povos;
             existingPersonagem.Contos = personagem.Contos;
-           
+
             await tavernaDbContext.SaveChangesAsync();
 
             return existingPersonagem;

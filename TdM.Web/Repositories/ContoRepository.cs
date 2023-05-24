@@ -39,26 +39,16 @@ public class ContoRepository : IContoRepository
 
     public async Task<IEnumerable<Conto>> GetAllAsync(int page, int pageSize)
     {
-       return await tavernaDbContext.Contos
-            .Include(x => x.Continentes)
-            .Include(x => x.Regioes)
-            .Include(x => x.Personagens)
-            .Include(x => x.Criaturas)
-            .Include(x => x.Povos)
-            .Include(x => x.Mundo)
-            .Skip((page - 1) * pageSize)
-            .Take(pageSize)
-            .ToListAsync();
+        return await tavernaDbContext.Contos
+             .Include(x => x.Mundo)
+             .Skip((page - 1) * pageSize)
+             .Take(pageSize)
+             .ToListAsync();
     }
 
     public async Task<IEnumerable<Conto>> GetAllByMundoAsync(Guid mundoId, int page, int pageSize)
     {
         return await tavernaDbContext.Contos
-           .Include(x => x.Continentes)
-           .Include(x => x.Regioes)
-           .Include(x => x.Personagens)
-           .Include(x => x.Criaturas)
-           .Include(x => x.Povos)
            .Include(x => x.Mundo)
            .Where(x => x.Mundo.Id == mundoId)
            .Skip((page - 1) * pageSize)

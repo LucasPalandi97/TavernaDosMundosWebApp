@@ -147,8 +147,8 @@ public class AdminPersonagensController : Controller
             }
         }
 
-        //Maps Povos from Selected Povo
-        var selectedPovosId = new List<Povo>();
+        //Maps Povos from Selected Regiao
+        var selectedPovos = new List<Povo>();
         foreach (var selectedPovoId in addPersonagemRequest.SelectedPovos)
         {
             if (!string.IsNullOrEmpty(selectedPovoId))
@@ -157,29 +157,31 @@ public class AdminPersonagensController : Controller
                 var existingPovo = await povoRepository.GetAsync(selectedPovoIdAsGuid, 1, 10);
                 if (existingPovo != null)
                 {
-                    selectedPovosId.Add(existingPovo);
+                    selectedPovos.Add(existingPovo);
                 }
             }
         }
         //Maping Povos back to domain modal
-        personagem.Povos = selectedPovosId;
+        personagem.Povos = selectedPovos;
 
-        //Maps Contos from Selected Conto
-        var selectedContosId = new List<Conto>();
+        //Maps Contos from Selected Contos
+        var selectedContos = new List<Conto>();
+
         foreach (var selectedContoId in addPersonagemRequest.SelectedContos)
         {
             if (!string.IsNullOrEmpty(selectedContoId))
             {
                 var selectedContoIdAsGuid = Guid.Parse(selectedContoId);
                 var existingConto = await contoRepository.GetAsync(selectedContoIdAsGuid, 1, 10);
+
                 if (existingConto != null)
                 {
-                    selectedContosId.Add(existingConto);
+                    selectedContos.Add(existingConto);
                 }
             }
         }
         //Maping Contos back to domain modal
-        personagem.Contos = selectedContosId;
+        personagem.Contos = selectedContos;
 
         await personagemRepository.AddAsync(personagem);
 
@@ -246,7 +248,7 @@ public class AdminPersonagensController : Controller
     public async Task<IActionResult> Edit(Guid id)
     {
         //Retrieve Result from repository
-        var personagem = await personagemRepository.GetAsync(id, 1, 100);
+        var personagem = await personagemRepository.GetAsync(id, 1, 10);
         var mundosDomainModel = await mundoRepository.GetAllAsync(1, 100);
         var continenteDomainModel = await continenteRepository.GetAllAsync(1, 100);
         var regiaoDomainModel = await regiaoRepository.GetAllAsync(1, 100);
@@ -424,7 +426,7 @@ public class AdminPersonagensController : Controller
         }
 
         //Maps Povos from Selected Regiao
-        var selectedPovosId = new List<Povo>();
+        var selectedPovos = new List<Povo>();
         foreach (var selectedPovoId in editPersonagemRequest.SelectedPovos)
         {
             if (!string.IsNullOrEmpty(selectedPovoId))
@@ -433,29 +435,31 @@ public class AdminPersonagensController : Controller
                 var existingPovo = await povoRepository.GetAsync(selectedPovoIdAsGuid, 1, 10);
                 if (existingPovo != null)
                 {
-                    selectedPovosId.Add(existingPovo);
+                    selectedPovos.Add(existingPovo);
                 }
             }
         }
         //Maping Povos back to domain modal
-        personagem.Povos = selectedPovosId;
+        personagem.Povos = selectedPovos;
 
-        //Maps Contos from Selected Mundo
-        var selectedContosId = new List<Conto>();
+        //Maps Contos from Selected Contos
+        var selectedContos = new List<Conto>();
+
         foreach (var selectedContoId in editPersonagemRequest.SelectedContos)
         {
             if (!string.IsNullOrEmpty(selectedContoId))
             {
                 var selectedContoIdAsGuid = Guid.Parse(selectedContoId);
                 var existingConto = await contoRepository.GetAsync(selectedContoIdAsGuid, 1, 10);
+
                 if (existingConto != null)
                 {
-                    selectedContosId.Add(existingConto);
+                    selectedContos.Add(existingConto);
                 }
             }
         }
         //Maping Contos back to domain modal
-        personagem.Contos = selectedContosId;
+        personagem.Contos = selectedContos;
 
         var updatedPersonagem = await personagemRepository.UpdateAsync(personagem, 1, 10);
 

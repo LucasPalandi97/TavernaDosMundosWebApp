@@ -1,4 +1,5 @@
 ﻿
+
 .aractercard {
     transition: opacity 0.5s ease-in-out;
 }
@@ -57,7 +58,6 @@
     opacity: 0.4;
     transition: .5s ease;
     background-color: #393839;
-    z-index:2;
 }
 
 .mask_text {
@@ -138,6 +138,7 @@
     object-fit: cover;
     object-position: center;
 }
+
 .imground {
     transition: all .001s ease-in;
     height: 80px;
@@ -150,5 +151,5 @@
     margin: auto;
     display: block;
     position: absolute;
-    z-index: 2000;
+    z-index: 3;
 }

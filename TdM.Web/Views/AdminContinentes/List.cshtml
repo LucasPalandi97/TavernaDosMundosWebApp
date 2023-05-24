@@ -149,7 +149,13 @@
                                     </li>
                                     <li class="list-inline-item">
                                         <button class="btn btn-sm rounded-0" type="button" data-bs-toggle="modal" data-bs-target="#ConfirmDeleteModal-@continente.Id"><i class="bi bi-trash-fill"></i></button>
-                                    </li>
+                                    </li> 
+                                    @if (continente.Visible == false)
+                                    {
+                                        <li class="list-inline-item">
+                                            <a class="btn btn-sm bg-transparent border-0 disabled"><i class="bi bi-eye-slash"></i></a>
+                                        </li>
+                                    }
                                 </ul>
                                 <!-- Modal Delete -->
                                 <div class="modal fade" id="ConfirmDeleteModal-@continente.Id" tabindex="-1" aria-labelledby="ConfirmDeleteModalLabel" aria-hidden="true">

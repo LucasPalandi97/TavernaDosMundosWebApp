@@ -1,0 +1,177 @@
+﻿@model TdM.Database.Models.Domain.Mundo
+<div id="worldBuildModalContent" class="align-items-center justify-content-center">
+    <div class="dropdown" id="build">
+        <button class="nav-link dropdown-toggle btn btn-secondary btn-lg btn-block" type="button" id="worldDropdownButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+            @Model.Nome
+        </button>
+        <ul class="dropdown-menu text-center dropdown-menu-lg dropdown-menu-full-width show" aria-labelledby="worldDropdownButton">      
+            <li>
+                <a class="dropdown-item" href="#" id="continentsDropdown">
+                    Regions &raquo;
+                </a>
+                <ul class="dropdown-menu dropdown-submenu" aria-labelledby="continentsDropdownButton">
+                    @if (Model.Continentes != null && Model.Continentes.Any())
+                    {
+                        @foreach (var continente in Model.Continentes.OrderBy(c => c.Nome))
+                        {
+                            <li>
+                                <a class="dropdown-item" asp-controller="Continentes" asp-action="index" asp-route-urlHandle="@continente.UrlHandle" id="regionDropdown">@continente.Nome &raquo </a>
+                                <ul class="dropdown-menu dropdown-submenu" aria-labelledby="regionDropdown">
+                                    @if (continente.Regioes != null && continente.Regioes.Any())
+                                    {
+                                        @foreach (var regiao in continente.Regioes.OrderBy(r => r.Nome))
+                                        {
+                                            <li>
+                                                <a class="dropdown-item" asp-controller="Regioes" asp-action="index" asp-route-urlHandle="@regiao.UrlHandle">@regiao.Nome</a>
+                                            </li>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <li class="dropdown-item text-danger" href="#">No regions found!</li>
+                                    }
+                                </ul>
+                            </li>
+                        }
+                    }
+                    else
+                    {
+                        <li class="dropdown-item text-danger" href="#">No continents found!</li>
+                    }
+                </ul>
+            </li>
+            <li>
+                <a class="dropdown-item" href="#" id="charactersDropdown">
+                    Characters &raquo;
+                </a>
+                <ul class="dropdown-menu dropdown-submenu" aria-labelledby="charactersDropdown">
+                    @if (Model.Personagens != null && Model.Personagens.Any())
+                    {
+                        @foreach (var personagem in Model.Personagens.OrderBy(r => r.Nome))
+                        {
+                            <li>
+                                <a class="dropdown-item" asp-controller="Personagens" asp-action="index" asp-route-urlHandle="@personagem.UrlHandle">@personagem.Nome</a>
+                            </li>
+                        }
+                    }
+                    else
+                    {
+                        <li class="dropdown-item text-danger" href="#">No characters found!</li>
+                    }
+                </ul>
+            </li>
+            <li>
+                <a class="dropdown-item" href="#" id="creaturesDropdown">
+                    Creatures &raquo;
+                </a>
+                <ul class="dropdown-menu dropdown-submenu" aria-labelledby="creaturesDropdown">
+                    @if (Model.Criaturas != null && Model.Criaturas.Any())
+                    {
+                        @foreach (var criatura in Model.Criaturas.OrderBy(r => r.Nome))
+                        {
+                            <li>
+                                <a class="dropdown-item" asp-controller="Criaturas" asp-action="index" asp-route-urlHandle="@criatura.UrlHandle">@criatura.Nome</a>
+                            </li>
+                        }
+                    }
+                    else
+                    {
+                        <li class="dropdown-item text-danger" href="#">No creatures found!</li>
+                    }
+                </ul>
+            </li>
+            <li>
+                <a class="dropdown-item" href="#" id="creaturesDropdown">
+                    People &raquo;
+                </a>
+                <ul class="dropdown-menu dropdown-submenu" aria-labelledby="creaturesDropdown">
+                    @if (Model.Povos != null && Model.Povos.Any())
+                    {
+                        @foreach (var povo in Model.Povos.OrderBy(r => r.Nome))
+                        {
+                            <li>
+                                <a class="dropdown-item" asp-controller="Povos" asp-action="index" asp-route-urlHandle="@povo.UrlHandle">@povo.Nome</a>
+                            </li>
+                        }
+                    }
+                    else
+                    {
+                        <li class="dropdown-item text-danger" href="#">No people found!</li>
+                    }
+                </ul>
+            </li>
+            <li>
+                <a class="dropdown-item" href="#" id="creaturesDropdown">
+                    Stories &raquo;
+                </a>
+                <ul class="dropdown-menu dropdown-submenu" aria-labelledby="creaturesDropdown">
+                    @if (Model.Contos != null && Model.Contos.Any())
+                    {
+                        @foreach (var conto in Model.Contos.OrderBy(r => r.Titulo))
+                        {
+                            <li>
+                                <a class="dropdown-item" asp-controller="Contos" asp-action="index" asp-route-urlHandle="@conto.UrlHandle">@conto.Titulo</a>
+                            </li>
+                        }
+                    }
+                    else
+                    {
+                        <li class="dropdown-item text-danger" href="#">No stories found!</li>
+                    }
+                </ul>
+            </li>
+        </ul>
+    </div>
+</div>
+@section Scripts
+    {
+    <script type="text/javascript" src="~/js/SortElements.js"></script>
+    <script type="text/javascript" src="~/js/DropdownBuild.js"></script>
+
+}
+<style>
+/* Dropdown styles */
+.dropdown-menu-lg {
+    min-width: 100%;
+}
+
+.dropdown-menu-full-width {
+    width: 100%;
+    padding: 15px;
+    max-height: none; /* Remove the fixed height */
+    overflow-y: visible;
+}
+
+.dropdown-item {
+    font-size: 16px;
+}
+
+.dropdown-submenu {
+    position: static;
+}
+
+.dropdown-submenu .dropdown-menu {
+    left: 100%;
+    top: 0;
+    margin-top: -1px;
+    /* Remove the margin-left property */
+    overflow: visible; /* Add this line to enable overflow */
+}
+
+/* Additional styles */
+.btn-lg {
+    padding: 15px;
+    font-size: 20px;
+}
+
+.btn-block {
+    width: 100%;
+}
+
+
+.modal-body.dropdown-open {
+    overflow: visible;
+}
+
+
+</style>

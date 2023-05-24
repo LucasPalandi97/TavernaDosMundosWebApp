@@ -38,15 +38,23 @@ public class MundoRepository : IMundoRepository
     public async Task<IEnumerable<Mundo>> GetAllAsync(int page, int pageSize)
     {
         return await tavernaDbContext.Mundos
-            .Include(x => x.Personagens)
-            .Include(x => x.Continentes)
-            .Include(x => x.Regioes)
-            .Include(x => x.Criaturas)
-            .Include(x => x.Povos)
-            .Include(x => x.Contos)
             .Skip((page - 1) * pageSize)
             .Take(pageSize)
             .ToListAsync();
+    }
+
+    public async Task<IEnumerable<Mundo>> GetAllWithRelatedEntitiesAsync(int page, int pageSize)
+    {
+        return await tavernaDbContext.Mundos
+           .Include(x => x.Personagens)
+           .Include(x => x.Continentes)
+           .Include(x => x.Regioes)
+           .Include(x => x.Criaturas)
+           .Include(x => x.Povos)
+           .Include(x => x.Contos)
+           .Skip((page - 1) * pageSize)
+           .Take(pageSize)
+           .ToListAsync();
     }
 
     public async Task<Mundo?> GetAsync(Guid id, int page, int pageSize)
@@ -73,6 +81,14 @@ public class MundoRepository : IMundoRepository
             .Include(x => x.Criaturas)
             .Include(x => x.Povos)
             .Include(x => x.Contos)
+            .Where(x => x.UrlHandle == urlHandle)
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .FirstOrDefaultAsync();
+    }
+    public async Task<Mundo?> GetAllByUrlHandleAsync(string urlHandle, int page, int pageSize)
+    {
+        return await tavernaDbContext.Mundos
             .Where(x => x.UrlHandle == urlHandle)
             .Skip((page - 1) * pageSize)
             .Take(pageSize)

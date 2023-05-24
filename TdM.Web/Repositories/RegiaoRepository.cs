@@ -36,10 +36,6 @@ public class RegiaoRepository : IRegiaoRepository
     public async Task<IEnumerable<Regiao>> GetAllAsync(int page, int pageSize)
     {
         return await tavernaDbContext.Regioes
-            .Include(x => x.Personagens)
-            .Include(x => x.Criaturas)
-            .Include(x => x.Povos)
-            .Include(x => x.Contos)
             .Include(x => x.Continente)
             .Include(x => x.Mundo)
             .Skip((page - 1) * pageSize)
@@ -50,11 +46,6 @@ public class RegiaoRepository : IRegiaoRepository
     public async Task<IEnumerable<Regiao>> GetAllByMundoAsync(Guid mundoId, int page, int pageSize)
     {
         return await tavernaDbContext.Regioes
-            .Include(x => x.Personagens)
-            .Include(x => x.Criaturas)
-            .Include(x => x.Povos)
-            .Include(x => x.Contos)
-            .Include(x => x.Continente)
             .Include(x => x.Mundo)
             .Where(x => x.Mundo.Id == mundoId)
             .Skip((page - 1) * pageSize)
@@ -64,7 +55,7 @@ public class RegiaoRepository : IRegiaoRepository
 
     public async Task<IEnumerable<Regiao>> GetAllWithoutContinenteAsync(Guid mundoId, int page, int pageSize)
     {
-        return await tavernaDbContext.Regioes          
+        return await tavernaDbContext.Regioes
             .Include(x => x.Continente)
             .Include(x => x.Mundo)
             .Where(x => x.Mundo.Id == mundoId && x.Continente == null)
@@ -127,7 +118,6 @@ public class RegiaoRepository : IRegiaoRepository
     public async Task<Regiao?> UpdateAsync(Regiao regiao, int page, int pageSize)
     {
         var existingRegiao = await tavernaDbContext.Regioes
-            .Include(x => x.Personagens)
             .Include(x => x.Criaturas)
             .Include(x => x.Povos)
             .Include(x => x.Contos)
@@ -150,7 +140,7 @@ public class RegiaoRepository : IRegiaoRepository
             existingRegiao.UrlHandle = regiao.UrlHandle;
             existingRegiao.Visible = regiao.Visible;
             existingRegiao.Mundo = regiao.Mundo;
-            existingRegiao.Continente = regiao.Continente; 
+            existingRegiao.Continente = regiao.Continente;
             existingRegiao.Personagens = regiao.Personagens;
             existingRegiao.Criaturas = regiao.Criaturas;
             existingRegiao.Povos = regiao.Povos;
@@ -162,5 +152,5 @@ public class RegiaoRepository : IRegiaoRepository
         return null;
     }
 
-   
+
 }

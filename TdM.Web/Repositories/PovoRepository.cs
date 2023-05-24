@@ -37,11 +37,6 @@ public class PovoRepository : IPovoRepository
     public async Task<IEnumerable<Povo>> GetAllAsync(int page, int pageSize)
     {
         return await tavernaDbContext.Povos
-            .Include(x => x.Continentes)
-            .Include(x => x.Regioes)
-            .Include(x => x.Personagens)
-            .Include(x => x.Criaturas)
-            .Include(x => x.Contos)
             .Include(x => x.Mundo)
             .Skip((page - 1) * pageSize)
             .Take(pageSize)
@@ -51,11 +46,6 @@ public class PovoRepository : IPovoRepository
     public async Task<IEnumerable<Povo>> GetAllByMundoAsync(Guid mundoId, int page, int pageSize)
     {
         return await tavernaDbContext.Povos
-            .Include(x => x.Continentes)
-            .Include(x => x.Regioes)
-            .Include(x => x.Personagens)
-            .Include(x => x.Criaturas)
-            .Include(x => x.Contos)
             .Include(x => x.Mundo)
             .Where(x => x.Mundo.Id == mundoId)
             .Skip((page - 1) * pageSize)
@@ -68,7 +58,6 @@ public class PovoRepository : IPovoRepository
         if (selectedPersonagemIds is Guid)
         {
             return await tavernaDbContext.Povos
-
             .Where(p => p.Personagens
             .Any(pp => pp.Id == (Guid)selectedPersonagemIds))
             .Skip((page - 1) * pageSize)
@@ -78,7 +67,6 @@ public class PovoRepository : IPovoRepository
         else if (selectedPersonagemIds is List<Guid> selectedPersonagemIdsList)
         {
             return await tavernaDbContext.Povos
-
             .Where(p => p.Personagens
             .Any(pp => selectedPersonagemIdsList.Contains(pp.Id)))
             .Skip((page - 1) * pageSize)

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Data;
+using System.Drawing;
 using TdM.Database.Models.Domain;
 using TdM.Web.Models.ViewModels;
 using TdM.Web.Repositories;
@@ -305,7 +306,7 @@ public class AdminPovosController : Controller
                         Value = x.Id.ToString()
                     }),
                     SelectedContinentes = povo.Continentes?.Select(x => x.Id.ToString()).ToArray(),
-                    Regioes = regioesDomainModel.Where(x => x.Mundo == povo.Mundo && x.Mundo != null).OrderBy(x => x.Nome)
+                    Regioes = regioesDomainModel.Where(x => povo.Continentes.SelectMany(c => c.Regioes).Contains(x)).OrderBy(x => x.Nome)
                     .Select(x => new SelectListItem
                     {
                         Text = x.Nome,

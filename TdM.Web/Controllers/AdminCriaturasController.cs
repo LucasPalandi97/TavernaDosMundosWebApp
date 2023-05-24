@@ -430,6 +430,25 @@ public class AdminCriaturasController : Controller
         //Maping Povos back to domain modal
         criatura.Povos = selectedPovos;
 
+        //Maps Contos from Selected Contos
+        var selectedContos = new List<Conto>();
+
+        foreach (var selectedContoId in editCriaturaRequest.SelectedContos)
+        {
+            if (!string.IsNullOrEmpty(selectedContoId))
+            {
+                var selectedContoIdAsGuid = Guid.Parse(selectedContoId);
+                var existingConto = await contoRepository.GetAsync(selectedContoIdAsGuid, 1, 10);
+
+                if (existingConto != null)
+                {
+                    selectedContos.Add(existingConto);
+                }
+            }
+        }
+        //Maping Contos back to domain modal
+        criatura.Contos = selectedContos;
+
         //Submit information to repository
         var updatedCriatura = await criaturaRepository.UpdateAsync(criatura, 1, 10);
 

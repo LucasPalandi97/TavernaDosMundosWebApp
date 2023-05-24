@@ -244,6 +244,13 @@ public class AdminMundosController : Controller
     }
 
     [HttpGet]
+    public async Task<IActionResult> WorldBuildModal(Guid mundoId)
+    {
+        var mundo = await mundoRepository.GetAsync(mundoId, 1, 10);
+        return PartialView("_WorldBuildModal", mundo);
+    }
+
+    [HttpGet]
     public async Task<IActionResult> Edit(Guid id)
     {
         //Retrieve result from repositoty

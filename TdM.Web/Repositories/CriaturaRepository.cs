@@ -37,12 +37,7 @@ public class CriaturaRepository : ICriaturaRepository
 
     public async Task<IEnumerable<Criatura>> GetAllAsync(int page, int pageSize)
     {
-
         return await tavernaDbContext.Criaturas
-               .Include(x => x.Continentes)
-               .Include(x => x.Regioes)
-               .Include(x => x.Povos)
-               .Include(x => x.Contos)
                .Include(x => x.Mundo)
                .Skip((page - 1) * pageSize)
                .Take(pageSize)
@@ -52,10 +47,6 @@ public class CriaturaRepository : ICriaturaRepository
     public async Task<IEnumerable<Criatura>> GetAllByMundoAsync(Guid mundoId, int page, int pageSize)
     {
         return await tavernaDbContext.Criaturas
-               .Include(x => x.Continentes)
-               .Include(x => x.Regioes)
-               .Include(x => x.Povos)
-               .Include(x => x.Contos)
                .Include(x => x.Mundo)
                .Where(x => x.Mundo.Id == mundoId)
                .Skip((page - 1) * pageSize)

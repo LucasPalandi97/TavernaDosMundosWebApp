@@ -18,7 +18,7 @@
                     <th onclick="sortTable(1)">Creature <span class="pointer">&#9660</span></th>
                     <th id="desccolumn">Description</th>
                     <th class="dnone" onclick="sortTable(4)">Type <span class="pointer">&#9660</span></th>
-                    <th onclick="sortTable(5)">World <span class="pointer">&#9660</span></th>         
+                    <th onclick="sortTable(5)">World <span class="pointer">&#9660</span></th>
                     <th onclick="sortTable(3)">Published <span class="pointer">&#9660</span></th>
                     <th></th>
                 </tr>
@@ -35,14 +35,20 @@
                         <td class="published-date">@criatura.PublishedDate.ToString("yyyy-MM-dd HH:mm")</td>
                         <td>
                             <form method="post" asp-controller="AdminCriaturas" asp-action="Delete" asp-route-id="@criatura.Id" id="deleteForm-@criatura.Id">
-                            <ul class="list-inline text-nowrap m-0">                             
-                                <li class="list-inline-item">
+                                <ul class="list-inline text-nowrap m-0">
+                                    <li class="list-inline-item">
                                         <a class="btn btn-sm rounded-0" type="button" asp-area="" asp-controller="AdminCriaturas" asp-action="Edit" asp-route-id="@criatura.Id"><i class="bi bi-pencil-square"></i></a>
-                                </li>
-                                <li class="list-inline-item">
+                                    </li>
+                                    <li class="list-inline-item">
                                         <button class="btn btn-sm rounded-0" type="button" data-bs-toggle="modal" data-bs-target="#ConfirmDeleteModal-@criatura.Id"><i class="bi bi-trash-fill"></i></button>
-                                </li>
-                            </ul>
+                                    </li>
+                                    @if (criatura.Visible == false)
+                                    {
+                                        <li class="list-inline-item">
+                                            <a class="btn btn-sm bg-transparent border-0 disabled"><i class="bi bi-eye-slash"></i></a>
+                                        </li>
+                                    }
+                                </ul>
                                 <!-- Modal Delete -->
                                 <div class="modal fade" id="ConfirmDeleteModal-@criatura.Id" tabindex="-1" aria-labelledby="ConfirmDeleteModalLabel" aria-hidden="true">
                                     <div class="modal-dialog">
