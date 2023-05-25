@@ -1,0 +1,44 @@
+﻿body {
+}
+
+/* Dropdown styles */
+.dropdown-menu-lg {
+    min-width: 100%;
+}
+
+.dropdown-menu-full-width {
+    width: 100%;
+    padding: 15px;
+    max-height: none; /* Remove the fixed height */
+    overflow-y: visible;
+}
+
+.dropdown-item {
+    font-size: 16px;
+}
+
+.dropdown-submenu {
+    position: static;
+}
+
+    .dropdown-submenu .dropdown-menu {
+        left: 100%;
+        top: 0;
+        margin-top: -1px;
+        /* Remove the margin-left property */
+        overflow: visible; /* Add this line to enable overflow */
+    }
+
+/* Additional styles */
+.btn-lg {
+    padding: 15px;
+    font-size: 20px;
+}
+
+.btn-block {
+    width: 100%;
+}
+
+.modal-body.dropdown-open {
+    overflow: visible;
+}

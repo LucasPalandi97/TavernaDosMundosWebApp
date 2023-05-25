@@ -218,6 +218,13 @@ public class AdminContinentesController : Controller
     }
 
     [HttpGet]
+    public async Task<IActionResult> ContinentBuildModal(Guid continenteId)
+    {
+        var continente = await continenteRepository.GetAsync(continenteId, 1, 10);
+        return PartialView("_ContinentBuildModal", continente);
+    }
+
+    [HttpGet]
     public async Task<IActionResult> Edit(Guid id)
     {
         //Retrieve Result from repository

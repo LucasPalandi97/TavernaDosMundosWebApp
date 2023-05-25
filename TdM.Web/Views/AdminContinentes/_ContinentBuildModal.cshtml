@@ -1,12 +1,12 @@
-﻿@model TdM.Database.Models.Domain.Mundo
+﻿@model TdM.Database.Models.Domain.Continente
 
 <head>
     <link type="text/css" rel="stylesheet" href="~/css/DropdownBuild.css" />
 </head>
 
-<div id="worldBuildModalContent" class="align-items-center justify-content-center">
+<div id="continentBuildModalContent" class="align-items-center justify-content-center">
     <div class="dropdown" id="build">
-        <button class="nav-link dropdown-toggle btn btn-secondary btn-lg btn-block" type="button" id="DropdownButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+        <button class="nav-link dropdown-toggle btn btn-secondary btn-lg btn-block" type="button" id="DropdownButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             @Model.Nome
         </button>
         <ul class="dropdown-menu text-center dropdown-menu-lg dropdown-menu-full-width show" aria-labelledby="DropdownButton">
@@ -15,33 +15,18 @@
                     Regions &raquo;
                 </a>
                 <ul class="dropdown-menu dropdown-submenu" aria-labelledby="continentsDropdownButton">
-                    @if (Model.Continentes != null && Model.Continentes.Any())
+                    @if (Model.Regioes != null && Model.Regioes.Any())
                     {
-                        @foreach (var continente in Model.Continentes.OrderBy(c => c.Nome))
+                        @foreach (var regiao in Model.Regioes.OrderBy(r => r.Nome))
                         {
                             <li>
-                                <a class="dropdown-item" asp-controller="Continentes" asp-action="index" asp-route-urlHandle="@continente.UrlHandle" id="regionDropdown">@continente.Nome &raquo </a>
-                                <ul class="dropdown-menu dropdown-submenu" aria-labelledby="regionDropdown">
-                                    @if (continente.Regioes != null && continente.Regioes.Any())
-                                    {
-                                        @foreach (var regiao in continente.Regioes.OrderBy(r => r.Nome))
-                                        {
-                                            <li>
-                                                <a class="dropdown-item" asp-controller="Regioes" asp-action="index" asp-route-urlHandle="@regiao.UrlHandle">@regiao.Nome</a>
-                                            </li>
-                                        }
-                                    }
-                                    else
-                                    {
-                                        <li class="dropdown-item text-danger" href="#">No regions found!</li>
-                                    }
-                                </ul>
+                                <a class="dropdown-item" asp-controller="Regioes" asp-action="index" asp-route-urlHandle="@regiao.UrlHandle">@regiao.Nome</a>
                             </li>
                         }
                     }
                     else
                     {
-                        <li class="dropdown-item text-danger" href="#">No continents found!</li>
+                        <li class="dropdown-item text-danger" href="#">No regions found!</li>
                     }
                 </ul>
             </li>
@@ -128,9 +113,3 @@
         </ul>
     </div>
 </div>
-@section Scripts
-    {
-    <script type="text/javascript" src="~/js/SortElements.js"></script>
-    <script type="text/javascript" src="~/js/DropdownBuild.js"></script>
-}
-

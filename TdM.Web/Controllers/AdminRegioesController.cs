@@ -283,6 +283,13 @@ public class AdminRegioesController : Controller
     }
 
     [HttpGet]
+    public async Task<IActionResult> RegionBuildModal(Guid regiaoId)
+    {
+        var regiao = await regiaoRepository.GetAsync(regiaoId, 1, 10);
+        return PartialView("_RegionBuildModal", regiao);
+    }
+
+    [HttpGet]
     public async Task<IActionResult> Edit(Guid id)
     {
         //Retrieve Result from repository
