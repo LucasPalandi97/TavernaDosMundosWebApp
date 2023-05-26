@@ -114,7 +114,11 @@ public class RegiaoRepository : IRegiaoRepository
             .Take(pageSize)
             .FirstOrDefaultAsync();
     }
-
+    public async Task<bool> UrlHandleExists(string urlHandle)
+    {
+        bool urlHandleExists = await tavernaDbContext.Regioes.AnyAsync(m => m.UrlHandle == urlHandle);
+        return urlHandleExists;
+    }
     public async Task<Regiao?> UpdateAsync(Regiao regiao, int page, int pageSize)
     {
         var existingRegiao = await tavernaDbContext.Regioes

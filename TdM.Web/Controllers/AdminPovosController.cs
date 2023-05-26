@@ -62,6 +62,7 @@ public class AdminPovosController : Controller
     [HttpPost]
     public async Task<IActionResult> Add(AddPovoRequest addPovoRequest)
     {
+        await ValidateAddPovoRequest(addPovoRequest);
 
         if (!ModelState.IsValid)
         {
@@ -267,6 +268,13 @@ public class AdminPovosController : Controller
     }
 
     [HttpGet]
+    public async Task<IActionResult> PeopleBuildModal(Guid povoId)
+    {
+        var povo = await povoRepository.GetAsync(povoId, 1, 10);
+        return PartialView("_PeopleBuildModal", povo);
+    }
+
+    [HttpGet]
     public async Task<IActionResult> Edit(Guid id)
     {
         //Retrieve Result from repository
@@ -343,6 +351,8 @@ public class AdminPovosController : Controller
     [HttpPost]
     public async Task<IActionResult> Edit(EditPovoRequest editPovoRequest)
     {
+        await ValidateEditPovoRequest(editPovoRequest);
+
         if (!ModelState.IsValid)
         {
             editPovoRequest.Mundos = (await mundoRepository.GetAllAsync(1, 100)).OrderBy(x => x.Nome)
@@ -537,5 +547,25 @@ public class AdminPovosController : Controller
         }
         //Show an error notification
         return RedirectToAction("Edit", new { Id = editPovoRequest.Id });
+    }
+    private async Task ValidateAddPovoRequest(AddPovoRequest addPovoRequest)
+    {
+        bool urlHandleExists = await povoRepository.UrlHandleExists(addPovoRequest.UrlHandle);
+
+        if (urlHandleExists)
+        {
+            ModelState.AddModelError("UrlHandle", "This URL Handle already exists");
+        }
+    }
+    private async Task ValidateEditPovoRequest(EditPovoRequest editPovoRequest)
+    {
+        var povo = await povoRepository.GetAsync(editPovoRequest.Id, 1, 10);
+
+        bool urlHandleExists = await povoRepository.UrlHandleExists(editPovoRequest.UrlHandle);
+
+        if (urlHandleExists && povo?.UrlHandle != editPovoRequest.UrlHandle)
+        {
+            ModelState.AddModelError("UrlHandle", "This URL Handle already exists");
+        }
     }
 }

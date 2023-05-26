@@ -1,0 +1,60 @@
+﻿@model TdM.Database.Models.Domain.Personagem
+
+<head>
+    <link type="text/css" rel="stylesheet" href="~/css/DropdownBuild.css" />
+</head>
+
+    <div class="dropdown" id="build">
+        <button class="nav-link dropdown-toggle btn btn-secondary btn-lg btn-block" type="button" id="DropdownButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+            @Model.Nome
+        </button>
+        <ul class="dropdown-menu text-center dropdown-menu-lg dropdown-menu-full-width show" aria-labelledby="DropdownButton">         
+            <li>
+                <a class="dropdown-item" href="#" id="creaturesDropdown">
+                    People &raquo;
+                </a>
+                <ul class="dropdown-menu dropdown-submenu" aria-labelledby="creaturesDropdown">
+                    @if (Model.Povos != null && Model.Povos.Any())
+                    {
+                        @foreach (var povo in Model.Povos.OrderBy(r => r.Nome))
+                        {
+                            <li>
+                                <a class="dropdown-item" asp-controller="Povos" asp-action="index" asp-route-urlHandle="@povo.UrlHandle">@povo.Nome</a>
+                            </li>
+                        }
+                    }
+                    else
+                    {
+                        <li class="dropdown-item text-danger" href="#">No people found!</li>
+                    }
+                </ul>
+            </li>
+            <li>
+                <a class="dropdown-item" href="#" id="creaturesDropdown">
+                    Stories &raquo;
+                </a>
+                <ul class="dropdown-menu dropdown-submenu" aria-labelledby="creaturesDropdown">
+                    @if (Model.Contos != null && Model.Contos.Any())
+                    {
+                        @foreach (var conto in Model.Contos.OrderBy(r => r.Titulo))
+                        {
+                            <li>
+                                <a class="dropdown-item" asp-controller="Contos" asp-action="index" asp-route-urlHandle="@conto.UrlHandle">@conto.Titulo</a>
+                            </li>
+                        }
+                    }
+                    else
+                    {
+                        <li class="dropdown-item text-danger" href="#">No stories found!</li>
+                    }
+                </ul>
+            </li>
+        </ul>
+    </div>
+
+@section Scripts
+    {
+    <script type="text/javascript" src="~/js/SortElements.js"></script>
+    <script type="text/javascript" src="~/js/DropdownBuild.js"></script>
+}
+

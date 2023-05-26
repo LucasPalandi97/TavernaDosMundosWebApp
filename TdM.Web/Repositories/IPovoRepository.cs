@@ -10,6 +10,7 @@ public interface IPovoRepository
     Task<IEnumerable<Povo>> GetAllByRegiaoAsync(object selectedRegiaoIds, int page, int pageSize);
     Task<Povo?> GetAsync(Guid id, int page, int pageSize);
     Task<Povo?> GetByUrlHandleAsync(string urlHandle, int page, int pageSize);
+    Task<bool> UrlHandleExists(string urlHandle);
     Task<Povo> AddAsync(Povo povo);
     Task<Povo?> UpdateAsync(Povo povo, int page, int pageSize);
     Task<Povo?> DeleteAsync(Guid id);

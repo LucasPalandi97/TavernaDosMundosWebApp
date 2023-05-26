@@ -48,6 +48,7 @@ public class AdminCriaturasController : Controller
     [HttpPost]
     public async Task<IActionResult> Add(AddCriaturaRequest addCriaturaRequest)
     {
+        await ValidateAddCriaturaRequest(addCriaturaRequest);
 
         if (!ModelState.IsValid)
         {
@@ -238,6 +239,13 @@ public class AdminCriaturasController : Controller
     }
 
     [HttpGet]
+    public async Task<IActionResult> CreatureBuildModal(Guid criaturaId)
+    {
+        var criatura = await criaturaRepository.GetAsync(criaturaId, 1, 10);
+        return PartialView("_CreatureBuildModal", criatura);
+    }
+
+    [HttpGet]
     public async Task<IActionResult> Edit(Guid id)
     {
         //Retrieve Result from repository
@@ -307,6 +315,8 @@ public class AdminCriaturasController : Controller
     [HttpPost]
     public async Task<IActionResult> Edit(EditCriaturaRequest editCriaturaRequest)
     {
+        await ValidateEditCriaturaRequest(editCriaturaRequest);
+
         if (!ModelState.IsValid)
         {
 
@@ -477,6 +487,24 @@ public class AdminCriaturasController : Controller
         //Show an error notification
         return RedirectToAction("Edit", new { Id = editCriaturaRequest.Id });
     }
+    private async Task ValidateAddCriaturaRequest(AddCriaturaRequest addCriaturaRequest)
+    {
+        bool urlHandleExists = await criaturaRepository.UrlHandleExists(addCriaturaRequest.UrlHandle);
 
+        if (urlHandleExists)
+        {
+            ModelState.AddModelError("UrlHandle", "This URL Handle already exists");
+        }
+    }
+    private async Task ValidateEditCriaturaRequest(EditCriaturaRequest editCriaturaRequest)
+    {
+        var criatura = await criaturaRepository.GetAsync(editCriaturaRequest.Id, 1, 10);
 
+        bool urlHandleExists = await criaturaRepository.UrlHandleExists(editCriaturaRequest.UrlHandle);
+
+        if (urlHandleExists && criatura?.UrlHandle != editCriaturaRequest.UrlHandle)
+        {
+            ModelState.AddModelError("UrlHandle", "This URL Handle already exists");
+        }
+    }
 }

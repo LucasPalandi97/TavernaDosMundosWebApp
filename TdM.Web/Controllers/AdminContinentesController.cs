@@ -61,6 +61,8 @@ public class AdminContinentesController : Controller
     [HttpPost]
     public async Task<IActionResult> Add(AddContinenteRequest addContinenteRequest)
     {
+        await ValidateAddContinenteRequest(addContinenteRequest);
+
         if (!ModelState.IsValid)
         {
             addContinenteRequest.Mundos = (await mundoRepository.GetAllAsync(1, 100)).OrderBy(x => x.Nome)
@@ -293,6 +295,8 @@ public class AdminContinentesController : Controller
     [HttpPost]
     public async Task<IActionResult> Edit(EditContinenteRequest editContinenteRequest)
     {
+        await ValidateEditContinenteRequest(editContinenteRequest);
+
         if (!ModelState.IsValid)
         {
             editContinenteRequest.Mundos = (await mundoRepository.GetAllAsync(1, 10))
@@ -466,5 +470,24 @@ public class AdminContinentesController : Controller
         //Show an error notification
         return RedirectToAction("Edit", new { Id = editContinenteRequest.Id });
     }
+    private async Task ValidateAddContinenteRequest(AddContinenteRequest addContinenteRequest)
+    {
+        bool urlHandleExists = await continenteRepository.UrlHandleExists(addContinenteRequest.UrlHandle);
 
+        if (urlHandleExists)
+        {
+            ModelState.AddModelError("UrlHandle", "This URL Handle already exists");
+        }
+    }
+    private async Task ValidateEditContinenteRequest(EditContinenteRequest editContinenteRequest)
+    {
+        var continente = await continenteRepository.GetAsync(editContinenteRequest.Id, 1, 10);
+
+        bool urlHandleExists = await continenteRepository.UrlHandleExists(editContinenteRequest.UrlHandle);
+
+        if (urlHandleExists && continente?.UrlHandle != editContinenteRequest.UrlHandle)
+        {
+            ModelState.AddModelError("UrlHandle", "This URL Handle already exists");
+        }
+    }
 }

@@ -1,15 +1,15 @@
-﻿@model TdM.Database.Models.Domain.Mundo
+﻿@model TdM.Database.Models.Domain.Povo
 
 <head>
     <link type="text/css" rel="stylesheet" href="~/css/DropdownBuild.css" />
 </head>
 
-<div id="worldBuildModalContent" class="align-items-center justify-content-center">
+<div id="peopleBuildModalContent" class="align-items-center justify-content-center">
     <div class="dropdown" id="build">
         <button class="nav-link dropdown-toggle btn btn-secondary btn-lg btn-block" type="button" id="DropdownButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
             @Model.Nome
         </button>
-        <ul class="dropdown-menu text-center dropdown-menu-lg dropdown-menu-full-width show" style="left:25%;" aria-labelledby="DropdownButton">
+        <ul class="dropdown-menu text-center dropdown-menu-lg dropdown-menu-full-width show" aria-labelledby="DropdownButton">
             <li>
                 <a class="dropdown-item" href="#" id="continentsDropdown">
                     Regions &raquo;
@@ -82,26 +82,6 @@
                     else
                     {
                         <li class="dropdown-item text-danger" href="#">No creatures found!</li>
-                    }
-                </ul>
-            </li>
-            <li>
-                <a class="dropdown-item" href="#" id="creaturesDropdown">
-                    People &raquo;
-                </a>
-                <ul class="dropdown-menu dropdown-submenu" aria-labelledby="creaturesDropdown">
-                    @if (Model.Povos != null && Model.Povos.Any())
-                    {
-                        @foreach (var povo in Model.Povos.OrderBy(r => r.Nome))
-                        {
-                            <li>
-                                <a class="dropdown-item" asp-controller="Povos" asp-action="index" asp-route-urlHandle="@povo.UrlHandle">@povo.Nome</a>
-                            </li>
-                        }
-                    }
-                    else
-                    {
-                        <li class="dropdown-item text-danger" href="#">No people found!</li>
                     }
                 </ul>
             </li>

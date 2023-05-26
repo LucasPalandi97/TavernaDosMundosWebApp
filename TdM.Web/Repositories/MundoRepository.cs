@@ -95,6 +95,12 @@ public class MundoRepository : IMundoRepository
             .FirstOrDefaultAsync();
     }
 
+    public async Task<bool> UrlHandleExists(string urlHandle)
+    {
+        bool urlHandleExists = await tavernaDbContext.Mundos.AnyAsync(m => m.UrlHandle == urlHandle);
+        return urlHandleExists;
+    }
+
     public async Task<Mundo?> UpdateAsync(Mundo mundo, int page, int pageSize)
     {
         var existingMundo = await tavernaDbContext.Mundos

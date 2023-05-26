@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using TdM.Database.Data;
 using TdM.Database.Models.Domain;
 using TdM.Web.Models.ViewModels;
 using TdM.Web.Repositories;
@@ -57,6 +58,8 @@ public class AdminMundosController : Controller
     [HttpPost]
     public async Task<IActionResult> Add(AddMundoRequest addMundoRequest)
     {
+        await ValidateAddMundoRequest(addMundoRequest);
+
         if (!ModelState.IsValid)
         {
             addMundoRequest.Continentes = (await continenteRepository.GetAllAsync(1, 10)).Where(c => c.Mundo == null).OrderBy(x => x.Nome)
@@ -327,6 +330,8 @@ public class AdminMundosController : Controller
     [HttpPost]
     public async Task<IActionResult> Edit(EditMundoRequest editMundoRequest)
     {
+        await ValidateEditMundoRequest(editMundoRequest);
+
         if (!ModelState.IsValid)
         {
             editMundoRequest.Continentes = (await continenteRepository.GetAllAsync(1, 100))
@@ -535,4 +540,26 @@ public class AdminMundosController : Controller
         //Show an error notification
         return RedirectToAction("Edit", new { editMundoRequest.Id });
     }
+
+    private async Task ValidateAddMundoRequest(AddMundoRequest addMundoRequest)
+    {
+        bool urlHandleExists = await mundoRepository.UrlHandleExists(addMundoRequest.UrlHandle);
+
+        if (urlHandleExists)
+        {
+            ModelState.AddModelError("UrlHandle", "This URL Handle already exists");
+        }
+    }
+    private async Task ValidateEditMundoRequest(EditMundoRequest editMundoRequest)
+    {
+        var mundo = await mundoRepository.GetAsync(editMundoRequest.Id, 1, 10);
+
+        bool urlHandleExists = await mundoRepository.UrlHandleExists(editMundoRequest.UrlHandle);
+
+        if (urlHandleExists && mundo?.UrlHandle != editMundoRequest.UrlHandle)
+        {
+            ModelState.AddModelError("UrlHandle", "This URL Handle already exists");
+        }
+    }
+
 }

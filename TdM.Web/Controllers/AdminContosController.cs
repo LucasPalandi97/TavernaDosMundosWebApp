@@ -59,6 +59,7 @@ public class AdminContosController : Controller
     [HttpPost]
     public async Task<IActionResult> Add(AddContoRequest addContoRequest)
     {
+        await ValidateAddContoRequest(addContoRequest);
 
         if (!ModelState.IsValid)
         {
@@ -244,6 +245,13 @@ public class AdminContosController : Controller
     }
 
     [HttpGet]
+    public async Task<IActionResult> StoryBuildModal(Guid contoId)
+    {
+        var conto = await contoRepository.GetAsync(contoId, 1, 10);
+        return PartialView("_StoryBuildModal", conto);
+    }
+
+    [HttpGet]
     public async Task<IActionResult> Edit(Guid id)
     {
         //Retrieve Result from repository
@@ -321,6 +329,8 @@ public class AdminContosController : Controller
     [HttpPost]
     public async Task<IActionResult> Edit(EditContoRequest editContoRequest)
     {
+        await ValidateEditContoRequest(editContoRequest);
+
         if (!ModelState.IsValid)
         {
             editContoRequest.Mundos = (await mundoRepository.GetAllAsync(1, 100)).OrderBy(x => x.Nome)
@@ -516,5 +526,25 @@ public class AdminContosController : Controller
         }
         //Show an error notification
         return RedirectToAction("Edit", new { Id = editContoRequest.Id });
+    }
+    private async Task ValidateAddContoRequest(AddContoRequest addContoRequest)
+    {
+        bool urlHandleExists = await contoRepository.UrlHandleExists(addContoRequest.UrlHandle);
+
+        if (urlHandleExists)
+        {
+            ModelState.AddModelError("UrlHandle", "This URL Handle already exists");
+        }
+    }
+    private async Task ValidateEditContoRequest(EditContoRequest editContoRequest)
+    {
+        var conto = await contoRepository.GetAsync(editContoRequest.Id, 1, 10);
+
+        bool urlHandleExists = await contoRepository.UrlHandleExists(editContoRequest.UrlHandle);
+
+        if (urlHandleExists && conto?.UrlHandle != editContoRequest.UrlHandle)
+        {
+            ModelState.AddModelError("UrlHandle", "This URL Handle already exists");
+        }
     }
 }

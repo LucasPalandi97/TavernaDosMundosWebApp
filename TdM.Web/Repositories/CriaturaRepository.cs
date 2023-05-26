@@ -107,7 +107,11 @@ public class CriaturaRepository : ICriaturaRepository
                .Take(pageSize)
                .FirstOrDefaultAsync();
     }
-
+    public async Task<bool> UrlHandleExists(string urlHandle)
+    {
+        bool urlHandleExists = await tavernaDbContext.Criaturas.AnyAsync(m => m.UrlHandle == urlHandle);
+        return urlHandleExists;
+    }
     public async Task<Criatura?> UpdateAsync(Criatura criatura, int page, int pageSize)
     {
         var existingCriatura = await tavernaDbContext.Criaturas

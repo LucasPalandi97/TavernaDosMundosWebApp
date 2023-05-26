@@ -46,6 +46,8 @@ public class AdminPersonagensController : Controller
     [HttpPost]
     public async Task<IActionResult> Add(AddPersonagemRequest addPersonagemRequest)
     {
+        await ValidateAddPersonagemRequest(addPersonagemRequest);
+
         if (!ModelState.IsValid)
         {
             addPersonagemRequest.Mundos = (await mundoRepository.GetAllAsync(1, 100)).OrderBy(x => x.Nome)
@@ -245,6 +247,13 @@ public class AdminPersonagensController : Controller
     }
 
     [HttpGet]
+    public async Task<IActionResult> CharacterBuildModal(Guid personagemId)
+    {
+        var personagem = await personagemRepository.GetAsync(personagemId, 1, 10);
+        return PartialView("_CharacterBuildModal", personagem);
+    }
+
+    [HttpGet]
     public async Task<IActionResult> Edit(Guid id)
     {
         //Retrieve Result from repository
@@ -319,6 +328,7 @@ public class AdminPersonagensController : Controller
     [HttpPost]
     public async Task<IActionResult> Edit(EditPersonagemRequest editPersonagemRequest)
     {
+        await ValidateEditPersonagemRequest(editPersonagemRequest);
 
         if (!ModelState.IsValid)
         {
@@ -487,5 +497,25 @@ public class AdminPersonagensController : Controller
         }
         //Show an error notification
         return RedirectToAction("Edit", new { Id = editPersonagemRequest.Id });
+    }
+    private async Task ValidateAddPersonagemRequest(AddPersonagemRequest addPersonagemRequest)
+    {
+        bool urlHandleExists = await personagemRepository.UrlHandleExists(addPersonagemRequest.UrlHandle);
+
+        if (urlHandleExists)
+        {
+            ModelState.AddModelError("UrlHandle", "This URL Handle already exists");
+        }
+    }
+    private async Task ValidateEditPersonagemRequest(EditPersonagemRequest editPersonagemRequest)
+    {
+        var personagem = await personagemRepository.GetAsync(editPersonagemRequest.Id, 1, 10);
+
+        bool urlHandleExists = await personagemRepository.UrlHandleExists(editPersonagemRequest.UrlHandle);
+
+        if (urlHandleExists && personagem?.UrlHandle != editPersonagemRequest.UrlHandle)
+        {
+            ModelState.AddModelError("UrlHandle", "This URL Handle already exists");
+        }
     }
 }

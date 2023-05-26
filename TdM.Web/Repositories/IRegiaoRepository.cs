@@ -10,6 +10,7 @@ public interface IRegiaoRepository
     Task<IEnumerable<Regiao>>? GetAllByContinenteAsync(object selectedContinentIds, int page, int pageSize);
     Task<Regiao?> GetAsync(Guid id, int page, int pageSize);
     Task<Regiao?> GetByUrlHandleAsync(string urlHandle, int page, int pageSize);
+    Task<bool> UrlHandleExists(string urlHandle);
     Task<Regiao> AddAsync(Regiao regiao);
     Task<Regiao?> UpdateAsync(Regiao regiao, int page, int pageSize);
     Task<Regiao?> DeleteAsync(Guid id);

@@ -11,12 +11,6 @@ document.addEventListener("click", function (event) {
         event.preventDefault();
         const dropdownMenu = event.target.nextElementSibling;
         dropdownMenu.classList.toggle("show");
-    } else {
-        // Close the dropdown menu when the user clicks outside of it
-        const dropdownMenus = document.querySelectorAll("#build .dropdown-menu.show");
-        dropdownMenus.forEach(function (menu) {
-            menu.classList.remove("show");
-        });
-    }
+    }          
 });
 

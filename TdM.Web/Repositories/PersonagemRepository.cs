@@ -107,7 +107,11 @@ public class PersonagemRepository : IPersonagemRepository
             .Include(x => x.Mundo)
             .FirstOrDefaultAsync();
     }
-
+    public async Task<bool> UrlHandleExists(string urlHandle)
+    {
+        bool urlHandleExists = await tavernaDbContext.Personagens.AnyAsync(m => m.UrlHandle == urlHandle);
+        return urlHandleExists;
+    }
     public async Task<Personagem?> UpdateAsync(Personagem personagem, int page, int pageSize)
     {
         var existingPersonagem = await tavernaDbContext.Personagens

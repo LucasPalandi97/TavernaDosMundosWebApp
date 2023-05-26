@@ -13,6 +13,7 @@ public interface IContoRepository
     Task<IEnumerable<Conto>> GetAllByPovoAsync(object selectedPovoIds, int page, int pageSize);
     Task<Conto?> GetAsync(Guid id, int page, int pageSize);
     Task<Conto?> GetByUrlHandleAsync(string urlHandle, int page, int pageSize);
+    Task<bool> UrlHandleExists(string urlHandle);
     Task<Conto> AddAsync(Conto conto);
     Task<Conto?> UpdateAsync(Conto conto, int page, int pageSize);
     Task<Conto?> DeleteAsync(Guid id);

@@ -20,7 +20,6 @@
 .dropdown-submenu {
     position: static;
 }
-
     .dropdown-submenu .dropdown-menu {
         left: 100%;
         top: 0;
@@ -41,4 +40,29 @@
 
 .modal-body.dropdown-open {
     overflow: visible;
+}
+@media (max-width: 991px) {
+    .btn-block {
+        margin-bottom:1rem;
+    }
+    .dropdown-menu-lg {
+        min-width: 50%;
+    }
+    .dropdown-menu-full-width {
+        width: auto;
+        padding: 15px;
+        max-height: none; /* Remove the fixed height */
+        overflow-y: visible;
+    }
+    .dropdown-menu .dropdown-submenu {
+        left: 15%;
+        margin-top: 19.5%;
+    }
+    .dropdown-submenu .dropdown-menu {
+        left: 10%;
+        top: 0;
+        margin-top: 19.5%;
+        /* Remove the margin-left property */
+        overflow: visible; /* Add this line to enable overflow */
+    }
 }

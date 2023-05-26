@@ -134,7 +134,11 @@ public class PovoRepository : IPovoRepository
             .Take(pageSize)
             .FirstOrDefaultAsync();
     }
-
+    public async Task<bool> UrlHandleExists(string urlHandle)
+    {
+        bool urlHandleExists = await tavernaDbContext.Povos.AnyAsync(m => m.UrlHandle == urlHandle);
+        return urlHandleExists;
+    }
     public async Task<Povo?> UpdateAsync(Povo povo, int page, int pageSize)
     {
         var existingPovo = await tavernaDbContext.Povos

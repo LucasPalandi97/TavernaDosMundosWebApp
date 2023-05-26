@@ -41,10 +41,6 @@ public class AdminUsersController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> List(UserViewModel request)
     {
-        if (!ModelState.IsValid)
-        {
-            return View();
-        }
 
             var identityUser = new IdentityUser
         {
@@ -75,10 +71,8 @@ public class AdminUsersController : Controller
                 }
             }
         }
-
         return View();
     }
-
 
     [HttpPost]
     public async Task<IActionResult> Delete(Guid id)

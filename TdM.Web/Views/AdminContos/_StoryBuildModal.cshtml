@@ -1,15 +1,15 @@
-﻿@model TdM.Database.Models.Domain.Mundo
+﻿@model TdM.Database.Models.Domain.Conto
 
 <head>
     <link type="text/css" rel="stylesheet" href="~/css/DropdownBuild.css" />
 </head>
 
-<div id="worldBuildModalContent" class="align-items-center justify-content-center">
+<div id="storyBuildModalContent" class="align-items-center justify-content-center">
     <div class="dropdown" id="build">
         <button class="nav-link dropdown-toggle btn btn-secondary btn-lg btn-block" type="button" id="DropdownButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-            @Model.Nome
+            @Model.Titulo
         </button>
-        <ul class="dropdown-menu text-center dropdown-menu-lg dropdown-menu-full-width show" style="left:25%;" aria-labelledby="DropdownButton">
+        <ul class="dropdown-menu text-center dropdown-menu-lg dropdown-menu-full-width show" aria-labelledby="DropdownButton">
             <li>
                 <a class="dropdown-item" href="#" id="continentsDropdown">
                     Regions &raquo;
@@ -102,26 +102,6 @@
                     else
                     {
                         <li class="dropdown-item text-danger" href="#">No people found!</li>
-                    }
-                </ul>
-            </li>
-            <li>
-                <a class="dropdown-item" href="#" id="creaturesDropdown">
-                    Stories &raquo;
-                </a>
-                <ul class="dropdown-menu dropdown-submenu" aria-labelledby="creaturesDropdown">
-                    @if (Model.Contos != null && Model.Contos.Any())
-                    {
-                        @foreach (var conto in Model.Contos.OrderBy(r => r.Titulo))
-                        {
-                            <li>
-                                <a class="dropdown-item" asp-controller="Contos" asp-action="index" asp-route-urlHandle="@conto.UrlHandle">@conto.Titulo</a>
-                            </li>
-                        }
-                    }
-                    else
-                    {
-                        <li class="dropdown-item text-danger" href="#">No stories found!</li>
                     }
                 </ul>
             </li>

@@ -84,7 +84,11 @@ public class ContinenteRepository : IContinenteRepository
             .Take(pageSize)
             .FirstOrDefaultAsync();
     }
-
+    public async Task<bool> UrlHandleExists(string urlHandle)
+    {
+        bool urlHandleExists = await tavernaDbContext.Continentes.AnyAsync(m => m.UrlHandle == urlHandle);
+        return urlHandleExists;
+    }
     public async Task<Continente?> UpdateAsync(Continente continente, int page, int pageSize)
     {
         var existingContinente = await tavernaDbContext.Continentes

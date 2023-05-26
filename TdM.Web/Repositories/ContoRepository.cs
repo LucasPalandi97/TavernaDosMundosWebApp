@@ -217,7 +217,11 @@ public class ContoRepository : IContoRepository
             .Take(pageSize)
             .FirstOrDefaultAsync();
     }
-
+    public async Task<bool> UrlHandleExists(string urlHandle)
+    {
+        bool urlHandleExists = await tavernaDbContext.Contos.AnyAsync(m => m.UrlHandle == urlHandle);
+        return urlHandleExists;
+    }
     public async Task<Conto?> UpdateAsync(Conto conto, int page, int pageSize)
     {
         var existingConto = await tavernaDbContext.Contos

@@ -76,6 +76,8 @@ public class AdminRegioesController : Controller
     [HttpPost]
     public async Task<IActionResult> Add(AddRegiaoRequest addRegiaoRequest)
     {
+        await ValidateAddRegiaoRequest(addRegiaoRequest);
+
         if (!ModelState.IsValid)
         {
             addRegiaoRequest.Mundos = (await mundoRepository.GetAllAsync(1, 100)).OrderBy(x => x.Nome)
@@ -366,6 +368,8 @@ public class AdminRegioesController : Controller
     [HttpPost]
     public async Task<IActionResult> Edit(EditRegiaoRequest editRegiaoRequest)
     {
+        await ValidateEditRegiaoRequest(editRegiaoRequest);
+
         if (!ModelState.IsValid)
         {
             editRegiaoRequest.Mundos = (await mundoRepository.GetAllAsync(1, 100)).OrderBy(x => x.Nome)
@@ -581,5 +585,25 @@ public class AdminRegioesController : Controller
         }
         //Show an error notification
         return RedirectToAction("Edit", new { Id = editRegiaoRequest.Id });
+    }
+    private async Task ValidateAddRegiaoRequest(AddRegiaoRequest addRegiaoRequest)
+    {
+        bool urlHandleExists = await regiaoRepository.UrlHandleExists(addRegiaoRequest.UrlHandle);
+
+        if (urlHandleExists)
+        {
+            ModelState.AddModelError("UrlHandle", "This URL Handle already exists");
+        }
+    }
+    private async Task ValidateEditRegiaoRequest(EditRegiaoRequest editRegiaoRequest)
+    {
+        var regiao = await regiaoRepository.GetAsync(editRegiaoRequest.Id, 1, 10);
+
+        bool urlHandleExists = await regiaoRepository.UrlHandleExists(editRegiaoRequest.UrlHandle);
+
+        if (urlHandleExists && regiao?.UrlHandle != editRegiaoRequest.UrlHandle)
+        {
+            ModelState.AddModelError("UrlHandle", "This URL Handle already exists");
+        }
     }
 }
