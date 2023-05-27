@@ -45,19 +45,24 @@
     .btn-block {
         margin-bottom:1rem;
     }
+
     .dropdown-menu-lg {
         min-width: 50%;
+        left:25%;
     }
+
     .dropdown-menu-full-width {
         width: auto;
         padding: 15px;
         max-height: none; /* Remove the fixed height */
         overflow-y: visible;
     }
+
     .dropdown-menu .dropdown-submenu {
         left: 15%;
         margin-top: 19.5%;
     }
+
     .dropdown-submenu .dropdown-menu {
         left: 10%;
         top: 0;
