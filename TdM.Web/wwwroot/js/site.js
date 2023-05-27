@@ -1,4 +1,7 @@
-﻿
+﻿//Tooltips
+const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+
 //Popovers
 $(document).ready(function () {
     $('[data-bs-toggle="popover"]').popover();
@@ -6,12 +9,10 @@ $(document).ready(function () {
 
 const themeSwitch = document.getElementById('themeSwitch');
 
-
 //Eliminate padding left when mobile
 if (/Mobi/.test(navigator.userAgent)) {
     document.querySelector('main[role="main"]').style.paddingLeft = 0;
 }
-
 
 //Color theme
 // Get stored theme or null

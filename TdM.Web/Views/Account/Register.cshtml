@@ -26,8 +26,14 @@
 
                 <div class="mb-3">
                     <label class="form-label">Password</label>
-                    <input type="password" id="password" class="form-control" asp-for="Password" required minlength="6"/>
+                    <input type="password" id="password" class="form-control" asp-for="Password"/>
                     <span class="text-danger" asp-validation-for="Password"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Confirm Password</label>
+                    <input type="password" id="confirmpassword" class="form-control" asp-for="ConfirmPassword"/>
+                    <span class="text-danger" asp-validation-for="ConfirmPassword"></span>
                 </div>
 
                 <p>When creating an account, you agree with our <a asp-action="TermsOfUse" asp-controller="Account">terms of use</a></p>

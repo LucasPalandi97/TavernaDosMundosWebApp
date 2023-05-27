@@ -1,4 +1,7 @@
 ﻿@model TdM.Web.Models.ViewModels.UserViewModel
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> signInManager
+
 @{
 }
 <partial name="_Navbar2" />
@@ -15,30 +18,77 @@
             </button>
         </div>
 
+        <!-- Modal -->
+        <form asp-action="List" asp-controller="AdminUsers" data-ajax-method="POST" data-ajax="true" data-ajax-update="newUserFormDetails" data-ajax-complete="OnComplete">
+            <div id="modalCreateUser" class="modal fade" tabindex="-1" role="dialog" data-backdrop="static" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5">Create new User</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body" id="newUserFormDetails">
+                            <partial name="_ModalCreateUser" model="@Model" />
+                        </div>
+                        <div class="modal-footer">
+                            <input id="btnSubmit" type="submit" value="Submit" class="btn btn-primary" />
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+
         @if (Model.Users is not null || !Model.Users.Any())
         {
             <table class="table table-responsive" id="table">
                 <thead class="text-nowrap">
                     <tr>
-                        <th>Id</th>
-                        <th>Username</th>
-                        <th>Email</th>
-                        <th> </th>
+                        <th id="idcolumn">Id</th>
+                        <th onclick="sortTable(1)">Username<span class="pointer">&#9660</span></th>
+                        <th onclick="sortTable(2)">Email<span class="pointer">&#9660</span></th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach (var user in Model.Users)
                     {
+                        var identityUser = new IdentityUser
+                    {
+                        Id = user.Id.ToString(),
+                        // Map other properties as needed
+                    };
+                        var isAdmin = await signInManager.UserManager.IsInRoleAsync(identityUser, "Admin");
                         <tr>
-                            <td>@user.Id</td>
-                            <td>@user.Username</td>
+                            <td id="tdid">@user.Id</td>
+                            <td>
+                                @if (isAdmin)
+                                {
+                                    @user.Username
+                                    <a href="#" class="d-inline-block" style="color:rgb(218,165,32)" data-bs-toggle="tooltip" data-bs-title="Admin">
+                                        <i class="bi bi-star-fill"></i>
+                                    </a>
+                                }
+                                else
+                                {
+                                    @user.Username
+                                }
+                            </td>
                             <td>@user.EmailAdress</td>
                             <td>
                                 <form method="post" asp-controller="AdminUsers" asp-action="Delete" asp-route-id="@user.Id" id="deleteForm-@user.Id">
-                                    <ul class="list-inline flex-nowrap m-0">                                     
-                                        <li class="list-inline-item">
-                                            <button class="btn btn-sm rounded-0" type="button" data-bs-toggle="modal" data-bs-target="#ConfirmDeleteModal-@user.Id"><i class="bi bi-trash-fill"></i></button>
-                                        </li>
+                                    <ul class="list-inline flex-nowrap m-0">
+                                        @if (isAdmin && signInManager.IsSignedIn(User) && User.IsInRole("SuperAdmin"))
+                                        {
+                                            <li class="list-inline-item">
+                                                <button class="btn btn-sm rounded-0" type="button" data-bs-toggle="modal" data-bs-target="#ConfirmDeleteModal-@user.Id"><i class="bi bi-trash-fill"></i></button>
+                                            </li>
+                                        }
+                                        @if(!isAdmin){
+                                            <li class="list-inline-item">
+                                                <button class="btn btn-sm rounded-0" type="button" data-bs-toggle="modal" data-bs-target="#ConfirmDeleteModal-@user.Id"><i class="bi bi-trash-fill"></i></button>
+                                            </li>
+                                        }
                                     </ul>
                                     <!-- Modal Delete -->
                                     <div class="modal fade" id="ConfirmDeleteModal-@user.Id" tabindex="-1" aria-labelledby="ConfirmDeleteModalLabel" aria-hidden="true">
@@ -69,12 +119,12 @@
     </div>
 </div>
 
-<!-- Modal -->
+@section Scripts{
+    <script type="text/javascript" src="~/js/SortElements.js"></script>
+    <script type="text/javascript">
+        function OnComplete() {
+            $("#modalCreateUser").modal("hide");
+        }
+    </script>
+}
 
-    <div class="modal fade" id="modalCreateUser" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <partial name="_CreateUser" />
-            </div>
-        </div>
-    </div>

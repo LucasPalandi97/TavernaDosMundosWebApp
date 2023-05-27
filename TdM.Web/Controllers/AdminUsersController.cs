@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using TdM.Web.Models.ViewModels;
 using TdM.Web.Repositories;
 
+
 namespace TdM.Web.Controllers;
 
 [Authorize(Roles = "Admin")]
@@ -40,38 +41,42 @@ public class AdminUsersController : Controller
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> List(UserViewModel request)
-    {
+    {   
+        ModelState.Remove("Users"); // Remove the Users property from ModelState
 
+        if (ModelState.IsValid)
+        {
             var identityUser = new IdentityUser
-        {
-            UserName = request.UserName,
-            Email = request.Email
-
-        };
-
-        var identityResult = await userManager.CreateAsync(identityUser, request.Password);
-
-        if (identityResult is not null)
-        {
-            if (identityResult.Succeeded)
             {
-                //Assign roles to this user
-                var roles = new List<string> { "User" };
+                UserName = request.UserName,
+                Email = request.Email
 
-                if (request.isAdmin)
+            };
+
+            var identityResult = await userManager.CreateAsync(identityUser, request.Password);
+
+            if (identityResult is not null)
+            {
+                if (identityResult.Succeeded)
                 {
-                    roles.Add("Admin");
-                }
+                    //Assign roles to this user
+                    var roles = new List<string> { "User" };
 
-                identityResult = await userManager.AddToRolesAsync(identityUser, roles);
+                    if (request.isAdmin)
+                    {
+                        roles.Add("Admin");
+                    }
 
-                if (identityResult is not null && identityResult.Succeeded)
-                {
-                    return RedirectToAction("List", "AdminUsers");
+                    identityResult = await userManager.AddToRolesAsync(identityUser, roles);
+
+                    if (identityResult is not null && identityResult.Succeeded)
+                    {
+                        return RedirectToAction("List", "AdminUsers");
+                    }
                 }
             }
         }
-        return View();
+        return View(request);
     }
 
     [HttpPost]

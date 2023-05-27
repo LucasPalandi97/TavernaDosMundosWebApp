@@ -158,7 +158,10 @@
                             {
                                 <div class="nav-item dropdown">
                                     <a class="nav-link dropdown-toggle text-secondary" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                        @User.Identity?.Name
+                                        @User.Identity?.Name @if (signInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+                                        {
+                                            <i class="bi bi-star-fill" style="color:rgb(218,165,32)"></i>
+                                        }
                                     </a>
                                     <ul id="admmenu" class="dropdown-menu dropdown-menu-start position-absolute">
                                         <li>
@@ -199,7 +202,6 @@
                     <li class="nav-item align-items-center d-flex flex-column flex-lg-row p-0">
                         @if (signInManager.IsSignedIn(User))
                         {
-
                             <div class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle text-secondary" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     @User.Identity?.Name
