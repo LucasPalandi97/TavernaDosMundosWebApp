@@ -1,4 +1,14 @@
-﻿//Tooltips
+﻿// Toasts
+$(document).ready(function () {
+    var toastEl = $('.toast');
+    var toast = new bootstrap.Toast(toastEl[0], { autohide: false });
+
+    if (toastEl.length > 0) {
+        toast.show();
+    }
+});
+
+//Tooltips
 const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
 const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
 

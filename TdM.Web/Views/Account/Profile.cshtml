@@ -1,0 +1,88 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> signInManager
+@model TdM.Web.Models.ViewModels.ChangePasswordViewModel
+
+<partial name="_Navbar2" />
+
+@if (signInManager.IsSignedIn(User))
+{
+    <div class="container mt-4">
+        <div class="row justify-content-center">
+            <div class="col-xxl-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h4>User Information</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3 row">
+                            <label class="col-md-4 col-form-label">Username:</label>
+                            <div class="col-md-8">
+                                <input id="userField" class="form-control" value="@Model.Username" asp-for="Username" disabled readonly />
+                            </div>
+                        </div>
+                        <form id="emailForm" method="post" action="@Url.Action("UpdateEmail", "Account")">
+                            <div class="mb-3 row">
+                                <label class="col-md-4 col-form-label">Email:</label>
+                                <div class="mb-3 col-md-6">
+                                    <input id="emailField" type="email" class="form-control disabled" placeholder="@Model.NewEmail" asp-for="NewEmail" />
+                                    <span class="text-danger" asp-validation-for="NewEmail"></span>
+                                </div>
+                                <div class="col-md-2">
+                                    <button id="editEmailBtn" type="submit" class="btn btn-secondary bg-body-secondary text-body" style="width:5rem">Update</button>
+                                </div>
+                            </div>
+                            @if (!string.IsNullOrEmpty(Model.EmailChangeConfirmation))
+                            {
+                                <div class="alert alert-success">
+                                    @Model.EmailChangeConfirmation
+                                </div>
+                            }
+                        </form>
+                    </div>
+                </div>
+                <div class="card mt-4">
+                    <div class="card-header">
+                        <h4>Change Password</h4>
+                    </div>
+                    <div class="card-body">
+                        <form method="post" action="@Url.Action("ChangePassword", "Account")">
+                            <div class="mb-3 row">
+                                <label class="col-md-4 col-form-label">Current Password:</label>
+                                <div class="col-md-8">
+                                    <input type="password" class="form-control" name="CurrentPassword" asp-for="CurrentPassword" required />
+                                    <span class="text-danger" asp-validation-for="CurrentPassword"></span>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label class="col-md-4 col-form-label">New Password:</label>
+                                <div class="col-md-8">
+                                    <input type="password" class="form-control" name="NewPassword" asp-for="NewPassword" required />
+                                    <span class="text-danger" asp-validation-for="NewPassword"></span>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label class="col-md-4 col-form-label">Confirm New Password:</label>
+                                <div class="col-md-8">
+                                    <input type="password" class="form-control" name="ConfirmNewPassword" asp-for="ConfirmNewPassword" required />
+                                    <span class="text-danger" asp-validation-for="ConfirmNewPassword"></span>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <div class="col-md-8 offset-md-4">
+                                    <button type="submit" class="btn btn-secondary bg-body-secondary text-body">Change Password</button>
+                                </div>
+                            </div>
+                            @if (!string.IsNullOrEmpty(Model.PasswordChangeConfirmation))
+                            {
+                                <div class="alert alert-success">
+                                    @Model.PasswordChangeConfirmation
+                                </div>
+                            }
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+

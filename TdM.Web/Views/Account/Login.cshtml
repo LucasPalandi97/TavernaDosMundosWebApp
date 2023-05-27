@@ -10,15 +10,27 @@
                 Login
             </h1>
             <form method="post">
+                @if (TempData["RegistrationSuccess"] as bool? == true)
+                {
+                    <div class="toast align-items-center text-bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
+                        <div class="d-flex">
+                            <div class="toast-body">
+                                Hello, world! This is a toast message.
+                            </div>
+                            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                        </div>
+                    </div>
+                }
+
                 <div class="mb-3">
                     <label class="form-label">Username</label>
-                    <input type="text" id="username" class="form-control" asp-for="Username" required/>
+                    <input type="text" id="username" class="form-control" asp-for="Username" required />
                     <span class="text-danger" asp-validation-for="Username"></span>
                 </div>
 
                 <div class="mb-3">
                     <label class="form-label">Password</label>
-                    <input type="password" id="password" class="form-control" asp-for="Password" required minlenght="6"/>
+                    <input type="password" id="password" class="form-control" asp-for="Password" required minlenght="6" />
                     <span class="text-danger" asp-validation-for="Password"></span>
 
                 </div>
@@ -27,7 +39,7 @@
                     <button type="submit" class="btn btn-secondary">Login</button>
                 </div>
 
-                <input type="hidden" asp-for="ReturnUrl"/>
+                <input type="hidden" asp-for="ReturnUrl" />
             </form>
         </div>
     </div>

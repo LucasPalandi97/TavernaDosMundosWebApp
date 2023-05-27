@@ -158,7 +158,7 @@
                             {
                                 <div class="nav-item dropdown">
                                     <a class="nav-link dropdown-toggle text-secondary" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                        @User.Identity?.Name 
+                                        @User.Identity?.Name
                                         @if (signInManager.IsSignedIn(User))
                                         {
                                             if (User.IsInRole("SuperAdmin"))
@@ -176,8 +176,12 @@
                                             <a class="dropdown-item" asp-area="" asp-controller="AdminUsers" asp-action="List">Users View</a>
                                         </li>
                                         <li>
+                                            <a type="submit" class="dropdown-item" asp-area="" asp-controller="Account" asp-action="Profile">Profile</a>
+                                        </li>
+                                        <li>
                                             <a type="submit" class="dropdown-item" asp-area="" asp-controller="Account" asp-action="Logout">Logout</a>
                                         </li>
+
                                     </ul>
                                 </div>
                             }
@@ -188,6 +192,9 @@
                                         @User.Identity?.Name
                                     </a>
                                     <ul id="admmenu" class="dropdown-menu dropdown-menu-start position-absolute">
+                                        <li>
+                                            <a type="submit" class="dropdown-item" asp-area="" asp-controller="Account" asp-action="Profile">Profile</a>
+                                        </li>
                                         <li>
                                             <a type="submit" class="dropdown-item" asp-area="" asp-controller="Account" asp-action="Logout">Logout</a>
                                         </li>
@@ -216,8 +223,11 @@
                                 </a>
                                 <ul id="admmenu" class="dropdown-menu dropdown-menu-start position-absolute">
                                     <li>
-                                        <a type="submit" class="dropdown-item" asp-area="" asp-controller="Account" asp-action="Logout">Logout</a>
+                                        <a type="submit" class="dropdown-item" asp-area="" asp-controller="Account" asp-action="Profile">Profile</a>
                                     </li>
+                                    <li>
+                                        <a type="submit" class="dropdown-item" asp-area="" asp-controller="Account" asp-action="Logout">Logout</a>
+                                    </li>                               
                                 </ul>
                             </div>
                         }

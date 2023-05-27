@@ -101,6 +101,12 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
+app.MapControllerRoute(
+    name: "profile",
+    pattern: "Profile",
+    defaults: new { controller = "Account", action = "Profile" }
+);
+
 app.Use(async (context, next) =>
 {
     // Redirect HTTP requests to HTTPS
