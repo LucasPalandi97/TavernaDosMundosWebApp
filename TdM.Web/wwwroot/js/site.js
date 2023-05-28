@@ -1,12 +1,7 @@
-﻿// Toasts
-$(document).ready(function () {
-    var toastEl = $('.toast');
-    var toast = new bootstrap.Toast(toastEl[0], { autohide: false });
-
-    if (toastEl.length > 0) {
-        toast.show();
-    }
-});
+﻿
+//Toasts
+const toastElList = document.querySelectorAll('.toast')
+const toastList = [...toastElList].map(toastEl => new bootstrap.Toast(toastEl, option))
 
 //Tooltips
 const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')

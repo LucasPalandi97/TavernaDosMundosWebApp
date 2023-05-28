@@ -35,7 +35,7 @@ public class AccountController : Controller
                 Email = registerViewModel.Email,
             };
 
-            // Check if the new email already exists
+            // Check if the new username already exists
             var existingUsername = await userManager.FindByNameAsync(registerViewModel.Username);
             if (existingUsername != null)
             {

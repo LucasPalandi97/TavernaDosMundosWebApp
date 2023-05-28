@@ -6,7 +6,7 @@
 
 @if (signInManager.IsSignedIn(User))
 {
-    <div class="container mt-4">
+    <div class="container mt-5 pt-5">
         <div class="row justify-content-center">
             <div class="col-xxl-6">
                 <div class="card">
@@ -28,7 +28,7 @@
                                     <span class="text-danger" asp-validation-for="NewEmail"></span>
                                 </div>
                                 <div class="col-md-2">
-                                    <button id="editEmailBtn" type="submit" class="btn btn-secondary bg-body-secondary text-body" style="width:5rem">Update</button>
+                                    <button id="editEmailBtn" type="submit" class="btn btn-secondary bg-body text-body" style="width:5rem">Update</button>
                                 </div>
                             </div>
                             @if (!string.IsNullOrEmpty(Model.EmailChangeConfirmation))
@@ -69,7 +69,7 @@
                             </div>
                             <div class="mb-3 row">
                                 <div class="col-md-8 offset-md-4">
-                                    <button type="submit" class="btn btn-secondary bg-body-secondary text-body">Change Password</button>
+                                    <button type="submit" class="btn btn-secondary bg-body text-body">Change Password</button>
                                 </div>
                             </div>
                             @if (!string.IsNullOrEmpty(Model.PasswordChangeConfirmation))

@@ -1,7 +1,20 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @inject SignInManager<IdentityUser> signInManager
 @{
+    if (signInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+    {
+        <style>
+            .dropdown-toggle::after {
+                color: rgb(218, 165, 32);
+            }
+
+            .admitem {
+                color: rgb(218, 165, 32);
+            }
+        </style>
+    }
 }
+
 <nav class="navbar bg-body navbar-expand-lg py-1 pt-3">
     <div class="container-fluid px-2 px-xl-5 align-content-center text-center">
         <a class="navbar-brand mx-0 me-3" asp-area="" asp-controller="Home" asp-action="Index">Taverna dos Mundos</a>
@@ -31,9 +44,17 @@
                                 Worlds
                             </a>
                             <ul id="admmenu" class="dropdown-menu dropdown-menu-start position-absolute">
-                                <li><a class="dropdown-item" asp-area="" asp-controller="AdminMundos" asp-action="Add">Add World</a></li>
-                                <li><a class="dropdown-item" asp-area="" asp-controller="AdminMundos" asp-action="List">Show All Worlds</a></li>
+                                <li><a class="dropdown-item" type="submit" asp-area="" asp-controller="Home" asp-action="Index">Worlds</a></li>
+                                <li class="dropdown-divider"></li>
+                                <li><a class="dropdown-item admitem" asp-area="" asp-controller="AdminMundos" asp-action="Add">Add World</a></li>
+                                <li><a class="dropdown-item admitem" asp-area="" asp-controller="AdminMundos" asp-action="List">Show All Worlds</a></li>
                             </ul>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="btn-group nav-item mx-auto">
+                            <a asp-area="" asp-controller="Home" asp-action="Index" class="nav-link active">Worlds</a>
                         </li>
                     }
                     @*End of Admin Action*@
@@ -47,8 +68,8 @@
                             <ul id="admmenu" class="dropdown-menu dropdown-menu-start position-absolute">
                                 <li><a class="dropdown-item" type="submit" asp-area="" asp-controller="Personagens" asp-action="List">Characters</a></li>
                                 <li class="dropdown-divider"></li>
-                                <li><a class="dropdown-item" asp-area="" asp-controller="AdminPersonagens" asp-action="Add">Add Character</a></li>
-                                <li><a class="dropdown-item" asp-area="" asp-controller="AdminPersonagens" asp-action="List">Show Characters</a></li>
+                                <li><a class="dropdown-item admitem" asp-area="" asp-controller="AdminPersonagens" asp-action="Add">Add Character</a></li>
+                                <li><a class="dropdown-item admitem" asp-area="" asp-controller="AdminPersonagens" asp-action="List">Show Characters</a></li>
                             </ul>
                         </li>
                     }
@@ -69,11 +90,11 @@
                             <ul id="admmenu" class="dropdown-menu dropdown-menu-start position-absolute">
                                 <li><a class="dropdown-item" type="submit" asp-area="" asp-controller="Continentes" asp-action="List">Regions</a></li>
                                 <li class="dropdown-divider"></li>
-                                <li><a class="dropdown-item" asp-area="" asp-controller="AdminContinentes" asp-action="Add">Add Continent</a></li>
-                                <li><a class="dropdown-item" asp-area="" asp-controller="AdminContinentes" asp-action="List">Show Continents</a></li>
+                                <li><a class="dropdown-item admitem" asp-area="" asp-controller="AdminContinentes" asp-action="Add">Add Continent</a></li>
+                                <li><a class="dropdown-item admitem" asp-area="" asp-controller="AdminContinentes" asp-action="List">Show Continents</a></li>
                                 <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item" asp-area="" asp-controller="AdminRegioes" asp-action="Add">Add Region</a></li>
-                                <li><a class="dropdown-item" asp-area="" asp-controller="AdminRegioes" asp-action="List">Show Regions</a></li>
+                                <li><a class="dropdown-item admitem" asp-area="" asp-controller="AdminRegioes" asp-action="Add">Add Region</a></li>
+                                <li><a class="dropdown-item admitem" asp-area="" asp-controller="AdminRegioes" asp-action="List">Show Regions</a></li>
                             </ul>
                         </li>
                     }
@@ -94,8 +115,8 @@
                             <ul id="admmenu" class="dropdown-menu dropdown-menu-start position-absolute">
                                 <li><a class="dropdown-item" type="submit" asp-area="" asp-controller="Criaturas" asp-action="List">Creatures</a></li>
                                 <li class="dropdown-divider"></li>
-                                <li><a class="dropdown-item" asp-area="" asp-controller="AdminCriaturas" asp-action="Add">Add Creature</a></li>
-                                <li><a class="dropdown-item" asp-area="" asp-controller="AdminCriaturas" asp-action="List">Show Creatures</a></li>
+                                <li><a class="dropdown-item admitem" asp-area="" asp-controller="AdminCriaturas" asp-action="Add">Add Creature</a></li>
+                                <li><a class="dropdown-item admitem" asp-area="" asp-controller="AdminCriaturas" asp-action="List">Show Creatures</a></li>
                             </ul>
                         </li>
                     }
@@ -116,8 +137,8 @@
                             <ul id="admmenu" class="dropdown-menu dropdown-menu-start position-absolute">
                                 <li><a class="dropdown-item" type="submit" asp-area="" asp-controller="Povos" asp-action="List">Peoples</a></li>
                                 <li class="dropdown-divider"></li>
-                                <li><a class="dropdown-item" asp-area="" asp-controller="AdminPovos" asp-action="Add">Add People</a></li>
-                                <li><a class="dropdown-item" asp-area="" asp-controller="AdminPovos" asp-action="List">Show People</a></li>
+                                <li><a class="dropdown-item admitem" asp-area="" asp-controller="AdminPovos" asp-action="Add">Add People</a></li>
+                                <li><a class="dropdown-item admitem" asp-area="" asp-controller="AdminPovos" asp-action="List">Show Peoples</a></li>
                             </ul>
                         </li>
                     }
@@ -138,8 +159,8 @@
                             <ul id="admmenu" class="dropdown-menu dropdown-menu-start position-absolute">
                                 <li><a class="dropdown-item" type="submit" asp-area="" asp-controller="Contos" asp-action="List">Stories</a></li>
                                 <li class="dropdown-divider"></li>
-                                <li><a class="dropdown-item" asp-area="" asp-controller="AdminContos" asp-action="Add">Add Story</a></li>
-                                <li><a class="dropdown-item" asp-area="" asp-controller="AdminContos" asp-action="List">Show Stories</a></li>
+                                <li><a class="dropdown-item admitem" asp-area="" asp-controller="AdminContos" asp-action="Add">Add Story</a></li>
+                                <li><a class="dropdown-item admitem" asp-area="" asp-controller="AdminContos" asp-action="List">Show Stories</a></li>
                             </ul>
                         </li>
                     }
@@ -173,7 +194,7 @@
                                     </a>
                                     <ul id="admmenu" class="dropdown-menu dropdown-menu-start position-absolute">
                                         <li>
-                                            <a class="dropdown-item" asp-area="" asp-controller="AdminUsers" asp-action="List">Users View</a>
+                                            <a class="dropdown-item admitem" asp-area="" asp-controller="AdminUsers" asp-action="List">Users View</a>
                                         </li>
                                         <li>
                                             <a type="submit" class="dropdown-item" asp-area="" asp-controller="Account" asp-action="Profile">Profile</a>
@@ -227,7 +248,7 @@
                                     </li>
                                     <li>
                                         <a type="submit" class="dropdown-item" asp-area="" asp-controller="Account" asp-action="Logout">Logout</a>
-                                    </li>                               
+                                    </li>
                                 </ul>
                             </div>
                         }
