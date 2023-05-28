@@ -1,6 +1,9 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using TdM.Web.Models.ViewModels;
+using MailKit.Net.Smtp;
+using MimeKit;
+using MailKit.Security;
 
 namespace TdM.Web.Controllers;
 
@@ -35,7 +38,7 @@ public class AccountController : Controller
                 Email = registerViewModel.Email,
             };
 
-            // Check if the new username already exists
+            // Check if the new email already exists
             var existingUsername = await userManager.FindByNameAsync(registerViewModel.Username);
             if (existingUsername != null)
             {
@@ -59,8 +62,8 @@ public class AccountController : Controller
                 var roleIdentityResult = await userManager.AddToRoleAsync(identityUser, "User");
                 if (roleIdentityResult.Succeeded)
                 {
-                    TempData["RegistrationSuccess"] = true;
-                    return View("Login");
+                    TempData["RegisterConfirmed"] = "Account registered successfully, please proceed to Login.";
+                    return RedirectToAction("Login");
                 }
             }
         }
@@ -120,6 +123,110 @@ public class AccountController : Controller
             ModelState.AddModelError("Password", "Invalid username or password");
             return View();
         }
+    }
+
+    [HttpGet]
+    public IActionResult ForgotPassword()
+    {
+        return View();
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> ForgotPassword(ForgotPasswordViewModel model)
+    {
+        if (ModelState.IsValid)
+        {
+            var user = await userManager.FindByEmailAsync(model.Email);
+            if (user != null /*&& await userManager.IsEmailConfirmedAsync(user)*/)
+            {
+                var token = await userManager.GeneratePasswordResetTokenAsync(user);
+                var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, token = token }, Request.Scheme);
+
+                // Send the password reset email
+                await SendPasswordResetEmail(user.Email, callbackUrl);
+
+                // Optionally, you can display a message to inform the user about the password reset email being sent
+                TempData["PasswordResetEmailSent"] = true;
+                return View(model);
+            }
+            // Handle the case when the user is not found or the email is not confirmed
+            ModelState.AddModelError("Email", "Password reset request failed. Please make sure you have entered the correct email address.");
+        }
+        return View(model);
+    }
+
+    public async Task<bool> SendPasswordResetEmail(string email, string resetToken)
+    {
+        // Create the email message
+        var message = new MimeMessage();
+        message.From.Add(new MailboxAddress("Taverna Dos Mundos", "noreply.tavernadosmundos@gmail.com"));
+        message.To.Add(new MailboxAddress("", email)); // Recipient's email address
+        message.Subject = "Password Reset";
+        message.Body = new TextPart("plain")
+        {
+            Text = $@"Reset your password at the following link:<br>
+<a href=""{resetToken}"">{resetToken}</a><br>
+
+
+If you didn't request this password reset, please ignore this message.<br>
+
+Thanks, Taverna dos Mundos<br>
+
+Please don't reply to this message. It was sent from an address that doesn't accept incoming email."
+        };
+
+        using (var client = new SmtpClient())
+        {
+            client.Connect("smtp-relay.sendinblue.com", 587, SecureSocketOptions.StartTls);// Connect to the SMTP server with TLS
+            client.Authenticate("noreply.tavernadosmundos@gmail.com", "tj0qk741AWnNfhKm");
+
+            // Send the email
+            await client.SendAsync(message);
+            client.Disconnect(true);
+        }
+
+
+        return true;
+    }
+
+    [HttpGet]
+    public IActionResult ResetPassword(string userId, string token)
+    {
+        var model = new ResetPasswordViewModel
+        {
+            UserId = userId,
+            Token = token
+        };
+
+        return View(model);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> ResetPassword(ResetPasswordViewModel model)
+    {      
+        if (ModelState.IsValid)
+        {
+            var user = await userManager.FindByIdAsync(model.UserId);
+            if (user == null)
+            {
+                ModelState.AddModelError(string.Empty, "Invalid password reset request.");
+                return View(model);
+            }
+
+            var resetPasswordResult = await userManager.ResetPasswordAsync(user, model.Token, model.Password);
+            if (resetPasswordResult.Succeeded)
+            {
+                // Password reset successful, you can redirect the user to a success page or the login page
+                TempData["RegisterConfirmed"] = "Password reseted successfully, please proceed to Login.";
+                return RedirectToAction("Login");
+            }
+
+            foreach (var error in resetPasswordResult.Errors)
+            {
+                ModelState.AddModelError(string.Empty, error.Description);
+            }
+        }
+        return View(model);
     }
 
     [HttpGet]
@@ -223,13 +330,13 @@ public class AccountController : Controller
 
             // Change password
             var changePasswordResult = await userManager.ChangePasswordAsync(user, model.CurrentPassword, model.NewPassword);
-          
+
             if (changePasswordResult.Succeeded)
             {
                 await signInManager.RefreshSignInAsync(user);
                 // Password change successful
                 model.PasswordChangeConfirmation = "Password successfully changed.";
-                
+
             }
 
             foreach (var error in changePasswordResult.Errors)
