@@ -167,7 +167,6 @@ public class AccountController : Controller
             Text = $@"Reset your password at the following link:<br>
 <a href=""{resetToken}"">{resetToken}</a><br>
 
-
 If you didn't request this password reset, please ignore this message.<br>
 
 Thanks, Taverna dos Mundos<br>

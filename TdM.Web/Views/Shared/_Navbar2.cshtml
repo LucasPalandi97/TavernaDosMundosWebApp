@@ -1,5 +1,6 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @inject SignInManager<IdentityUser> signInManager
+
 @{
     if (signInManager.IsSignedIn(User) && User.IsInRole("Admin"))
     {
@@ -14,7 +15,6 @@
         </style>
     }
 }
-
 <nav class="navbar bg-body navbar-expand-lg py-1 pt-3">
     <div class="container-fluid px-2 px-xl-5 align-content-center text-center">
         <a class="navbar-brand mx-0 me-3" asp-area="" asp-controller="Home" asp-action="Index">Taverna dos Mundos</a>
@@ -225,8 +225,8 @@
                         }
                         else
                         {
-                            <a class="btn mx-2 w-100 bg-body" asp-area="" asp-controller="Account" asp-action="Login">Login</a>
-                            <a class="btn mx-2 my-1 w-100 bg-body" asp-area="" asp-controller="Account" asp-action="Register">Register</a>
+                            <a class="btn mx-1 my-1 my-lg-0 w-100 bg-body border border-secondary-subtle border-1" asp-area="" asp-controller="Account" asp-action="Login">Login</a>
+                            <a class="btn mx-1 my-1 my-lg-0 w-100 bg-body border border-secondary-subtle border-1" asp-area="" asp-controller="Account" asp-action="Register">Register</a>
                         }
                     </li>
                 </ul>

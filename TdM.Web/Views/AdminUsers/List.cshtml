@@ -4,6 +4,7 @@
 
 @{
 }
+
 <partial name="_Navbar2" />
 <div class="row mt-4 mb-5">
     <h1 class="text-center">List Users - Admin Functionality</h1>
@@ -47,7 +48,13 @@
                         <th id="idcolumn">Id</th>
                         <th onclick="sortTable(1)">Username<span class="pointer">&#9660</span></th>
                         <th onclick="sortTable(2)">Email<span class="pointer">&#9660</span></th>
-                        <th></th>
+                        <th>
+                            <div class="d-flex justify-content-end">
+                                <a class="rounded-5 bg-body text-body" href="#" id="refreshButton">
+                                    <i class="bi bi-arrow-clockwise"></i>
+                                </a>
+                            </div>
+                        </th>
                     </tr>
                 </thead>
                 <tbody>
@@ -84,7 +91,8 @@
                                                 <button class="btn btn-sm rounded-0" type="button" data-bs-toggle="modal" data-bs-target="#ConfirmDeleteModal-@user.Id"><i class="bi bi-trash-fill"></i></button>
                                             </li>
                                         }
-                                        @if(!isAdmin){
+                                        @if (!isAdmin)
+                                        {
                                             <li class="list-inline-item">
                                                 <button class="btn btn-sm rounded-0" type="button" data-bs-toggle="modal" data-bs-target="#ConfirmDeleteModal-@user.Id"><i class="bi bi-trash-fill"></i></button>
                                             </li>
@@ -122,6 +130,12 @@
 @section Scripts{
     <script type="text/javascript" src="~/js/SortElements.js"></script>
     <script type="text/javascript">
+        $(document).ready(function () {
+            $("#refreshButton").click(function () {
+                location.reload(); // Refresh the page
+            });
+        });
+
         function OnComplete() {
             $("#modalCreateUser").modal("hide");
         }
