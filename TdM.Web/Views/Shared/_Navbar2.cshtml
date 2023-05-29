@@ -1,6 +1,6 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @inject SignInManager<IdentityUser> signInManager
-
+@inject UserManager<IdentityUser> userManager
 @{
     if (signInManager.IsSignedIn(User) && User.IsInRole("Admin"))
     {
@@ -197,7 +197,18 @@
                                             <a class="dropdown-item admitem" asp-area="" asp-controller="AdminUsers" asp-action="List">Users View</a>
                                         </li>
                                         <li>
-                                            <a type="submit" class="dropdown-item" asp-area="" asp-controller="Account" asp-action="Profile">Profile</a>
+                                            <a type="submit" class="dropdown-item" asp-area="" asp-controller="Account" asp-action="Profile">
+                                                Profile
+                                                @if (signInManager.IsSignedIn(User))
+                                                {
+                                                    var currentUser = await userManager.GetUserAsync(User);
+                                                    var isEmailConfirmed = await userManager.IsEmailConfirmedAsync(currentUser);
+                                                    @if (!isEmailConfirmed)
+                                                    {
+                                                        <span class="text-warning-emphasis"><i class="bi bi-exclamation-triangle"></i></span>
+                                                    }
+                                                }
+                                            </a>
                                         </li>
                                         <li>
                                             <a type="submit" class="dropdown-item" asp-area="" asp-controller="Account" asp-action="Logout">Logout</a>

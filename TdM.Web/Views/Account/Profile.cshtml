@@ -1,6 +1,11 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @inject SignInManager<IdentityUser> signInManager
+@inject UserManager<IdentityUser> userManager
 @model TdM.Web.Models.ViewModels.ChangePasswordViewModel
+@{
+    var currentUser = await userManager.GetUserAsync(User);
+    var isEmailConfirmed = await userManager.IsEmailConfirmedAsync(currentUser);
+}
 
 <partial name="_Navbar2" />
 
@@ -38,6 +43,18 @@
                                 </div>
                             }
                         </form>
+                        @if (isEmailConfirmed)
+                        {
+                            <div class="alert alert-success">
+                                Your email address is verified.
+                                </div>
+                        }
+                        @if (TempData.ContainsKey("EmailVerificationRequired"))
+                        {
+                            <div class="alert alert-warning">
+                                @Html.Raw(TempData["EmailVerificationRequired"])
+                            </div>
+                        }
                     </div>
                 </div>
                 <div class="card mt-4">

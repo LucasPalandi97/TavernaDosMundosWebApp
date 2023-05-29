@@ -60,28 +60,29 @@
                 <tbody>
                     @foreach (var user in Model.Users)
                     {
-                        var identityUser = new IdentityUser
-                    {
-                        Id = user.Id.ToString(),
-                        // Map other properties as needed
-                    };
+                        var identityUser = await signInManager.UserManager.FindByIdAsync(user.Id.ToString());
                         var isAdmin = await signInManager.UserManager.IsInRoleAsync(identityUser, "Admin");
+                        var isEmailVerified = await signInManager.UserManager.IsEmailConfirmedAsync(identityUser);
                         <tr>
                             <td id="tdid">@user.Id</td>
                             <td>
+                                @user.Username
                                 @if (isAdmin)
                                 {
-                                    @user.Username
                                     <a href="#" class="d-inline-block" style="color:rgb(218,165,32)" data-bs-toggle="tooltip" data-bs-title="Admin">
                                         <i class="bi bi-star-fill"></i>
                                     </a>
                                 }
-                                else
+                            </td>
+                            <td>
+                                @user.EmailAdress
+                                @if (isEmailVerified)
                                 {
-                                    @user.Username
+                                    <a href="#" class="d-inline-block text-body-tertiary" data-bs-toggle="tooltip" data-bs-title="Verified">
+                                        <i class="bi bi-check-lg"></i>
+                                    </a>
                                 }
                             </td>
-                            <td>@user.EmailAdress</td>
                             <td>
                                 <form method="post" asp-controller="AdminUsers" asp-action="Delete" asp-route-id="@user.Id" id="deleteForm-@user.Id">
                                     <ul class="list-inline flex-nowrap m-0">

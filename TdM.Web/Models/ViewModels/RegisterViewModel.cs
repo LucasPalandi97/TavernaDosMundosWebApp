@@ -10,6 +10,7 @@ public class RegisterViewModel
     [Required]
     [EmailAddress]
     public string Email { get; set; }
+    public bool IsEmailVerified { get; set; }
 
     [Required]
     [RegularExpression(@"^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\W).{6,}$", ErrorMessage = "Password must meet the following criteria:<br>- Have at least 6 characters.<br>- Contain at least one digit.<br>- Contain at least one lowercase letter.<br>- Contain at least one uppercase letter.<br>- Contain at least one non-alphanumeric character.")]

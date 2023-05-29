@@ -62,7 +62,17 @@ public class AccountController : Controller
                 var roleIdentityResult = await userManager.AddToRoleAsync(identityUser, "User");
                 if (roleIdentityResult.Succeeded)
                 {
+                    // Generate email verification token
+                    var emailToken = await userManager.GenerateEmailConfirmationTokenAsync(identityUser);
+
+                    // Generate the verification link using the token
+                    var callbackUrl = Url.Action("VerifyEmail", "Account", new { userId = identityUser.Id, token = emailToken }, Request.Scheme);
+
+                    // Send the verification email
+                    await SendEmailVerification(identityUser.Email, callbackUrl);
+
                     TempData["RegisterConfirmed"] = "Account registered successfully, please proceed to Login.";
+
                     return RedirectToAction("Login");
                 }
             }
@@ -71,8 +81,86 @@ public class AccountController : Controller
     }
 
     [HttpGet]
-    public IActionResult Login(string ReturnUrl)
+    public async Task<IActionResult> VerifyEmail(string userId, string token)
     {
+        var user = await userManager.FindByIdAsync(userId);
+
+        if (user == null)
+        {
+            // Handle invalid user or token
+            return View("Error");
+        }
+
+        var result = await userManager.ConfirmEmailAsync(user, token);
+
+        if (result.Succeeded)
+        {
+            user.EmailConfirmed = true;
+            // Update the user's IsEmailVerified property in the database
+
+            TempData["EmailVerified"] = "Your email has been successfully verified. Please proceed to Login.";
+        }
+        else
+        {
+            // Handle email verification failure
+            TempData["EmailVerificationFailed"] = "Failed to verify your email.";
+        }
+
+        return RedirectToAction("Login");
+    }
+
+
+    [HttpGet]
+    public async Task<IActionResult> SendVerificationEmail()
+    {
+        var user = await userManager.GetUserAsync(User);
+
+        if (user != null)
+        {
+            var emailToken = await userManager.GenerateEmailConfirmationTokenAsync(user);
+            var callbackUrl = Url.Action("VerifyEmail", "Account", new { userId = user.Id, token = emailToken }, Request.Scheme);
+
+            await SendEmailVerification(user.Email, callbackUrl);
+
+            TempData["VerificationEmailSent"] = "Verification email has been sent. Please check your email.";
+        }
+
+        return RedirectToAction("Login");
+    }
+
+    private async Task SendEmailVerification(string email, string callbackUrl)
+    {
+        var message = new MimeMessage();
+        message.From.Add(new MailboxAddress("Taverna Dos Mundos", "noreply.tavernadosmundos@gmail.com"));
+        message.To.Add(new MailboxAddress("", email));
+        message.Subject = "Email Verification";
+        message.Body = new TextPart("plain")
+        {
+            Text = $@"Please click the following link to verify your email:<br>
+
+             <a href='{callbackUrl}'>Verify Email</a><br>
+
+If you didn't request this email verification, please ignore this message.<br>
+
+Thanks, Taverna dos Mundos<br>
+
+Please don't reply to this message. It was sent from an address that doesn't accept incoming email."
+        };
+
+        using (var client = new SmtpClient())
+        {
+            await client.ConnectAsync("smtp-relay.sendinblue.com", 587, SecureSocketOptions.StartTls);// Connect to the SMTP server with TLS
+            await client.AuthenticateAsync("noreply.tavernadosmundos@gmail.com", "tj0qk741AWnNfhKm");
+            await client.SendAsync(message);
+            await client.DisconnectAsync(true);
+        }
+        TempData["VerificationEmailSent"] = "An email verification has been sent. Please check your email.";
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> Login(string ReturnUrl)
+    {
+        TempData.Remove("EmailVerificationRequired");
         var model = new LoginViewModel
         {
             ReturnUrl = ReturnUrl
@@ -86,6 +174,16 @@ public class AccountController : Controller
         else
         {
             ViewBag.RegistrationSuccess = false;
+        }
+
+        if (!string.IsNullOrEmpty(User.Identity.Name))
+        {
+            var user = await userManager.FindByNameAsync(User.Identity.Name);
+
+            if (user != null && !user.EmailConfirmed)
+            {
+                TempData["EmailVerificationRequired"] = $@"Your email address has not been verified. <a href=""{Url.Action("SendVerificationEmail", "Account")}"">Resend verification email</a>";
+            }
         }
 
         return View(model);
@@ -116,6 +214,10 @@ public class AccountController : Controller
             {
                 return Redirect(loginViewModel.ReturnUrl);
             }
+            if (user != null && !user.EmailConfirmed)
+            {
+                TempData["EmailVerificationRequired"] = $@"Your email address has not been verified. <a href=""{Url.Action("SendVerificationEmail", "Account")}"">Resend verification email</a>";
+            }
             return RedirectToAction("Index", "Home");
         }
         else
@@ -137,7 +239,7 @@ public class AccountController : Controller
         if (ModelState.IsValid)
         {
             var user = await userManager.FindByEmailAsync(model.Email);
-            if (user != null /*&& await userManager.IsEmailConfirmedAsync(user)*/)
+            if (user != null && await userManager.IsEmailConfirmedAsync(user))
             {
                 var token = await userManager.GeneratePasswordResetTokenAsync(user);
                 var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, token = token }, Request.Scheme);
@@ -150,7 +252,7 @@ public class AccountController : Controller
                 return View(model);
             }
             // Handle the case when the user is not found or the email is not confirmed
-            ModelState.AddModelError("Email", "Password reset request failed. Please make sure you have entered the correct email address.");
+            ModelState.AddModelError("Email", "Password reset request failed. Please make sure you have entered the correct email address and it is verified.");
         }
         return View(model);
     }
@@ -165,7 +267,7 @@ public class AccountController : Controller
         message.Body = new TextPart("plain")
         {
             Text = $@"Reset your password at the following link:<br>
-<a href=""{resetToken}"">{resetToken}</a><br>
+<a href='{resetToken}'>Password Reset</a><br>
 
 If you didn't request this password reset, please ignore this message.<br>
 
@@ -176,15 +278,13 @@ Please don't reply to this message. It was sent from an address that doesn't acc
 
         using (var client = new SmtpClient())
         {
-            client.Connect("smtp-relay.sendinblue.com", 587, SecureSocketOptions.StartTls);// Connect to the SMTP server with TLS
-            client.Authenticate("noreply.tavernadosmundos@gmail.com", "tj0qk741AWnNfhKm");
+            await client.ConnectAsync("smtp-relay.sendinblue.com", 587, SecureSocketOptions.StartTls);// Connect to the SMTP server with TLS
+            await client.AuthenticateAsync("noreply.tavernadosmundos@gmail.com", "tj0qk741AWnNfhKm");
 
             // Send the email
             await client.SendAsync(message);
-            client.Disconnect(true);
+            await client.DisconnectAsync(true);
         }
-
-
         return true;
     }
 
@@ -202,7 +302,7 @@ Please don't reply to this message. It was sent from an address that doesn't acc
 
     [HttpPost]
     public async Task<IActionResult> ResetPassword(ResetPasswordViewModel model)
-    {      
+    {
         if (ModelState.IsValid)
         {
             var user = await userManager.FindByIdAsync(model.UserId);
@@ -240,6 +340,11 @@ Please don't reply to this message. It was sent from an address that doesn't acc
                 Username = user.UserName,
                 NewEmail = user.Email
             };
+
+            if (user != null && !user.EmailConfirmed)
+            {
+                TempData["EmailVerificationRequired"] = $@"Your email address has not been verified. <a href=""{Url.Action("SendVerificationEmail", "Account")}"">Resend verification email</a>";
+            }
 
             return View(viewModel);
         }
