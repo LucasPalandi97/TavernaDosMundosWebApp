@@ -39,7 +39,7 @@
                             @if (!string.IsNullOrEmpty(Model.EmailChangeConfirmation))
                             {
                                 <div class="alert alert-success">
-                                    @Model.EmailChangeConfirmation
+                                    @Html.Raw(Model.EmailChangeConfirmation)
                                 </div>
                             }
                         </form>
@@ -47,7 +47,7 @@
                         {
                             <div class="alert alert-success">
                                 Your email address is verified.
-                                </div>
+                            </div>
                         }
                         @if (TempData.ContainsKey("EmailVerificationRequired"))
                         {

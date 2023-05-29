@@ -83,6 +83,7 @@ public class AccountController : Controller
     [HttpGet]
     public async Task<IActionResult> VerifyEmail(string userId, string token)
     {
+        TempData.Remove("VerificationEmailSent");
         var user = await userManager.FindByIdAsync(userId);
 
         if (user == null)
@@ -361,7 +362,6 @@ Please don't reply to this message. It was sent from an address that doesn't acc
         ModelState.Remove("ConfirmNewPassword"); // Remove the ConfirmNewPassword property from ModelState
         ModelState.Remove("EmailChangeConfirmation"); // Remove the EmailChangeConfirmation property from ModelState
         ModelState.Remove("PasswordChangeConfirmation"); // Remove the PasswordChangeConfirmation property from ModelState
-
         var user = await userManager.GetUserAsync(User);
 
         if (ModelState.IsValid)
@@ -395,7 +395,15 @@ Please don't reply to this message. It was sent from an address that doesn't acc
                 }
 
                 // Email change successful
-                model.EmailChangeConfirmation = "Email successfully changed.";
+                user.EmailConfirmed = false;
+                // Generate email verification token
+                var emailToken = await userManager.GenerateEmailConfirmationTokenAsync(user);
+
+                // Generate the verification link using the token
+                var callbackUrl = Url.Action("VerifyEmail", "Account", new { userId = user.Id, token = emailToken }, Request.Scheme);
+
+                await SendEmailVerification(user.Email, callbackUrl);
+                model.EmailChangeConfirmation = $@"Email successfully changed. We sent a verification link to your new email.<br> <a href=""{Url.Action("SendVerificationEmail", "Account")}"">Resend verification email</a>";
             }
         }
         model.Username = user.UserName;

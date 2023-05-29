@@ -225,7 +225,17 @@
                                     </a>
                                     <ul id="admmenu" class="dropdown-menu dropdown-menu-start position-absolute">
                                         <li>
-                                            <a type="submit" class="dropdown-item" asp-area="" asp-controller="Account" asp-action="Profile">Profile</a>
+                                            <a type="submit" class="dropdown-item" asp-area="" asp-controller="Account" asp-action="Profile">Profile
+                                                @if (signInManager.IsSignedIn(User))
+                                                {
+                                                    var currentUser = await userManager.GetUserAsync(User);
+                                                    var isEmailConfirmed = await userManager.IsEmailConfirmedAsync(currentUser);
+                                                    @if (!isEmailConfirmed)
+                                                    {
+                                                        <span class="text-warning-emphasis"><i class="bi bi-exclamation-triangle"></i></span>
+                                                    }
+                                                }
+                                            </a>
                                         </li>
                                         <li>
                                             <a type="submit" class="dropdown-item" asp-area="" asp-controller="Account" asp-action="Logout">Logout</a>
@@ -255,7 +265,17 @@
                                 </a>
                                 <ul id="admmenu" class="dropdown-menu dropdown-menu-start position-absolute">
                                     <li>
-                                        <a type="submit" class="dropdown-item" asp-area="" asp-controller="Account" asp-action="Profile">Profile</a>
+                                        <a type="submit" class="dropdown-item" asp-area="" asp-controller="Account" asp-action="Profile">
+                                            Profile  @if (signInManager.IsSignedIn(User))
+                                            {
+                                                var currentUser = await userManager.GetUserAsync(User);
+                                                var isEmailConfirmed = await userManager.IsEmailConfirmedAsync(currentUser);
+                                                @if (!isEmailConfirmed)
+                                                {
+                                                    <span class="text-warning-emphasis"><i class="bi bi-exclamation-triangle"></i></span>
+                                                }
+                                            }
+                                        </a>
                                     </li>
                                     <li>
                                         <a type="submit" class="dropdown-item" asp-area="" asp-controller="Account" asp-action="Logout">Logout</a>
