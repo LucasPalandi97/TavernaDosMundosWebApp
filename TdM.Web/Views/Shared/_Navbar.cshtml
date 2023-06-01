@@ -17,12 +17,12 @@
     }
 }
 <nav class="navbar bg-body navbar-expand-lg py-1 pt-3">
-    <div class="container-fluid px-2 px-xl-5 align-content-center text-center">
+    <div class="container-fluid px-2 align-content-center text-center">
         <a class="navbar-brand mx-0 me-3" asp-area="" asp-controller="Home" asp-action="Index">Taverna dos Mundos</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDarkDropdown2" aria-controls="navbarNavDarkDropdown2" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse bg-body" id="navbarNavDarkDropdown2">
+        <div class="navbar-collapse collapse bg-body" id="navbarNavDarkDropdown2">
             <div id="theme" class="d-flex justify-content-start mx-3">
                 <div class="d-flex justify-content-start">
                     <button class="btn btn-light theme-switch-btn mx-2" id="lightBtn" aria-pressed="false">
@@ -41,7 +41,7 @@
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" data-bs-reference="parent">
                             Worlds
                         </a>
-                        <ul id="admmenu" class="dropdown-menu dropdown-menu-start position-absolute">
+                        <ul id="admmenu" class="dropdown-menu dropdown-menu-start">
                             <li><a class="dropdown-item" type="submit" asp-area="" asp-controller="Home" asp-action="Index">Worlds</a></li>
                             <li class="dropdown-divider"></li>
                             <li><a class="dropdown-item admitem" asp-area="" asp-controller="AdminMundos" asp-action="Add">Add World</a></li>
@@ -57,7 +57,7 @@
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" data-bs-reference="parent">
                             Characters
                         </a>
-                        <ul id="admmenu" class="dropdown-menu dropdown-menu-start position-absolute">
+                        <ul id="admmenu" class="dropdown-menu dropdown-menu-start">
                             <li><a class="dropdown-item" type="submit" asp-area="" asp-controller="Personagens" asp-action="List" asp-route-urlHandle="@Model.MundoUrlHandle">Characters</a></li>
                             <li class="dropdown-divider"></li>
                             <li><a class="dropdown-item admitem" asp-area="" asp-controller="AdminPersonagens" asp-action="Add">Add Character</a></li>
@@ -79,7 +79,7 @@
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" data-bs-reference="parent">
                             Regions
                         </a>
-                        <ul id="admmenu" class="dropdown-menu dropdown-menu-start position-absolute">
+                        <ul id="admmenu" class="dropdown-menu dropdown-menu-start">
                             <li><a class="dropdown-item" type="submit" asp-area="" asp-controller="Continentes" asp-action="List" asp-route-urlHandle="@Model.MundoUrlHandle">Regions</a></li>
                             <li class="dropdown-divider"></li>
                             <li><a class="dropdown-item admitem" asp-area="" asp-controller="AdminContinentes" asp-action="Add">Add Continent</a></li>
@@ -104,7 +104,7 @@
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" data-bs-reference="parent">
                             Creatures
                         </a>
-                        <ul id="admmenu" class="dropdown-menu dropdown-menu-start position-absolute">
+                        <ul id="admmenu" class="dropdown-menu dropdown-menu-start">
                             <li><a class="dropdown-item" type="submit" asp-area="" asp-controller="Criaturas" asp-action="List" asp-route-urlHandle="@Model.MundoUrlHandle">Creatures</a></li>
                             <li class="dropdown-divider"></li>
                             <li><a class="dropdown-item admitem" asp-area="" asp-controller="AdminCriaturas" asp-action="Add">Add Creature</a></li>
@@ -126,7 +126,7 @@
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" data-bs-reference="parent">
                             Peoples
                         </a>
-                        <ul id="admmenu" class="dropdown-menu dropdown-menu-start position-absolute">
+                        <ul id="admmenu" class="dropdown-menu dropdown-menu-start">
                             <li><a class="dropdown-item" type="submit" asp-area="" asp-controller="Povos" asp-action="List" asp-route-urlHandle="@Model.MundoUrlHandle">Peoples</a></li>
                             <li class="dropdown-divider"></li>
                             <li><a class="dropdown-item admitem" asp-area="" asp-controller="AdminPovos" asp-action="Add">Add People</a></li>
@@ -148,7 +148,7 @@
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" data-bs-reference="parent">
                             Stories
                         </a>
-                        <ul id="admmenu" class="dropdown-menu dropdown-menu-start position-absolute">
+                        <ul id="admmenu" class="dropdown-menu dropdown-menu-start">
                             <li><a class="dropdown-item" type="submit" asp-area="" asp-controller="Contos" asp-action="List" asp-route-urlHandle="@Model.MundoUrlHandle">Stories</a></li>
                             <li class="dropdown-divider"></li>
                             <li><a class="dropdown-item admitem" asp-area="" asp-controller="AdminContos" asp-action="Add">Add Story</a></li>
@@ -189,7 +189,7 @@
                                         }
                                     }
                                 </a>
-                                <ul id="admmenu" class="dropdown-menu dropdown-menu-start position-absolute">
+                                <ul id="admmenu" class="dropdown-menu dropdown-menu-start">
                                     <li>
                                         <a class="dropdown-item admitem" asp-area="" asp-controller="AdminUsers" asp-action="List">Users View</a>
                                     </li>
@@ -214,7 +214,7 @@
                                 <a class="nav-link dropdown-toggle text-secondary" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     @User.Identity?.Name
                                 </a>
-                                <ul id="admmenu" class="dropdown-menu dropdown-menu-start position-absolute">
+                                <ul id="admmenu" class="dropdown-menu dropdown-menu-start">
                                     <li>
                                         <a type="submit" class="dropdown-item" asp-area="" asp-controller="Account" asp-action="Profile">
                                             Profile

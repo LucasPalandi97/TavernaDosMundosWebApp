@@ -19,6 +19,13 @@ if (/Mobi/.test(navigator.userAgent)) {
     document.querySelector('main[role="main"]').style.paddingLeft = 0;
 }
 
+//Disable the scrolbar when the collapse menu is active
+$(document).ready(function () {
+    $('.navbar-toggler').click(function () {
+        $('body').toggleClass('collapse-active');
+    });
+});
+
 //Color theme
 // Get stored theme or null
 function getTheme() {

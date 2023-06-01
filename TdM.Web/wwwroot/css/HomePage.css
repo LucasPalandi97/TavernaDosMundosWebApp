@@ -13,25 +13,27 @@
     align-items: center;
 }
 
-
 .grow {
     transition: all .2s ease-in-out;
 }
 
     .grow:hover {
-        z-index: 2100;
+        z-index: 999;
         transform: scale(1.025);
     }
 
 @media (max-width: 1199px) {
-    .grow:hover {
-        transform: none;
-    }
-
     .card-grid {
         grid-template-columns: repeat(auto-fit, minmax(calc(50% - 1rem), 1fr));
     }
 }
+
+@media (max-width: 992px) {
+    .grow:hover {
+        transform: none;
+    }
+}
+
 @media (max-width: 767px) {
     .card-grid {
         grid-template-columns: repeat(auto-fit, minmax(calc(100% - 1rem), 1fr));
