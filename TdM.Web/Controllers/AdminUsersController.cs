@@ -82,6 +82,54 @@ public class AdminUsersController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
+    [Authorize(Roles = "SuperAdmin")]
+    public async Task<IActionResult> AddAdminRole(string userId)
+    {
+        var user = await userManager.FindByIdAsync(userId);
+        if (user != null)
+        {
+            var result = await userManager.AddToRoleAsync(user, "Admin");
+            if (result.Succeeded)
+            {
+                return Json(new { success = true, isAdmin = true });
+            }
+            else
+            {
+                return Json(new { success = false, error = "Failed to add admin role." });
+            }
+        }
+        else
+        {
+            return Json(new { success = false, error = "User not found." });
+        }
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    [Authorize(Roles = "SuperAdmin")]
+    public async Task<IActionResult> RemoveAdminRole(string userId)
+    {
+        var user = await userManager.FindByIdAsync(userId);
+        if (user != null)
+        {
+            var result = await userManager.RemoveFromRoleAsync(user, "Admin");
+            if (result.Succeeded)
+            {
+                return Json(new { success = true, isAdmin = false });
+            }
+            else
+            {
+                return Json(new { success = false, error = "Failed to remove admin role." });
+            }
+        }
+        else
+        {
+            return Json(new { success = false, error = "User not found." });
+        }
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> Delete(Guid id)
     {
         var user = await userManager.FindByIdAsync(id.ToString());

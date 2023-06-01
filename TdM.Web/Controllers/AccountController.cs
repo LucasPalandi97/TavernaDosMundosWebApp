@@ -4,6 +4,7 @@ using TdM.Web.Models.ViewModels;
 using MailKit.Net.Smtp;
 using MimeKit;
 using MailKit.Security;
+using NuGet.Common;
 
 namespace TdM.Web.Controllers;
 
@@ -205,20 +206,20 @@ Please don't reply to this message. It was sent from an address that doesn't acc
         // Check if the username exists
         var user = await userManager.FindByNameAsync(loginViewModel.UsernameOrEmail);
 
+        // If the username does not exist, check if the email exists
         if (user == null)
         {
-        // Check if the email exists
             user = await userManager.FindByEmailAsync(loginViewModel.UsernameOrEmail);
         }
 
         if (user == null)
         {
-            ModelState.AddModelError("Password", "Invalid Username/Email or password");
+            ModelState.AddModelError("Password", "Invalid Username/Email or Password");
             return View();
         }
 
-        // Attempt to sign in the user with the provided username and password
-        var signInResult = await signInManager.PasswordSignInAsync(loginViewModel.UsernameOrEmail, loginViewModel.Password, loginViewModel.RememberMe, lockoutOnFailure: false);
+        // Attempt to sign in the user with the provided username/email and password
+        var signInResult = await signInManager.PasswordSignInAsync(user.UserName, loginViewModel.Password, loginViewModel.RememberMe, false);
 
         if (signInResult.Succeeded)
         {
@@ -253,20 +254,37 @@ Please don't reply to this message. It was sent from an address that doesn't acc
         if (ModelState.IsValid)
         {
             var user = await userManager.FindByEmailAsync(model.Email);
-            if (user != null && await userManager.IsEmailConfirmedAsync(user))
+            if (user != null)
             {
-                var token = await userManager.GeneratePasswordResetTokenAsync(user);
-                var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, token = token }, Request.Scheme);
+                if (await userManager.IsEmailConfirmedAsync(user))
+                {
+                    // Generate pasword reset token and link
+                    var token = await userManager.GeneratePasswordResetTokenAsync(user);
+                    var callbackUrlPasswordReset = Url.Action("ResetPassword", "Account", new { userId = user.Id, token = token }, Request.Scheme);
 
-                // Send the password reset email
-                await SendPasswordResetEmail(user.Email, callbackUrl);
+                    // Send the password reset email
+                    await SendPasswordResetEmail(user.Email, callbackUrlPasswordReset);
 
-                // Optionally, you can display a message to inform the user about the password reset email being sent
-                TempData["PasswordResetEmailSent"] = true;
-                return View(model);
+                    // Optionally, you can display a message to inform the user about the password reset email being sent
+                    TempData["PasswordResetEmailSent"] = true;
+                    return View(model);
+
+                }
+                // Generate email verification token and link
+                var emailToken = await userManager.GenerateEmailConfirmationTokenAsync(user);
+                var callbackUrlVerification = Url.Action("VerifyEmail", "Account", new { userId = user.Id, token = emailToken }, Request.Scheme);
+
+                // Send Email verification
+                await SendEmailVerification(user.Email, callbackUrlVerification);
+
+                // Handle the case when the user email is not confirmed
+                TempData["VerificationFailed"] = true;
             }
-            // Handle the case when the user is not found or the email is not confirmed
-            ModelState.AddModelError("Email", "Password reset request failed. Please make sure you have entered the correct email address and it is verified.");
+            else
+            { 
+            // Handle the case when the user is not found
+            ModelState.AddModelError("Email", "Password reset request failed. Please make sure you have entered the correct email address.");
+            }
         }
         return View(model);
     }

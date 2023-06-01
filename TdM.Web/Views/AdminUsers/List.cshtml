@@ -49,6 +49,7 @@
                         <th id="idcolumn">Id</th>
                         <th onclick="sortTable(1)">Username<span class="pointer">&#9660</span></th>
                         <th onclick="sortTable(2)">Email<span class="pointer">&#9660</span></th>
+                        <th></th>
                         <th>
                             <div class="d-flex justify-content-end">
                                 <a class="rounded-5 bg-body text-body" href="#" id="refreshButton">
@@ -68,12 +69,6 @@
                             <td id="tdid">@user.Id</td>
                             <td>
                                 @user.Username
-                                @if (isAdmin)
-                                {
-                                    <a href="#" class="d-inline-block" style="color:rgb(218,165,32)" data-bs-toggle="tooltip" data-bs-title="Admin">
-                                        <i class="bi bi-star-fill"></i>
-                                    </a>
-                                }
                             </td>
                             <td>
                                 @user.EmailAdress
@@ -85,38 +80,62 @@
                                 }
                             </td>
                             <td>
-                                <form method="post" asp-controller="AdminUsers" asp-action="Delete" asp-route-id="@user.Id" id="deleteForm-@user.Id">
-                                    @Html.AntiForgeryToken()
-                                    <ul class="list-inline flex-nowrap m-0">
-                                        @if (isAdmin && signInManager.IsSignedIn(User) && User.IsInRole("SuperAdmin"))
-                                        {
-                                            <li class="list-inline-item">
-                                                <button class="btn btn-sm rounded-0" type="button" data-bs-toggle="modal" data-bs-target="#ConfirmDeleteModal-@user.Id"><i class="bi bi-trash-fill"></i></button>
-                                            </li>
-                                        }
-                                        @if (!isAdmin)
-                                        {
-                                            <li class="list-inline-item">
-                                                <button class="btn btn-sm rounded-0" type="button" data-bs-toggle="modal" data-bs-target="#ConfirmDeleteModal-@user.Id"><i class="bi bi-trash-fill"></i></button>
-                                            </li>
-                                        }
-                                    </ul>
-                                    <!-- Modal Delete -->
-                                    <div class="modal fade" id="ConfirmDeleteModal-@user.Id" tabindex="-1" aria-labelledby="ConfirmDeleteModalLabel" aria-hidden="true">
-                                        <div class="modal-dialog">
-                                            <div class="modal-content">
-                                                <div class="modal-body">
-                                                    <p>Are you sure you want to delete this user?</p>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
-                                                    <button type="submit" class="btn btn-danger">Delete</button>
+                                @if (isAdmin)
+                                {
+                                    <a href="#" class="d-inline-block admin-star" style="color:rgb(218,165,32)" data-bs-toggle="tooltip" data-bs-title="Admin" onclick="toggleAdminRole('@user.Id', this)">
+                                        <i class="bi bi-star-fill" id="star-@user.Id"></i>
+                                    </a>
+                                }
+                                else if (User.IsInRole("SuperAdmin"))
+                                {
+                                    <a href="#" class="d-inline-block non-admin-star" style="color:rgb(218,165,32)" onclick="toggleAdminRole('@user.Id', this)">
+                                        <i class="bi bi-star" id="star-@user.Id"></i>
+                                    </a>
+                                }
+                            </td>
+                            <td>
+                                <div class="td-flex-container">
+
+                                    <form method="post" asp-controller="AdminUsers" asp-action="Delete" asp-route-id="@user.Id" id="deleteForm-@user.Id">
+                                        @Html.AntiForgeryToken()
+                                        <ul class="list-inline flex-nowrap m-0">
+                                            @if (isAdmin && signInManager.IsSignedIn(User) && User.IsInRole("SuperAdmin"))
+                                            {
+                                                <li class="list-inline-item">
+                                                    <button class="btn btn-sm rounded-0" type="button" data-bs-toggle="modal" data-bs-target="#ConfirmDeleteModal-@user.Id"><i class="bi bi-trash-fill"></i></button>
+                                                </li>
+                                            }
+                                            else if (!isAdmin)
+                                            {
+                                                <li class="list-inline-item">
+                                                    <button class="btn btn-sm rounded-0" type="button" data-bs-toggle="modal" data-bs-target="#ConfirmDeleteModal-@user.Id"><i class="bi bi-trash-fill"></i></button>
+                                                </li>
+                                            }
+                                            else
+                                            {
+                                                <li class="list-inline-item">
+                                                    <button class="btn btn-sm border-0 rounded-0" type="button" disabled><i class="bi bi-trash-fill"></i></button>
+                                                </li>
+                                            }
+                                        </ul>
+                                        <!-- Modal Delete -->
+                                        <div class="modal fade" id="ConfirmDeleteModal-@user.Id" tabindex="-1" aria-labelledby="ConfirmDeleteModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-body">
+                                                        <p>Are you sure you want to delete this user?</p>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                                                        <button type="submit" class="btn btn-danger">Delete</button>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </form>
+                                    </form>
+                                </div>
                             </td>
+
                         </tr>
                     }
                 </tbody>
@@ -132,5 +151,46 @@
 
 @section Scripts{
     <script type="text/javascript" src="~/js/SortElements.js"></script>
+    <script>
+        function toggleAdminRole(userId, starElement) {
+            var star = document.getElementById("star-" + userId);
+            var isAdmin = star.classList.contains("bi-star-fill");
+
+            var token = $('input[name="__RequestVerificationToken"]').val();
+
+            if (isAdmin) {
+                // Remove Admin role
+                // Make an Ajax request to your server to update the user's role
+                // Example using jQuery Ajax:
+                $.ajax({
+                    url: "/AdminUsers/RemoveAdminRole",
+                    type: "POST",
+                    data: { userId: userId, __RequestVerificationToken: token },
+                    success: function () {
+                        star.classList.toggle("bi-star-fill");
+                        star.classList.toggle("bi-star");
+                    }
+                });
+            } else {
+                // Add Admin role
+                // Make an Ajax request to your server to update the user's role
+                // Example using jQuery Ajax:
+                $.ajax({
+                    url: "/AdminUsers/AddAdminRole",
+                    type: "POST",
+                    data: { userId: userId, __RequestVerificationToken: token },
+                    success: function () {
+                        star.classList.toggle("bi-star-fill");
+                        star.classList.toggle("bi-star");
+                        starElement.classList.toggle("admin-star");
+                        starElement.classList.toggle("non-admin-star");
+                    },
+                    error: function () {
+                        // Handle error
+                    }
+                });
+            }
+        }
+    </script>
 }
 

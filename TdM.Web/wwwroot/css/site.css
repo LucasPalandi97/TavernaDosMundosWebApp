@@ -8,9 +8,6 @@ body {
         transition: transform 0.2s ease-in-out;
     }
 
-main {
-    padding-left: 0.75rem;
-}
 
 .modal {
     z-index: 9999 !important;
@@ -104,9 +101,10 @@ main {
         font-size: 24px; /* Adjust the font size as needed and add !important */
         align-content: start;
         text-align: start;
-        padding-left: 3rem;
-        padding-top: 3rem;
+        padding: 3rem;
+        padding-top:2rem;
         overflow-x: hidden;
+        overflow-y: scroll;
     }
 
         .navbar-collapse .navbar-nav {
@@ -144,8 +142,11 @@ main {
     }
 
     #theme {
-        transform: scale(1.15);
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%) scale(1.15);
     }
+
 
     #desccolumn, #idcolumn, #tddesc, #tdid {
         display: none;
