@@ -113,12 +113,21 @@
     }
 
 @media (max-width: 767px) {
-   
-    .card {
-        height: 30rem !important;
+
+    #regioncard {
+        width: 14rem !important;
+        height: 8.8rem !important;
+    }
+
+    #continentcard {
+        min-height: 30rem !important;
         width: 100% !important;
         margin-left: auto;
         margin-right: auto;
+    }
+
+    #continentmask {
+        height: 100%;
     }
 
     .card-img-top {

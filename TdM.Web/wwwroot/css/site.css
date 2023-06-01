@@ -4,6 +4,10 @@ body {
     transition: transform 0.2s ease-in-out;
 }
 
+    body * {
+        transition: transform 0.2s ease-in-out;
+    }
+
 main {
     padding-left: 0.75rem;
 }
@@ -11,6 +15,7 @@ main {
 .modal {
     z-index: 9999 !important;
 }
+
 /*Navbar collapse*/
 .navbar-collapse {
     position: fixed;
@@ -32,27 +37,10 @@ main {
     }
 
 .navbar-toggler {
-    position: fixed;
+    position: relative;
     top: 15px; /* Adjust the top position as needed */
-    right: 15px; /* Adjust the right position as needed */
+    right: 0; /* Adjust the right position as needed */
     z-index: 9000; /* Ensure the hamburger menu is above the navbar-collapse */
-}
-
-@media (min-width: 992px) {
-    .navbar-collapse {
-        position: static;
-        width: auto;
-        height: auto;
-        max-width: none;
-        transform: none;
-        transition: none;
-        overflow-y: visible;
-        padding: 0;
-    }
-
-    .navbar-toggler {
-        display: none;
-    }
 }
 
 /*Search Menu*/
@@ -84,20 +72,41 @@ main {
 }
 
 /*Responsive*/
+
+@media (min-width: 992px) {
+    .navbar-collapse {
+        position: static;
+        width: auto;
+        height: auto;
+        max-width: none;
+        transform: none;
+        transition: none;
+        overflow-y: visible;
+        padding: 0;
+    }
+
+    .navbar-toggler {
+        display: none;
+    }
+}
+
 @media (max-width:1200px) {
     #userShow {
         display: none;
+    }
+    .navbar-nav .nav-item{
+        font-size:0.98em;
     }
 }
 
 @media (max-width: 992px) {
     .navbar-collapse {
-        font-size: 24px !important; /* Adjust the font size as needed and add !important */
-        align-content: start !important;
-        text-align: start !important;
+        font-size: 24px; /* Adjust the font size as needed and add !important */
+        align-content: start;
+        text-align: start;
         padding-left: 3rem;
         padding-top: 3rem;
-        overflow-x:hidden;
+        overflow-x: hidden;
     }
 
         .navbar-collapse .navbar-nav {
@@ -111,9 +120,9 @@ main {
 
     #admmenu {
         border: none;
-        font-size: 18px !important; /* Adjust the font size as needed */
-        align-content: start !important;
-        text-align: start !important;
+        font-size: 18px; /* Adjust the font size as needed */
+        align-content: start;
+        text-align: start;
         width: 100%;
     }
 
@@ -172,7 +181,6 @@ main {
 @media (max-width: 464px) {
     .navbar-brand {
         transition: all 0.2s ease-in-out;
-        font-size: 0.9em;
     }
 
     .dnone {
@@ -182,21 +190,19 @@ main {
 
 @media (max-width: 350px) {
     body * {
+        font-size: 0.98em;
+    }
+
+    .navbar-brand {
         font-size: 0.96em;
     }
 
-    main {
-        padding-left: 0;
+    .navbar-collapse {
+        font-size: 0.98em;
     }
 
-    .container, .container-fluid {
-        padding-left: 0.25rem;
-        padding-right: 0.25rem;
-    }
-
-    .card-grid {
-        padding-left: 0.25rem !important;
-        padding-right: 0.25rem !important;
+    #admmenu .dropdown-item {
+        font-size: 0.98em;
     }
 }
 
