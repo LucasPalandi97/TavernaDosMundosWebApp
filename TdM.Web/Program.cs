@@ -66,6 +66,13 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
         options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
     });
 
+builder.Services.AddAntiforgery(options =>
+{
+    options.Cookie.Name = "MyAppAntiForgeryCookie";
+    options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+    // Other configuration options
+});
+
 builder.Services.AddSession();
 
 var app = builder.Build();
@@ -74,11 +81,9 @@ var app = builder.Build();
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
+    app.UseHttpsRedirection();
 }
-
-app.UseHttpsRedirection();
 
 app.UseStaticFiles();
 
@@ -97,9 +102,23 @@ app.UseCookiePolicy(new CookiePolicyOptions
     Secure = CookieSecurePolicy.SameAsRequest
 });
 
+// Custom Routing Patterns
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Home}/{action=Index}/{id?}"
+);
+
+app.MapControllerRoute(
+    name: "login",
+    pattern: "Login",
+    defaults: new { controller = "Account", action = "Login" }
+);
+
+app.MapControllerRoute(
+    name: "register",
+    pattern: "Register",
+    defaults: new { controller = "Account", action = "Register" }
+);
 
 app.MapControllerRoute(
     name: "profile",
@@ -107,17 +126,16 @@ app.MapControllerRoute(
     defaults: new { controller = "Account", action = "Profile" }
 );
 
-app.Use(async (context, next) =>
-{
-    // Redirect HTTP requests to HTTPS
-    if (!context.Request.IsHttps)
-    {
-        var httpsUrl = $"https://{context.Request.Host}{context.Request.Path}{context.Request.QueryString}";
-        context.Response.Redirect(httpsUrl);
-        return;
-    }
+app.MapControllerRoute(
+    name: "forgotpassword",
+    pattern: "ForgotPassword",
+    defaults: new { controller = "Account", action = "ForgotPassword" }
+);
 
-    await next.Invoke();
-});
+app.MapControllerRoute(
+    name: "resetpassword",
+    pattern: "ResetPassword",
+    defaults: new { controller = "Account", action = "ResetPassword" }
+);
 
 app.Run();

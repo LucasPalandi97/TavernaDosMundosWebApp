@@ -78,6 +78,13 @@ else
 </div>
 @section Scripts{
     <script>
+        //Refresh Button
+        $(document).ready(function () {
+            $("#refreshButton").click(function () {
+                location.reload(); // Refresh the page
+            });
+        });
+
         //FILTER CARDS
         var searchBox = document.getElementById('search-box');
         var continentCards = document.querySelectorAll('#continentList .card');

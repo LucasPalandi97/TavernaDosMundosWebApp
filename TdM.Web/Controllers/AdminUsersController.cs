@@ -19,6 +19,7 @@ public class AdminUsersController : Controller
         this.userManager = userManager;
     }
 
+    [HttpGet]
     public async Task<IActionResult> List()
     {
         var users = await userRepository.GetAllAsync(1, 100);
@@ -80,6 +81,7 @@ public class AdminUsersController : Controller
     }
 
     [HttpPost]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> Delete(Guid id)
     {
         var user = await userManager.FindByIdAsync(id.ToString());

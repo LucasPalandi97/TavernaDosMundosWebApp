@@ -59,6 +59,7 @@ public class AdminContinentesController : Controller
     }
 
     [HttpPost]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> Add(AddContinenteRequest addContinenteRequest)
     {
         await ValidateAddContinenteRequest(addContinenteRequest);
@@ -293,6 +294,7 @@ public class AdminContinentesController : Controller
     }
 
     [HttpPost]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(EditContinenteRequest editContinenteRequest)
     {
         await ValidateEditContinenteRequest(editContinenteRequest);
@@ -458,6 +460,8 @@ public class AdminContinentesController : Controller
         return RedirectToAction("Edit", new { id = editContinenteRequest.Id });
     }
 
+    [HttpPost]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> Delete(EditContinenteRequest editContinenteRequest)
     {
         var deletedContinente = await continenteRepository.DeleteAsync(editContinenteRequest.Id);
@@ -470,6 +474,7 @@ public class AdminContinentesController : Controller
         //Show an error notification
         return RedirectToAction("Edit", new { Id = editContinenteRequest.Id });
     }
+
     private async Task ValidateAddContinenteRequest(AddContinenteRequest addContinenteRequest)
     {
         bool urlHandleExists = await continenteRepository.UrlHandleExists(addContinenteRequest.UrlHandle);
@@ -479,6 +484,7 @@ public class AdminContinentesController : Controller
             ModelState.AddModelError("UrlHandle", "This URL Handle already exists");
         }
     }
+
     private async Task ValidateEditContinenteRequest(EditContinenteRequest editContinenteRequest)
     {
         var continente = await continenteRepository.GetAsync(editContinenteRequest.Id, 1, 10);

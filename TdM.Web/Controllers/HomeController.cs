@@ -16,6 +16,7 @@ namespace TdM.Web.Controllers
             MundoRepository = mundoRepository;
         }
 
+        [HttpGet]
         public async Task<IActionResult> Index()
         {
             var mundo = await MundoRepository.GetAllAsync(1, 100);
@@ -23,17 +24,13 @@ namespace TdM.Web.Controllers
             return View(mundo);
         }
 
-        public IActionResult testcode()
-        {
-
-            return View();
-        }
-
+        [HttpGet]
         public IActionResult Privacy()
         {
             return View();
         }
 
+        [HttpGet]
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

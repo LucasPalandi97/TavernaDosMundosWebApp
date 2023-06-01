@@ -16,6 +16,7 @@ public class ContosController : Controller
         this.contoRepository = contoRepository;
         this.mundoRepository = mundoRepository;
     }
+
     [HttpGet]
     public async Task<IActionResult> Index(string urlHandle)
     {

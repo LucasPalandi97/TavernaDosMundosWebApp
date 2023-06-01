@@ -46,6 +46,7 @@ public class AdminCriaturasController : Controller
 
 
     [HttpPost]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> Add(AddCriaturaRequest addCriaturaRequest)
     {
         await ValidateAddCriaturaRequest(addCriaturaRequest);
@@ -313,6 +314,7 @@ public class AdminCriaturasController : Controller
     }
 
     [HttpPost]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(EditCriaturaRequest editCriaturaRequest)
     {
         await ValidateEditCriaturaRequest(editCriaturaRequest);
@@ -475,6 +477,8 @@ public class AdminCriaturasController : Controller
         return RedirectToAction("Edit", new { id = editCriaturaRequest.Id });
     }
 
+    [HttpPost]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> Delete(EditCriaturaRequest editCriaturaRequest)
     {
         var deletedCriatura = await criaturaRepository.DeleteAsync(editCriaturaRequest.Id);
@@ -487,6 +491,7 @@ public class AdminCriaturasController : Controller
         //Show an error notification
         return RedirectToAction("Edit", new { Id = editCriaturaRequest.Id });
     }
+
     private async Task ValidateAddCriaturaRequest(AddCriaturaRequest addCriaturaRequest)
     {
         bool urlHandleExists = await criaturaRepository.UrlHandleExists(addCriaturaRequest.UrlHandle);
@@ -496,6 +501,7 @@ public class AdminCriaturasController : Controller
             ModelState.AddModelError("UrlHandle", "This URL Handle already exists");
         }
     }
+
     private async Task ValidateEditCriaturaRequest(EditCriaturaRequest editCriaturaRequest)
     {
         var criatura = await criaturaRepository.GetAsync(editCriaturaRequest.Id, 1, 10);

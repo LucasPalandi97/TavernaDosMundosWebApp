@@ -3,6 +3,9 @@
 @inject UserManager<IdentityUser> userManager
 @model TdM.Web.Models.ViewModels.ChangePasswordViewModel
 @{
+    ViewData["Title"] = "Profile";
+    @Html.AntiForgeryToken()
+
     var currentUser = await userManager.GetUserAsync(User);
     var isEmailConfirmed = await userManager.IsEmailConfirmedAsync(currentUser);
 }
@@ -26,6 +29,7 @@
                             </div>
                         </div>
                         <form id="emailForm" method="post" action="@Url.Action("UpdateEmail", "Account")">
+                            @Html.AntiForgeryToken()
                             <div class="mb-3 row">
                                 <label class="col-md-4 col-form-label">Email:</label>
                                 <div class="mb-3 col-md-6">
@@ -63,6 +67,7 @@
                     </div>
                     <div class="card-body">
                         <form method="post" action="@Url.Action("ChangePassword", "Account")">
+                            @Html.AntiForgeryToken()
                             <div class="mb-3 row">
                                 <label class="col-md-4 col-form-label">Current Password:</label>
                                 <div class="col-md-8">
@@ -93,6 +98,12 @@
                             {
                                 <div class="alert alert-success">
                                     @Model.PasswordChangeConfirmation
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="alert alert-success invisible">
+                                    Você é um gaysão
                                 </div>
                             }
                         </form>

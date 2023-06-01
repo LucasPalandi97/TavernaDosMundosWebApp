@@ -1,5 +1,6 @@
 ﻿@model TdM.Web.Models.ViewModels.LoginViewModel
 @{
+    ViewData["Title"] = "Login";
 }
 <partial name="_Navbar2" />
 <div class="container mx-auto mt-5 pt-5">
@@ -7,12 +8,13 @@
         <div class="col-12 col-lg-6">
             <h1 class="mt-3 mb-3 h3">
                 Login
-            </h1>               
+            </h1>
             <form method="post">
+                @Html.AntiForgeryToken()
                 <div class="mb-3">
-                    <label class="form-label">Username</label>
-                    <input type="text" id="username" class="form-control" asp-for="Username" required />
-                    <span class="text-danger" asp-validation-for="Username"></span>
+                    <label class="form-label">Username or Email</label>
+                    <input type="text" id="usernameOrEmail" class="form-control" asp-for="UsernameOrEmail" required />
+                    <span class="text-danger" asp-validation-for="UsernameOrEmail"></span>
                 </div>
 
                 <div class="mb-3">
@@ -20,7 +22,7 @@
                     <input type="password" id="password" class="form-control" asp-for="Password" required minlenght="6" />
                     <span class="text-danger" asp-validation-for="Password"></span>
                     <p class="mt-1">
-                        <a class="link-body-emphasis"href="@Url.Action("ForgotPassword")">Forgot Password?</a>
+                        <a class="link-body-emphasis" href="@Url.Action("ForgotPassword")">Forgot Password?</a>
                     </p>
                 </div>
 

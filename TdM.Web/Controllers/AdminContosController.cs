@@ -57,6 +57,7 @@ public class AdminContosController : Controller
     }
 
     [HttpPost]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> Add(AddContoRequest addContoRequest)
     {
         await ValidateAddContoRequest(addContoRequest);
@@ -327,6 +328,7 @@ public class AdminContosController : Controller
         }
     }
     [HttpPost]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(EditContoRequest editContoRequest)
     {
         await ValidateEditContoRequest(editContoRequest);
@@ -515,6 +517,8 @@ public class AdminContosController : Controller
         return RedirectToAction("Edit", new { id = editContoRequest.Id });
     }
 
+    [HttpPost]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> Delete(EditContoRequest editContoRequest)
     {
         var deletedConto = await contoRepository.DeleteAsync(editContoRequest.Id);
@@ -527,6 +531,7 @@ public class AdminContosController : Controller
         //Show an error notification
         return RedirectToAction("Edit", new { Id = editContoRequest.Id });
     }
+
     private async Task ValidateAddContoRequest(AddContoRequest addContoRequest)
     {
         bool urlHandleExists = await contoRepository.UrlHandleExists(addContoRequest.UrlHandle);
@@ -536,6 +541,7 @@ public class AdminContosController : Controller
             ModelState.AddModelError("UrlHandle", "This URL Handle already exists");
         }
     }
+
     private async Task ValidateEditContoRequest(EditContoRequest editContoRequest)
     {
         var conto = await contoRepository.GetAsync(editContoRequest.Id, 1, 10);

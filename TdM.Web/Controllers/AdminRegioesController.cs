@@ -74,6 +74,7 @@ public class AdminRegioesController : Controller
     }
 
     [HttpPost]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> Add(AddRegiaoRequest addRegiaoRequest)
     {
         await ValidateAddRegiaoRequest(addRegiaoRequest);
@@ -366,6 +367,7 @@ public class AdminRegioesController : Controller
     }
 
     [HttpPost]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(EditRegiaoRequest editRegiaoRequest)
     {
         await ValidateEditRegiaoRequest(editRegiaoRequest);
@@ -574,6 +576,8 @@ public class AdminRegioesController : Controller
         return RedirectToAction("Edit", new { id = editRegiaoRequest.Id });
     }
 
+    [HttpPost]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> Delete(EditRegiaoRequest editRegiaoRequest)
     {
         var deletedRegiao = await regiaoRepository.DeleteAsync(editRegiaoRequest.Id);
@@ -586,6 +590,7 @@ public class AdminRegioesController : Controller
         //Show an error notification
         return RedirectToAction("Edit", new { Id = editRegiaoRequest.Id });
     }
+
     private async Task ValidateAddRegiaoRequest(AddRegiaoRequest addRegiaoRequest)
     {
         bool urlHandleExists = await regiaoRepository.UrlHandleExists(addRegiaoRequest.UrlHandle);
@@ -595,6 +600,7 @@ public class AdminRegioesController : Controller
             ModelState.AddModelError("UrlHandle", "This URL Handle already exists");
         }
     }
+
     private async Task ValidateEditRegiaoRequest(EditRegiaoRequest editRegiaoRequest)
     {
         var regiao = await regiaoRepository.GetAsync(editRegiaoRequest.Id, 1, 10);

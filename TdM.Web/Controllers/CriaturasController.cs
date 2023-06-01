@@ -16,6 +16,7 @@ public class CriaturasController : Controller
         this.criaturaRepository = criaturaRepository;
         this.mundoRepository = mundoRepository;
     }
+
     [HttpGet]
     public async Task<IActionResult> Index(string urlHandle)
     {

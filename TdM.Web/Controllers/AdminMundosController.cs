@@ -55,7 +55,9 @@ public class AdminMundosController : Controller
         };
         return View(model);
     }
+
     [HttpPost]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> Add(AddMundoRequest addMundoRequest)
     {
         await ValidateAddMundoRequest(addMundoRequest);
@@ -328,6 +330,7 @@ public class AdminMundosController : Controller
     }
 
     [HttpPost]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(EditMundoRequest editMundoRequest)
     {
         await ValidateEditMundoRequest(editMundoRequest);
@@ -527,7 +530,9 @@ public class AdminMundosController : Controller
         }
         //Redirect to Get
     }
+
     [HttpPost]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> Delete(EditMundoRequest editMundoRequest)
     {
         // Talk to repository to delete this mundo and continente

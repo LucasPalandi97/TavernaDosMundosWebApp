@@ -16,6 +16,7 @@ public class PovosController : Controller
         this.povoRepository = povoRepository;
         this.mundoRepository = mundoRepository;
     }
+
     [HttpGet]
     public async Task<IActionResult> Index(string urlHandle)
     {

@@ -14,7 +14,9 @@
             }
         </style>
     }
+
 }
+
 <nav class="navbar bg-body navbar-expand-lg py-1 pt-3">
     <div class="container-fluid px-2 px-xl-5 align-content-center text-center">
         <a class="navbar-brand mx-0 me-3" asp-area="" asp-controller="Home" asp-action="Index">Taverna dos Mundos</a>
@@ -175,6 +177,9 @@
                     <li class="navbar-nav ml-auto d-flex align-items-center order-2">
                         @if (signInManager.IsSignedIn(User))
                         {
+                            var currentUser = await userManager.GetUserAsync(User);
+                            var isEmailConfirmed = await userManager.IsEmailConfirmedAsync(currentUser);
+                            var ProfileWarning = "<span class=\"text-warning\"><i class=\"bi bi-exclamation-triangle\"></i></span>";
                             @if (signInManager.IsSignedIn(User) && User.IsInRole("Admin"))
                             {
                                 <div class="nav-item dropdown">
@@ -182,7 +187,7 @@
                                         @User.Identity?.Name
                                         @if (signInManager.IsSignedIn(User))
                                         {
-                                            if (User.IsInRole("SuperAdmin"))
+                                            @if (User.IsInRole("SuperAdmin"))
                                             {
                                                 <i class="bi bi-gem" style="color:rgb(154,197,219)"></i>
                                             }
@@ -199,14 +204,9 @@
                                         <li>
                                             <a type="submit" class="dropdown-item" asp-area="" asp-controller="Account" asp-action="Profile">
                                                 Profile
-                                                @if (signInManager.IsSignedIn(User))
+                                                @if (!isEmailConfirmed)
                                                 {
-                                                    var currentUser = await userManager.GetUserAsync(User);
-                                                    var isEmailConfirmed = await userManager.IsEmailConfirmedAsync(currentUser);
-                                                    @if (!isEmailConfirmed)
-                                                    {
-                                                        <span class="text-warning-emphasis"><i class="bi bi-exclamation-triangle"></i></span>
-                                                    }
+                                                    @Html.Raw(ProfileWarning)
                                                 }
                                             </a>
                                         </li>
@@ -225,15 +225,11 @@
                                     </a>
                                     <ul id="admmenu" class="dropdown-menu dropdown-menu-start position-absolute">
                                         <li>
-                                            <a type="submit" class="dropdown-item" asp-area="" asp-controller="Account" asp-action="Profile">Profile
-                                                @if (signInManager.IsSignedIn(User))
+                                            <a type="submit" class="dropdown-item" asp-area="" asp-controller="Account" asp-action="Profile">
+                                                Profile
+                                                @if (!isEmailConfirmed)
                                                 {
-                                                    var currentUser = await userManager.GetUserAsync(User);
-                                                    var isEmailConfirmed = await userManager.IsEmailConfirmedAsync(currentUser);
-                                                    @if (!isEmailConfirmed)
-                                                    {
-                                                        <span class="text-warning-emphasis"><i class="bi bi-exclamation-triangle"></i></span>
-                                                    }
+                                                    @Html.Raw(ProfileWarning)
                                                 }
                                             </a>
                                         </li>
@@ -259,6 +255,10 @@
                     <li class="nav-item align-items-center d-flex flex-column flex-lg-row p-0">
                         @if (signInManager.IsSignedIn(User))
                         {
+                            var currentUser = await userManager.GetUserAsync(User);
+                            var isEmailConfirmed = await userManager.IsEmailConfirmedAsync(currentUser);
+                            var ProfileWarning = "<span class=\"text-warning\"><i class=\"bi bi-exclamation-triangle\"></i></span>";
+
                             <div class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle text-secondary" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     @User.Identity?.Name
@@ -266,14 +266,10 @@
                                 <ul id="admmenu" class="dropdown-menu dropdown-menu-start position-absolute">
                                     <li>
                                         <a type="submit" class="dropdown-item" asp-area="" asp-controller="Account" asp-action="Profile">
-                                            Profile  @if (signInManager.IsSignedIn(User))
+                                            Profile
+                                            @if (!isEmailConfirmed)
                                             {
-                                                var currentUser = await userManager.GetUserAsync(User);
-                                                var isEmailConfirmed = await userManager.IsEmailConfirmedAsync(currentUser);
-                                                @if (!isEmailConfirmed)
-                                                {
-                                                    <span class="text-warning-emphasis"><i class="bi bi-exclamation-triangle"></i></span>
-                                                }
+                                                @Html.Raw(ProfileWarning)
                                             }
                                         </a>
                                     </li>

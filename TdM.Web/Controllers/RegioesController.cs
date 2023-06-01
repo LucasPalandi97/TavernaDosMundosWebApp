@@ -11,6 +11,7 @@ public class RegioesController : Controller
     {
         this.regiaoRepository = regiaoRepository;
     }
+
     [HttpGet]
     public async Task<IActionResult> Index(string urlHandle)
     {

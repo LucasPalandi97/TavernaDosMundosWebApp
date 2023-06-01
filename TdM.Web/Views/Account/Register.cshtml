@@ -1,5 +1,6 @@
 ﻿@model TdM.Web.Models.ViewModels.RegisterViewModel
 @{
+    ViewData["Title"] = "Register";
 }
 <partial name="_Navbar2" />
 <div class="container mx-auto mt-5 pt-5">
@@ -11,6 +12,7 @@
             </h1>
 
             <form method="post">
+                @Html.AntiForgeryToken()
                 <div class="mb-3">
                     <label class="form-label">Username</label>
                     <input type="text" id="username" class="form-control" asp-for="Username" required />
@@ -25,17 +27,34 @@
 
                 <div class="mb-3">
                     <label class="form-label">Password</label>
-                    <input type="password" id="password" class="form-control" asp-for="Password"/>
+                    <input type="password" id="password" class="form-control" asp-for="Password" />
                     <span class="text-danger" asp-validation-for="Password"></span>
                 </div>
 
                 <div class="mb-3">
                     <label class="form-label">Confirm Password</label>
-                    <input type="password" id="confirmpassword" class="form-control" asp-for="ConfirmPassword"/>
+                    <input type="password" id="confirmpassword" class="form-control" asp-for="ConfirmPassword" />
                     <span class="text-danger" asp-validation-for="ConfirmPassword"></span>
                 </div>
 
-                <p>When creating an account, you agree with our <a asp-action="TermsOfUse" asp-controller="Account">terms of use</a></p>
+                <p>When creating an account, you agree with our <a asp-action="TermsOfUse" asp-controller="Account" data-bs-toggle="modal" data-bs-target="#TermsOfUse">terms of use</a></p>
+
+                <!-- Terms Of Use Modal -->
+                <div class="modal fade" id="TermsOfUse" tabindex="-1" aria-labelledby="TermsOfUseLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-scrollable modal-fullscreen-lg-down modal-xl">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <partial name="_TermsOfUse"/>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
                 <div class="mb-3">
                     <button type="submit" class="btn btn-secondary bg-body text-body">Register</button>

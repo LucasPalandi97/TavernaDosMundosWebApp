@@ -14,6 +14,7 @@ public class ImagesController : ControllerBase
     {
         this.imageRepository = imageRepository;
     }
+
     [HttpPost]
     public async Task<IActionResult> UploadAsync(IFormFile file)
     {

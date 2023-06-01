@@ -10,8 +10,8 @@ services:
     depends_on:
       - taverna-db
     environment:
-      ConnectionStrings__TavernaConnection: "Server=taverna-db;Database=Content;User Id=sa;Password=PastelDosMundos@123;TrustServerCertificate=True"
-      ConnectionStrings__TavernaAuthDbConnectionString: "Server=taverna-db;Database=Authentication;User Id=sa;Password=PastelDosMundos@123;TrustServerCertificate=True"  
+      ConnectionStrings__TavernaConnection: "Server=taverna-db;Database=Content;User Id=sa;Password=PastelDosMundos@123;TrustServerCertificate=True;Encrypt=True"
+      ConnectionStrings__TavernaAuthDbConnectionString: "Server=taverna-db;Database=Authentication;User Id=sa;Password=PastelDosMundos@123;TrustServerCertificate=True;Encrypt=True"  
     ports:
       - "80:80"
       - "443:443"

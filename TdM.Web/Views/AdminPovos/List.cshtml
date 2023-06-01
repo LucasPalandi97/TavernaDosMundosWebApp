@@ -19,7 +19,13 @@
                     <th onclick="sortTable(2)">People <span class="pointer">&#9660</span></th>
                     <th id="desccolumn">Description</th>
                     <th onclick="sortTable(3)">Published <span class="pointer">&#9660</span></th>
-                    <th></th>
+                    <th>
+                        <div class="d-flex justify-content-end">
+                            <a class="rounded-5 bg-body text-body" href="#" id="refreshButton">
+                                <i class="bi bi-arrow-clockwise"></i>
+                            </a>
+                        </div>
+                    </th>
                 </tr>
             </thead>
             <tbody>
@@ -40,6 +46,7 @@
                         <td class="published-date">@povo.PublishedDate.ToString("yyyy-MM-dd HH:mm")</td>
                         <td>
                             <form method="post" asp-controller="AdminPovos" asp-action="Delete" asp-route-id="@povo.Id" id="deleteForm-@povo.Id">
+                                @Html.AntiForgeryToken()
                                 <ul class="list-inline flex-nowrap m-0">
                                     <li class="list-inline-item">
                                         <a class="btn btn-sm rounded-0" type="button" asp-area="" asp-controller="AdminPovos" asp-action="Edit" asp-route-id="@povo.Id"><i class="bi bi-pencil-square"></i></a>

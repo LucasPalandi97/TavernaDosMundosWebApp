@@ -44,6 +44,7 @@ public class AdminPersonagensController : Controller
     }
 
     [HttpPost]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> Add(AddPersonagemRequest addPersonagemRequest)
     {
         await ValidateAddPersonagemRequest(addPersonagemRequest);
@@ -326,6 +327,7 @@ public class AdminPersonagensController : Controller
     }
 
     [HttpPost]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(EditPersonagemRequest editPersonagemRequest)
     {
         await ValidateEditPersonagemRequest(editPersonagemRequest);
@@ -486,6 +488,8 @@ public class AdminPersonagensController : Controller
         return RedirectToAction("Edit", new { id = editPersonagemRequest.Id });
     }
 
+    [HttpPost]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> Delete(EditPersonagemRequest editPersonagemRequest)
     {
         var deletedPersonagem = await personagemRepository.DeleteAsync(editPersonagemRequest.Id);
@@ -498,6 +502,7 @@ public class AdminPersonagensController : Controller
         //Show an error notification
         return RedirectToAction("Edit", new { Id = editPersonagemRequest.Id });
     }
+
     private async Task ValidateAddPersonagemRequest(AddPersonagemRequest addPersonagemRequest)
     {
         bool urlHandleExists = await personagemRepository.UrlHandleExists(addPersonagemRequest.UrlHandle);
@@ -507,6 +512,7 @@ public class AdminPersonagensController : Controller
             ModelState.AddModelError("UrlHandle", "This URL Handle already exists");
         }
     }
+
     private async Task ValidateEditPersonagemRequest(EditPersonagemRequest editPersonagemRequest)
     {
         var personagem = await personagemRepository.GetAsync(editPersonagemRequest.Id, 1, 10);

@@ -19,46 +19,59 @@ $(function () {
         });
     });
 });
-//FILTER CARDS
-var searchBox = document.getElementById('search-box');
-var cards = document.querySelectorAll('.card ');
-var initialCardDisplay;
 
-searchBox.addEventListener('input', function () {
-    var searchText = searchBox.value.trim().toLowerCase();
-
-    cards.forEach(function (card) {
-        var title = card.querySelector('.card-title').textContent.trim().toLowerCase();
-
-        if (title.includes(searchText)) {
-            card.style.opacity = '1';
-            card.style.transform = 'translateY(0)';
-            card.style.display = 'block';
-        } else {
-            card.style.opacity = '0';
-            card.style.transform = 'translateY(10%)';
-            card.addEventListener('transitionend', function () {
-                if (card.style.opacity === '0') {
-                    card.style.display = 'none';
-                }
-            }, { once: true });
-        }
+//Refresh Button
+$(document).ready(function () {
+    $("#refreshButton").click(function () {
+        location.reload(); // Refresh the page
     });
 });
-cards.forEach(function (card) {
-    card.addEventListener('mouseover', function () {
-        if (card.style.display === 'block') {
-            // Save the initial display value
-            initialCardDisplay = card.style.display;
-        }
+
+function OnComplete() {
+    $("#modalCreateUser").modal("hide");
+}
+// FILTER CARDS
+document.addEventListener('DOMContentLoaded', function() {
+  var searchBox = document.getElementById('search-box');
+  var cards = document.querySelectorAll('.card');
+  var initialCardDisplay;
+
+  searchBox.addEventListener('input', function() {
+    var searchText = searchBox.value.trim().toLowerCase();
+
+    cards.forEach(function(card) {
+      var title = card.querySelector('.card-title').textContent.trim().toLowerCase();
+
+      if (title.includes(searchText)) {
+        card.style.opacity = '1';
+        card.style.transform = 'translateY(0)';
+        card.style.display = 'block';
+      } else {
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(10%)';
+        card.addEventListener('transitionend', function() {
+          if (card.style.opacity === '0') {
+            card.style.display = 'none';
+          }
+        }, { once: true });
+      }
+    });
+  });
+  cards.forEach(function(card) {
+    card.addEventListener('mouseover', function() {
+      if (card.style.display === 'block') {
+        // Save the initial display value
+        initialCardDisplay = card.style.display;
+      }
     });
 
-    card.addEventListener('mouseout', function () {
-        if (card.style.display === 'block') {
-            // Set the display back to the initial value
-            card.style.display = initialCardDisplay;
-        }
+    card.addEventListener('mouseout', function() {
+      if (card.style.display === 'block') {
+        // Set the display back to the initial value
+        card.style.display = initialCardDisplay;
+      }
     });
+  });
 });
 
 //FILTER TABLE FOR ADMINS

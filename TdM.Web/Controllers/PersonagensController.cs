@@ -16,6 +16,7 @@ public class PersonagensController : Controller
         this.personagemRepository = personagemRepository;
         this.mundoRepository = mundoRepository;
     }
+
     [HttpGet]
     public async Task<IActionResult> Index(string urlHandle)
     {

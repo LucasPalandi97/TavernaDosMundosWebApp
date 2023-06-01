@@ -18,6 +18,7 @@ public class ContinentesController : Controller
         this.mundoRepository = mundoRepository;
         this.regiaoRepository = regiaoRepository;
     }
+
     [HttpGet]
     public async Task<IActionResult> Index(string urlHandle)
     {

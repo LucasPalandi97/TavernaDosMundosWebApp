@@ -1,5 +1,6 @@
 
 body {
+    overflow-x:hidden
 }
 
 /*Search Menu*/
@@ -62,10 +63,13 @@ body {
 @media (max-width: 767px) {
 
     /* Target all text elements and reduce their font size */
-    body * {
+    body * {      
         font-size: 0.98em;
     }
 
+    body {
+        overflow-x: scroll;
+    }
     .navbar-nav .dropdown-menu li a {
         font-size: 1.2rem;
         line-height: 1.8rem;
@@ -77,22 +81,10 @@ body {
     }
 }
 
-@media (max-width: 568px) {
-
-    /* Target all text elements and reduce their font size */
-    body * {
-        font-size: 0.95em;
-    }
-}
-
 @media (max-width: 464px) {
     .navbar-brand {
         transition: all 0.2s ease-in-out;
         font-size: 0.9em;
-    }
-
-    body * {
-        font-size: 0.94em;
     }
 
     .dnone {
@@ -100,10 +92,9 @@ body {
     }
 }
 
-
 @media (max-width: 350px) {
     body * {
-        font-size: 0.9em;
+        font-size: 0.96em;
     }
 }
 

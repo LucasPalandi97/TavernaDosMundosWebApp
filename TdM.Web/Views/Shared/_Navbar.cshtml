@@ -168,6 +168,10 @@
                 <li class="navbar-nav ml-auto d-flex align-items-center order-2">
                     @if (signInManager.IsSignedIn(User))
                     {
+                        var currentUser = await userManager.GetUserAsync(User);
+                        var isEmailConfirmed = await userManager.IsEmailConfirmedAsync(currentUser);
+                        var ProfileWarning = "<span class=\"text-warning\"><i class=\"bi bi-exclamation-triangle\"></i></span>";
+
                         @if (signInManager.IsSignedIn(User) && User.IsInRole("Admin"))
                         {
                             <div class="nav-item dropdown">
@@ -191,14 +195,10 @@
                                     </li>
                                     <li>
                                         <a type="submit" class="dropdown-item" asp-area="" asp-controller="Account" asp-action="Profile">
-                                            Profile @if (signInManager.IsSignedIn(User))
+                                            Profile
+                                            @if (!isEmailConfirmed)
                                             {
-                                                var currentUser = await userManager.GetUserAsync(User);
-                                                var isEmailConfirmed = await userManager.IsEmailConfirmedAsync(currentUser);
-                                                @if (!isEmailConfirmed)
-                                                {
-                                                    <span class="text-warning-emphasis"><i class="bi bi-exclamation-triangle"></i></span>
-                                                }
+                                                @Html.Raw(ProfileWarning)
                                             }
                                         </a>
                                     </li>
@@ -217,14 +217,10 @@
                                 <ul id="admmenu" class="dropdown-menu dropdown-menu-start position-absolute">
                                     <li>
                                         <a type="submit" class="dropdown-item" asp-area="" asp-controller="Account" asp-action="Profile">
-                                            Profile @if (signInManager.IsSignedIn(User))
+                                            Profile
+                                            @if (!isEmailConfirmed)
                                             {
-                                                var currentUser = await userManager.GetUserAsync(User);
-                                                var isEmailConfirmed = await userManager.IsEmailConfirmedAsync(currentUser);
-                                                @if (!isEmailConfirmed)
-                                                {
-                                                    <span class="text-warning-emphasis"><i class="bi bi-exclamation-triangle"></i></span>
-                                                }
+                                                @Html.Raw(ProfileWarning)
                                             }
                                         </a>
                                     </li>

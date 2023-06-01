@@ -60,6 +60,7 @@ public class AdminPovosController : Controller
     }
 
     [HttpPost]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> Add(AddPovoRequest addPovoRequest)
     {
         await ValidateAddPovoRequest(addPovoRequest);
@@ -348,7 +349,9 @@ public class AdminPovosController : Controller
             return View(null);
         }
     }
+
     [HttpPost]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(EditPovoRequest editPovoRequest)
     {
         await ValidateEditPovoRequest(editPovoRequest);
@@ -536,6 +539,8 @@ public class AdminPovosController : Controller
         return RedirectToAction("Edit", new { id = editPovoRequest.Id });
     }
 
+    [HttpPost]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> Delete(EditPovoRequest editPovoRequest)
     {
         var deletedPovo = await povoRepository.DeleteAsync(editPovoRequest.Id);
@@ -548,6 +553,7 @@ public class AdminPovosController : Controller
         //Show an error notification
         return RedirectToAction("Edit", new { Id = editPovoRequest.Id });
     }
+
     private async Task ValidateAddPovoRequest(AddPovoRequest addPovoRequest)
     {
         bool urlHandleExists = await povoRepository.UrlHandleExists(addPovoRequest.UrlHandle);
@@ -557,6 +563,7 @@ public class AdminPovosController : Controller
             ModelState.AddModelError("UrlHandle", "This URL Handle already exists");
         }
     }
+
     private async Task ValidateEditPovoRequest(EditPovoRequest editPovoRequest)
     {
         var povo = await povoRepository.GetAsync(editPovoRequest.Id, 1, 10);

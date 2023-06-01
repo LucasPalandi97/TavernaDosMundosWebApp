@@ -20,6 +20,7 @@ public class AccountController : Controller
     }
 
     [HttpGet]
+    [Route("/Register")]
     public IActionResult Register()
     {
         return View();
@@ -27,6 +28,7 @@ public class AccountController : Controller
 
 
     [HttpPost]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> Register(RegisterViewModel registerViewModel)
     {
         ModelState.Remove("RegisterConfirmation"); // Remove the RegisterConfirmation property from ModelState
@@ -71,7 +73,7 @@ public class AccountController : Controller
                     // Send the verification email
                     await SendEmailVerification(identityUser.Email, callbackUrl);
 
-                    TempData["RegisterConfirmed"] = "Account registered successfully, please proceed to Login.";
+                    TempData["RegisterConfirmed"] = "Account registered successfully. Please proceed to Login.";
 
                     return RedirectToAction("Login");
                 }
@@ -159,6 +161,7 @@ Please don't reply to this message. It was sent from an address that doesn't acc
     }
 
     [HttpGet]
+    [Route("/Login")]
     public async Task<IActionResult> Login(string ReturnUrl)
     {
         TempData.Remove("EmailVerificationRequired");
@@ -191,6 +194,7 @@ Please don't reply to this message. It was sent from an address that doesn't acc
     }
 
     [HttpPost]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> Login(LoginViewModel loginViewModel)
     {
         if (!ModelState.IsValid)
@@ -199,15 +203,22 @@ Please don't reply to this message. It was sent from an address that doesn't acc
         }
 
         // Check if the username exists
-        var user = await userManager.FindByNameAsync(loginViewModel.Username);
+        var user = await userManager.FindByNameAsync(loginViewModel.UsernameOrEmail);
+
         if (user == null)
         {
-            ModelState.AddModelError("Password", "Invalid username or password");
+        // Check if the email exists
+            user = await userManager.FindByEmailAsync(loginViewModel.UsernameOrEmail);
+        }
+
+        if (user == null)
+        {
+            ModelState.AddModelError("Password", "Invalid Username/Email or password");
             return View();
         }
 
         // Attempt to sign in the user with the provided username and password
-        var signInResult = await signInManager.PasswordSignInAsync(loginViewModel.Username, loginViewModel.Password, false, false);
+        var signInResult = await signInManager.PasswordSignInAsync(user.UserName, loginViewModel.Password, false, false);
 
         if (signInResult.Succeeded)
         {
@@ -229,12 +240,14 @@ Please don't reply to this message. It was sent from an address that doesn't acc
     }
 
     [HttpGet]
+    [Route("/ForgotPassword")]
     public IActionResult ForgotPassword()
     {
         return View();
     }
 
     [HttpPost]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> ForgotPassword(ForgotPasswordViewModel model)
     {
         if (ModelState.IsValid)
@@ -270,8 +283,6 @@ Please don't reply to this message. It was sent from an address that doesn't acc
             Text = $@"Reset your password at the following link:<br>
 <a href='{resetToken}'>Password Reset</a><br>
 
-If you didn't request this password reset, please ignore this message.<br>
-
 Thanks, Taverna dos Mundos<br>
 
 Please don't reply to this message. It was sent from an address that doesn't accept incoming email."
@@ -290,6 +301,7 @@ Please don't reply to this message. It was sent from an address that doesn't acc
     }
 
     [HttpGet]
+    [Route("/ResetPassword")]
     public IActionResult ResetPassword(string userId, string token)
     {
         var model = new ResetPasswordViewModel
@@ -302,6 +314,7 @@ Please don't reply to this message. It was sent from an address that doesn't acc
     }
 
     [HttpPost]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> ResetPassword(ResetPasswordViewModel model)
     {
         if (ModelState.IsValid)
@@ -354,6 +367,7 @@ Please don't reply to this message. It was sent from an address that doesn't acc
     }
 
     [HttpPost]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> UpdateEmail(ChangePasswordViewModel model)
     {
         ModelState.Remove("Username"); // Remove the Username property from ModelState
@@ -412,6 +426,7 @@ Please don't reply to this message. It was sent from an address that doesn't acc
     }
 
     [HttpPost]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> ChangePassword(ChangePasswordViewModel model)
     {
         ModelState.Remove("Username"); // Remove the Username property from ModelState
