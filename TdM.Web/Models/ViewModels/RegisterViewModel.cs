@@ -5,6 +5,7 @@ namespace TdM.Web.Models.ViewModels;
 public class RegisterViewModel
 {
     [Required]
+    [StringLength(12, ErrorMessage = "The Username must be a maximum of 12 characters.")]
     public string Username { get; set; }
 
     [Required]
