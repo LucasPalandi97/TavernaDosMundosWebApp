@@ -2,6 +2,17 @@
 @{
     ViewData["Title"] = "Login";
 }
+
+<style>
+    .custom-checkbox .form-check-input[type="checkbox"]:checked + .form-check-label::before {
+        background-color: goldenrod !important;
+        border-color: goldenrod !important;
+    }
+
+    .custom-checkbox .form-check-input[type="checkbox"]:checked + .form-check-label::after {
+        color: goldenrod !important;
+    }
+    </style>
 <partial name="_Navbar2" />
 <div class="container mx-auto mt-5 pt-5">
     <div class="row justify-content-center">
@@ -25,6 +36,12 @@
                         <a class="link-body-emphasis" href="@Url.Action("ForgotPassword")">Forgot Password?</a>
                     </p>
                 </div>
+
+                <div class="mb-3 custom-checkbox">
+                    <input type="checkbox" id="rememberMe" class="form-check-input" asp-for="RememberMe" />
+                    <label class="form-check-label" for="rememberMe">Remember Me</label>
+                </div>
+
 
                 <div class="mb-3">
                     <button type="submit" class="btn btn-secondary">Login</button>

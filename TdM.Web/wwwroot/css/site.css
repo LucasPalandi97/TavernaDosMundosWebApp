@@ -125,6 +125,16 @@ descricao_content {
     white-space: nowrap;
 }
 
+.custom-checkbox .form-check-input[type="checkbox"]:checked + .form-check-label::before {
+    background-color: goldenrod !important;
+    border-color: goldenrod !important;
+}
+
+.custom-checkbox .form-check-input[type="checkbox"]:checked + .form-check-label::after {
+    color: goldenrod !important;
+}
+
+
 .bi-trash-fill:hover {
     color: rgb(96, 24, 24);
 }

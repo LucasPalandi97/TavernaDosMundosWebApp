@@ -218,7 +218,7 @@ Please don't reply to this message. It was sent from an address that doesn't acc
         }
 
         // Attempt to sign in the user with the provided username and password
-        var signInResult = await signInManager.PasswordSignInAsync(user.UserName, loginViewModel.Password, false, false);
+        var signInResult = await signInManager.PasswordSignInAsync(loginViewModel.UsernameOrEmail, loginViewModel.Password, loginViewModel.RememberMe, lockoutOnFailure: false);
 
         if (signInResult.Succeeded)
         {
