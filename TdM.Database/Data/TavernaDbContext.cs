@@ -12,7 +12,6 @@ public class TavernaDbContext : DbContext
     public DbSet<Povo> Povos { get; set; }
     public DbSet<Criatura> Criaturas { get; set; }
     public DbSet<Conto> Contos { get; set; }
-    public DbSet<UrlHandle> UrlHandles { get; set; }
 
     public TavernaDbContext(DbContextOptions<TavernaDbContext> options) : base(options)
     {

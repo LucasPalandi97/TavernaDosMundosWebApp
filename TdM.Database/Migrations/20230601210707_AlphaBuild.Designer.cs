@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TdM.Database.Data;
 
@@ -11,9 +12,11 @@ using TdM.Database.Data;
 namespace TdM.Database.Migrations
 {
     [DbContext(typeof(TavernaDbContext))]
-    partial class TavernaDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230601210707_AlphaBuild")]
+    partial class AlphaBuild
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -34,7 +37,7 @@ namespace TdM.Database.Migrations
 
                     b.HasIndex("ContosId");
 
-                    b.ToTable("ContinenteConto", (string)null);
+                    b.ToTable("ContinenteConto");
                 });
 
             modelBuilder.Entity("ContinenteCriatura", b =>
@@ -49,7 +52,7 @@ namespace TdM.Database.Migrations
 
                     b.HasIndex("CriaturasId");
 
-                    b.ToTable("ContinenteCriatura", (string)null);
+                    b.ToTable("ContinenteCriatura");
                 });
 
             modelBuilder.Entity("ContinentePovo", b =>
@@ -64,7 +67,7 @@ namespace TdM.Database.Migrations
 
                     b.HasIndex("PovosId");
 
-                    b.ToTable("ContinentePovo", (string)null);
+                    b.ToTable("ContinentePovo");
                 });
 
             modelBuilder.Entity("ContoCriatura", b =>
@@ -79,7 +82,7 @@ namespace TdM.Database.Migrations
 
                     b.HasIndex("CriaturasId");
 
-                    b.ToTable("ContoCriatura", (string)null);
+                    b.ToTable("ContoCriatura");
                 });
 
             modelBuilder.Entity("ContoPersonagem", b =>
@@ -94,7 +97,7 @@ namespace TdM.Database.Migrations
 
                     b.HasIndex("PersonagensId");
 
-                    b.ToTable("ContoPersonagem", (string)null);
+                    b.ToTable("ContoPersonagem");
                 });
 
             modelBuilder.Entity("ContoPovo", b =>
@@ -109,7 +112,7 @@ namespace TdM.Database.Migrations
 
                     b.HasIndex("PovosId");
 
-                    b.ToTable("ContoPovo", (string)null);
+                    b.ToTable("ContoPovo");
                 });
 
             modelBuilder.Entity("ContoRegiao", b =>
@@ -124,7 +127,7 @@ namespace TdM.Database.Migrations
 
                     b.HasIndex("RegioesId");
 
-                    b.ToTable("ContoRegiao", (string)null);
+                    b.ToTable("ContoRegiao");
                 });
 
             modelBuilder.Entity("CriaturaPovo", b =>
@@ -139,7 +142,7 @@ namespace TdM.Database.Migrations
 
                     b.HasIndex("PovosId");
 
-                    b.ToTable("CriaturaPovo", (string)null);
+                    b.ToTable("CriaturaPovo");
                 });
 
             modelBuilder.Entity("CriaturaRegiao", b =>
@@ -154,7 +157,7 @@ namespace TdM.Database.Migrations
 
                     b.HasIndex("RegioesId");
 
-                    b.ToTable("CriaturaRegiao", (string)null);
+                    b.ToTable("CriaturaRegiao");
                 });
 
             modelBuilder.Entity("PersonagemPovo", b =>
@@ -169,7 +172,7 @@ namespace TdM.Database.Migrations
 
                     b.HasIndex("PovosId");
 
-                    b.ToTable("PersonagemPovo", (string)null);
+                    b.ToTable("PersonagemPovo");
                 });
 
             modelBuilder.Entity("PovoRegiao", b =>
@@ -184,7 +187,7 @@ namespace TdM.Database.Migrations
 
                     b.HasIndex("RegioesId");
 
-                    b.ToTable("PovoRegiao", (string)null);
+                    b.ToTable("PovoRegiao");
                 });
 
             modelBuilder.Entity("TdM.Database.Models.Domain.Continente", b =>
@@ -228,7 +231,7 @@ namespace TdM.Database.Migrations
 
                     b.HasIndex("MundoFK");
 
-                    b.ToTable("Continentes", (string)null);
+                    b.ToTable("Continentes");
                 });
 
             modelBuilder.Entity("TdM.Database.Models.Domain.Conto", b =>
@@ -274,7 +277,7 @@ namespace TdM.Database.Migrations
 
                     b.HasIndex("MundoFK");
 
-                    b.ToTable("Contos", (string)null);
+                    b.ToTable("Contos");
                 });
 
             modelBuilder.Entity("TdM.Database.Models.Domain.Criatura", b =>
@@ -321,7 +324,7 @@ namespace TdM.Database.Migrations
 
                     b.HasIndex("MundoFK");
 
-                    b.ToTable("Criaturas", (string)null);
+                    b.ToTable("Criaturas");
                 });
 
             modelBuilder.Entity("TdM.Database.Models.Domain.Mundo", b =>
@@ -360,7 +363,7 @@ namespace TdM.Database.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Mundos", (string)null);
+                    b.ToTable("Mundos");
                 });
 
             modelBuilder.Entity("TdM.Database.Models.Domain.Personagem", b =>
@@ -424,7 +427,7 @@ namespace TdM.Database.Migrations
 
                     b.HasIndex("RegiaoFK");
 
-                    b.ToTable("Personagens", (string)null);
+                    b.ToTable("Personagens");
                 });
 
             modelBuilder.Entity("TdM.Database.Models.Domain.Povo", b =>
@@ -468,7 +471,7 @@ namespace TdM.Database.Migrations
 
                     b.HasIndex("MundoFK");
 
-                    b.ToTable("Povos", (string)null);
+                    b.ToTable("Povos");
                 });
 
             modelBuilder.Entity("TdM.Database.Models.Domain.Regiao", b =>
@@ -520,7 +523,7 @@ namespace TdM.Database.Migrations
 
                     b.HasIndex("MundoFK");
 
-                    b.ToTable("Regioes", (string)null);
+                    b.ToTable("Regioes");
                 });
 
             modelBuilder.Entity("ContinenteConto", b =>

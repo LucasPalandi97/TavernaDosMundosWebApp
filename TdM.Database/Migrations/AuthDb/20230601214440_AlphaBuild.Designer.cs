@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TdM.Database.Data;
 
@@ -11,9 +12,11 @@ using TdM.Database.Data;
 namespace TdM.Database.Migrations.AuthDb
 {
     [DbContext(typeof(AuthDbContext))]
-    partial class AuthDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230601214440_AlphaBuild")]
+    partial class AlphaBuild
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -164,19 +167,19 @@ namespace TdM.Database.Migrations.AuthDb
                     b.HasData(
                         new
                         {
-                            Id = "FE39CB62-A779-41D5-A2A7-F35FB81D6719",
+                            Id = "804D77F1-5AD0-469B-A9AF-F3A676979F8D",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "20079f5d-0428-4c48-bda2-2e3db0571546",
-                            Email = "lucaspalandi97@gmail.com",
+                            ConcurrencyStamp = "7b9306f7-7ac9-481a-acd5-f89595643d99",
+                            Email = "superadmin@taverna.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
-                            NormalizedEmail = "LUCASPALANDI97@GMAIL.COM",
-                            NormalizedUserName = "PALANDI",
-                            PasswordHash = "AQAAAAIAAYagAAAAEOjhfg8YkeqexsTkXUfXUfyxlOX4NUjqV4AzdXYwXlvX3/3l3rb9X93YCZIKktU6Ww==",
+                            NormalizedEmail = "SUPERADMIN@TAVERNA.COM",
+                            NormalizedUserName = "SUPERADMIN@TAVERNA.COM",
+                            PasswordHash = "AQAAAAIAAYagAAAAEMTx4oj5jPdNMN8dRa0ajOE19vnnnUWP7rVov/e8p2cESML8/geT4U2UJlRsfY45iA==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "ad177d21-1609-4b41-b847-3477a2e21fdf",
+                            SecurityStamp = "fdd25730-e111-409a-a4da-3f7a3a5f1d02",
                             TwoFactorEnabled = false,
-                            UserName = "Palandi"
+                            UserName = "Superadmin"
                         });
                 });
 
@@ -244,17 +247,17 @@ namespace TdM.Database.Migrations.AuthDb
                     b.HasData(
                         new
                         {
-                            UserId = "FE39CB62-A779-41D5-A2A7-F35FB81D6719",
+                            UserId = "804D77F1-5AD0-469B-A9AF-F3A676979F8D",
                             RoleId = "728b2541-6b59-4e4b-8903-932da4896354"
                         },
                         new
                         {
-                            UserId = "FE39CB62-A779-41D5-A2A7-F35FB81D6719",
+                            UserId = "804D77F1-5AD0-469B-A9AF-F3A676979F8D",
                             RoleId = "4971067b-f956-43c4-bf06-9ddbf7f0840e"
                         },
                         new
                         {
-                            UserId = "FE39CB62-A779-41D5-A2A7-F35FB81D6719",
+                            UserId = "804D77F1-5AD0-469B-A9AF-F3A676979F8D",
                             RoleId = "52d3b884-61d9-4cca-8430-9755b38aab9a"
                         });
                 });

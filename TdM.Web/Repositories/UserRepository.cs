@@ -23,7 +23,7 @@ public class UserRepository : IUserRepository
         var superAdminUser = await authDbContext.Users
             .Skip((page - 1) * pageSize)
             .Take(pageSize)
-            .FirstOrDefaultAsync(x => x.Email == "superadmin@taverna.com");
+            .FirstOrDefaultAsync(x => x.Email == "lucaspalandi97@gmail.com");
 
         if (superAdminUser != null)
         {

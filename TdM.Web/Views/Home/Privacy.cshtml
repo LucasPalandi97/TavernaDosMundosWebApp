@@ -1,6 +1,7 @@
 ﻿@{
     ViewData["Title"] = "About Us";
 }
+
 <!-- Include the navbar partial view and pass the Mundo object to it -->
 @if (string.IsNullOrEmpty(ViewBag.MundoUrlHandle))
 {
@@ -11,28 +12,114 @@ else
     @await Html.PartialAsync("_Navbar", new TdM.Web.Models.ViewModels.NavbarViewModel { MundoUrlHandle = ViewBag.MundoUrlHandle, Mundo = Model.Mundo  })
 }
 
-<header class="py-5 bg-image-full border-5 border-bottom border-dark text-center text-white" style="background-image: url('https://www.dorkadia.com/wp-content/uploads/2013/06/Legend-RPG-Banner.jpg'); background-size:cover;background-position:center; height:60rem;">
-    <div class="mask text-uppercase"><h1 class="fs-3 fw-bolder">About Us</h1></div>
-    <div class="mask bg-dark bg-opacity-75 text-center p-5 h-auto w-25 float-end " style="margin-right:15rem; ">
-        <h3 class="mb-5 text-uppercase textno">
-            Team of official creators
-        </h3>
-        <h4> Lucas Vinicius Palandi</h4>
-        <p class="text-secondary mb-3">Web Site Creator and Developer</p>
-        <h4> Bruno Cordon</h4>
-        <p class="text-secondary mb-3">Web Site Designer</p>
-        <h4> Emerson Luiz</h4>
-        <p class="text-secondary mb-3">Web Site Designer</p>
-        <h4> Rodrigo Guedes</h4>
-        <p class="text-secondary mb-3">Fullstack Developer</p>
-        <h4> Felipe Jacomini</h4>
-        <p class="text-secondary mb-">Lawyer</p>
-        <h4> Jean Martins</h4>
-        <p class="text-secondary mb-">Quality Assurance Tester</p>
-
-        <p class="mt-5 mb-3 text-secondary">Contact: <br>suport.tavernadosmundos@gmail.com</p>
-        <p class="text-danger">All images are placeholders and do not represent the final version of this product</p>
-
-
+<section class="py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6">
+                <h1 class="display-4 fw-bold">About Us</h1>
+                <p class="lead">Welcome to Taverna dos Mundos! We are a passionate and dedicated team committed to delivering exceptional content to our valued customers.</p>
+            </div>
+            <div class="col-lg-6">
+                <img src="https://i.imgur.com/hCDe2QY.png" class="img-fluid rounded" alt="Company Image">
+            </div>
+        </div>
     </div>
-</header>
+</section>
+
+<section class="bg-light py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6">
+                <h2 class="display-6 text-uppercase">Our Mission</h2>
+                <p>We strive to deviver quality content and entertainment. We aim to abide unconts stories ans lores by providing this interation that exceeds our customers' expectations. We believe in the community engage and team work integrating them into everything we do.</p>
+            </div>
+            <div class="col-lg-6">
+                <h2 class="display-6 text-uppercase">What Sets Us Apart</h2>
+                <ul class="list-unstyled">
+                    <li><strong>Expertise and Experience:</strong> With a highly skilled team of professionals, we possess the knowledge and expertise necessary to deliver outstanding content.</li>
+                    <li><strong>Customer-Centric Approach:</strong> We prioritize our customers and aim to provide them with the best possible experience.</li>
+                    <li><strong>Innovation and Quality:</strong> We are committed to innovation and continually strive to improve our content.</li>
+                    <li><strong>Collaborative Partnerships:</strong> We value strong relationships with our clients and believe in fostering collaborative partnerships.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-5">
+    <div class="container">
+        <h2 class="display-6 text-center text-uppercase mb-5">Our Team</h2>
+        <div class="row">
+            <div class="col-lg-4 mb-4">
+                <div class="card">
+                    <img src="[Image URL]" class="card-img-top" alt="Lucas Vinicius Palandi">
+                    <div class="card-body">
+                        <h5 class="card-title">Lucas Vinicius Palandi</h5>
+                        <p class="card-text">Web Site Creator and Developer</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 mb-4">
+                <div class="card">
+                    <img src="[Image URL]" class="card-img-top" alt="Bruno Cordon">
+                    <div class="card-body">
+                        <h5 class="card-title">Bruno Cordon</h5>
+                        <p class="card-text">Web Site Designer</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 mb-4">
+                <div class="card">
+                    <img src="[Image URL]" class="card-img-top" alt="Emerson Luiz">
+                    <div class="card-body">
+                        <h5 class="card-title">Emerson Luiz</h5>
+                        <p class="card-text">Web Site Designer</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 mb-4">
+                <div class="card">
+                    <img src="[Image URL]" class="card-img-top" alt="Rodrigo Guedes">
+                    <div class="card-body">
+                        <h5 class="card-title">Rodrigo Guedes</h5>
+                        <p class="card-text">Fullstack Developer</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 mb-4">
+                <div class="card">
+                    <img src="[Image URL]" class="card-img-top" alt="Felipe Jacomini">
+                    <div class="card-body">
+                        <h5 class="card-title">Felipe Jacomini</h5>
+                        <p class="card-text">Lawyer</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 mb-4">
+                <div class="card">
+                    <img src="[Image URL]" class="card-img-top" alt="Jean Martins">
+                    <div class="card-body">
+                        <h5 class="card-title">Jean Martins</h5>
+                        <p class="card-text">Quality Assurance Tester</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="bg-dark text-white py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6">
+                <h2 class="display-6 text-uppercase mb-4">Contact Us</h2>
+                <p class="text-secondary">We would love to hear from you! If you have any questions, inquiries, or would like to learn more about our service, please don't hesitate to contact us.</p>
+                <p class="text-secondary">Email: suport.tavernadosmundos@gmail.com</p>
+            </div>
+            <div class="col-lg-6">
+                <h2 class="display-6 text-uppercase mb-4">Important Notice</h2>
+                <p class="text-danger">All images on this page are placeholders and do not represent the final version of this product.</p>
+            </div>
+        </div>
+    </div>
+</section>

@@ -48,18 +48,18 @@ public class AuthDbContext : IdentityDbContext
         builder.Entity<IdentityRole>().HasData(roles);
 
         // Seed SuperAdminUser
-        var superAdminId = "467c51e6-2773-4676-be93-ccc8f7b64de9";
+        var superAdminId = "FE39CB62-A779-41D5-A2A7-F35FB81D6719";
         var superAdminUser = new IdentityUser
         {
-            UserName = "superadmin@taverna.com",
-            Email = "superadmin@taverna.com",
-            NormalizedUserName = "superadmin@taverna.com".ToUpper(),
-            NormalizedEmail = "superadmin@taverna.com".ToUpper(),
+            UserName = "Palandi",
+            Email = "lucaspalandi97@gmail.com",
+            NormalizedUserName = "Palandi".ToUpper(),
+            NormalizedEmail = "lucaspalandi97@gmail.com".ToUpper(),
             Id = superAdminId
         };
 
         superAdminUser.PasswordHash = new PasswordHasher<IdentityUser>()
-            .HashPassword(superAdminUser, "pasteldosmundos");
+            .HashPassword(superAdminUser, "PastelDosMundos@2023");
 
         builder.Entity<IdentityUser>().HasData(superAdminUser);
 
